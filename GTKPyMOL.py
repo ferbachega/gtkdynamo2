@@ -316,9 +316,14 @@ def mousemove(button, event):
     pymol.idle()
 
 
+
+def my_menu_func(menu):
+    print "Menu clicado"
+
 def context_menu():
     menu = gtk.Menu()
     menu_item = gtk.MenuItem("Sweet menu")
+    menu_item.connect('activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
     menu.append(menu_item)
     menu_item.show()
     menu_item = gtk.MenuItem("Salty menu")
@@ -338,24 +343,7 @@ except:
     # Failed, so quit
     sys.exit(0)
 
-# Create our glarea widget
-glarea = gtk.gtkgl.DrawingArea(glconfig)
-#glarea.set_size_request(400, 400)
-glarea.connect_after('realize', init)
-glarea.connect('configure_event', reshape)
-glarea.connect('expose_event', draw)
-glarea.connect('map_event', map)
-glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
-                  gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.KEY_PRESS_MASK)
-glarea.connect("button_press_event", mousepress)
-glarea.connect("button_release_event", mouserelease)
-glarea.connect("motion_notify_event", mousemove)
-glarea.connect("scroll_event", slabchange)
-glarea.connect_object("button_press_event", show_context_menu, context_menu())
-glarea.set_can_focus(True)
 
-import pymol2
-pymol = pymol2.PyMOL(glarea)
 
 
 class gtkdynamo_main():
@@ -690,5 +678,25 @@ class gtkdynamo_main():
         gtk.main()
 
 print "Creating object"
+# Create our glarea widget
+glarea = gtk.gtkgl.DrawingArea(glconfig)
+#glarea.set_size_request(400, 400)
+glarea.connect_after('realize', init)
+glarea.connect('configure_event', reshape)
+glarea.connect('expose_event', draw)
+glarea.connect('map_event', map)
+glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
+                  gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.KEY_PRESS_MASK)
+glarea.connect("button_press_event", mousepress)
+glarea.connect("button_release_event", mouserelease)
+glarea.connect("motion_notify_event", mousemove)
+glarea.connect("scroll_event", slabchange)
+glarea.set_can_focus(True)
+
+import pymol2
+pymol = pymol2.PyMOL(glarea)
 gtkdynamo = gtkdynamo_main()
+glarea.connect_object("button_press_event", show_context_menu, context_menu())
+
+
 gtkdynamo.run()
