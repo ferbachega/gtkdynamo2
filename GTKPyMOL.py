@@ -279,14 +279,20 @@ def slabchange(button, event):
     pymol.idle()
 
 
+def show_context_menu(widget, event):
+    if event.button == 3:
+        widget.popup(None, None, None, event.button, event.time)
+
+
 def mousepress(button, event):
-    x, y, width, height = glarea.get_allocation()
-    mousepress = event
-    button = mousepress.button - 1
-    pointerx = int(mousepress.x)
-    pointery = int(mousepress.y)
-    calc_y = height - pointery
-    pymol.button(button, 0, pointerx, calc_y, 0)
+    if event.button != 3:
+        x, y, width, height = glarea.get_allocation()
+        mousepress = event
+        button = mousepress.button - 1
+        pointerx = int(mousepress.x)
+        pointery = int(mousepress.y)
+        calc_y = height - pointery
+        pymol.button(button, 0, pointerx, calc_y, 0)
 
 
 def mouserelease(button, event):
@@ -310,6 +316,18 @@ def mousemove(button, event):
     pymol.idle()
 
 
+def context_menu():
+    menu = gtk.Menu()
+    menu_item = gtk.MenuItem("Sweet menu")
+    menu.append(menu_item)
+    menu_item.show()
+    menu_item = gtk.MenuItem("Salty menu")
+    menu.append(menu_item)
+    menu_item.show()
+    return menu
+
+
+
 # Create opengl configuration
 try:
     # Try creating rgb, double buffering and depth test modes for opengl
@@ -320,7 +338,6 @@ except:
     # Failed, so quit
     sys.exit(0)
 
-print "HEEEEEEEEEEY"
 # Create our glarea widget
 glarea = gtk.gtkgl.DrawingArea(glconfig)
 #glarea.set_size_request(400, 400)
@@ -334,12 +351,10 @@ glarea.connect("button_press_event", mousepress)
 glarea.connect("button_release_event", mouserelease)
 glarea.connect("motion_notify_event", mousemove)
 glarea.connect("scroll_event", slabchange)
+glarea.connect_object("button_press_event", show_context_menu, context_menu())
 glarea.set_can_focus(True)
 
-
 import pymol2
-import pdb
-pdb.set_trace()
 pymol = pymol2.PyMOL(glarea)
 
 
