@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkDialog" id="16_window_SETTINGS">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">NBModel properties</property>
+    <property name="type_hint">dialog</property>
+    <property name="has_separator">True</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox61">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area61">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="16_window_button2">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="16_window_button1">
+                <property name="label" translatable="yes">Apply</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="16_window_fixed1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkFrame" id="16_window_frame23_new_system">
+                <property name="width_request">375</property>
+                <property name="height_request">239</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="16_window_alignment23_new_system">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="left_padding">15</property>
+                    <property name="right_padding">15</property>
+                    <child>
+                      <object class="GtkFixed" id="16_window_fixed2_new_system">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkComboBox" id="16_window_comobobox_nbmodel">
+                            <property name="width_request">180</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="row_span_column">1</property>
+                            <property name="column_span_column">1</property>
+                            <property name="active">1</property>
+                          </object>
+                          <packing>
+                            <property name="x">150</property>
+                            <property name="y">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="16_window_method_label_new_system">
+                            <property name="width_request">100</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="ypad">1</property>
+                            <property name="label" translatable="yes">Method:</property>
+                            <property name="wrap">True</property>
+                          </object>
+                          <packing>
+                            <property name="y">9</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkFixed" id="16_window_fixed48_new_system">
+                            <property name="width_request">291</property>
+                            <property name="height_request">145</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkEntry" id="16_window_listcutoff_entry_new_system">
+                                <property name="width_request">180</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">13.5</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                                <property name="y">76</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="16_window_outercutoff_entry_new_system">
+                                <property name="width_request">180</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">12</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                                <property name="y">38</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="16_window_innercutoff_entry_new_system">
+                                <property name="width_request">180</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">13_window_</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="16_window_label2_outercutoff_new_system">
+                                <property name="width_request">154</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Outercutoff:</property>
+                                <property name="wrap">True</property>
+                              </object>
+                              <packing>
+                                <property name="y">40</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="16_window_label4_innercutoff_new_system">
+                                <property name="width_request">164</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Innercutoff:</property>
+                                <property name="wrap">True</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="16_window_label3_listcutoff_new_system">
+                                <property name="width_request">154</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Listcutoff:</property>
+                                <property name="wrap">True</property>
+                              </object>
+                              <packing>
+                                <property name="y">80</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="16_window_label3_Kappa_new_system">
+                                <property name="width_request">155</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Kappa:</property>
+                                <property name="wrap">True</property>
+                              </object>
+                              <packing>
+                                <property name="y">120</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="16_window_kappa_entry_new_system">
+                                <property name="width_request">180</property>
+                                <property name="height_request">28</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">0.2</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="x">150</property>
+                                <property name="y">114</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="y">52</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="16_window_label64_new_system">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Non Bond Models&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkFrame" id="16_window_frame1_new_system">
+                <property name="width_request">375</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="16_window_alignment2_new_system">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="top_padding">12</property>
+                    <property name="bottom_padding">12</property>
+                    <property name="left_padding">12</property>
+                    <property name="right_padding">12</property>
+                    <child>
+                      <object class="GtkFixed" id="16_window_fixed30_new_system">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkCheckButton" id="16_window_checkbutton1_new_system">
+                            <property name="label" translatable="yes">Include PBC Cell</property>
+                            <property name="width_request">136</property>
+                            <property name="height_request">37</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="active">True</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">8</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="16_window_button1_new_system2">
+                            <property name="label" translatable="yes">Advanced</property>
+                            <property name="width_request">100</property>
+                            <property name="height_request">37</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">247</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="16_window_label65_new_system1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Periodic Boundary Conditions - PBC&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="y">260</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">16_window_button2</action-widget>
+      <action-widget response="0">16_window_button1</action-widget>
+    </action-widgets>
+  </object>
+</interface>

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkDialog" id="14_window_pDynamo_selection">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">pDynamo selections</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox57">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area57">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="14_window_selection_button1">
+                <property name="label" translatable="yes">Close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="14_window_button_apply_selection">
+                <property name="label" translatable="yes">Select</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_14_window_button_apply_selection_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="14_window_selection_fixed1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkFrame" id="14_window_selection_frame1">
+                <property name="width_request">545</property>
+                <property name="height_request">337</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="14_window_selection_alignment1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <object class="GtkFixed" id="14_window_selection_fixed3">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkScrolledWindow" id="14_window_selection_scrolledwindow1">
+                            <property name="width_request">518</property>
+                            <property name="height_request">258</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <child>
+                              <object class="GtkTreeView" id="14_window_selection_treeview1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="model">14_window_selection_liststore1</property>
+                                <property name="headers_clickable">False</property>
+                                <property name="rules_hint">True</property>
+                                <property name="search_column">0</property>
+                                <signal name="row-activated" handler="on_14_window_selection_treeview1_row_activated" swapped="no"/>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn1">
+                                    <property name="title">Index</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext1"/>
+                                      <attributes>
+                                        <attribute name="text">0</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn2">
+                                    <property name="title">Atom type</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext2"/>
+                                      <attributes>
+                                        <attribute name="text">1</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn3">
+                                    <property name="title">Residue name</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext3"/>
+                                      <attributes>
+                                        <attribute name="text">2</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn4">
+                                    <property name="title">Chain</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext4"/>
+                                      <attributes>
+                                        <attribute name="text">3</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn5">
+                                    <property name="title">Residue number</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext5"/>
+                                      <attributes>
+                                        <attribute name="text">4</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="GtkTreeViewColumn" id="14_window_selection_treeviewcolumn6">
+                                    <property name="title">Element</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="14_window_selection_cellrenderertext6"/>
+                                      <attributes>
+                                        <attribute name="text">5</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="x">2</property>
+                            <property name="y">15</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="14_window_selection_label2">
+                            <property name="width_request">103</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Selected atom:</property>
+                          </object>
+                          <packing>
+                            <property name="x">3</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="14_window_selection_entry1">
+                            <property name="width_request">43</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">•</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">120</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="14_window_selection_label3">
+                            <property name="width_request">10</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">:</property>
+                          </object>
+                          <packing>
+                            <property name="x">161</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="14_window_selection_entry2">
+                            <property name="width_request">43</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">•</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">170</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="14_window_selection_label4">
+                            <property name="width_request">10</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">.</property>
+                          </object>
+                          <packing>
+                            <property name="x">211</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="14_window_selection_entry3">
+                            <property name="width_request">43</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">•</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">220</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="14_window_selection_label6">
+                            <property name="width_request">10</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">:</property>
+                          </object>
+                          <packing>
+                            <property name="x">261</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="14_window_selection_entry4">
+                            <property name="width_request">43</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">•</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="x">270</property>
+                            <property name="y">281</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="14_window_selection_import_pymol_index">
+                            <property name="label" translatable="yes">Get index from  PyMOL (pk1)</property>
+                            <property name="width_request">188</property>
+                            <property name="height_request">35</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_14_window_selection_import_pymol_index_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="x">330</property>
+                            <property name="y">279</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="14_window_selection_label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Pick the center atom&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="14_window_selection_fixed2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="14_window_selection_frame3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0.5</property>
+            <child>
+              <object class="GtkAlignment" id="14_window_selection_alignment3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="top_padding">10</property>
+                <property name="bottom_padding">10</property>
+                <property name="left_padding">10</property>
+                <property name="right_padding">10</property>
+                <child>
+                  <object class="GtkTable" id="table24">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="n_rows">3</property>
+                    <property name="n_columns">2</property>
+                    <property name="column_spacing">20</property>
+                    <property name="row_spacing">5</property>
+                    <child>
+                      <object class="GtkLabel" id="14_window_selection_selection_type">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Selection method:</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="14_window_selection_radius_distance">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Radius distance (angstron):</property>
+                      </object>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="14_window_selection_label5">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Import as:</property>
+                      </object>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="14_window_combobox_selection_type">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="14_window_selection_radius_distance_entry1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">•</property>
+                        <property name="invisible_char_set">True</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="14_window_combobox_select_as_prune_fix_pymol">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="14_window_selection_frame4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">&lt;b&gt;Atom selection mode&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">14_window_selection_button1</action-widget>
+      <action-widget response="0">14_window_button_apply_selection</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkListStore" id="14_window_selection_liststore1">
+    <columns>
+      <!-- column-name index -->
+      <column type="gchararray"/>
+      <!-- column-name atom -->
+      <column type="gchararray"/>
+      <!-- column-name residue -->
+      <column type="gchararray"/>
+      <!-- column-name chain -->
+      <column type="gchararray"/>
+      <!-- column-name residue1 -->
+      <column type="gchararray"/>
+      <!-- column-name element -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+</interface>
