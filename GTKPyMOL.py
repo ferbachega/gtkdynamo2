@@ -321,21 +321,21 @@ def mousemove(button, event):
     pymol.idle()
 
 
-
 def my_menu_func(menu):
     print "Menu clicado"
+
 
 def context_menu():
     menu = gtk.Menu()
     menu_item = gtk.MenuItem("Sweet menu")
-    menu_item.connect('activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
+    menu_item.connect(
+        'activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
     menu.append(menu_item)
     menu_item.show()
     menu_item = gtk.MenuItem("Salty menu")
     menu.append(menu_item)
     menu_item.show()
     return menu
-
 
 
 # Create opengl configuration
@@ -347,8 +347,6 @@ try:
 except:
     # Failed, so quit
     sys.exit(0)
-
-
 
 
 class gtkdynamo_main():
