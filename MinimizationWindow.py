@@ -54,6 +54,8 @@ class MinimizationWindow():
             "02_window_combobox_minimization_method").get_active_text()
         AmberTrajectoryFlag = self.builder.get_object(
             "02_window_AMBER_trajectory_checkbox").get_active()
+        TrajectoryFlag = self.builder.get_object(
+            "02_window_Output_trajectory_checkbox").get_active()
 
         parameters = {'trajectory': trajectory,
                       'maximumIterations': maximumIterations,
@@ -61,19 +63,20 @@ class MinimizationWindow():
                       'trajectory_freq': trajectory_freq,
                       'rmsGradientTolerance': rmsGradientTolerance,
                       'method': method,
-                      'AmberTrajectoryFlag': AmberTrajectoryFlag}
+                      'AmberTrajectoryFlag': AmberTrajectoryFlag,
+                      'TrajectoryFlag': TrajectoryFlag}
 
-        if method == 'Conjugate Gradient':
-            print 'Conjugate Gradient'
-            print parameters
-        if method == 'Steepest Descent':
-            print 'Steepest Descent'
-            print parameters
-        if method == 'LBFGS':
-            print 'LBFGS'
-            print parameters
+        # if method == 'Conjugate Gradient':
+        #	print 'Conjugate Gradient'
+        #	print parameters
+        # if method == 'Steepest Descent':
+        #	print 'Steepest Descent'
+        #	print parameters
+        # if method == 'LBFGS':
+        #	print 'LBFGS'
+        #	print parameters
 
-        if self.project is not None:
+        if self.project.system is not None:
             #------------------------------------------------------------------#
             #                     Geometry optmization                         #
             #                                                                  #

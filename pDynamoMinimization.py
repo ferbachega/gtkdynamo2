@@ -48,7 +48,7 @@ class pDynamoMinimization():
 
     """ Class doc """
 
-    def __init__(self, system=None, method='Conjugate Gradient', parameters=None, data_path=None):
+    def __init__(self, system=None, method='Conjugate Gradient', parameters=None, data_path=None, TrajectoryFlag=None):
         """ Class initialiser """
 
         self.system = system
@@ -57,7 +57,6 @@ class pDynamoMinimization():
             data_path = GTKDYNAMO_TMP
 
         if parameters == None:
-            log = DualTextLog(data_path)
             logFrequency = 1
             trajectory_name = "test_mini"
             trajectory_freq = 1
@@ -65,22 +64,14 @@ class pDynamoMinimization():
             rmsGradientTolerance = 0.1
             AmberTrajectoryFlag = False
         else:
-            log = DualTextLog(data_path)
             logFrequency = parameters['logFrequency']
             trajectory_name = parameters['trajectory']
             trajectory_freq = parameters['trajectory_freq']
             maximumIterations = parameters['maximumIterations']
             rmsGradientTolerance = parameters['rmsGradientTolerance']
             AmberTrajectoryFlag = parameters['AmberTrajectoryFlag']
-
+            TrajectoryFlag = parameters['TrajectoryFlag']
         # self.system.Summary()
-
-        print 'log                 ', log
-        print 'logFrequency        ', logFrequency
-        print 'trajectory          ', trajectory_name
-        print 'trajectory_freq     ', trajectory_freq
-        print 'maximumIterations   ', maximumIterations
-        print 'rmsGradientTolerance', rmsGradientTolerance
 
         #---------------------------------------------------------------------------#
         #                    Removing the temp file: log.gui.txt                    #
@@ -94,14 +85,41 @@ class pDynamoMinimization():
             a = None		                                                        #
         #---------------------------------------------------------------------------#
 
+        #---------------------------------------------------------------------------#
+        #                           TrajectoryOutputPath                            #
+        #---------------------------------------------------------------------------#
+
         TrajectoryOutputPath = os.path.join(data_path, trajectory_name)
 
-        if AmberTrajectoryFlag:
-            trajectory = AmberTrajectoryFileWriter(
-                TrajectoryOutputPath, self.system)
+        if TrajectoryFlag:
+            if AmberTrajectoryFlag:
+                trajectory = AmberTrajectoryFileWriter(
+                    TrajectoryOutputPath, self.system)
+            else:
+                trajectory = SystemGeometryTrajectory(
+                    TrajectoryOutputPath, self.system, mode="w")
+
+            log = DualTextLog(
+                TrajectoryOutputPath, trajectory_name + ".log")  # LOG
+            trajectories = [(trajectory, trajectory_freq)]
+
         else:
-            trajectory = SystemGeometryTrajectory(
-                TrajectoryOutputPath, self.system, mode="w")
+            # even without the trajectory flag = False,
+            # the directory will be created but only
+            # containing the logfile.
+            if not os.path.isdir(TrajectoryOutputPath):
+                os.mkdir(TrajectoryOutputPath)
+                print "Log files will be saved in:  %s" % TrajectoryOutputPath
+            log = DualTextLog(
+                TrajectoryOutputPath, trajectory_name + ".log")  # LOG
+        #---------------------------------------------------------------------------#
+
+        print 'log                 ', log
+        print 'logFrequency        ', logFrequency
+        print 'trajectory          ', trajectory_name
+        print 'trajectory_freq     ', trajectory_freq
+        print 'maximumIterations   ', maximumIterations
+        print 'rmsGradientTolerance', rmsGradientTolerance
 
         #--------------------#
         #    Initial time    #
@@ -121,8 +139,7 @@ class pDynamoMinimization():
                 ConjugateGradientMinimize_SystemGeometry(self.system,
                                                          log=log,
                                                          logFrequency=logFrequency,
-                                                         trajectories=[
-                                                             (trajectory, trajectory_freq)],
+                                                         trajectories=trajectories,
                                                          maximumIterations=maximumIterations,
                                                          rmsGradientTolerance=rmsGradientTolerance)
             except:
@@ -134,8 +151,7 @@ class pDynamoMinimization():
                 SteepestDescentMinimize_SystemGeometry(self.system,
                                                        log=log,
                                                        logFrequency=logFrequency,
-                                                       trajectories=[
-                                                           (trajectory, trajectory_freq)],
+                                                       trajectories=trajectories,
                                                        maximumIterations=maximumIterations,
                                                        rmsGradientTolerance=rmsGradientTolerance)
             except:
@@ -146,14 +162,13 @@ class pDynamoMinimization():
                 LBFGSMinimize_SystemGeometry(self.system,
                                              log=log,
                                              logFrequency=logFrequency,
-                                             trajectories=[
-                                                 (trajectory, trajectory_freq)],
+                                             trajectories=trajectories,
                                              maximumIterations=maximumIterations,
                                              rmsGradientTolerance=rmsGradientTolerance)
             except:
                 print 'LBFGS has failed (LBFGS is only available in pDynamo ver 1.8.2 or newer).'
 
-        #------------------- Recording time/data information -------------------#
+        #------------------- Printing  time/data information -------------------#
         t_final = time.time()                                                 #
         #
         TotalTime = t_final - t_initial
@@ -164,16 +179,6 @@ class pDynamoMinimization():
         #
         print "Generated in:", localtime
         #-----------------------------------------------------------------------#
-
-        #------------------------------------------------------------#
-        #             Renaming the temp file: log.gui.txt            #
-        #------------------------------------------------------------#
-
-        log_filename = TrajectoryOutputPath + '/process.log'
-        try:
-            os.rename(GTKDYNAMO_TMP + '/log.gui.txt', log_filename)
-        except:
-            a = None
 
 
 def main():

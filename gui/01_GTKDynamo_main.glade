@@ -277,63 +277,6 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_save_as_16x16.png</property>
   </object>
-  <object class="GtkMenu" id="menu4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem11">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image34</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem12">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image38</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem13">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image39</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem14">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image40</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem15">
-        <property name="label">gtk-quit</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem6">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkImage" id="image41">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -432,6 +375,69 @@
       <!-- column-name gchararray1 -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkListStore" id="liststore3">
+    <columns>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+    </columns>
+  </object>
+  <object class="GtkMenu" id="menu4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem11">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image34</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem12">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image38</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem13">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image39</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image40</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem15">
+        <property name="label">gtk-quit</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
   </object>
   <object class="GtkWindow" id="win">
     <property name="can_focus">False</property>
@@ -1037,7 +1043,7 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">energy minimization</property>
+                <property name="tooltip_text" translatable="yes">Geometry Optmization</property>
                 <property name="label" translatable="yes">geometry optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
@@ -1750,12 +1756,6 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="liststore3">
-    <columns>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-    </columns>
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>

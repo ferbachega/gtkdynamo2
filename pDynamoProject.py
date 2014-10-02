@@ -47,37 +47,38 @@ class pDynamoProject():
                                          'pymol_session': None}
 
         self.types_allowed = {'pdb': True, 'xyz': False, 'mol2': False}
+
         self.system = None
+
         self.data_path = data_path
+
         self.step = 0
+
         # {1:[process, pymol_id, potencial, energy]}
         self.job_history = {}
+
+        self.potential = None      # MM, QC, QC/MM
 
         self.PyMOL = PyMOL
         self.dualLog = None
         self.builder = builder
         self.window_control = window_control
 
-    def DualTextLog(self):
-        """ Function doc """
-        import pdb
-        pdb.set_trace()
-        data_path = self.data_path
-
-        class DualTextLogFileWriter (TextLogFileWriter):
-
-            def Text(self, text):
-                #"""Text."""
-                # if self.isActive and ( text is not None ): #old code M.F.
-                self.file.write(text)
-                # RWM / Bachega
-                log_out = open(os.path.join(data_path, "log.gui.txt"), "a")
-                # redirects output to a log text file
-                log_out.write(text)
-                log_out.close()
-
-        dualLog = DualTextLogFileWriter()
-        return dualLog
+    # def  DualTextLog(self):
+    #	""" Function doc """
+    #	data_path = self.data_path
+    #
+    #	class DualTextLogFileWriter ( TextLogFileWriter ):
+    #		def Text ( self, text):
+    # """Text."""
+    # if self.isActive and ( text is not None ): #old code M.F.
+    #			self.file.write ( text )
+    # log_out = open(os.path.join(data_path,"log.gui.txt"), "a") # RWM / Bachega
+    # log_out.write(text)                                        # redirects output to a log text file
+    #			log_out.close()
+    #
+    #	dualLog   =  DualTextLogFileWriter ()
+    #	return dualLog
 
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
@@ -202,6 +203,9 @@ class pDynamoProject():
         if FileType is not "pDynamo files(*.pkl,*.yaml)":
             self.set_nbModel_to_system()
 
+        self.system.Summary(
+            log=DualTextLog(self.data_path, str(self.step + 1) + '_' + self.name + ".log"))
+
         self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
     def Open_GTKDYN_Project():
@@ -217,6 +221,13 @@ class pDynamoProject():
         # para abrir um projeto do pDynamo basta abrir um arquivo pkl e enviar
         # ao PyMOL > From_PDYNAMO_to_GTKDYNAMO
 
+    def SystemCheck(self):
+        """ Function doc """
+
+        self.system.Summary(log=DualTextLog(self.data_path, "summary.log"))
+        if self.PyMOL == True:
+            pass
+
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK'):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
@@ -228,6 +239,7 @@ class pDynamoProject():
                 e adicionar informacoes ao history  via IncrementStep()
         """
         self.IncrementStep()
+
         if self.PyMOL == True:
             pymol_id = ExportFramesToPymol(self, type_)
 
@@ -244,8 +256,17 @@ class pDynamoProject():
 
             self.job_history[self.step] = [
                 type_, pymol_id, "potencial", "1192.0987"]  # this is only a test
+
+            #-------------------------------------#
+            #               STATUSBAR             #
+            #-------------------------------------#
+            a = ''
             for i in self.job_history:
                 print i, self.job_history[i]
+                a = str(i) + str(self.job_history[i])
+
+            self.window_control.STATUSBAR_SET_TEXT(a)
+
         else:
             print 'PyMOL ==',  self.PyMOL
 
@@ -484,11 +505,11 @@ class pDynamoProject():
 
         pDynamoMinimization(self.system, method, parameters, self.data_path)
 
-        #-------------  increment step  ---------------#
+        #------------------  increment step  ---------------#
         #
         self.From_PDYNAMO_to_GTKDYNAMO(type_='min')
         #
-        #----------------------------------------------#
+        #---------------------------------------------------#
 
         return True
 

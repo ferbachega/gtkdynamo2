@@ -7,7 +7,7 @@ text1 = """
 #
 #	
 #
-#                           ---- GTKDynamo ----
+#                         ---- GTKDynamo 2.0 ----
 #		                    
 #		
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
@@ -24,6 +24,7 @@ text1 = """
 #       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #       GNU General Public License for more details.
 #
+#   
 #	GTKDynamo team:
 #	- Jose Fernando R Bachega   < Univesity of Sao Paulo - SP, Brazil                              >
 #	- Troy Wymore               < Pittsburgh Super Computer Center, Pittsburgh PA - USA            >
@@ -39,6 +40,10 @@ text1 = """
 #	- Leonardo R Bachega        < University of Purdue - West Lafayette, IN - USA                  >
 #	- Richard Garratt           < Univesity of Sao Paulo - SP, Brazil                              >
 #
+#
+#   Cite this work as:
+#   J. F. R. Bachega, L. F. S. M. Timmers, L. Assirati, L. B. Bachega, M. J. Field, 
+#   T. Wymore. J. Comput. Chem. 2013, 34, 2190-2196. DOI: 10.1002/jcc.23346
 #
 #		
 """
@@ -122,10 +127,10 @@ if not os.path.isdir(GTKDYNAMO_TMP):
 
 global slab
 slab = 50
+zoom = 1.0
 angle = 0.0
 sprite = None
 zfactor = 0.005
-zoom = 1.0
 
 
 def draw(glarea, event):
@@ -252,7 +257,7 @@ def idle(glarea):
 
 
 def map(glarea, event):
-    print 'map'
+    # print 'map'
     # Add idle event
     gobject.idle_add(idle, glarea)
     return True
@@ -510,6 +515,10 @@ class gtkdynamo_main():
 
     def on_01_main_window_OpenMinimizationWindow_clicked(self, button):
         """ Function doc """
+        print self.project.step
+        text = str(self.project.step + 1) + '_step_GeometryOptmization'
+        self._02MinimizationWindow.builder.get_object(
+            "02_window_entry_traj_name").set_text(text)
         self._02MinimizationWindow.dialog.run()
         self._02MinimizationWindow.dialog.hide()
 
