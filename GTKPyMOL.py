@@ -131,7 +131,11 @@ zoom = 1.0
 angle = 0.0
 sprite = None
 zfactor = 0.005
-
+global clicado, ZeroX, ZeroY, Buffer
+clicado = False
+ZeroX   = None
+ZeroY   = None
+Buffer  = 0
 
 def draw(glarea, event):
     # Get surface and context
@@ -279,17 +283,43 @@ def slabchange(button, event):
         if slab <= -5:
             slab = -5
     pymol.cmd.clip('slab', slab)
+    #cmd.zoom(buffer = Buffer)
     return step
     pymol.button(button, 0, x, y, 0)
     pymol.idle()
 
 
 def show_context_menu(widget, event):
+    x, y, state = event.window.get_pointer()
+    #print  x, y
     if event.button == 3:
         widget.popup(None, None, None, event.button, event.time)
 
 
 def mousepress(button, event):
+    global ZeroX, ZeroY
+    
+    ZeroX, ZeroY, state = event.window.get_pointer()
+    
+    print ZeroX, ZeroY
+    
+    x, y, width, height = glarea.get_allocation()
+    
+    if event.button == 3:
+        global clicado
+        clicado = True
+        ##print 'gordao'
+        #x, y, width, height = glarea.get_allocation()
+        ##print x, y, width, height
+        #mousepress = event
+        #button = mousepress.button - 1
+        #pointerx = int(mousepress.x)
+        #pointery = int(mousepress.y)
+        #calc_y = height - pointery
+        ##print pointerx,pointery,calc_y
+        ##cmd.zoom(buffer=calc_y)
+        #pymol.button(button, 0, pointerx , calc_y, 0)
+            
     if event.button != 3:
         x, y, width, height = glarea.get_allocation()
         mousepress = event
@@ -298,7 +328,6 @@ def mousepress(button, event):
         pointery = int(mousepress.y)
         calc_y = height - pointery
         pymol.button(button, 0, pointerx, calc_y, 0)
-
 
 def mouserelease(button, event):
 
@@ -309,16 +338,32 @@ def mouserelease(button, event):
     pointery = int(mouserelease.y)
     calc_y = height - pointery
     pymol.button(button, 1, pointerx, calc_y, 0)
-
+    
+    if event.button == 3:
+        global clicado
+        clicado = False
 
 def mousemove(button, event):
+    global Buffer
+    #x, y, width, height = event.window.get_pointer() # nao da certo
+    
     x, y, width, height = glarea.get_allocation()
     mousemove = event
     pointerx = int(mousemove.x)
     pointery = int(mousemove.y)
+    #print pointerx,pointery,height - pointery
     calc_y = height - pointery
+    
+    if clicado:
+        Buffer = ZeroY-(pointery/10)
+        print ZeroY-pointery
+        #print pointerx, pointery,calc_y,  ZeroY, (ZeroY - pointery), Buffer
+        cmd.zoom(buffer = Buffer)
+
     pymol.drag(pointerx, calc_y, 0)
     pymol.idle()
+    
+
 
 
 def my_menu_func(menu):
@@ -694,16 +739,31 @@ glarea.connect('expose_event', draw)
 glarea.connect('map_event', map)
 glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
                   gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.KEY_PRESS_MASK)
-glarea.connect("button_press_event", mousepress)
-glarea.connect("button_release_event", mouserelease)
-glarea.connect("motion_notify_event", mousemove)
+
+# all the events are connected to only one fuction-----#
+                                                       #
+glarea.connect("button_press_event", mousepress)      #
+glarea.connect("button_release_event", mouserelease)  #
+glarea.connect("motion_notify_event", mousemove)      #
+#------------------------------------------------------#
+
+
+#glarea.connect("button_press_event",   _mouseButton)
+#glarea.connect("button_release_event", _mouseButton)
+#glarea.connect("motion_notify_event",  _mouseButton)
+
+
+
 glarea.connect("scroll_event", slabchange)
+
+
 glarea.set_can_focus(True)
 
 import pymol2
 pymol = pymol2.PyMOL(glarea)
 gtkdynamo = gtkdynamo_main()
-glarea.connect_object("button_press_event", show_context_menu, context_menu())
+#glarea.connect_object("button_press_event", show_context_menu, context_menu())
+glarea.connect_object("button_release_event", show_context_menu, context_menu())
 
 
 gtkdynamo.run()

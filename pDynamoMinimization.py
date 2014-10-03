@@ -48,9 +48,8 @@ class pDynamoMinimization():
 
     """ Class doc """
 
-    def __init__(self, system=None, method='Conjugate Gradient', parameters=None, data_path=None, TrajectoryFlag=None):
+    def __init__(self, system=None, method='Conjugate Gradient', parameters=None, data_path=None, TrajectoryFlag=True):
         """ Class initialiser """
-
         self.system = system
 
         if data_path == None:
@@ -64,13 +63,13 @@ class pDynamoMinimization():
             rmsGradientTolerance = 0.1
             AmberTrajectoryFlag = False
         else:
-            logFrequency = parameters['logFrequency']
-            trajectory_name = parameters['trajectory']
-            trajectory_freq = parameters['trajectory_freq']
-            maximumIterations = parameters['maximumIterations']
+            logFrequency         = parameters['logFrequency']
+            trajectory_name      = parameters['trajectory']
+            trajectory_freq      = parameters['trajectory_freq']
+            maximumIterations    = parameters['maximumIterations']
             rmsGradientTolerance = parameters['rmsGradientTolerance']
-            AmberTrajectoryFlag = parameters['AmberTrajectoryFlag']
-            TrajectoryFlag = parameters['TrajectoryFlag']
+            AmberTrajectoryFlag  = parameters['AmberTrajectoryFlag']
+            TrajectoryFlag       = parameters['TrajectoryFlag']
         # self.system.Summary()
 
         #---------------------------------------------------------------------------#
@@ -85,22 +84,25 @@ class pDynamoMinimization():
             a = None		                                                        #
         #---------------------------------------------------------------------------#
 
+        
+        
+        
+        TrajectoryOutputPath = os.path.join(data_path, trajectory_name)
         #---------------------------------------------------------------------------#
         #                           TrajectoryOutputPath                            #
         #---------------------------------------------------------------------------#
-
-        TrajectoryOutputPath = os.path.join(data_path, trajectory_name)
-
         if TrajectoryFlag:
+         
             if AmberTrajectoryFlag:
-                trajectory = AmberTrajectoryFileWriter(
-                    TrajectoryOutputPath, self.system)
+                if not os.path.isdir(TrajectoryOutputPath):
+                    os.mkdir(TrajectoryOutputPath)
+                print "Log files will be saved in:  %s" % TrajectoryOutputPath   
+                trajectory = AmberTrajectoryFileWriter(TrajectoryOutputPath+'/'+trajectory_name, self.system)
+            
             else:
-                trajectory = SystemGeometryTrajectory(
-                    TrajectoryOutputPath, self.system, mode="w")
+                trajectory = SystemGeometryTrajectory(TrajectoryOutputPath, self.system, mode="w")
 
-            log = DualTextLog(
-                TrajectoryOutputPath, trajectory_name + ".log")  # LOG
+            log = DualTextLog(TrajectoryOutputPath, trajectory_name + ".log")  # LOG
             trajectories = [(trajectory, trajectory_freq)]
 
         else:
@@ -110,8 +112,8 @@ class pDynamoMinimization():
             if not os.path.isdir(TrajectoryOutputPath):
                 os.mkdir(TrajectoryOutputPath)
                 print "Log files will be saved in:  %s" % TrajectoryOutputPath
-            log = DualTextLog(
-                TrajectoryOutputPath, trajectory_name + ".log")  # LOG
+            log = DualTextLog(TrajectoryOutputPath, trajectory_name + ".log")  # LOG
+            trajectories = None
         #---------------------------------------------------------------------------#
 
         print 'log                 ', log
