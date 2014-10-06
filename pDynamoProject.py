@@ -9,7 +9,7 @@ from pDynamoMinimization import *
 
 from pymol import cmd
 from PyMOLScripts import *
-
+from LogParse import ParseSummaryLogFile, ParseProcessLogFile
 
 class pDynamoProject():
 
@@ -17,35 +17,45 @@ class pDynamoProject():
 
         self.name = name
 
-        self.settings = {'project_name': 'my_project',
-                         'force_field': None,
-                                         'parameters': None,
-                                         'topology': None,
-                                         'coordinates': None,
-                                         'nbModel_type': 'NBModelABFS',
-                                         'nbModel': "NBModelABFS()",
-                                         'ABFS_options': {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
-                                         'prune_table': [],
-                                         'fix_table': [],
-                                         'qc_table': [],
-                                         'QCMM': "No",
-                                         'potencial': None,
-                                         'qc_method': None,
-                                         'charge': None,
-                                         'multiplicity': None,
-                                         'density_tol': None,
-                                         'Maximum_SCF': None,
-                                         'ORCA_method': None,
-                                         'ORCA_SCF': None,
-                                         'ORCA_basis': None,
-                                         'ORCA_pal': None,
-                                         'kappa': None,
-                                         'data_path': None,
-                                         'last_step': None,
-                                         'last_frame': None,
-                                         'last_pymol_id': None,
-                                         'pymol_session': None}
+        self.parameters = {
+                          'Number of Atoms'      : '0', 
+                          'Energy Model'         : 'UNK',
+                          'Number of QC Atoms'   : '0',
+                          'Number of Fixed Atoms': '0'         
+                          }
 
+        
+        self.settings = {'project_name' : 'my_project',
+                         'force_field'  : None,
+                         'parameters'   : None,
+                         'topology'     : None,
+                         'coordinates'  : None,
+                         'nbModel_type' : 'NBModelABFS',
+                         'nbModel'      : "NBModelABFS()",
+                         'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
+                         'prune_table'  : [],
+                         'fix_table'    : [],
+                         'qc_table'     : [],
+                         'QCMM'         : "No",
+                         'potencial'    : None,
+                         'qc_method'    : None,
+                         'charge'       : None,
+                         'multiplicity' : None,
+                         'density_tol'  : None,
+                         'Maximum_SCF'  : None,
+                         'ORCA_method'  : None,
+                         'ORCA_SCF'     : None,
+                         'ORCA_basis'   : None,
+                         'ORCA_pal'     : None,
+                         'kappa'        : None,
+                         'data_path'    : None,
+                         'last_step'    : None,
+                         'last_frame'   : None,
+                         'last_pymol_id': None,
+                         'pymol_session': None}
+
+        self.parameters = None
+        
         self.types_allowed = {'pdb': True, 'xyz': False, 'mol2': False}
 
         self.system = None
@@ -54,31 +64,15 @@ class pDynamoProject():
 
         self.step = 0
 
-        # {1:[process, pymol_id, potencial, energy]}
         self.job_history = {}
-
-        self.potential = None      # MM, QC, QC/MM
+        
+        
 
         self.PyMOL = PyMOL
         self.dualLog = None
         self.builder = builder
         self.window_control = window_control
 
-    # def  DualTextLog(self):
-    #	""" Function doc """
-    #	data_path = self.data_path
-    #
-    #	class DualTextLogFileWriter ( TextLogFileWriter ):
-    #		def Text ( self, text):
-    # """Text."""
-    # if self.isActive and ( text is not None ): #old code M.F.
-    #			self.file.write ( text )
-    # log_out = open(os.path.join(data_path,"log.gui.txt"), "a") # RWM / Bachega
-    # log_out.write(text)                                        # redirects output to a log text file
-    #			log_out.close()
-    #
-    #	dualLog   =  DualTextLogFileWriter ()
-    #	return dualLog
 
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
@@ -203,11 +197,22 @@ class pDynamoProject():
         if FileType is not "pDynamo files(*.pkl,*.yaml)":
             self.set_nbModel_to_system()
 
-        self.system.Summary(
-            log=DualTextLog(self.data_path, str(self.step + 1) + '_' + self.name + ".log"))
+        
+        #self.system.Summary(
+        #    log=DualTextLog(self.data_path, str(self.step + 1) + '_' + self.name + ".log"))
 
         self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
+    def SystemCheck(self):
+        """ Function doc """
+        SummaryFile = "Summary"+'_Step'+str(self.step)+".log"
+        self.system.Summary(log=DualTextLog(self.data_path, SummaryFile))
+        
+        self.parameters = ParseSummaryLogFile(os.path.join(self.data_path, SummaryFile))
+        if self.PyMOL == True:
+            #print self.parameters
+            pass
+    
     def Open_GTKDYN_Project():
         '''Function description'''
         self.load_coordinate_file_as_new_system(NewSystem)
@@ -221,12 +226,6 @@ class pDynamoProject():
         # para abrir um projeto do pDynamo basta abrir um arquivo pkl e enviar
         # ao PyMOL > From_PDYNAMO_to_GTKDYNAMO
 
-    def SystemCheck(self):
-        """ Function doc """
-
-        self.system.Summary(log=DualTextLog(self.data_path, "summary.log"))
-        if self.PyMOL == True:
-            pass
 
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK'):
         """ 
@@ -257,20 +256,39 @@ class pDynamoProject():
             self.job_history[self.step] = [
                 type_, pymol_id, "potencial", "1192.0987"]  # this is only a test
 
+            
+            #-------------------------------------#
+            #             SystemCheck             #
+            #-------------------------------------#           
+            
+            self.SystemCheck()
+            #print self.parameters
+            
             #-------------------------------------#
             #               STATUSBAR             #
-            #-------------------------------------#
-            a = ''
-            for i in self.job_history:
-                print i, self.job_history[i]
-                a = str(i) + str(self.job_history[i])
 
-            self.window_control.STATUSBAR_SET_TEXT(a)
+            StatusText = ''
+            if self.parameters is not None:
+                StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
+                print self.parameters['Number of Atoms']
+                StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
+                print self.parameters['Energy Model']
+                StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
+                print self.parameters['Number of QC Atoms']
+                StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
+                print self.parameters['Number of Fixed Atoms']
+                StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
+
+            self.window_control.STATUSBAR_SET_TEXT(StatusText)
 
         else:
             print 'PyMOL ==',  self.PyMOL
 
     def load_coordinate_file_as_new_system(self, filename, dualLog=None):
+        self.settings['prune_table']=[]
+        self.settings['fix_table']  =[]
+        self.settings['qc_table']   =[]
+        self.settings['QCMM']       ='no'
         type_ = GetFileType(filename)
 
         if type_ == "xyz":
@@ -438,9 +456,16 @@ class pDynamoProject():
         self.settings['nbModel'] = nbModel
 
     def put_prune_table(self, prune_table):
+        #self.settings['prune_table']=[]
+        self.settings['fix_table']  =[]
+        self.settings['qc_table']   =[]
+        self.settings['QCMM']       ='no'
         self.system = PruneByAtom(self.system, Selection(prune_table))
         self.settings['prune_table'].append(prune_table)
-
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
+        
+        
+        
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         self.settings['fix_table'] = fix_table

@@ -131,11 +131,20 @@ zoom = 1.0
 angle = 0.0
 sprite = None
 zfactor = 0.005
-global clicado, ZeroX, ZeroY, Buffer
+global clicado, ZeroX, ZeroY, Buffer, Zero_ViewBuffer, Menu
 clicado = False
-ZeroX   = None
-ZeroY   = None
+ZeroX   = 0
+ZeroY   = 0
 Buffer  = 0
+Zero_pointerx = 0
+Zero_pointery = 0
+Zero_ViewBuffer = None
+
+Menu =  True
+
+
+
+
 
 def draw(glarea, event):
     # Get surface and context
@@ -291,34 +300,34 @@ def slabchange(button, event):
 
 def show_context_menu(widget, event):
     x, y, state = event.window.get_pointer()
-    #print  x, y
-    if event.button == 3:
-        widget.popup(None, None, None, event.button, event.time)
-
+    if clicado:
+        if event.button == 3:
+            widget.popup(None, None, None, event.button, event.time)
+    
 
 def mousepress(button, event):
     global ZeroX, ZeroY
     
     ZeroX, ZeroY, state = event.window.get_pointer()
     
-    print ZeroX, ZeroY
+    #print ZeroX, ZeroY
     
     x, y, width, height = glarea.get_allocation()
     
     if event.button == 3:
         global clicado
         clicado = True
-        ##print 'gordao'
-        #x, y, width, height = glarea.get_allocation()
-        ##print x, y, width, height
-        #mousepress = event
-        #button = mousepress.button - 1
-        #pointerx = int(mousepress.x)
-        #pointery = int(mousepress.y)
-        #calc_y = height - pointery
-        ##print pointerx,pointery,calc_y
-        ##cmd.zoom(buffer=calc_y)
-        #pymol.button(button, 0, pointerx , calc_y, 0)
+        #print 'gordao'
+        x, y, width, height = glarea.get_allocation()
+        #print x, y, width, height
+        mousepress = event
+        button = mousepress.button - 1
+        pointerx = int(mousepress.x)
+        pointery = int(mousepress.y)
+        calc_y = height - pointery
+        #print pointerx,pointery,calc_y
+        #cmd.zoom(buffer=calc_y)
+        pymol.button(button, 0, pointerx , calc_y, 0)
             
     if event.button != 3:
         x, y, width, height = glarea.get_allocation()
@@ -330,7 +339,6 @@ def mousepress(button, event):
         pymol.button(button, 0, pointerx, calc_y, 0)
 
 def mouserelease(button, event):
-
     x, y, width, height = glarea.get_allocation()
     mouserelease = event
     button = mouserelease.button - 1
@@ -339,47 +347,63 @@ def mouserelease(button, event):
     calc_y = height - pointery
     pymol.button(button, 1, pointerx, calc_y, 0)
     
-    if event.button == 3:
-        global clicado
-        clicado = False
-
 def mousemove(button, event):
-    global Buffer
-    #x, y, width, height = event.window.get_pointer() # nao da certo
-    
+    global clicado, Buffer,Zero_pointerx, Zero_pointery, Zero_ViewBuffer, Menu
     x, y, width, height = glarea.get_allocation()
+    clicado = False
     mousemove = event
     pointerx = int(mousemove.x)
     pointery = int(mousemove.y)
-    #print pointerx,pointery,height - pointery
-    calc_y = height - pointery
-    
-    if clicado:
-        Buffer = ZeroY-(pointery/10)
-        print ZeroY-pointery
-        #print pointerx, pointery,calc_y,  ZeroY, (ZeroY - pointery), Buffer
-        cmd.zoom(buffer = Buffer)
 
+    calc_y2  = (float(Zero_pointery - pointery))/10.0
+    calc_y   = height - pointery
+
+    if clicado:
+        global ZeroY
+        #print clicado
+        #print Menu
+        #Buffer = (calc_y2)
+        #_view   = cmd.get_view()
+        #
+        #print _view
+        #if Zero_ViewBuffer == None:
+        #	Zero_ViewBuffer = _view[11]
+        #
+        #_view11 = Zero_ViewBuffer - Buffer
+        #_view15 = _view[15]       - Buffer
+        #_view16 = _view[16]       + Buffer
+        #
+        #_view2 = (_view[0], _view[1], _view[2],
+        #		  _view[3], _view[4], _view[5],
+        #		  _view[6], _view[7], _view[8],
+        #		  _view[9], _view[10],_view11,
+        #		  _view[12],_view[13],_view[14],
+        #		  _view15,  _view16,  _view[17])
+        #
+        #print Buffer, _view11, _view15,_view16
+        #cmd.set_view(_view2)
+        #Zero_pointerx   = pointerx
+        #Zero_pointery   = pointery
+        #Zero_ViewBuffer = _view11
+    #else:
     pymol.drag(pointerx, calc_y, 0)
     pymol.idle()
-    
-
-
 
 def my_menu_func(menu):
     print "Menu clicado"
 
-
 def context_menu():
-    menu = gtk.Menu()
-    menu_item = gtk.MenuItem("Sweet menu")
-    menu_item.connect(
-        'activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
-    menu.append(menu_item)
-    menu_item.show()
-    menu_item = gtk.MenuItem("Salty menu")
-    menu.append(menu_item)
-    menu_item.show()
+    builder = gtkdynamo.builder
+    menu = builder.get_object('menu8')
+    #menu = gtk.Menu()
+    #menu_item = gtk.MenuItem("Sweet menu")
+    #menu_item.connect(
+    #    'activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
+    #menu.append(menu_item)
+   #menu_item.show()
+   #menu_item = gtk.MenuItem("Salty menu")
+   #menu.append(menu_item)
+   #menu_item.show()
     return menu
 
 
@@ -515,6 +539,31 @@ class gtkdynamo_main():
         self.graph.pack_end(toolbar, False, False)
         self.graph.show_all()
         # gtk.main()
+
+    
+    '''
+ 	#--------------------------------------------#
+	#                GL AREA MENU                #
+	#--------------------------------------------#  
+    '''
+    
+    def on_GLAreaMenu_itemActive_SetQCTable(self, menuitem):    
+        table = PymolGetTable('sele')
+        self.project.put_qc_table(table)
+        print self.project.settings['qc_table']
+
+    def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
+        table = PymolGetTable('sele')
+        self.project.put_fix_table(table)
+        print self.project.settings['Fix_table']
+    
+    def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
+        table = PymolGetTable('sele')
+        self.project.put_prune_table(table)
+        print self.project.settings['prune_table']
+
+
+
 
     '''
 	#--------------------------------------------#
