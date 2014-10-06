@@ -558,9 +558,11 @@ class gtkdynamo_main():
         print self.project.settings['Fix_table']
     
     def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
+        print "aqui"
         table = PymolGetTable('sele')
         self.project.put_prune_table(table)
         print self.project.settings['prune_table']
+        #print "aqui"
 
 
 

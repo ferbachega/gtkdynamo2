@@ -278,7 +278,8 @@ class pDynamoProject():
                 StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
                 print self.parameters['Number of Fixed Atoms']
                 StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
-
+                StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
+                print self.parameters['Crystal Class']
             self.window_control.STATUSBAR_SET_TEXT(StatusText)
 
         else:
@@ -457,13 +458,16 @@ class pDynamoProject():
 
     def put_prune_table(self, prune_table):
         #self.settings['prune_table']=[]
-        self.settings['fix_table']  =[]
-        self.settings['qc_table']   =[]
-        self.settings['QCMM']       ='no'
-        self.system = PruneByAtom(self.system, Selection(prune_table))
+        print 'prune'
+        
+        self.settings['fix_table']  = []
+        self.settings['qc_table']   = []
+        self.settings['QCMM']       = 'no'  
+        self.system                 = PruneByAtom(self.system, Selection(prune_table))
+      
         self.settings['prune_table'].append(prune_table)
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
-        
+        print 'pruned'        
         
         
     def put_fix_table(self, fix_table):
