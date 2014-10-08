@@ -62,7 +62,7 @@ dialog_text = {
     'qc_region': "Warning: no quantum region has been defined. Would you like to put all atoms in the quantum region?",
     'delete2': "Warning: there is a system loaded in memory. Are you sure that you want to delete it?"
 }
-
+#
 
 # System
 import datetime
