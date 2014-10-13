@@ -37,7 +37,7 @@ class pDynamoProject():
                          'prune_table'  : [],
                          'fix_table'    : [],
                          'qc_table'     : [],
-                         'QCMM'         : "No",
+                         'QCMM'         : False,
                          'potencial'    : None,
                          'qc_method'    : None,
                          'charge'       : None,
@@ -146,6 +146,35 @@ class pDynamoProject():
         self.settings['coordinates'] = opls_coords
         return self.system
 
+    def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
+        qc_table = self.settings['qc_table']                                                     
+        nbModel  = self.settings['nbModel']
+        qcModel  = QCModelMNDO (qc_method )
+        self.system.electronicState = ElectronicState  ( charge = charge, multiplicity = multiplicity )
+
+        if len(qc_table) != 0:
+            Qgroup = Selection (qc_table)
+            self.system.DefineQCModel ( qcModel, qcSelection = Qgroup)
+            self.system.DefineNBModel ( nbModel )
+            self.settings['potencial'] = "QCMM"
+            self.settings['QCMM']      = True
+            self.set_nbModel_to_system()
+	
+        else:
+            self.system.DefineQCModel ( qcModel )
+            self.settings['potencial'] = "QC"
+            self.settings['QCMM']      = True
+        self.SystemCheck()
+
+
+
+
+
+
+
+
+
+
     def Create_New_Project(self, name="UNK",  # str
                            data_path=None,  # str
                            FileType=None,  # str
@@ -210,6 +239,72 @@ class pDynamoProject():
         self.system.Summary(log=DualTextLog(self.data_path, SummaryFile))
         
         self.parameters = ParseSummaryLogFile(os.path.join(self.data_path, SummaryFile))
+        
+        #-------------------------------------#
+        #              STATUSBAR              #
+        #-------------------------------------#
+        StatusText = ''
+        if self.parameters is not None:
+            StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
+            print self.parameters['Number of Atoms']
+            StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
+            print self.parameters['Energy Model']
+            StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
+            print self.parameters['Number of QC Atoms']
+            StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
+            print self.parameters['Number of Fixed Atoms']
+            StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
+            StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
+            print self.parameters['Crystal Class']
+        self.window_control.STATUSBAR_SET_TEXT(StatusText)        
+        
+        if self.settings['QCMM'] == True:
+            if self.settings['qc_table'] != []:
+                #last_pymol_id = self.settings['last_pymol_id']
+                last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+
+                cmd.hide("stick" , last_pymol_id)
+                cmd.hide("sphere", last_pymol_id)
+                cmd.select('QC_atoms', 'sele')
+                cmd.show( "stick", "QC_atoms" )
+                cmd.show( "sphere", "QC_atoms" )				
+            if self.settings['qc_table'] == []:
+                self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+                #cmd.set ('sphere_scale'         , self.sphere_scale)
+                #cmd.set ('stick_radius'         , self.stick_radius)
+                #cmd.set ('label_distance_digits', self.label_distance_digits)			
+                #cmd.set ('mesh_width'           , self.mesh_width )
+                last_pymol_id = self.job_history[self.step][1]
+                try:
+                    cmd.show("stick",  last_pymol_id)
+                    cmd.show("sphere" ,last_pymol_id)
+                except:
+                    a = None	
+        else:
+            pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         if self.PyMOL == True:
             #print self.parameters
             pass
@@ -244,7 +339,7 @@ class pDynamoProject():
             pymol_id = ExportFramesToPymol(self, type_)
 
             # cmd.get_names("selections")+cmd.get_names()
-            pymol_objects = cmd.get_names()
+            pymol_objects  = cmd.get_names()
             pymol_objects2 = cmd.get_names('selections')
 
             liststore = self.builder.get_object('liststore1')
@@ -257,31 +352,10 @@ class pDynamoProject():
             self.job_history[self.step] = [
                 type_, pymol_id, "potencial", "1192.0987"]  # this is only a test
 
-            
             #-------------------------------------#
             #             SystemCheck             #
             #-------------------------------------#           
-            
             self.SystemCheck()
-            #print self.parameters
-            
-            #-------------------------------------#
-            #               STATUSBAR             #
-
-            StatusText = ''
-            if self.parameters is not None:
-                StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
-                print self.parameters['Number of Atoms']
-                StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
-                print self.parameters['Energy Model']
-                StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
-                print self.parameters['Number of QC Atoms']
-                StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
-                print self.parameters['Number of Fixed Atoms']
-                StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
-                StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
-                print self.parameters['Crystal Class']
-            self.window_control.STATUSBAR_SET_TEXT(StatusText)
 
         else:
             print 'PyMOL ==',  self.PyMOL
@@ -470,14 +544,13 @@ class pDynamoProject():
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
         print 'pruned'        
         
-        
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         self.settings['fix_table'] = fix_table
 
     def put_qc_table(self, qc_table):
         self.settings['qc_table'] = qc_table
-        self.settings['QCMM'] = 'yes'
+        #self.settings['QCMM'] = 'yes'
 
     # , process = 'Unknow', pymol_id = 'Unknow', potencial = 'Unknow', energy = 'Unknow'):
     def IncrementStep(self):

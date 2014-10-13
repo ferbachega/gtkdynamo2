@@ -86,13 +86,13 @@ from OpenGL.GLU import *
 
 
 # GUI
-from MinimizationWindow import *  # window 2  - minimization
-from FileChooserWindow import *
-from NewProjectDialog import *
-
+from MinimizationWindow          import *  # window 2  - minimization
+from FileChooserWindow           import *
+from NewProjectDialog            import *
+from QuantumChemistrySetupDialog import *
 # pDynamo
 from pDynamoProject import *
-from WindowControl import *
+from WindowControl  import *
 
 #-------------------------#
 #                         #
@@ -607,6 +607,12 @@ class gtkdynamo_main():
         except:
             pass
 
+
+    def on_toolbutton5_clicked(self, button):
+        """ Function doc """
+        self.QuantumChemistrySetupDialog.dialog.run()
+        self.QuantumChemistrySetupDialog.dialog.hide()
+
     def on_01_main_window_OpenMinimizationWindow_clicked(self, button):
         """ Function doc """
         print self.project.step
@@ -762,15 +768,21 @@ class gtkdynamo_main():
         self.project.data_path = GTKDYNAMO_TMP
         # self.project.load_coordinate_file_as_new_system("/home/fernando/Dropbox/GTKPyMOL/test/test.pkl")
 
+        
+        
         #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
         #                                                                                                 #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
 		# que o usuario farah nas 'entries' '''                                                           #
-        #
-        self._02MinimizationWindow = MinimizationWindow(
-            self.project, self.window_control, self.builder)
-        self._NewProjectDialog = NewProjectDialog(
-            self.project, self.window_control, self.builder)
+        #                                                                                                 #
+        self._02MinimizationWindow = MinimizationWindow(                                                  #
+            self.project, self.window_control, self.builder)                                              #
+        self._NewProjectDialog = NewProjectDialog(                                                        #
+            self.project, self.window_control, self.builder)                                              #
+                                                                                                          #
+        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self.project,                      #
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 

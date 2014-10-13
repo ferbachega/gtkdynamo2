@@ -86,10 +86,14 @@ class WindowControl():
         """ Function doc """
         self.builder.get_object('statusbar1').push(0, text)
 
-        #self.builder.get_object('statusbar1').push(1, 'teta')
-        #self.builder.get_object('statusbar1').push(2, 'panca')
+    def SETUP_SPINBUTTON (self, spinbutton, config):
+        """ Function doc """
+        adjustment  = gtk.Adjustment(config[0],config[1],config[2],config[3],config[4],config[5])
+        SpinButton  = self.builder.get_object(spinbutton)
+        SpinButton.set_adjustment(adjustment)	
+        SpinButton.update()
 
-        #        self.liststore.append(["Debian", False, True])
+
 
 
 def main():
