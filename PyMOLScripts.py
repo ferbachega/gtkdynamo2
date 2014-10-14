@@ -117,8 +117,8 @@ def ExportTablesToSelection(project=None, pymol_id=None):
     """ Function doc """
     if project.settings['qc_table'] != []:
         PymolPutTable(project.settings['qc_table'], "QC_atoms")
+        
         string2 = 'select QC_atoms, (' + pymol_id + ' and  QC_atoms )'
-
         cmd.do(string2)
         cmd.show("stick", "QC_atoms")
         cmd.show("sphere", "QC_atoms")
@@ -168,7 +168,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
             """
 					Tables To Selection 
 			"""
-            ExportTablesToSelection(project, pymol_id)
+            #ExportTablesToSelection(project, pymol_id)
 
         if types_allowed['pdb'] == True:
             type_ = 'pdb'
@@ -189,7 +189,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
             """
 					Tables To Selection 
 			"""
-            ExportTablesToSelection(project, pymol_id)
+            #ExportTablesToSelection(project, pymol_id)
 
             tmp_file = os.path.join(tmp_path, "tmp.xyz")
             project.ExportStateToFile(tmp_file, "xyz")

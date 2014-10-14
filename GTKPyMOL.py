@@ -555,7 +555,7 @@ class gtkdynamo_main():
     def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
         table = PymolGetTable('sele')
         self.project.put_fix_table(table)
-        print self.project.settings['Fix_table']
+        print self.project.settings['fix_table']
     
     def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
         print "aqui"
@@ -650,25 +650,15 @@ class gtkdynamo_main():
 
     def row_activated(self, tree, path, column):
 
-        model = tree.get_model()  # @+
-        iter = model.get_iter(path)  # @+
-        pymol_object = model.get_value(iter, 0)  # @+
-        # atomtype = model.get_value( iter, 2) #@+
-        cmd.enable(pymol_object)
+        model = tree.get_model()   
+        iter = model.get_iter(path)  
+        pymol_object = model.get_value(iter, 0)  
 
-    # def on_treeview1_select_cursor_row (self, tree, path, column):
-    #	print "button"
-    #
-    # def on_cellrenderertoggle1_toggled (self, widget, event):
-    #	""" Function doc """
-    # print "button"
-    #	if widget.get_active():
-    #		print True
-    #		widget.set_active(False)
-    #	else:
-    #		print False
-    #		widget.set_active(True)
-    #
+        string2 = 'select sele, '+ pymol_object
+        cmd.do(string2)
+        cmd.enable('sele')
+    
+    
     def row_activated2(self, tree, path, column):
 
         model = tree.get_model()  # @+
@@ -697,19 +687,20 @@ class gtkdynamo_main():
         self.scratch = os.environ.get('PDYNAMO_SCRATCH')
 
         #---------------------------------- GTKDYNAMO ------------------------------------#
-        #
-        #
-        self.builder = gtk.Builder()
-        self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))
-        #
-        self.win = self.builder.get_object("win")
-        #
-        self.win.show()
-        #
-        self.builder.connect_signals(self)
-        #
+        #                                                                                 #
+        #                                                                                 #
+        self.builder = gtk.Builder()                                                      #
+        self.builder.add_from_file(                                                       #
+            os.path.join(GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
+        #                                                                                 #
+        self.win = self.builder.get_object("win")                                         #
+        #                                                                                 #
+        self.win.show()                                                                   #
+        #                                                                                 #
+        self.builder.connect_signals(self)                                                #
+        #                                                                                 #
         #---------------------------------------------------------------------------------#
+
 
         container = self.builder.get_object("container")
         #container = self.builder.get_object("hpaned1")
@@ -720,20 +711,20 @@ class gtkdynamo_main():
         glarea.show()
 
         #-------------------- config PyMOL ---------------------#
-        #
-        pymol.cmd.set("internal_gui", 0)                         #
-        pymol.cmd.set("internal_gui_mode", 0)                    #
+        #                                                       #
+        pymol.cmd.set("internal_gui", 0)                        #
+        pymol.cmd.set("internal_gui_mode", 0)                   #
         pymol.cmd.set("internal_feedback", 0)                   #
         pymol.cmd.set("internal_gui_width", 220)		        #
-        sphere_scale = 0.25                            #
-        stick_radius = 0.15                            #
+        sphere_scale = 0.25                                     #
+        stick_radius = 0.15                                     #
         label_distance_digits = 4                               #
-        mesh_width = 0.3                             #
-        cmd.set('sphere_scale', sphere_scale)          #
-        cmd.set('stick_radius', stick_radius)          #
-        cmd.set('label_distance_digits', label_distance_digits)
-        cmd.set('mesh_width', mesh_width)           #
-        cmd.set("retain_order")        # keep atom ordering    #
+        mesh_width = 0.3                                        #
+        cmd.set('sphere_scale', sphere_scale)                   #
+        cmd.set('stick_radius', stick_radius)                   #
+        cmd.set('label_distance_digits', label_distance_digits) #
+        cmd.set('mesh_width', mesh_width)                       #
+        cmd.set("retain_order")         # keep atom ordering    #
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         #-------------------------------------------------------#
@@ -748,13 +739,15 @@ class gtkdynamo_main():
 		'''
         self.window_control = WindowControl(self.builder)
 
+
         #----------------- Setup ComboBoxes -------------------------#
-        #
-        combobox = 'combobox1'                                      #
-        combolist = ["Atom", "Residue", "Chain", "Molecule"]            #
-        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 1)
-        #
+        #                                                            #
+        combobox = 'combobox1'                                       #
+        combolist = ["Atom", "Residue", "Chain", "Molecule"]         #
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 1) #
+        #                                                            #
         #------------------------------------------------------------#
+
 
         #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
         #
@@ -777,6 +770,7 @@ class gtkdynamo_main():
         #                                                                                                 #
         self._02MinimizationWindow = MinimizationWindow(                                                  #
             self.project, self.window_control, self.builder)                                              #
+                                                                                                          #
         self._NewProjectDialog = NewProjectDialog(                                                        #
             self.project, self.window_control, self.builder)                                              #
                                                                                                           #
@@ -786,11 +780,10 @@ class gtkdynamo_main():
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 
-        # print GTKDYNAMO_TMP
-        # print self.project.data_path
 
     def run(self):
         gtk.main()
+
 
 print "Creating object"
 # Create our glarea widget
@@ -803,12 +796,11 @@ glarea.connect('map_event', map)
 glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
                   gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.KEY_PRESS_MASK)
 
-# all the events are connected to only one fuction-----#
-                                                       #
-glarea.connect("button_press_event", mousepress)      #
-glarea.connect("button_release_event", mouserelease)  #
-glarea.connect("motion_notify_event", mousemove)      #
-#------------------------------------------------------#
+
+                                                      
+glarea.connect("button_press_event", mousepress)      
+glarea.connect("button_release_event", mouserelease)  
+glarea.connect("motion_notify_event", mousemove)      
 
 
 #glarea.connect("button_press_event",   _mouseButton)
@@ -827,6 +819,5 @@ pymol = pymol2.PyMOL(glarea)
 gtkdynamo = gtkdynamo_main()
 #glarea.connect_object("button_press_event", show_context_menu, context_menu())
 glarea.connect_object("button_release_event", show_context_menu, context_menu())
-
 
 gtkdynamo.run()

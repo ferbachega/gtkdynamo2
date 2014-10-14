@@ -250,8 +250,13 @@ class QuantumChemistrySetupDialog():
         
         if qc_method in DFT_Methods:
             print DFT_Methods_Dic[qc_method]
-            density_tol     = self.builder.get_object('DFT_density_tolerance_entry'   ).get_text()
+            density_tol     = self.builder.get_object('DFT_density_tolerance_entry').get_text()
             Maximum_SCF     = self.builder.get_object('DFT_Maximum_SCF_entry2').get_text()        
+            densityBasis    = DFT_Methods_Dic[qc_method][0]
+            functional      = DFT_Methods_Dic[qc_method][1]
+            orbitalBasis    = DFT_Methods_Dic[qc_method][2] 
+            self.project.set_qc_parameters_DFT (qc_method, charge,       multiplicity, density_tol, 
+                                              Maximum_SCF, densityBasis, functional,   orbitalBasis)
         
         if qc_method in ORCA_Method:
             print ORCA_Method[0]

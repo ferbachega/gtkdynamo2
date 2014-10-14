@@ -159,12 +159,75 @@ class pDynamoProject():
             self.settings['potencial'] = "QCMM"
             self.settings['QCMM']      = True
             self.set_nbModel_to_system()
-	
         else:
             self.system.DefineQCModel ( qcModel )
             self.settings['potencial'] = "QC"
             self.settings['QCMM']      = True
         self.SystemCheck()
+
+    def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
+        nbModel   = self.settings['nbModel']
+        qc_table  = self.settings['qc_table']                                                     
+        converger = DIISSCFConverger ( densityTolerance = float(density_tol), maximumSCFCycles = int(Maximum_SCF) )
+        
+        qcModel   = QCModelDFT (converger = converger, 
+                             densityBasis = densityBasis, 
+                               functional = functional,  
+                             orbitalBasis = orbitalBasis  )
+        
+        self.system.electronicState = ElectronicState  ( charge = charge, multiplicity = multiplicity )
+
+        if len(qc_table) != 0:
+            Qgroup = Selection (qc_table)
+            self.system.DefineQCModel ( qcModel, qcSelection = Qgroup)
+            self.system.DefineNBModel ( nbModel )
+            self.settings['potencial'] = "QCMM"
+            self.settings['QCMM']      = True
+            self.set_nbModel_to_system()
+        else:
+            self.system.DefineQCModel ( qcModel )
+            self.settings['potencial'] = "QC"
+            self.settings['QCMM']      = True
+        self.SystemCheck()
+
+    def set_qc_parameters_ORCA(self, qc_method, charge, multiplicity, qc_table, orca_string, ORCA_pal, ORCA_command, pDynamo_scratch):
+        """
+        #scratch='/home/ramon/scratch'
+        #command='/home/ramon/progs/orca_3_0_0_linux_x86-64/orca'
+        """
+
+        nbModel     = NBModelABFS( )
+        PAL         = " PAL"+str(ORCA_pal)
+       
+        print "number of processor = ", PAL
+        
+        if ORCA_pal == 1:
+            qcModel = QCModelORCA (orca_string, scratch = pDynamo_scratch, command =  ORCA_command)
+
+        else:
+            orca_string = orca_string + PAL
+            qcModel = QCModelORCA (orca_string, scratch = pDynamo_scratch, command =  ORCA_command)
+
+        if len(qc_table) != 0:
+            Qgroup  = Selection (qc_table)
+            self.system.DefineQCModel ( qcModel,  dualLog, qcSelection = Qgroup)
+            nbModel = NBModelORCA ( )
+            self.system.DefineNBModel ( nbModel )
+            self.system.Summary ( dualLog )
+            
+            self.settings['potencial'] = "QCMM"
+            self.settings['QCMM']  	 = "yes"
+        else:
+            self.system.DefineQCModel ( qcModel )
+            self.system.Summary (dualLog )
+
+            self.settings['potencial'] = "QC"
+            self.settings['QCMM']      = 'no'	
+        self.system.electronicState           = ElectronicState  ( charge = charge, multiplicity = multiplicity )
+
+
+
+
 
 
 
@@ -235,10 +298,9 @@ class pDynamoProject():
 
     def SystemCheck(self):
         """ Function doc """
-        SummaryFile = "Summary"+'_Step'+str(self.step)+".log"
-        self.system.Summary(log=DualTextLog(self.data_path, SummaryFile))
-        
-        self.parameters = ParseSummaryLogFile(os.path.join(self.data_path, SummaryFile))
+        SummaryFile             = "Summary"+'_Step'+str(self.step)+".log"
+        self.system.Summary(log = DualTextLog(self.data_path, SummaryFile))
+        self.parameters         = ParseSummaryLogFile(os.path.join(self.data_path, SummaryFile))
         
         #-------------------------------------#
         #              STATUSBAR              #
@@ -258,22 +320,24 @@ class pDynamoProject():
             print self.parameters['Crystal Class']
         self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         
+        print self.settings['QCMM']
+
         if self.settings['QCMM'] == True:
+            
             if self.settings['qc_table'] != []:
                 #last_pymol_id = self.settings['last_pymol_id']
                 last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
-
-                cmd.hide("stick" , last_pymol_id)
-                cmd.hide("sphere", last_pymol_id)
-                cmd.select('QC_atoms', 'sele')
-                cmd.show( "stick", "QC_atoms" )
-                cmd.show( "sphere", "QC_atoms" )				
+                print last_pymol_id
+                
+                PymolPutTable(self.settings['qc_table'], "QC_atoms")
+                string2 = 'select QC_atoms, (' + last_pymol_id + ' and  QC_atoms )'
+                cmd.do(string2)
+                
+                cmd.show("stick",  "QC_atoms")
+                cmd.show("sphere", "QC_atoms")
+            
             if self.settings['qc_table'] == []:
                 self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                #cmd.set ('sphere_scale'         , self.sphere_scale)
-                #cmd.set ('stick_radius'         , self.stick_radius)
-                #cmd.set ('label_distance_digits', self.label_distance_digits)			
-                #cmd.set ('mesh_width'           , self.mesh_width )
                 last_pymol_id = self.job_history[self.step][1]
                 try:
                     cmd.show("stick",  last_pymol_id)
@@ -282,33 +346,27 @@ class pDynamoProject():
                     a = None	
         else:
             pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        if self.settings['fix_table'] != []:
+            last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+            PymolPutTable(self.settings['fix_table'], "FIX_atoms")
+            string22 = 'select FIX_atoms, (' + last_pymol_id + ' and  FIX_atoms )'
+            cmd.do(string22)
+            string5 = 'color grey80, FIX_atoms'
+            cmd.do(string5)
+        
+        
+        pymol_objects2 = cmd.get_names('selections')
+        liststore = self.builder.get_object('liststore1')
+        self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
 
         if self.PyMOL == True:
             #print self.parameters
             pass
     
+
+
+
     def Open_GTKDYN_Project():
         '''Function description'''
         self.load_coordinate_file_as_new_system(NewSystem)
@@ -338,16 +396,12 @@ class pDynamoProject():
         if self.PyMOL == True:
             pymol_id = ExportFramesToPymol(self, type_)
 
-            # cmd.get_names("selections")+cmd.get_names()
+
             pymol_objects  = cmd.get_names()
-            pymol_objects2 = cmd.get_names('selections')
-
-            liststore = self.builder.get_object('liststore1')
-            self.window_control.TREEVIEW_ADD_DATA(liststore, pymol_objects2)
-
             liststore = self.builder.get_object('liststore2')
-            self.window_control.TREEVIEW_ADD_DATA2(
-                liststore, pymol_objects, pymol_id)
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, pymol_objects, pymol_id)
+
+
 
             self.job_history[self.step] = [
                 type_, pymol_id, "potencial", "1192.0987"]  # this is only a test
@@ -364,7 +418,7 @@ class pDynamoProject():
         self.settings['prune_table']=[]
         self.settings['fix_table']  =[]
         self.settings['qc_table']   =[]
-        self.settings['QCMM']       ='no'
+        self.settings['QCMM']       =False
         type_ = GetFileType(filename)
 
         if type_ == "xyz":
@@ -413,7 +467,7 @@ class pDynamoProject():
                         qc.append(l)
 
                 self.settings['qc_table'] = qc
-
+                self.settings['QCMM']     = True
                 print 'qc_table : ', self.settings['qc_table']
             except:
                 print "System has no QC atoms"
@@ -448,7 +502,7 @@ class pDynamoProject():
                         qc.append(l)
 
                 self.settings['qc_table'] = qc
-
+                self.settings['QCMM']     = True
                 print 'qc_table : ', self.settings['qc_table']
             except:
                 print "System has no QC atoms"
@@ -547,12 +601,12 @@ class pDynamoProject():
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         self.settings['fix_table'] = fix_table
+        self.SystemCheck()
 
     def put_qc_table(self, qc_table):
         self.settings['qc_table'] = qc_table
         #self.settings['QCMM'] = 'yes'
 
-    # , process = 'Unknow', pymol_id = 'Unknow', potencial = 'Unknow', energy = 'Unknow'):
     def IncrementStep(self):
         # {1:[process, pymol_id, potencial, energy]}
         self.step = self.step + 1
