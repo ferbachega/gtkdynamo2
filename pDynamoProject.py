@@ -676,7 +676,13 @@ class pDynamoProject():
             nbModel = NBModelGABFS()
             self.system.DefineNBModel(NBModelGABFS(**ABFS_options))
 
+        elif nbModel == 'NBModelSSBP':
+            nbModel = NBModelSSBP()
+            self.system.DefineNBModel(nbModel)
+        
+        
         self.settings['nbModel'] = nbModel
+        self.SystemCheck()
 
     def put_prune_table(self, prune_table):
         #self.settings['prune_table']=[]

@@ -90,6 +90,7 @@ from MinimizationWindow          import *  # window 2  - minimization
 from FileChooserWindow           import *
 from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
+from NonBondDialog               import *
 # pDynamo
 from pDynamoProject import *
 from WindowControl  import *
@@ -608,6 +609,12 @@ class gtkdynamo_main():
             pass
 
 
+    def on_menuitem46_activate(self, button):
+        """ Function doc """
+        self.NonBondDialog.dialog.run()
+        self.NonBondDialog.dialog.hide()
+
+
     def on_toolbutton5_clicked(self, button):
         """ Function doc """
         self.QuantumChemistrySetupDialog.dialog.run()
@@ -775,6 +782,9 @@ class gtkdynamo_main():
             self.project, self.window_control, self.builder)                                              #
                                                                                                           #
         self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self.project,                      #
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
+        self.NonBondDialog = NonBondDialog(self.project,                                                  #
             self.window_control, self.builder)                                                            #
                                                                                                           #
         #-------------------------------------------------------------------------------------------------#
