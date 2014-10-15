@@ -18,13 +18,59 @@ class pDynamoProject():
 
         self.name = name
 
+        
+        self.AtomColors = {1 : 'util.cbag',   # green
+                           2 : 'util.cbac',   # cyan
+                           3 : 'util.cbam',   # light magenta
+                           4 : 'util.cbay',   # yellow
+                           5 : 'util.cbas',   # salmon
+                           6 : 'util.cbaw',   # white/grey
+                           7 : 'util.cbab',   # slate
+                           8 : 'util.cbao',   # bright orange
+                           9 : 'util.cbap',   # purple
+                          10 : 'util.cbak'}   # pink 
+        
+        
         self.parameters = {
                           'Number of Atoms'      : '0', 
                           'Energy Model'         : 'UNK',
                           'Number of QC Atoms'   : '0',
                           'Number of Fixed Atoms': '0'         
                           }
+        
+        MM_representation  = {'lines'  :True ,
+                              'stick'  :False,
+                              'ribbon' :False,
+                              'cartoon':False,
+                              'dot'    :False,
+                              'sphere' :False,
+                              'mesh'   :False,
+                              'surface':False                             
+                              }
+                           
+        QC_representation  = {'lines'  :False,
+                              'stick'  :True ,
+                              'ribbon' :False,
+                              'cartoon':False,
+                              'dot'    :False,
+                              'sphere' :True ,
+                              'mesh'   :False,
+                              'surface':False                             
+                              }
+        
+        FIX_representation = {'lines'  :False,
+                              'stick'  :False,
+                              'ribbon' :False,
+                              'cartoon':False,
+                              'dot'    :False,
+                              'sphere' :False,
+                              'mesh'   :False,
+                              'surface':False,
+                              'color'  :'grey80'                          
+                              }
 
+
+        
         
         self.settings = {'project_name' : 'my_project',
                          'force_field'  : None,
@@ -321,24 +367,65 @@ class pDynamoProject():
         self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         
         print self.settings['QCMM']
-
+        
+        last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+        
+        cmd.util.cbap(last_pymol_id)
+        
         if self.settings['QCMM'] == True:
             
             if self.settings['qc_table'] != []:
                 #last_pymol_id = self.settings['last_pymol_id']
-                last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
                 print last_pymol_id
+                cmd.hide('stick',  last_pymol_id)
+                cmd.hide("sphere", last_pymol_id)
+                try:
+                    cmd.delete("QC_atoms")
+                except:
+                    pass
                 
                 PymolPutTable(self.settings['qc_table'], "QC_atoms")
                 string2 = 'select QC_atoms, (' + last_pymol_id + ' and  QC_atoms )'
                 cmd.do(string2)
                 
+                
+                #representation = QC_representation
+                #selection      = 'QC_atoms'
+                #if representation['lines'  ]:
+                #    cmd.show("lines",  selection)
+                #
+                #if representation['stick'  ]:
+                #    cmd.show("stick",  selection)
+                #
+                #if representation['ribbon' ]:
+                #    cmd.show("ribbon",  selection)
+                #
+                #if representation['cartoon']:
+                #    cmd.show("cartoon",  selection)
+                #
+                #if representation['dot'    ]:
+                #    cmd.show("dot",  selection)
+                #
+                #if representation['sphere' ]:
+                #    cmd.show("sphere",  selection)
+                #
+                #if representation['mesh'   ]:
+                #    cmd.show("mesh",  selection)
+                #
+                #if representation['surface']:                           
+                #    cmd.show("surface",  selection)
+                #
+                #try:
+                #    cmd.color(representation['color'],  selection)
+                #except:
+                #    pass
+
+                #PyMOLRepresentations(QC_representation,"QC_atoms")
                 cmd.show("stick",  "QC_atoms")
                 cmd.show("sphere", "QC_atoms")
             
             if self.settings['qc_table'] == []:
                 self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                last_pymol_id = self.job_history[self.step][1]
                 try:
                     cmd.show("stick",  last_pymol_id)
                     cmd.show("sphere" ,last_pymol_id)
@@ -349,6 +436,12 @@ class pDynamoProject():
         
         if self.settings['fix_table'] != []:
             last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+            
+            try:
+                cmd.delete("FIX_atoms")
+            except:
+                pass
+                
             PymolPutTable(self.settings['fix_table'], "FIX_atoms")
             string22 = 'select FIX_atoms, (' + last_pymol_id + ' and  FIX_atoms )'
             cmd.do(string22)
@@ -600,7 +693,9 @@ class pDynamoProject():
         
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
+        
         self.settings['fix_table'] = fix_table
+        
         self.SystemCheck()
 
     def put_qc_table(self, qc_table):

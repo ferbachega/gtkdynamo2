@@ -286,6 +286,41 @@ def LoadGTKDynamoProjectSettings(filein):
     return _ProjectSettings
 
 
+def PyMOLRepresentations (representation, selection):
+    """ Function doc """
+    print "aqui"
+    if representation['lines'  ]:
+        cmd.show("lines",  selection)
+
+    if representation['stick'  ]:
+        cmd.show("stick",  selection)
+
+    if representation['ribbon' ]:
+        cmd.show("ribbon",  selection)
+
+    if representation['cartoon']:
+        cmd.show("cartoon",  selection)
+
+    if representation['dot'    ]:
+        cmd.show("dot",  selection)
+
+    if representation['sphere' ]:
+        cmd.show("sphere",  selection)
+
+    if representation['mesh'   ]:
+        cmd.show("mesh",  selection)
+
+    if representation['surface']:                           
+        cmd.show("surface",  selection)
+    
+    try:
+        cmd.color(representation['color'],  selection)
+    except:
+        pass
+
+
+
+
 def main():
     ExportFramesToPymol()
     return 0
