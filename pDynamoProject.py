@@ -393,40 +393,7 @@ class pDynamoProject():
                 PymolPutTable(self.settings['qc_table'], "QC_atoms")
                 string2 = 'select QC_atoms, (' + last_pymol_id + ' and  QC_atoms )'
                 cmd.do(string2)
-                
-                
-                #representation = QC_representation
-                #selection      = 'QC_atoms'
-                #if representation['lines'  ]:
-                #    cmd.show("lines",  selection)
-                #
-                #if representation['stick'  ]:
-                #    cmd.show("stick",  selection)
-                #
-                #if representation['ribbon' ]:
-                #    cmd.show("ribbon",  selection)
-                #
-                #if representation['cartoon']:
-                #    cmd.show("cartoon",  selection)
-                #
-                #if representation['dot'    ]:
-                #    cmd.show("dot",  selection)
-                #
-                #if representation['sphere' ]:
-                #    cmd.show("sphere",  selection)
-                #
-                #if representation['mesh'   ]:
-                #    cmd.show("mesh",  selection)
-                #
-                #if representation['surface']:                           
-                #    cmd.show("surface",  selection)
-                #
-                #try:
-                #    cmd.color(representation['color'],  selection)
-                #except:
-                #    pass
 
-                #PyMOLRepresentations(QC_representation,"QC_atoms")
                 cmd.show("stick",  "QC_atoms")
                 cmd.show("sphere", "QC_atoms")
             
