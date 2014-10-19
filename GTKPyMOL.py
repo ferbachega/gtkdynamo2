@@ -614,6 +614,16 @@ class gtkdynamo_main():
         self.NonBondDialog.dialog.run()
         self.NonBondDialog.dialog.hide()
 
+    def on_toolbuttonCheckSystem_clicked(self, button):
+        """ Function doc """
+        self.project.SystemCheck()
+
+    def on_toolbuttonSinglePoint_clicked(self, button):
+        """ Function doc """
+        self.project.ComputeEnergy()    
+
+
+
 
     def on_toolbutton5_clicked(self, button):
         """ Function doc """

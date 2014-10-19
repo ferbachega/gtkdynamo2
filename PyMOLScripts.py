@@ -138,7 +138,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
     obs:An XYZ file is also exportes when an PDB files is exported
 
     """
-
+    print project.types_allowed
     if project == None:
         print 'only testing ExportFramesToPymol'
 
@@ -317,6 +317,65 @@ def PyMOLRepresentations (representation, selection):
         cmd.color(representation['color'],  selection)
     except:
         pass
+
+
+def PyMOL_export_PDB_to_file(obj, data_path, file_out, state = -1):   # Export an PDB file from a PyMOL object
+	tmp         = data_path+"/tmp"                          
+	if not os.path.exists ( tmp ): os.mkdir ( tmp )         
+	file_path   = os.path.join (tmp, file_out)
+	
+	
+	FILE        = file_path 
+	#  cmd.save("/home/fernando/Desktop/gordo.pdb", "obj01", -1, "pdb")
+	cmd.save(FILE, obj, state, "pdb")
+	return FILE
+	
+	
+def PyMOL_export_XYZ_to_file(obj, label, data_path, file_out, state): # Export an XYZ file from a PyMOL object
+	'''	
+	# antiga      -  pymol_export_XYZ_file
+	# obj,       -  pymol object
+	# label,     -  second line in the XYZ file "header"
+	# data_path, -  working folder
+	# file_out   -  file out name
+	'''	
+	tmp         = data_path+"/tmp"                          
+	if not os.path.exists ( tmp ): os.mkdir ( tmp )         
+
+	text        = []                                        # buffer -  list of strings  									
+	file_path   = os.path.join (tmp, file_out)              # fullpath 
+	arq         = open(file_path, 'w')	
+	s           = " "
+
+	pymol_obj   = cmd.get_model(obj, state)                 # importing pymol selection
+	model_split = pymol_obj.atom	
+
+	for i in model_split:
+		line = [] 		
+		idx = i.name			                                          
+		X = i.coord[0]			                                          
+		Y = i.coord[1]			                                          
+		Z = i.coord[2]			                                          
+		line = idx +"     " + str(X)+ "     "+ str(Y)+ "     " + str(Z)   
+		text.append(line + "\n")										  
+	
+	header = len(text)							
+	arq.writelines(str(header) + "\n")			
+	#print header								#
+	header2 = label             				
+	arq.writelines(header2+ "\n")
+	#print header2
+	#for i in text:								
+	#	print i									#	
+	arq.writelines(text)	
+	arq.close()				
+	
+	return file_path
+
+
+
+
+
 
 
 

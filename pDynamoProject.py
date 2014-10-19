@@ -7,10 +7,15 @@ from pMoleculeScripts import *
 #
 # GTKDynamo
 from pDynamoMinimization import *
+from pDynamoEnergy       import *
 
 from pymol import cmd
 from PyMOLScripts import *
 from LogParse import ParseSummaryLogFile, ParseProcessLogFile
+
+import time
+
+
 
 class pDynamoProject():
 
@@ -113,13 +118,17 @@ class pDynamoProject():
 
         self.job_history = {}
         
-        
-
         self.PyMOL = PyMOL
+        
         self.dualLog = None
+        
         self.builder = builder
-        self.window_control = window_control
+        
+        self.window_control  = window_control
+        
+        self.ActiveMode = True 
 
+        self.PyMOL_Obj  = None
 
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
@@ -349,6 +358,11 @@ class pDynamoProject():
         self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
     def SystemCheck(self):
+        if self.system == None:
+            print "System empty"
+            return 0
+        
+        
         """ Function doc """
         SummaryFile             = "Summary"+'_Step'+str(self.step)+".log"
         self.system.Summary(log = DualTextLog(self.data_path, SummaryFile))
@@ -360,38 +374,40 @@ class pDynamoProject():
         StatusText = ''
         if self.parameters is not None:
             StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
-            print self.parameters['Number of Atoms']
+            #print self.parameters['Number of Atoms']
             StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
-            print self.parameters['Energy Model']
+            #print self.parameters['Energy Model']
             StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
-            print self.parameters['Number of QC Atoms']
+            #print self.parameters['Number of QC Atoms']
             StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
-            print self.parameters['Number of Fixed Atoms']
+            #print self.parameters['Number of Fixed Atoms']
             StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
             StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
-            print self.parameters['Crystal Class']
+            #print self.parameters['Crystal Class']
         self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         
-        print self.settings['QCMM']
-        print self.step
-        last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+        #print self.settings['QCMM']
+        #print self.step
         
-        cmd.util.cbap(last_pymol_id)
+        #PyMOL_Obj = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+        
+        PyMOL_Obj      = self.PyMOL_Obj
+        
+        cmd.util.cbap(PyMOL_Obj)
         
         if self.settings['QCMM'] == True:
-            
             if self.settings['qc_table'] != []:
-                #last_pymol_id = self.settings['last_pymol_id']
-                print last_pymol_id
-                cmd.hide('stick',  last_pymol_id)
-                cmd.hide("sphere", last_pymol_id)
+                #PyMOL_Obj = self.settings['PyMOL_Obj']
+                print PyMOL_Obj
+                cmd.hide('stick',  PyMOL_Obj)
+                cmd.hide("sphere", PyMOL_Obj)
                 try:
                     cmd.delete("QC_atoms")
                 except:
                     pass
                 
                 PymolPutTable(self.settings['qc_table'], "QC_atoms")
-                string2 = 'select QC_atoms, (' + last_pymol_id + ' and  QC_atoms )'
+                string2 = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
                 cmd.do(string2)
 
                 cmd.show("stick",  "QC_atoms")
@@ -400,15 +416,15 @@ class pDynamoProject():
             if self.settings['qc_table'] == []:
                 self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
                 try:
-                    cmd.show("stick",  last_pymol_id)
-                    cmd.show("sphere" ,last_pymol_id)
+                    cmd.show("stick",  PyMOL_Obj)
+                    cmd.show("sphere" ,PyMOL_Obj)
                 except:
                     a = None	
         else:
             pass
         
         if self.settings['fix_table'] != []:
-            last_pymol_id = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+            PyMOL_Obj = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
             
             try:
                 cmd.delete("FIX_atoms")
@@ -416,7 +432,7 @@ class pDynamoProject():
                 pass
                 
             PymolPutTable(self.settings['fix_table'], "FIX_atoms")
-            string22 = 'select FIX_atoms, (' + last_pymol_id + ' and  FIX_atoms )'
+            string22 = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
             cmd.do(string22)
             string5 = 'color grey80, FIX_atoms'
             cmd.do(string5)
@@ -458,14 +474,14 @@ class pDynamoProject():
                 e adicionar informacoes ao history  via IncrementStep()
         """
         
-        print 'step antes',self.step
+        #print 'step antes',self.step
         self.IncrementStep()
-        print 'step depois',self.step
+        #print 'step depois',self.step
 
         if self.PyMOL == True:
             pymol_id = ExportFramesToPymol(self, type_)
-
-
+            self.PyMOL_Obj = pymol_id
+            
             pymol_objects  = cmd.get_names()
             liststore = self.builder.get_object('liststore2')
             self.window_control.TREEVIEW_ADD_DATA2(liststore, pymol_objects, pymol_id)
@@ -683,14 +699,13 @@ class pDynamoProject():
     def put_qc_table(self, qc_table):
         self.settings['qc_table'] = qc_table
         #self.settings['QCMM'] = 'yes'
-
     def IncrementStep(self):
         # {1:[process, pymol_id, potencial, energy]}
         self.step = self.step + 1
         self.settings['last_step'] = self.step
 
     def ExportStateToFile(self, filename, type_):
-
+        #self.ActiveModeCheck()
         filename = AddFileTypeSuffix(filename, type_)
 
         if type_ == "xyz":
@@ -729,9 +744,20 @@ class pDynamoProject():
 
         return filename, type_
 
+
+
+
+    def ComputeEnergy(self):  # Compute Energy
+        self.ActiveModeCheck()
+        pDynamoEnergy(self.system, self.data_path)
+
+
+
+
     def Minimization(self, method='Conjugate Gradient', parameters=None):
         """ Function doc """
 
+        self.ActiveModeCheck()
         #                               Minimization                                       #
         #    required: (system = None, _type_ = 'ConjugateGradient', parameters = None)    #
         # _type_  : 'ConjugateGradient' 'SteepestDescent' 'LBFGS'
@@ -746,6 +772,28 @@ class pDynamoProject():
         #---------------------------------------------------#
 
         return True
+
+    def ActiveModeCheck(self):
+        """ Function doc """
+        #return 0
+        if self.ActiveMode:
+            print "\n\n                  Using GTKDynamo in active mode \n\n"
+            
+            data_path  	 = self.data_path
+            pymol_object = self.PyMOL_Obj
+            
+            print pymol_object
+            
+            state    	 = -1
+            label        = "tmp file"
+            file_out     = "tmp.xyz"	
+            
+            filename     = PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, state)	
+            print filename
+            self.load_coordinate_file_to_system  ( filename , self.dualLog)	
+        else:
+            print "Using GTKDynamo in passive mode"
+
 
 
 def main():
