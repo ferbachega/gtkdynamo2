@@ -583,7 +583,7 @@ class gtkdynamo_main():
             #cmd.set('valence', 0.0)
             cmd.do('set valence, 0.0')
 
-    def on_01_main_window_PyMOLCommandLine_entry1_activate(self, button):
+    def on_PyMOLCommandLine_entry1_activate(self, button):
         """ Function doc """
         command = self.builder.get_object('entry1').get_text()
         print command

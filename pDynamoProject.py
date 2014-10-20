@@ -393,7 +393,9 @@ class pDynamoProject():
         
         PyMOL_Obj      = self.PyMOL_Obj
         
-        cmd.util.cbap(PyMOL_Obj)
+        #cmd.util.cbap(PyMOL_Obj)
+        cmd.color('black',PyMOL_Obj)
+        cmd.util.cnc(PyMOL_Obj)
         
         if self.settings['QCMM'] == True:
             if self.settings['qc_table'] != []:

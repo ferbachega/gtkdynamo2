@@ -71,15 +71,18 @@ def DualTextLog(path, filename="log.gui.txt"):
     #------------------------------------------------------------------------------------#
     #               Removing the temp file: residual log files.txt                       #
     #------------------------------------------------------------------------------------#
-    #
-    try:
-        os.rename(os.path.join(path, filename), os.path.join(
-            path, filename + '.old'))     #
-    #
-    except:
-        #
-        pass
-    #------------------------------------------------------------------------------------#
+    #                                                                                    
+    try:                                                                                 
+        os.rename(os.path.join(path, filename), os.path.join(                            
+            path, filename + '.old'))                                                    
+    #                                                                                    
+    except:                                                                              
+        #                                                                                
+        pass                                                                             
+    ##------------------------------------------------------------------------------------#
+    
+    
+    
     log_out = open(os.path.join(path, filename), "a")
 
     localtime = time.asctime(time.localtime(time.time()))                 #
