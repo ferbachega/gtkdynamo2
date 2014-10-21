@@ -985,6 +985,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scan</property>
                                 <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_menuitem22bScan1_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>

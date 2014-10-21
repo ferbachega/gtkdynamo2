@@ -24,6 +24,133 @@
 ##
 
 
+atomic_dic = { 
+			'Ac':227.028,
+			'Al':26.9815,
+			'Am':243    , 	
+			'Sb':121.757,
+			'Ar':39.948 , 
+			'As':74.9215,
+			'At':210    , 	
+			'Ba':137.327,
+			'Bk':247    , 	
+			'Be':9.01218,
+			'Bi':208.980,
+			'Bh':262    , 	
+			'B' :10.811 , 
+			'Br':79.904 ,
+			'Cd':112.411,
+			'Ca':40.078 ,
+			'Cf':251    , 	
+			'C' :12.011 , 
+			'Ce':140.115,
+			'Cs':132.905,
+			'Cl':35.4527,
+			'Cr':51.9961,
+			'Co':58.9332,
+			'Cu':63.546 ,
+			'Cm':247 	,
+			'Db':262 	,
+			'Dy':162.50 ,
+			'Es':252 	,
+			'Er':167.26 ,
+			'Eu':151.965,
+			'Fm':257 	,
+			'F'	:18.9984,
+			'Fr':223 	,
+			'Gd':157.25 ,
+			'Ga':69.723 ,
+			'Ge':72.61  ,
+			'Au':196.966,
+			'Hf':178.49 ,
+			'Hs':265 	,
+			'He':4.00260,
+			'Ho':164.930,
+			'H' :1.00794,
+			'In':114.82 ,
+			'I' :126.904,
+			'Ir':192.22 ,
+			'Fe':55.847 ,
+			'Kr':83.80  ,
+			'La':138.905,
+			'Lr':262 	,	
+			'Pb':207.2  ,
+			'Li':6.941  ,
+			'Lu':174.967,
+			'Mg':24.3050,
+			'Mn':54.9380,
+			'Mt':266 	,
+			'Md':258 	,
+			'Hg':200.59 ,
+			'Mo':95.94  ,
+			'Nd':144.24 ,
+			'Ne':20.1797,
+			'Np':237.048,
+			'Ni':58.6934,
+			'Nb':92.9063,
+			'N' :14.0067,
+			'No':259 	,
+			'Os':190.2  ,
+			'O' :15.9994,
+			'Pd':106.42 ,
+			'P' :30.9737,
+			'Pu':244 	,
+			'Po':209 	,
+			'K' :39.0983,
+			'Pr':140.907,
+			'Pm':145 	,
+			'Pa':231.035,
+			'Ra':226.025,
+			'Rn':222 	,
+			'Re':186.207,
+			'Rh':102.905,
+			'Rb':85.4678,
+			'Ru':101.07 ,
+			'Rf':261 	,
+			'Sm':150.36 ,
+			'Sc':44.9559,
+			'Sg':263 	,
+			'Se':78.96  ,
+			'Si':28.0855,
+			'Ag':107.868,
+			'Na':22.9897,
+			'Sr':87.62  ,
+			'S' :32.066 ,
+			'Ta':180.947,
+			'Tc':217,
+			'Te':127.60, 
+			'Tb':158.925,
+			'Tl':204.383,
+			'Th':232.038,
+			'Tm':168.934,
+			'Sn':118.710,
+			'Ti':47.88  ,
+			'W' :183.85 ,
+			'U' :238.028,
+			'V' :50.9415,
+			'Xe':131.29 ,
+			'Yb':173.04 ,
+			'Y' :88.9058,
+			'Zn':65.39  ,
+			'Zr':91.224 ,
+			
+			"H" : 1.0 ,
+			"C" : 12.0,
+			"O" : 16.0,
+			"N" : 14.0,			
+			"F" : 19.0,
+			"P" : 31.0,		
+			"S" : 32.1,
+			"Cl": 35.0,
+			"CL": 35.0,
+			"cl": 35.0,
+			"Br": 79.9,
+			"BR": 79.9,	
+			"I" : 126.0}
+
+
+
+
 from pymol import *
 SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
@@ -373,7 +500,65 @@ def PyMOL_export_XYZ_to_file(obj, label, data_path, file_out, state): # Export a
 	return file_path
 
 
+#----------------SCAN FUNCTIONS---------------#
+#
+#---------------------------------------------#
+def compute_sigma_a1_a3 (pk1_name, pk3_name):
 
+	""" example:
+		pk1 ---> pk2 ---> pk3
+		 N  ---   H  ---  O	    
+		 
+		 where H is the moving atom
+		 calculation only includes N and O ! 
+	"""
+	
+	mass1 = atomic_dic[pk1_name]
+	mass3 = atomic_dic[pk3_name]
+	
+	sigma_pk1_pk3 =  mass1/(mass1+mass3)
+	#print "sigma_pk1_pk3: ",sigma_pk1_pk3
+	
+	sigma_pk3_pk1 =  mass3/(mass1+mass3)
+	sigma_pk3_pk1 = sigma_pk3_pk1 *-1
+	
+	#print "sigma_pk3_pk1: ", sigma_pk3_pk1
+	
+	return sigma_pk1_pk3, sigma_pk3_pk1
+
+def distance_a1_a2(Xa,Ya,Za,Xb,Yb,Zb):
+	dist = ((float(Xa) -float(Xb))**2  + (float(Ya) -float(Yb))**2  + (float(Za) -float(Zb))**2)**0.5
+	return dist
+
+def import_ATOM1_ATOM2(pka,pkb):   # get PyMOL pk1 and pk2 
+	""" Function doc """
+	atom1 = cmd.get_model(pka)
+	for a in atom1.atom:
+		idx1        = a.index
+		atom1_index = int(idx1) -1
+		#name1       = a.name
+		name1       = a.symbol
+		atom1       = idx1	
+		X1 = a.coord[0]
+		Y1 = a.coord[1]
+		Z1 = a.coord[2]	
+		#print "Atom1: ", name1,",  index: ",idx1, ", Coordinates: ",X1,Y1,Z1	
+
+	atom2 = cmd.get_model(pkb)
+	for a in atom2.atom:
+		idx2        = a.index
+		atom2_index = int(idx2) -1
+		#name2       = a.name
+		name2       = a.symbol
+		atom2       = idx2
+		X2 = a.coord[0]
+		Y2 = a.coord[1]
+		Z2 = a.coord[2]
+		#print "Atom2: ", name2,",  index: ",idx2, ", Coordinates: ",X2,Y2,Z2
+	
+	distance  = distance_a1_a2(X1,Y1,Z1,X2,Y2,Z2)
+	#print "Distance  atom1 ---> atom2  = ", distance 
+	return name1 , atom1_index, name2,  atom2_index, distance
 
 
 

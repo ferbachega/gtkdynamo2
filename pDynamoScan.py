@@ -51,9 +51,7 @@ texto_d2d1 = "\n                       -- multiple-distance --\n\nFor multiple-d
 
 class pDynamoScan():
 
-    """ Class doc """
-	def ScanSimpleDistance(self, parameters = None, method = 'Conjugate Gradient'):                 
-        """ SCAN 1D """
+    def ScanSimpleDistance(self, parameters = None, method = 'Conjugate Gradient'):                 
         outpath         = parameters['outpath'      ]
         ATOM1,          = parameters['ATOM1'        ]
         ATOM1_name,     = parameters['ATOM1_name'   ]
@@ -70,19 +68,32 @@ class pDynamoScan():
         data_path       = parameters['data_path'    ]
 
 
-
-        arq = open(os.path.join(path, LogFileName), "a") # entra aqui o log do scan		
+        LogFileName  = 'ScanLog-SimpleDistance.lof'
+        arq = open(os.path.join(outpath, LogFileName), "a") # entra aqui o log do scan		
         text = ""
         text = text + "\n------------------------ GTKDynamo SCAN  Simple-Distance -----------------------"
-        text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s" % (ATOM1,  ATOM1_name)
-        text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s" % (ATOM2,  ATOM2_name)			
-        text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i" % (NWINDOWS,  FORCECONSTANT)            
-        text = text + "\nDMINIMUM               =%15.5f  MAX INTERACTIONS       =%15i" % (DMINIMUM,  max_int)
-        text = text + "\nSTEP SIZE              =%15.7f  RMS GRAD               =%15.7f"  % (DINCREMENT, rms_grad)
+        text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,      ATOM1_name    )
+        text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % ( ATOM2,      ATOM2_name    )			
+        text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i"     % ( NWINDOWS,   FORCECONSTANT )            
+        text = text + "\nDMINIMUM               =%15.5f  MAX INTERACTIONS       =%15i"   % ( DMINIMUM,   max_int       )
+        text = text + "\nSTEP SIZE              =%15.7f  RMS GRAD               =%15.7f" % ( DINCREMENT, rms_grad      )
         text = text + "\n--------------------------------------------------------------------------------"
         text = text + "\n\n------------------------------------------------------"
         text = text + "\n       Frame    distance pK1 - pK2         Energy     "
         text = text + "\n------------------------------------------------------"
+
+
+
+        #print "\n\n         SCAN  MODE: ", mode       
+        #print "\n"
+        #print "  "+ATOM1_name+"   ->-  "+ATOM2_name
+        #print " pk1 --- pk2 "
+        #print "\n\n"			
+        ##print "distance between atom 1 and atom 2: ",distance_a1_a2
+        #print "DMINIMUM  : ",DMINIMUM
+
+
+
 
         # recording data
         X_general = []
@@ -91,8 +102,8 @@ class pDynamoScan():
         # . Define a constraint container and assign it to the system.
         constraints = SoftConstraintContainer ( )
         self.system.DefineSoftConstraints ( constraints )
-       
-        
+
+
         for i in range ( NWINDOWS ):
             distance = DINCREMENT * float ( i ) + DMINIMUM
             scModel    = SoftConstraintEnergyModelHarmonic ( distance, FORCECONSTANT )
@@ -101,10 +112,10 @@ class pDynamoScan():
 
 
             # Optmization
-            
+
             TmpLog = DualTextLog(OutputPath, "_scan_step"+str(i)+".log")
             print 'Step : ',i 
-        
+
             if method == 'Conjugate Gradient':
                 ConjugateGradientMinimize_SystemGeometry (self.system,
                                                           log                  = TmpLog,
@@ -133,16 +144,16 @@ class pDynamoScan():
 
             X_general.append(i)
             Y_general.append(y[-1])
-            
+
             real_distance = self.system.coordinates3.Distance (ATOM1, ATOM2,)
-            
+
             text = text + "\n%9i       %13.12f       %13.12f"% (int(i), float(real_distance), float(y[-1]))
-            
+
             try:
                 XMLPickle ( os.path.join (OutputPath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
             except:
                 Pickle    ( os.path.join (OutputPath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-            
+
             #output_path  = outpath
             #step         = self.step + i
             #backup orca
@@ -157,278 +168,232 @@ class pDynamoScan():
 
 
 
-	def ScanMultipleDistances(self, 
-					  outpath, 
-					  ATOM1,
-					  ATOM1_name, 
-					  ATOM2,
-					  ATOM2_name, 
-					  ATOM3,
-					  ATOM3_name,
-					  DINCREMENT,
-					  NWINDOWS,         # ok
-					  FORCECONSTANT,    # ok
-					  DMINIMUM,         # ok
-					  sigma_pk1_pk3, 
-					  sigma_pk3_pk1,
-					  max_int, 
-					  log_freq,
-					  rms_grad,
-					  mim_method,  
-					  dualLog,
-					  data_path):
-
-
-		print "DMINIMUM"     ,DMINIMUM
-		print "NWINDOWS"     ,NWINDOWS
-		print "DINCREMENT"   ,DINCREMENT
-		print "FORCECONSTANT",FORCECONSTANT
-
-		# recording data
-		X_general = []
-		Y_general = []
-
-		try:
-			os.remove(data_path +'/log.gui.txt')
-		except:
-			pass
-		#self.system.Summary ( dualLog )	
-		#os.rename('log.gui.txt', 'log.gui.old')
-		self.system.Summary ( dualLog )		
-		
-		
-		os.rename(data_path +'/log.gui.txt', (outpath+"/process.log"))
-		arq = open(outpath+ "/"+"process.log", "a")		
-		text = ""
-
-		text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	
-		
-		text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s" % (ATOM1, ATOM1_name)
-		text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s" % (ATOM2, ATOM2_name)
-		text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s" % (ATOM3, ATOM3_name)		
-		
-		text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i" % (NWINDOWS,  FORCECONSTANT)            
-		text = text + "\nDMINIMUM               =%15.5f  MAX INTERACTIONS       =%15i" % (DMINIMUM,  max_int)
-		text = text + "\nSTEP SIZE              =%15.7f  RMS GRAD               =%15.7f"  % (DINCREMENT, rms_grad)
-		text = text + "\nSigma atom1 - atom3    =%15.5f  Sigma atom3 - atom1    =%15.5f" % (sigma_pk1_pk3, sigma_pk3_pk1)		
-
-		text = text + "\n--------------------------------------------------------------------------------"
-		text = text + "\n\n---------------------------------------------------------------------------"
-		text = text + "\n      Frame    distance pK1 - pK2    distance pK2 - pK3         Energy     "
-		text = text + "\n---------------------------------------------------------------------------"
-		
-
-
-		DINCREMENT    =   DINCREMENT
-		
-				
-		# . Define a constraint container and assign it to the system.
-		constraints = SoftConstraintContainer ( )
-		self.system.DefineSoftConstraints ( constraints )
-
-		if mim_method == 'Conjugate Gradient':
-
-			for i in range ( NWINDOWS ):
-
-			# Calculate the new reaction coordinate restraint
-				
-				rxncoord = DMINIMUM + DINCREMENT * float ( i )
-				scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
-				constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
-				#constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, 1.0], [ATOM2, ATOM3, -1.0]], scmodel )
-
-				constraints["ReactionCoord"] = constraint
-					
-				# . Optimization.
-				
-				try:
-					os.remove(data_path +'/log.gui.txt')
-				except:
-					pass
-				#self.system.Summary ( dualLog )	
-				#os.rename('log.gui.txt', 'log.gui.old')
-				self.system.Summary ( dualLog )
-				
-				ConjugateGradientMinimize_SystemGeometry ( self.system,
-															log = dualLog,
-															logFrequency         = 1, \
-															maximumIterations    = max_int, \
-															rmsGradientTolerance = rms_grad )
-				
-				os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
-				
-				x,y = parse_log_file (outpath+ "/"+"tmp.log")
-				
-				#appending text
-				#text = text + str(i) + "        "
-				
-				X_general.append(i)
-				Y_general.append(y[-1])
-				
-				real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
-				real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
-				
-				#appending text
-				#text = text + str(real_distance) + "       "
-				#appending text
-				#text = text + str(y[-1]) + "\n"
-				text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
-				
-				try:
-					XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-				except:
-					Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-			
-			#print text
-			text = str(text)
-			arq.writelines(text)
-			
-			arq.close()
-			
-			self.system.DefineSoftConstraints ( None )
-			return X_general, Y_general	
-
-		elif mim_method == 'Steepest Descent':
-
-			for i in range ( NWINDOWS ):
-
-			# Calculate the new reaction coordinate restraint
-				
-				rxncoord = DMINIMUM + DINCREMENT * float ( i )
-				scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
-				constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
-				constraints["ReactionCoord"] = constraint
-					
-				# . Optimization.
-				try:
-					os.remove(data_path +'/log.gui.txt')
-				except:
-					pass
-				#self.system.Summary ( dualLog )	
-				#os.rename('log.gui.txt', 'log.gui.old')
-				
-				self.system.Summary ( dualLog )
-				
-				SteepestDescentMinimize_SystemGeometry ( self.system,
-															log = dualLog,
-															logFrequency         = 1, \
-															maximumIterations    = max_int, \
-															rmsGradientTolerance = rms_grad )
-				
-				os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
-				
-				x,y = parse_log_file (outpath+ "/"+"tmp.log")
-				
-				#appending text
-				#text = text + str(i) + "        "
-				
-				X_general.append(i)
-				Y_general.append(y[-1])
-				
-				real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
-				real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
-				
-				#appending text
-				#text = text + str(real_distance) + "       "
-				#appending text
-				#text = text + str(y[-1]) + "\n"
-				text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
-				
-				try:
-					XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-				except:
-					Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-			
-			#print text
-			text = str(text)
-			arq.writelines(text)
-			
-			arq.close()
-			
-			self.system.DefineSoftConstraints ( None )
-			return X_general, Y_general	
-
-		elif mim_method == 'LBFGS':
-
-			for i in range ( NWINDOWS ):
-
-			# Calculate the new reaction coordinate restraint
-				
-				rxncoord = DMINIMUM + DINCREMENT * float ( i )
-				scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
-				constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
-				constraints["ReactionCoord"] = constraint
-					
-				# . Optimization.
-				try:
-					os.remove(data_path +'/log.gui.txt')
-				except:
-					pass
-				#self.system.Summary ( dualLog )	
-				#os.rename('log.gui.txt', 'log.gui.old')
-				
-				self.system.Summary ( dualLog )
-				
-				LBFGSMinimize_SystemGeometry (self.system,
-											  log                  = dualLog,
-											  logFrequency         = 1,
-											  maximumIterations    = max_int,
-											  rmsGradientTolerance = rms_grad)
-				
-				os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
-				
-				x,y = parse_log_file (outpath+ "/"+"tmp.log")
-				
-				#appending text
-				#text = text + str(i) + "        "
-				
-				X_general.append(i)
-				Y_general.append(y[-1])
-				
-				real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
-				real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
-				
-				#appending text
-				#text = text + str(real_distance) + "       "
-				#appending text
-				#text = text + str(y[-1]) + "\n"
-				text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
-				
-				try:
-					XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-				except:
-					Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
-			
-			#print text
-			text = str(text)
-			arq.writelines(text)
-			
-			arq.close()
-			
-			self.system.DefineSoftConstraints ( None )
-			return X_general, Y_general	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    def __init__(self, system=None, data_path=None, DistanceMethod):
+    #def ScanMultipleDistances(self, parameters = None, method = 'Conjugate Gradient'): 
+    #    outpath         = parameters['outpath'      ]
+    #    ATOM1,          = parameters['ATOM1'        ]
+    #    ATOM1_name,     = parameters['ATOM1_name'   ]
+    #    ATOM2,          = parameters['ATOM2'        ]
+    #    ATOM2_name,     = parameters['ATOM2_name'   ]
+    #    ATOM3,          = parameters['ATOM3'        ]
+    #    ATOM3_name,     = parameters['ATOM3_name'   ]
+    #    DINCREMENT,     = parameters['DINCREMENT'   ]
+    #    NWINDOWS,       = parameters['NWINDOWS'     ]
+    #    FORCECONSTANT,  = parameters['FORCECONSTANT']
+    #    DMINIMUM,       = parameters['DMINIMUM'     ]
+    #    sigma_pk1_pk3   = parameters['sigma_pk1_pk3']
+    #    sigma_pk3_pk1   = parameters['sigma_pk3_pk1']
+    #    max_int,        = parameters['max_int'      ]
+    #    log_freq,       = parameters['log_freq'     ]
+    #    rms_grad,       = parameters['rms_grad'     ]
+    #    mim_method,     = parameters['mim_method'   ]
+    #    data_path       = parameters['data_path'    ]
+    #
+    #
+    #
+    #    arq = open(os.path.join(path, LogFileName), "a") # entra aqui o log do scan		
+    #    text = ""
+    #
+    #    text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	
+    #    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,         ATOM1_name    )
+    #    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % ( ATOM2,         ATOM2_name    )
+    #    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % ( ATOM3,         ATOM3_name    )		
+    #    text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i"     % ( NWINDOWS,      FORCECONSTANT )            
+    #    text = text + "\nDMINIMUM               =%15.5f  MAX INTERACTIONS       =%15i"   % ( DMINIMUM,      max_int       )
+    #    text = text + "\nSTEP SIZE              =%15.7f  RMS GRAD               =%15.7f" % ( DINCREMENT,    rms_grad      )
+    #    text = text + "\nSigma atom1 - atom3    =%15.5f  Sigma atom3 - atom1    =%15.5f" % ( sigma_pk1_pk3, sigma_pk3_pk1 )		
+    #    text = text + "\n--------------------------------------------------------------------------------"
+    #    text = text + "\n\n---------------------------------------------------------------------------"
+    #    text = text + "\n      Frame    distance pK1 - pK2    distance pK2 - pK3         Energy     "
+    #    text = text + "\n---------------------------------------------------------------------------"
+    #    
+    #
+    #
+    #
+    #    # recording data
+    #    X_general = []
+    #    Y_general = []
+    #
+    #            
+    #    # . Define a constraint container and assign it to the system.
+    #    constraints = SoftConstraintContainer ( )
+    #    self.system.DefineSoftConstraints ( constraints )
+    #
+    #    if mim_method == 'Conjugate Gradient':
+    #
+    #        for i in range ( NWINDOWS ):
+    #
+    #            # Calculate the new reaction coordinate restraint
+    #            rxncoord   = DMINIMUM + DINCREMENT * float ( i )
+    #            scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
+    #            constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
+    #            constraints["ReactionCoord"] = constraint
+    #                
+    #            # . Optimization.
+    #            try:
+    #                os.remove(data_path +'/log.gui.txt')
+    #            except:
+    #                pass
+    #            self.system.Summary ( dualLog )
+    #            TmpLog = DualTextLog(OutputPath, "_scan_step"+str(i)+".log")
+    #
+    #            ConjugateGradientMinimize_SystemGeometry ( self.system,
+    #                                                        log = TmpLog,
+    #                                                        logFrequency         = 1, \
+    #                                                        maximumIterations    = max_int, \
+    #                                                        rmsGradientTolerance = rms_grad )
+    #            
+    #            os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
+    #            
+    #            x,y = parse_log_file (outpath+ "/"+"tmp.log")
+    #
+    #            
+    #            X_general.append(i)
+    #            Y_general.append(y[-1])
+    #            real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
+    #            real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
+    #
+    #
+    #            text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
+    #
+    #            try:
+    #                XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #            except:
+    #                Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #        
+    #        #print text
+    #        text = str(text)
+    #        arq.writelines(text)
+    #        
+    #        arq.close()
+    #        
+    #        self.system.DefineSoftConstraints ( None )
+    #        return X_general, Y_general	
+    #
+    #    elif mim_method == 'Steepest Descent':
+    #
+    #        for i in range ( NWINDOWS ):
+    #
+    #        # Calculate the new reaction coordinate restraint
+    #            
+    #            rxncoord = DMINIMUM + DINCREMENT * float ( i )
+    #            scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
+    #            constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
+    #            constraints["ReactionCoord"] = constraint
+    #                
+    #            # . Optimization.
+    #            try:
+    #                os.remove(data_path +'/log.gui.txt')
+    #            except:
+    #                pass
+    #            #self.system.Summary ( dualLog )	
+    #            #os.rename('log.gui.txt', 'log.gui.old')
+    #            
+    #            self.system.Summary ( dualLog )
+    #            
+    #            SteepestDescentMinimize_SystemGeometry ( self.system,
+    #                                                        log = dualLog,
+    #                                                        logFrequency         = 1, \
+    #                                                        maximumIterations    = max_int, \
+    #                                                        rmsGradientTolerance = rms_grad )
+    #            
+    #            os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
+    #            
+    #            x,y = parse_log_file (outpath+ "/"+"tmp.log")
+    #            
+    #            #appending text
+    #            #text = text + str(i) + "        "
+    #            
+    #            X_general.append(i)
+    #            Y_general.append(y[-1])
+    #            
+    #            real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
+    #            real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
+    #            
+    #            #appending text
+    #            #text = text + str(real_distance) + "       "
+    #            #appending text
+    #            #text = text + str(y[-1]) + "\n"
+    #            text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
+    #            
+    #            try:
+    #                XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #            except:
+    #                Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #        
+    #        #print text
+    #        text = str(text)
+    #        arq.writelines(text)
+    #        
+    #        arq.close()
+    #        
+    #        self.system.DefineSoftConstraints ( None )
+    #        return X_general, Y_general	
+    #
+    #    elif mim_method == 'LBFGS':
+    #
+    #        for i in range ( NWINDOWS ):
+    #
+    #        # Calculate the new reaction coordinate restraint
+    #            
+    #            rxncoord = DMINIMUM + DINCREMENT * float ( i )
+    #            scmodel    = SoftConstraintEnergyModelHarmonic ( rxncoord, FORCECONSTANT )
+    #            constraint = SoftConstraintMultipleDistance ( [[ATOM2, ATOM1, sigma_pk1_pk3], [ATOM2, ATOM3, sigma_pk3_pk1]], scmodel )
+    #            constraints["ReactionCoord"] = constraint
+    #                
+    #            # . Optimization.
+    #            try:
+    #                os.remove(data_path +'/log.gui.txt')
+    #            except:
+    #                pass
+    #            #self.system.Summary ( dualLog )	
+    #            #os.rename('log.gui.txt', 'log.gui.old')
+    #            
+    #            self.system.Summary ( dualLog )
+    #            
+    #            LBFGSMinimize_SystemGeometry (self.system,
+    #                                          log                  = dualLog,
+    #                                          logFrequency         = 1,
+    #                                          maximumIterations    = max_int,
+    #                                          rmsGradientTolerance = rms_grad)
+    #            
+    #            os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"tmp.log")
+    #            
+    #            x,y = parse_log_file (outpath+ "/"+"tmp.log")
+    #            
+    #            #appending text
+    #            #text = text + str(i) + "        "
+    #            
+    #            X_general.append(i)
+    #            Y_general.append(y[-1])
+    #            
+    #            real_distance1 = self.system.coordinates3.Distance (ATOM1, ATOM2,)
+    #            real_distance2 = self.system.coordinates3.Distance (ATOM2, ATOM3,)
+    #            
+    #            #appending text
+    #            #text = text + str(real_distance) + "       "
+    #            #appending text
+    #            #text = text + str(y[-1]) + "\n"
+    #            text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
+    #            
+    #            try:
+    #                XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #            except:
+    #                Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), self.system.coordinates3 )
+    #        
+    #        #print text
+    #        text = str(text)
+    #        arq.writelines(text)
+    #        
+    #        arq.close()
+    #        
+    #        self.system.DefineSoftConstraints ( None )
+    #        return X_general, Y_general	
+    #
+    #
+    #
+    def __init__(self, system = None, data_path= None, mode = 'multiple-distance'):
         """ Class initialiser """
-        
+
         self.system = system
         if data_path == None:
             data_path = GTKDYNAMO_TMP
@@ -465,14 +430,7 @@ class pDynamoScan():
         #--------------------#
         t_initial = time.time()
 
-        #---------------------------------#
-        #               SCAN              #
-        #---------------------------------#
-        
-        #self.system.Summary(log=log)
-        ScanSimpleDistance(parameters, method)
-  
-        
+     
         
         #back_orca_output(output_path, step)
         
@@ -484,8 +442,8 @@ class pDynamoScan():
         print "Total time = : ", t_final - t_initial
 
 
-    
-    
+
+
     def back_orca_output(self, output_path, step):
         try:
             SCRATCH = os.environ.get('PDYNAMO_SCRATCH')

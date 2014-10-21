@@ -91,6 +91,7 @@ from FileChooserWindow           import *
 from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
 from NonBondDialog               import *
+from ScanDialog                  import *
 # pDynamo
 from pDynamoProject import *
 from WindowControl  import *
@@ -609,6 +610,13 @@ class gtkdynamo_main():
             pass
 
 
+
+
+    def  on_menuitem22bScan1_activate(self, menuItem):
+        """ Function doc """
+        self.ScanDialog.dialog.run()
+        self.ScanDialog.dialog.hide()  
+
     def on_menuitem46_activate(self, button):
         """ Function doc """
         self.NonBondDialog.dialog.run()
@@ -797,6 +805,8 @@ class gtkdynamo_main():
         self.NonBondDialog = NonBondDialog(self.project,                                                  #
             self.window_control, self.builder)                                                            #
                                                                                                           #
+        self.ScanDialog = ScanDialog(self.project,                                                        #
+            self.window_control, self.builder)                                                            #                                #
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 
