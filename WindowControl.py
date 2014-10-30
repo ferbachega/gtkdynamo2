@@ -76,9 +76,9 @@ class WindowControl():
         model.clear()
         n = 0
         for i in pymol_objects:
-            data = [False, i]
+            data = [False, i,i,i]
             if i == pymol_id:
-                data = [True, i]
+                data = [True, i,i,i]
             model.append(data)
             n = n + 1
 
