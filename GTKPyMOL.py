@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 text1 = """
-#	
+#   
 #
-#	
-#	
+#   
+#   
 #
-#	
+#   
 #
 #                         ---- GTKDynamo 2.0 ----
-#		                    
-#		
+#                           
+#       
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
 #
 #               visit: https://sites.google.com/site/gtkdynamo/
@@ -25,27 +25,27 @@ text1 = """
 #       GNU General Public License for more details.
 #
 #   
-#	GTKDynamo team:
-#	- Jose Fernando R Bachega   < Univesity of Sao Paulo - SP, Brazil                              >
-#	- Troy Wymore               < Pittsburgh Super Computer Center, Pittsburgh PA - USA            >
-#	- Martin Field              < Institut de Biologie Structurale, Grenoble, France               >		
-#	- Osmar Norbeto de souza    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#	- Luis Fernando S M Timmers < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#	- Walter R Paixao-Cortes    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#	- Michele Silva             < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >     
-#								
-#	Special thanks to:          
-#	- Fernando V Maluf          < Univesity of Sao Paulo - SP, Brazil                              >
-#	- Lucas Assirati            < Univesity of Sao Paulo - SP, Brazil                              >
-#	- Leonardo R Bachega        < University of Purdue - West Lafayette, IN - USA                  >
-#	- Richard Garratt           < Univesity of Sao Paulo - SP, Brazil                              >
+#   GTKDynamo team:
+#   - Jose Fernando R Bachega   < Univesity of Sao Paulo - SP, Brazil                              >
+#   - Troy Wymore               < Pittsburgh Super Computer Center, Pittsburgh PA - USA            >
+#   - Martin Field              < Institut de Biologie Structurale, Grenoble, France               >        
+#   - Osmar Norbeto de souza    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
+#   - Luis Fernando S M Timmers < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
+#   - Walter R Paixao-Cortes    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
+#   - Michele Silva             < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >     
+#                               
+#   Special thanks to:          
+#   - Fernando V Maluf          < Univesity of Sao Paulo - SP, Brazil                              >
+#   - Lucas Assirati            < Univesity of Sao Paulo - SP, Brazil                              >
+#   - Leonardo R Bachega        < University of Purdue - West Lafayette, IN - USA                  >
+#   - Richard Garratt           < Univesity of Sao Paulo - SP, Brazil                              >
 #
 #
 #   Cite this work as:
 #   J. F. R. Bachega, L. F. S. M. Timmers, L. Assirati, L. B. Bachega, M. J. Field, 
 #   T. Wymore. J. Comput. Chem. 2013, 34, 2190-2196. DOI: 10.1002/jcc.23346
 #
-#		
+#       
 """
 
 
@@ -87,6 +87,7 @@ from OpenGL.GLU import *
 
 # GUI
 from MinimizationWindow          import *  # window 2  - minimization
+from MolecularDynamicsWindow     import *
 from FileChooserWindow           import *
 from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
@@ -286,7 +287,7 @@ def slabchange(button, event):
         slab = slab + step
         slab = slab + step
         # if  slab >=100:
-        #	slab = 100
+        #   slab = 100
     else:
         step = -1.5
 
@@ -369,18 +370,18 @@ def mousemove(button, event):
         #
         #print _view
         #if Zero_ViewBuffer == None:
-        #	Zero_ViewBuffer = _view[11]
+        #   Zero_ViewBuffer = _view[11]
         #
         #_view11 = Zero_ViewBuffer - Buffer
         #_view15 = _view[15]       - Buffer
         #_view16 = _view[16]       + Buffer
         #
         #_view2 = (_view[0], _view[1], _view[2],
-        #		  _view[3], _view[4], _view[5],
-        #		  _view[6], _view[7], _view[8],
-        #		  _view[9], _view[10],_view11,
-        #		  _view[12],_view[13],_view[14],
-        #		  _view15,  _view16,  _view[17])
+        #         _view[3], _view[4], _view[5],
+        #         _view[6], _view[7], _view[8],
+        #         _view[9], _view[10],_view11,
+        #         _view[12],_view[13],_view[14],
+        #         _view15,  _view16,  _view[17])
         #
         #print Buffer, _view11, _view15,_view16
         #cmd.set_view(_view2)
@@ -544,14 +545,59 @@ class gtkdynamo_main():
 
     
     '''
- 	#--------------------------------------------#
-	#                GL AREA MENU                #
-	#--------------------------------------------#  
+    #--------------------------------------------#
+    #                GL AREA MENU                #
+    #--------------------------------------------#  
     '''
     
     def on_GLAreaMenu_itemActive_SetQCTable(self, menuitem):    
-        table = PymolGetTable('sele')
+        table    = PymolGetTable('sele')
+        oldTable = self.project.settings['qc_table']
         self.project.put_qc_table(table)
+        newTable = self.project.settings['qc_table']
+        
+        if newTable != oldTable:
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #                                   
+                                #---------------------------------------------------------#                  
+                                #                                                         #                  
+                                #        Message Dialog  -  when 2 buttons will be showed #                  
+                                #  1 -create the warning message                          #                  
+                                #  2 -hide the actual dialog - optional                   #                  
+                                #  3 -show the message dialog                             #                  
+                                #  4 -hide the message dialog                             #                  
+                                #  5 -check the returned valor by the message dialog      #                  
+                                #  6 -do something                                        #                  
+                                #  7 -restore the actual dialog - optional                #                  
+                                #---------------------------------------------------------#                  
+            '''
+                                                                                                  
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("A new quantum region has been defined. Would you like setup your QC paramaters now?")  
+            dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                              
+            a = dialog.run()  # possible "a" valors                                                           
+            # 4 step          # -8  -  yes                                                                    
+            dialog.hide()     # -9  -  no                                                                     
+                              # -4  -  close                                                                  
+                              # -5  -  OK                                                                     
+                              # -6  -  Cancel                                                                 
+                                                                                                              
+            # 5 step                                                                                          
+            if a == -8:                                                                                       
+                # 6 step                                                                                      
+                self.QuantumChemistrySetupDialog.dialog.run()
+                self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
+            else:                                                                                             
+                return 0                                                                                      
+            # 7 step                                                                                          
+            #self.load_trj_windows.run()                                                                      
+        else:                                                                                                 
+            print qc_table                                                                                    
+
+
+
+
         print self.project.settings['qc_table']
 
     def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
@@ -570,10 +616,10 @@ class gtkdynamo_main():
 
 
     '''
-	#--------------------------------------------#
-	#               01_main_window               #
-	#--------------------------------------------#
-	'''
+    #--------------------------------------------#
+    #               01_main_window               #
+    #--------------------------------------------#
+    '''
 
     def on_01_main_window_ShowValences_toggled(self, button):
         print """ Function doc """
@@ -647,6 +693,18 @@ class gtkdynamo_main():
         self._02MinimizationWindow.dialog.run()
         self._02MinimizationWindow.dialog.hide()
 
+    def on_01_main_window_MD_toolbutton9_clicked (self, button):
+        """ Function doc """
+        print self.project.step
+        text = str(self.project.step + 1) + '_step_MolecularDynamics'
+        self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
+        self.MolecularDynamicsWindow.dialog.run()
+        self.MolecularDynamicsWindow.dialog.hide()
+        
+
+
+
+
     def on_01_main_window_ChangeSelectionMode_togglebutton1_toggled(self, button):
         if self.builder.get_object('togglebutton1').get_active():
             # print '# If control reaches here, the toggle button is down'
@@ -717,6 +775,8 @@ class gtkdynamo_main():
         self.builder = gtk.Builder()                                                      #
         self.builder.add_from_file(                                                       #
             os.path.join(GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
+        self.builder.add_from_file(                                                       #
+            os.path.join(GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))                   #
         #                                                                                 #
         self.win = self.builder.get_object("win")                                         #
         #                                                                                 #
@@ -740,7 +800,7 @@ class gtkdynamo_main():
         pymol.cmd.set("internal_gui", 0)                        #
         pymol.cmd.set("internal_gui_mode", 0)                   #
         pymol.cmd.set("internal_feedback", 0)                   #
-        pymol.cmd.set("internal_gui_width", 220)		        #
+        pymol.cmd.set("internal_gui_width", 220)                #
         sphere_scale = 0.25                                     #
         stick_radius = 0.15                                     #
         label_distance_digits = 4                               #
@@ -752,16 +812,17 @@ class gtkdynamo_main():
         cmd.set("retain_order")         # keep atom ordering    #
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
+        cmd.do("set ray_shadows,off")                           #
         #-------------------------------------------------------#
         print text1
 
         '''
-		-------------------------------------------------
-		-                                               -
-		-	              WindowControl                 -
-		-                                               -
-		-------------------------------------------------
-		'''
+        -------------------------------------------------
+        -                                               -
+        -                 WindowControl                 -
+        -                                               -
+        -------------------------------------------------
+        '''
         self.window_control = WindowControl(self.builder)
 
 
@@ -775,26 +836,34 @@ class gtkdynamo_main():
 
 
         #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
-        #
-        self.project = pDynamoProject(
-            data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)
-        #
-        self.project.PyMOL = True
-        #
+        #                                                                                                                            #
+        self.project = pDynamoProject(                                                                                               #
+            data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)                                       #
+        #                                                                                                                            #
+        self.project.PyMOL = True                                                                                                    #
+        #                                                                                                                            #
         #----------------------------------------------------------------------------------------------------------------------------#
 
         self.project.data_path = GTKDYNAMO_TMP
         # self.project.load_coordinate_file_as_new_system("/home/fernando/Dropbox/GTKPyMOL/test/test.pkl")
 
-        
-        
+
+
         #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
         #                                                                                                 #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
-		# que o usuario farah nas 'entries' '''                                                           #
+        # que o usuario farah nas 'entries' '''                                                           #
         #                                                                                                 #
-        self._02MinimizationWindow = MinimizationWindow(                                                  #
-            self.project, self.window_control, self.builder)                                              #
+        self._02MinimizationWindow = MinimizationWindow(self.project, self.window_control, self.builder)  #                                           #
+                                                                                                          #
+        self.MolecularDynamicsWindow = MolecularDynamicsWindow(self.project,                              #
+                                                               self.window_control,                       #
+                                                               self.builder)                              #        
+        #self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text) #
+        #self.MolecularDynamicsWindow.dialog.run()                                                        #
+        #self.MolecularDynamicsWindow.dialog.hide()                                                       #
+                                                                                                          #
+                                                                                                          #
                                                                                                           #
         self._NewProjectDialog = NewProjectDialog(                                                        #
             self.project, self.window_control, self.builder)                                              #
@@ -806,7 +875,7 @@ class gtkdynamo_main():
             self.window_control, self.builder)                                                            #
                                                                                                           #
         self.ScanDialog = ScanDialog(self.project,                                                        #
-            self.window_control, self.builder)                                                            #                                #
+            self.window_control, self.builder)                                                            #        
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 

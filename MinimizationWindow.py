@@ -35,6 +35,18 @@ GTKDYNAMO_ROOT = os.getcwd()
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 
+
+'''
+
+Adicionar um textbox que pertimte o usuario adicionar comentarios
+comentarios serao salvos no history dos processos
+
+'''
+
+
+
+
+
 class MinimizationWindow():
 
     """ Class doc """

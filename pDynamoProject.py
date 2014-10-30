@@ -775,6 +775,23 @@ class pDynamoProject():
 
         return True
 
+    
+	def MolecularDynamics(self, parameters):
+		""" Function doc """
+		print parameters
+
+		self.ActiveModeCheck()
+
+		pDynamoMinimization(self.system, method, parameters, self.data_path)
+
+		#------------------  increment step  ---------------#
+		#
+		self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')
+		#
+		#---------------------------------------------------#
+
+		return True
+    
     def ActiveModeCheck(self):
         """ Function doc """
         #return 0
