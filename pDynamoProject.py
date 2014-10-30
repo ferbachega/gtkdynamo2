@@ -439,6 +439,22 @@ class pDynamoProject():
             string5 = 'color grey80, FIX_atoms'
             cmd.do(string5)
         
+        try:
+            #cmd.do('disable sele')
+            cmd.disable("sele")
+        except:
+            pass
+        try:
+            #cmd.do('disable FIX_atoms')
+            cmd.disable("FIX_atoms")
+
+        except:
+            pass
+        try:
+            #cmd.do('disable QC_atoms')
+            cmd.disable("QC_atoms")
+        except:
+            pass
         
         pymol_objects2 = cmd.get_names('selections')
         liststore = self.builder.get_object('liststore1')

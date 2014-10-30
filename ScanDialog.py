@@ -28,7 +28,8 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
-from pDynamoScan   import *
+from pDynamoScan   import pDynamoScan
+
 GTKDYNAMO_ROOT = os.getcwd()
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
@@ -79,20 +80,20 @@ class ScanDialog():
             ATOM2      = int(self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2').get_text())     #
             ATOM2_name = self.builder.get_object    ('ScanDialog_SCAN_entry_cood1_ATOM2_name').get_text() #
                                                                                                           #
-            parameters = {'outpath'      :outpath,                                                        #
-                          'ATOM1'        :ATOM1,                                                          #
-                          'ATOM1_name'   :ATOM1_name,                                                     #
-                          'ATOM2'        :ATOM2,                                                          #
-                          'ATOM2_name'   :ATOM2_name,		                                              #
-                          'DINCREMENT'   :DINCREMENT,                                                     #
-                          'NWINDOWS'     :NWINDOWS,                                                       #
-                          'FORCECONSTANT':FORCECONSTANT,                                                  #
-                          'DMINIMUM'     :DMINIMUM,                                                       #
-                          'max_int'      :max_int,                                                        #
-                          'log_freq'     :log_freq,                                                       #
-                          'rms_grad'     :rms_grad,                                                       #
-                          'mim_method'   :mim_method,                                                     #
-                          'data_path'    :data_path  }                                                    #
+            parameters = {'outpath'      : outpath,                                                       #
+                          'ATOM1'        : ATOM1,                                                         #
+                          'ATOM1_name'   : ATOM1_name,                                                    #
+                          'ATOM2'        : ATOM2,                                                         #
+                          'ATOM2_name'   : ATOM2_name,		                                              #
+                          'DINCREMENT'   : DINCREMENT,                                                    #
+                          'NWINDOWS'     : NWINDOWS,                                                      #
+                          'FORCECONSTANT': FORCECONSTANT,                                                 #
+                          'DMINIMUM'     : DMINIMUM,                                                      #
+                          'max_int'      : max_int,                                                       #
+                          'log_freq'     : log_freq,                                                      #
+                          'rms_grad'     : rms_grad,                                                      #
+                          'mim_method'   : mim_method,                                                    #
+                          'data_path'    : data_path  }                                                   #
                                                                                                           #
             _pDynamoScan =  pDynamoScan()                                                                 #
             _pDynamoScan.ScanSimpleDistance(parameters, method)                                           #

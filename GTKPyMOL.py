@@ -593,7 +593,7 @@ class gtkdynamo_main():
             # 7 step                                                                                          
             #self.load_trj_windows.run()                                                                      
         else:                                                                                                 
-            print qc_table                                                                                    
+            pass                                                                                   
 
 
 

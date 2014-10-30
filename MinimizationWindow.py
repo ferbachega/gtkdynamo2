@@ -43,14 +43,6 @@ comentarios serao salvos no history dos processos
 
 '''
 
-<<<<<<< HEAD
-
-=======
-teste = None
->>>>>>> 0f094ccb8c58c731bb064f6ab7687caba323e77a
-
-
-
 class MinimizationWindow():
 
     """ Class doc """

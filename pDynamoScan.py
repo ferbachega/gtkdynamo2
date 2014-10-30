@@ -50,22 +50,31 @@ texto_d2d1 = "\n                       -- multiple-distance --\n\nFor multiple-d
 
 
 class pDynamoScan():
-
+    def __init__ (self):
+        """ Function doc """
+        self.test = None
+        pass
+    
     def ScanSimpleDistance(self, parameters = None, method = 'Conjugate Gradient'):                 
-        outpath         = parameters['outpath'      ]
-        ATOM1,          = parameters['ATOM1'        ]
-        ATOM1_name,     = parameters['ATOM1_name'   ]
-        ATOM2,          = parameters['ATOM2'        ]
-        ATOM2_name,     = parameters['ATOM2_name'   ]
-        DINCREMENT,     = parameters['DINCREMENT'   ]
-        NWINDOWS,       = parameters['NWINDOWS'     ]
-        FORCECONSTANT,  = parameters['FORCECONSTANT']
-        DMINIMUM,       = parameters['DMINIMUM'     ]
-        max_int,        = parameters['max_int'      ]
-        log_freq,       = parameters['log_freq'     ]
-        rms_grad,       = parameters['rms_grad'     ]
-        mim_method,     = parameters['mim_method'   ]
-        data_path       = parameters['data_path'    ]
+        
+        if parameters != None:
+            outpath         = parameters['outpath'      ]
+            ATOM1,          = parameters['ATOM1'        ]
+            ATOM1_name,     = parameters['ATOM1_name'   ]
+            ATOM2,          = parameters['ATOM2'        ]
+            ATOM2_name,     = parameters['ATOM2_name'   ]
+            DINCREMENT,     = parameters['DINCREMENT'   ]
+            NWINDOWS,       = parameters['NWINDOWS'     ]
+            FORCECONSTANT,  = parameters['FORCECONSTANT']
+            DMINIMUM,       = parameters['DMINIMUM'     ]
+            max_int,        = parameters['max_int'      ]
+            log_freq,       = parameters['log_freq'     ]
+            rms_grad,       = parameters['rms_grad'     ]
+            mim_method,     = parameters['mim_method'   ]
+            data_path       = parameters['data_path'    ]
+        else:
+            pass
+
 
 
         LogFileName  = 'ScanLog-SimpleDistance.lof'
@@ -462,7 +471,7 @@ class pDynamoScan():
 
 def main():
     system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
-    _min_ = pDynamoEnergy(system)
+    pDynamoScan = pDynamoScan()
     return 0
 
 if __name__ == '__main__':
