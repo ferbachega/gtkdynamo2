@@ -71,10 +71,11 @@ def ScanSimpleDistance(parameters = None, project = None):
     else:
         pass
 
-
-
+    log = DualTextLog(outpath, "ScanLog-SimpleDistance.log")
+    project.system.Summary(log=log)
     LogFileName  = 'ScanLog-SimpleDistance.log'
-    arq = open(os.path.join(outpath, LogFileName), "w") # entra aqui o log do scan		
+    
+    arq = open(os.path.join(outpath, LogFileName), "a") # entra aqui o log do scan		
     text = ""
     text = text + "\n------------------------ GTKDynamo SCAN  Simple-Distance -----------------------"
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,      ATOM1_name    )
@@ -118,7 +119,7 @@ def ScanSimpleDistance(parameters = None, project = None):
 
         # Optmization
 
-        TmpLog = DualTextLog(OutputPath, "_scan_step"+str(i)+".log")
+        TmpLog = DualTextLog(outpath, "_scan_step"+str(i)+".log")
         print 'Step : ',i 
 
         if method == 'Conjugate Gradient':
@@ -145,7 +146,7 @@ def ScanSimpleDistance(parameters = None, project = None):
             except:
                 print 'LBFGS has failed (LBFGS is only available in pDynamo ver 1.8.2 or newer).'
 
-        x,y = ParseProcessLogFile(OutputPath + '/' + "_scan_step"+str(i)+".log")
+        x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
 
         X_general.append(i)
         Y_general.append(y[-1])
@@ -155,9 +156,9 @@ def ScanSimpleDistance(parameters = None, project = None):
         text = text + "\n%9i       %13.12f       %13.12f"% (int(i), float(real_distance), float(y[-1]))
 
         try:
-            XMLPickle ( os.path.join (OutputPath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )
+            XMLPickle ( os.path.join (outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )
         except:
-            Pickle    ( os.path.join (OutputPath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )
+            Pickle    ( os.path.join (outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )
 
         #output_path  = outpath
         #step         = self.step + i
@@ -197,8 +198,10 @@ def ScanMultipleDistances(parameters = None, project = None):
     data_path       = parameters['data_path'    ]
 
 
+    log = DualTextLog(outpath, "ScanLog-MultipleDistance.log")
+    project.system.Summary(log=log)
     LogFileName  = 'ScanLog-MultipleDistance.log'
-    arq = open(os.path.join(outpath, LogFileName), "w") # entra aqui o log do scan			
+    arq = open(os.path.join(outpath, LogFileName), "a") # entra aqui o log do scan			
     text = ""
     text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,         ATOM1_name    )

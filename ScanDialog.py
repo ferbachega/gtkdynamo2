@@ -221,7 +221,6 @@ class ScanDialog():
             self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM3").set_text(str(atom3_index))
             self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM3_name").set_text(name3)
 
-
     def Mass_weight_check(self):
         try:
             name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")

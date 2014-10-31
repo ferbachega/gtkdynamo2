@@ -106,31 +106,6 @@ class MinimizationWindow():
 					e adicionar informacoes ao history 
 			     
 			'''
-            #------------------------------------------------------------------#
-    #                   exporting frame to PyMOL                       #
-    # -----------------------------------------------------------------#
-            #pymol_id      = ExportFramesToPymol(self.project, 'min')
-            # pymol_objects = cmd.get_names() #cmd.get_names("selections")+cmd.get_names()
-            #
-            #
-            #-------------------------------------#
-            #        building the treeview        #
-            # ------------------------------------#
-            #liststore         = self.main_builder.get_object('liststore1')                  #
-            # self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects)                # this treeview will be delete
-            #                                                                                #
-            #liststore         = self.main_builder.get_object('liststore2')                  #
-            #self.window_control.TREEVIEW_ADD_DATA2 (liststore, pymol_objects, pymol_id)     #
-        #
-    #
-            #         #--------------------------------------------#
-    #         #        exporting data to job history       #
-    #         # -------------------------------------------#
-            ## {1:[process, pymol_id, potencial, energy]}
-            # self.project.job_history[self.project.step] = [method, pymol_id, "potencial", "1192.0987" ] # this is only a test
-            # for i in self.project.job_history: print i,
-            # self.project.job_history[i]                     #
-
     def __init__(self, project=None, window_control=None, main_builder=None):
         """ Class initialiser """
         self.project = project
