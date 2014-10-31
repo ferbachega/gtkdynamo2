@@ -70,17 +70,37 @@ class WindowControl():
             model.append(data)
             n = n + 1
 
-    def TREEVIEW_ADD_DATA2(self, liststore=None, pymol_objects=[], pymol_id=None):
+    def TREEVIEW_ADD_DATA2(self, liststore=None, job_history=[], pymol_id=None):
         """ Function doc """
+        #model = liststore  # @+
+        #model.clear()
+        #n = 0
+        #for i in pymol_objects:
+        #    data = [False, i,i,i]
+        #    if i == pymol_id:
+        #        data = [True, i,i,i]
+        #    model.append(data)
+        #    n = n + 1
+
         model = liststore  # @+
         model.clear()
         n = 0
-        for i in pymol_objects:
-            data = [False, i,i,i]
-            if i == pymol_id:
-                data = [True, i,i,i]
+        for i in job_history:
+            data = [False, job_history[i][0],job_history[i][1],job_history[i][2]]
+            if job_history[i][0] == pymol_id:
+                print "aqui"
+                data = [True, job_history[i][0],job_history[i][1],job_history[i][2]]
             model.append(data)
             n = n + 1
+
+
+
+
+
+
+
+
+
 
     def STATUSBAR_SET_TEXT(self, text):
         """ Function doc """

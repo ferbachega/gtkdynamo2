@@ -28,7 +28,7 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
-from pDynamoScan   import pDynamoScan
+from pDynamoScan   import *
 
 GTKDYNAMO_ROOT = os.getcwd()
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
@@ -80,7 +80,8 @@ class ScanDialog():
             ATOM2      = int(self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2').get_text())     #
             ATOM2_name = self.builder.get_object    ('ScanDialog_SCAN_entry_cood1_ATOM2_name').get_text() #
                                                                                                           #
-            parameters = {'outpath'      : outpath,                                                       #
+            parameters = {'method'       : mim_method,
+                          'outpath'      : outpath,                                                       #
                           'ATOM1'        : ATOM1,                                                         #
                           'ATOM1_name'   : ATOM1_name,                                                    #
                           'ATOM2'        : ATOM2,                                                         #
@@ -94,9 +95,7 @@ class ScanDialog():
                           'rms_grad'     : rms_grad,                                                      #
                           'mim_method'   : mim_method,                                                    #
                           'data_path'    : data_path  }                                                   #
-                                                                                                          #
-            _pDynamoScan =  pDynamoScan()                                                                 #
-            _pDynamoScan.ScanSimpleDistance(parameters, method)                                           #
+            x, y   = ScanSimpleDistance(parameters, self.project)                                   #
         #-------------------------------------------------------------------------------------------------#
 
 
@@ -112,7 +111,6 @@ class ScanDialog():
             ATOM3      = int(self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3').get_text())     #
             ATOM3_name = self.builder.get_object    ('ScanDialog_SCAN_entry_cood1_ATOM3_name').get_text() #
                                                                                                           #
-            print "\n\n"                                                                                  #
             print "  "+ATOM1_name+"   ->-  "+ATOM2_name+"  -->-- "+ATOM3_name+"  "                        #
             print " pk1 --- pk2 ---- pk3 \n"                                                              #
             print "DMINIMUM  : ",DMINIMUM                                                                 #
@@ -122,8 +120,29 @@ class ScanDialog():
             sigma_pk3_pk1 = self.sigma_pk3_pk1                                                            #
             print sigma_pk3_pk1                                                                           #
             print sigma_pk1_pk3                                                                           #
-            pDynamoScan =  pDynamoScan()                                                                  #
-            pDynamoScan.ScanMultipleDistances(parameters, method)                                         #
+                                                                                                          #
+            parameters = {'method'       : mim_method,                                                    #
+                          'outpath'      : outpath,                                                       #
+                          'ATOM1'        : ATOM1,                                                         #
+                          'ATOM1_name'   : ATOM1_name,                                                    #
+                          'ATOM2'        : ATOM2,                                                         #
+                          'ATOM2_name'   : ATOM2_name,		                                              #
+                          'ATOM3'        : ATOM3,                                                         #
+                          'ATOM3_name'   : ATOM3_name,                                                    #
+                          'DINCREMENT'   : DINCREMENT,                                                    #
+                          'NWINDOWS'     : NWINDOWS,                                                      #
+                          'FORCECONSTANT': FORCECONSTANT,                                                 #
+                          'DMINIMUM'     : DMINIMUM,                                                      #
+                          'sigma_pk1_pk3': sigma_pk1_pk3,                                                 #
+                          'sigma_pk3_pk1': sigma_pk3_pk1,                                                 #
+                          'max_int'      : max_int,                                                       #
+                          'log_freq'     : log_freq,                                                      #
+                          'rms_grad'     : rms_grad,                                                      #
+                          'mim_method'   : mim_method,                                                    #
+                          'data_path'    : data_path  }                                                   #
+                                                                                                          #
+                                                                                                          #
+            x, y   = ScanMultipleDistances(parameters, self.project)                                      #
         #-------------------------------------------------------------------------------------------------#
         
         return x, y

@@ -426,7 +426,7 @@ class pDynamoProject():
             pass
         
         if self.settings['fix_table'] != []:
-            PyMOL_Obj = self.job_history[self.step][1] #= [type_, pymol_id, "potencial", "1192.0987"]
+            #PyMOL_Obj = self.job_history[self.step][0] #= [type_, pymol_id, "potencial", "1192.0987"]
             
             try:
                 cmd.delete("FIX_atoms")
@@ -497,23 +497,25 @@ class pDynamoProject():
         #print 'step depois',self.step
 
         if self.PyMOL == True:
+            self.SystemCheck()
+            #      pDyanmo  -- >  PyMOL
             pymol_id = ExportFramesToPymol(self, type_)
             self.PyMOL_Obj = pymol_id
             
+            self.job_history[self.step] = [ pymol_id,  
+                                               type_, 
+                                               self.parameters['Energy Model'], 
+                                               self.parameters['Number of QC Atoms']]  # this is only a test 
+            
             pymol_objects  = cmd.get_names()
             liststore = self.builder.get_object('liststore2')
-            self.window_control.TREEVIEW_ADD_DATA2(liststore, pymol_objects, pymol_id)
-
-
-
-            self.job_history[self.step] = [
-                type_, pymol_id, "potencial", "1192.0987"]  # this is only a test
-
+            
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , pymol_id)
+            
             #-------------------------------------#
             #             SystemCheck             #
             #-------------------------------------#           
             self.SystemCheck()
-
         else:
             print 'PyMOL ==',  self.PyMOL
 
@@ -792,21 +794,21 @@ class pDynamoProject():
         return True
 
     
-	def MolecularDynamics(self, parameters):
-		""" Function doc """
-		print parameters
+    def MolecularDynamics(self, parameters):
+        """ Function doc """
+        print parameters
 
-		self.ActiveModeCheck()
+        self.ActiveModeCheck()
 
-		pDynamoMinimization(self.system, method, parameters, self.data_path)
+        pDynamoMinimization(self.system, method, parameters, self.data_path)
 
-		#------------------  increment step  ---------------#
-		#
-		self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')
-		#
-		#---------------------------------------------------#
+        #------------------  increment step  ---------------#
+        #
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')
+        #
+        #---------------------------------------------------#
 
-		return True
+        return True
     
     def ActiveModeCheck(self):
         """ Function doc """

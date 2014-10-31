@@ -56,12 +56,12 @@ class pDynamoMinimization():
             data_path = GTKDYNAMO_TMP
 
         if parameters == None:
-            logFrequency = 1
-            trajectory_name = "test_mini"
-            trajectory_freq = 1
-            maximumIterations = 20
+            logFrequency         = 1
+            trajectory_name      = "test_mini"
+            trajectory_freq      = 1
+            maximumIterations    = 20
             rmsGradientTolerance = 0.1
-            AmberTrajectoryFlag = False
+            AmberTrajectoryFlag  = False
         else:
             logFrequency         = parameters['logFrequency']
             trajectory_name      = parameters['trajectory']

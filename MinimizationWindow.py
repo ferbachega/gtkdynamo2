@@ -66,14 +66,14 @@ class MinimizationWindow():
         TrajectoryFlag = self.builder.get_object(
             "02_window_Output_trajectory_checkbox").get_active()
 
-        parameters = {'trajectory': trajectory,
-                      'maximumIterations': maximumIterations,
-                      'logFrequency': logFrequency,
-                      'trajectory_freq': trajectory_freq,
+        parameters = {'trajectory'          : trajectory,
+                      'maximumIterations'   : maximumIterations,
+                      'logFrequency'        : logFrequency,
+                      'trajectory_freq'     : trajectory_freq,
                       'rmsGradientTolerance': rmsGradientTolerance,
-                      'method': method,
-                      'AmberTrajectoryFlag': AmberTrajectoryFlag,
-                      'TrajectoryFlag': TrajectoryFlag}
+                      'method'              : method,
+                      'AmberTrajectoryFlag' : AmberTrajectoryFlag,
+                      'TrajectoryFlag'      : TrajectoryFlag}
 
         # if method == 'Conjugate Gradient':
         #	print 'Conjugate Gradient'
