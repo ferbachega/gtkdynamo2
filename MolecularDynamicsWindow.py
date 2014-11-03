@@ -28,6 +28,7 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
+from pDynamoMolecularDynamics import *
 #GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
 #GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
 #GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
@@ -52,51 +53,35 @@ class MolecularDynamicsWindow():
     """ Class doc """
 
     def on_MMDialog_button1_RUN_DYNAMICS_clicked(self, button):
-		trajectory_name   = self.builder.get_object      ("MMDialog_entry_trajectory_name").get_text()
-		nsteps            = int(self.builder.get_object  ('MMDialog_n_steps_dy').get_text())
-		log_freq          = int(self.builder.get_object  ("MMDialog_entry_log_freq_dy").get_text())
-		trajectory_freq   = int(self.builder.get_object  ("MMDialog_entry_traj_freq_dy").get_text())
-		timestep          = float(self.builder.get_object('MMDialog_timestep').get_text())
-		method            = self.builder.get_object      ("MMDialog_combobox_molecular_dynamics_method").get_active_text()
-		seed              = int(self.builder.get_object  ('MMDialog_entry_seed_dy').get_text())
-		temperature       = int(self.builder.get_object  ('MMDialog_temperature').get_text())
-		temp_scale_freq   = int(self.builder.get_object  ('MMDialog_temp_scale_freq').get_text())
-		coll_freq         = int(self.builder.get_object  ('MMDialog_collision_frequency').get_text())
-
-		parameters = {'trajectory_name' : trajectory_name,
-					  'nsteps'          : nsteps         ,
-					  'log_freq'        : log_freq       ,
-					  'trajectory_freq' : trajectory_freq,
-					  'timestep'        : timestep       ,
-					  'method'          : method         ,
-					  'seed'            : seed           ,
-					  'temperature'     : temperature    ,
-					  'temp_scale_freq' : temp_scale_freq,
-					  'coll_freq'       : coll_freq     } 
-					  
-		print parameters
-
-		if self.project.system is not None:
-			#------------------------------------------------------------------#
-			#                     Geometry optmization                         #
-			#                                                                  #
-			#    requires: method = 'Conjugate Gradient', parameters = None    #
-			# -----------------------------------------------------------------#
-			self.project.MolecularDynamics(parameters)
-
-			''' 
-			toda esta parte abaixo ficou obsoleta devido ao novo metodo no pDynamoProject -  
-			 
-			 
-								  From_PDYNAMO_to_GTKDYNAMO
-			 
-				esse metodo eh responsavel por:
-					contar o passo
-					exportar o frame atual para o pymol
-					exportar as informacoes relevantes para as treeviews
-					e adicionar informacoes ao history 
-				 
-			'''
+        trajectory_name     = self.builder.get_object      ("MMDialog_entry_trajectory_name").get_text()
+        nsteps              = int(self.builder.get_object  ('MMDialog_n_steps_dy').get_text())
+        log_freq            = int(self.builder.get_object  ("MMDialog_entry_log_freq_dy").get_text())
+        trajectory_freq     = int(self.builder.get_object  ("MMDialog_entry_traj_freq_dy").get_text())
+        timestep            = float(self.builder.get_object('MMDialog_timestep').get_text())
+        method              = self.builder.get_object      ("MMDialog_combobox_molecular_dynamics_method").get_active_text()
+        seed                = int(self.builder.get_object  ('MMDialog_entry_seed_dy').get_text())
+        temperature         = int(self.builder.get_object  ('MMDialog_temperature').get_text())
+        temp_scale_freq     = int(self.builder.get_object  ('MMDialog_temp_scale_freq').get_text())
+        coll_freq           = int(self.builder.get_object  ('MMDialog_collision_frequency').get_text())
+        AmberTrajectoryFlag = self.builder.get_object      ("MMDialog_AMBER_trajectory_checkbox1").get_active()
+        TrajectoryFlag      = self.builder.get_object      ("MMDialog_Output_trajectory_checkbox1").get_active()
+        
+        parameters = {'trajectory_name'    : trajectory_name    ,
+                      'nsteps'             : nsteps             ,
+                      'log_freq'           : log_freq           ,
+                      'trajectory_freq'    : trajectory_freq    ,
+                      'timestep'           : timestep           ,
+                      'method'             : method             ,
+                      'seed'               : seed               ,
+                      'temperature'        : temperature        ,
+                      'temp_scale_freq'    : temp_scale_freq    ,
+                      'coll_freq'          : coll_freq          ,
+                      'TrajectoryFlag'     : TrajectoryFlag     , 
+                      'AmberTrajectoryFlag': AmberTrajectoryFlag}
+                    
+        #print parameters
+        self.project.MolecularDynamics(parameters)
+        #RunMolecularDynamics(parameters, self.project)
  
 
     def __init__(self, project=None, window_control=None, main_builder=None):

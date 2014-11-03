@@ -44,15 +44,44 @@ comentarios serao salvos no history dos processos
 '''
 
 class TrajectoryDialog():
-
-    def  on_checkbutton_pDynamo_format_toggled(self, button):
+    def on_TrajectoryDialog_button_load_clicked(self, button):
         """ Function doc """
-        if self.builder.get_object('checkbutton_pDynamo_format'):
-            self.builder.get_object('filechooserbutton_others').hide()
-            self.builder.get_object('filechooserbutton_pDynamo').show()
+        first            = int(self.builder.get_object('TrajectoryDialog_first').get_text() )
+        last             = int(self.builder.get_object('TrajectoryDialog_last').get_text()  )
+        stride           = int(self.builder.get_object('TrajectoryDialog_stride').get_text())
+        #traj_name        = self.builder.get_object('filechooserbutton1').get_text()
+        #traj_name2       = self.builder.get_object('filechooserbutton2').get_text()
+        new_pymol_object = self.builder.get_object('entry1').get_text()
+        mode             = self.builder.get_object('combobox1').get_active_text()
+        
+        """ Function doc """
+        if mode == 'folder - pDynamo':
+            traj_name        = self.builder.get_object('filechooserbutton1').get_filename()
+
         else:
-            self.builder.get_object('filechooserbutton_others').show()
-            self.builder.get_object('filechooserbutton_pDynamo').hide()
+            traj_name        = self.builder.get_object('filechooserbutton2').get_filename()
+
+        print (first            ,
+              last             ,
+              stride           ,
+              traj_name        ,  
+              new_pymol_object ,
+              mode)            
+        
+        self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object)
+        
+        
+
+        
+    def on_combobox1_changed(self, button):
+        mode        = self.builder.get_object('combobox1').get_active_text()
+        """ Function doc """
+        if mode == 'folder - pDynamo':
+            self.builder.get_object('filechooserbutton2').hide()
+            self.builder.get_object('filechooserbutton1').show()
+        else:
+            self.builder.get_object('filechooserbutton2').show()
+            self.builder.get_object('filechooserbutton1').hide()
 
 
     def __init__(self, project=None, window_control=None, main_builder=None):
@@ -76,12 +105,12 @@ class TrajectoryDialog():
 		'''
         
         self.window_control = WindowControl(self.builder)
-        self.builder.get_object('filechooserbutton_others').hide()
+        self.builder.get_object('filechooserbutton2').hide()
         
         #----------------- Setup ComboBoxes -------------------------#
-        #combobox = '02_window_combobox_minimization_method'         #
-        #combolist = ["Conjugate Gradient", "Steepest Descent", "LBFGS"]
-        #self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
+        combobox = 'combobox1'         #
+        combolist = ["folder - pDynamo", "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
         #------------------------------------------------------------#
 
 

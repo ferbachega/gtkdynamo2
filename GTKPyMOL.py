@@ -93,6 +93,7 @@ from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
 from NonBondDialog               import *
 from ScanDialog                  import *
+from TrajectoryDialog            import *
 # pDynamo
 from pDynamoProject import *
 from WindowControl  import *
@@ -621,6 +622,12 @@ class gtkdynamo_main():
     #--------------------------------------------#
     '''
 
+
+    def on_menuitem_import_trajectory_activate (self, menuitem):
+        """ Function doc """
+        self.TrajectoryDialog.dialog.run()
+        self.TrajectoryDialog.dialog.hide()
+
     def on_01_main_window_ShowValences_toggled(self, button):
         print """ Function doc """
         if self.builder.get_object('ShowValences').get_active() == True:
@@ -876,6 +883,11 @@ class gtkdynamo_main():
                                                                                                           #
         self.ScanDialog = ScanDialog(self.project,                                                        #
             self.window_control, self.builder)                                                            #        
+        
+        self.TrajectoryDialog = TrajectoryDialog(self.project,                                                        #
+            self.window_control, self.builder)
+        
+        
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 

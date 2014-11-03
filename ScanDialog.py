@@ -70,7 +70,7 @@ class ScanDialog():
         print "\n\n"
         print mode 
 
-
+        self.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -144,7 +144,7 @@ class ScanDialog():
                                                                                                           #
             x, y   = ScanMultipleDistances(parameters, self.project)                                      #
         #-------------------------------------------------------------------------------------------------#
-        
+        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn')
         return x, y
 
 
