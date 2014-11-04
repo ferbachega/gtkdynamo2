@@ -770,6 +770,12 @@ class gtkdynamo_main():
             model.set(iter, 0, true_or_false)
             # print true_or_false
 
+    def BARSET_SETFRAME (self, hscale, text= None,  data=None):            # SETUP  trajectory window
+        valor = hscale.get_value()
+        cmd.frame( int (valor) )
+
+
+
     def __init__(self):
 
         print '           Intializing GTKdynamo GUI object          '
@@ -831,6 +837,11 @@ class gtkdynamo_main():
         -------------------------------------------------
         '''
         self.window_control = WindowControl(self.builder)
+        scale = self.builder.get_object("trajectory_hscale")
+        scale.set_range(1, 100)
+        scale.set_increments(1, 10)
+        scale.set_digits(0)
+
 
 
         #----------------- Setup ComboBoxes -------------------------#

@@ -1621,10 +1621,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkHScale" id="19_window_hscale2">
+                              <object class="GtkHScale" id="trajectory_hscale">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="round_digits">1</property>
+                                <signal name="change-value" handler="BARSET_SETFRAME" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>

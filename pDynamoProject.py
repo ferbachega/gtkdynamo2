@@ -702,7 +702,19 @@ class pDynamoProject():
                 if a == last:
                     break
                 a=a+1	
+        type_ = 'trj'
+        
+        
+        self.IncrementStep()
+        self.job_history[self.step] = [ new_pymol_object,  
+                                        type_ , 
+                                        self.parameters['Energy Model'], 
+                                        self.parameters['Number of QC Atoms']]  # this is only a test 
 
+        pymol_objects  = cmd.get_names()
+        liststore = self.builder.get_object('liststore2')
+
+        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , traj_name)
 
 
 
