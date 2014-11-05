@@ -88,7 +88,7 @@ class WindowControl():
         for i in job_history:
             data = [False, job_history[i][0],job_history[i][1],job_history[i][2]]
             if job_history[i][0] == pymol_id:
-                print "aqui"
+                #print "aqui"
                 data = [True, job_history[i][0],job_history[i][1],job_history[i][2]]
             model.append(data)
             n = n + 1

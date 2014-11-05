@@ -347,6 +347,10 @@ class pDynamoProject():
             NewSystem = filesin["coordinates"]					#
             self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
 
+        
+        print BufferText
+        #text  = BufferText.get_text()
+        #print text
         ## nbModel applied
         #if FileType is not "pDynamo files(*.pkl,*.yaml)":
         #    self.set_nbModel_to_system()
@@ -713,11 +717,10 @@ class pDynamoProject():
 
         pymol_objects  = cmd.get_names()
         liststore = self.builder.get_object('liststore2')
+        self.PyMOL_Obj = new_pymol_object
 
-        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , traj_name)
-
-
-
+        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , self.PyMOL_Obj)
+        self.SystemCheck()
 
 
 
