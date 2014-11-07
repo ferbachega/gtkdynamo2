@@ -317,7 +317,8 @@ def mousepress(button, event):
     #print ZeroX, ZeroY
     
     x, y, width, height = glarea.get_allocation()
-    
+
+        
     if event.button == 3:
         global clicado
         clicado = True
@@ -332,7 +333,8 @@ def mousepress(button, event):
         #print pointerx,pointery,calc_y
         #cmd.zoom(buffer=calc_y)
         pymol.button(button, 0, pointerx , calc_y, 0)
-            
+
+        
     if event.button != 3:
         x, y, width, height = glarea.get_allocation()
         mousepress = event
@@ -341,6 +343,8 @@ def mousepress(button, event):
         pointery = int(mousepress.y)
         calc_y = height - pointery
         pymol.button(button, 0, pointerx, calc_y, 0)
+
+
 
 def mouserelease(button, event):
     x, y, width, height = glarea.get_allocation()
@@ -826,6 +830,7 @@ class gtkdynamo_main():
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
+        #cmd.distance('pk1','pk2')
         #-------------------------------------------------------#
         print text1
 
