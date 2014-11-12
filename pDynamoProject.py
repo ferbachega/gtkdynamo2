@@ -505,10 +505,12 @@ class pDynamoProject():
             pymol_id = ExportFramesToPymol(self, type_)
             self.PyMOL_Obj = pymol_id
             
-            self.job_history[self.step] = [ pymol_id,  
-                                               type_, 
-                                               self.parameters['Energy Model'], 
-                                               self.parameters['Number of QC Atoms']]  # this is only a test 
+            self.job_history[self.step] = [pymol_id                             ,  
+                                           type_                                ,    # - process type
+                                           self.parameters['Energy Model']      ,    # - potencial 
+                                           self.parameters['Number of QC Atoms'],    # - QC atoms
+                                           'black'                                   # - color
+                                           ]
             
             pymol_objects  = cmd.get_names()
             liststore = self.builder.get_object('liststore2')
@@ -708,19 +710,27 @@ class pDynamoProject():
                 a=a+1	
         type_ = 'trj'
         
+        put_new_obj_in_treeview = False
         
-        self.IncrementStep()
-        self.job_history[self.step] = [ new_pymol_object,  
-                                        type_ , 
-                                        self.parameters['Energy Model'], 
-                                        self.parameters['Number of QC Atoms']]  # this is only a test 
-
-        pymol_objects  = cmd.get_names()
-        liststore = self.builder.get_object('liststore2')
         self.PyMOL_Obj = new_pymol_object
+        for i in self.job_history:
+            if self.PyMOL_Obj in self.job_history[i]:
+                put_new_obj_in_treeview = True
 
-        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , self.PyMOL_Obj)
-        self.SystemCheck()
+        
+        if put_new_obj_in_treeview == False:
+            self.IncrementStep()
+            self.job_history[self.step] = [ new_pymol_object,  
+                                            type_ , 
+                                            self.parameters['Energy Model'], 
+                                            self.parameters['Number of QC Atoms']]  # this is only a test 
+            pymol_objects  = cmd.get_names()
+            liststore = self.builder.get_object('liststore2')
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.job_history , self.PyMOL_Obj)
+            self.SystemCheck()
+        
+        
+
 
 
 
@@ -761,6 +771,7 @@ class pDynamoProject():
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
         print 'pruned'        
         
+
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         
@@ -768,9 +779,25 @@ class pDynamoProject():
         
         self.SystemCheck()
 
+
+    def clean_fix_table(self):
+        self.system.DefineFixedAtoms(None)
+        self.settings['fix_table'] = []
+        self.SystemCheck()
+
+
+
     def put_qc_table(self, qc_table):
         self.settings['qc_table'] = qc_table
         #self.settings['QCMM'] = 'yes'
+
+    def clean_qc_table(self):
+        self.system.DefineQCModel (None)
+        self.settings['qc_table'] = []
+        self.SystemCheck()
+
+    
+    
     def IncrementStep(self):
         # {1:[process, pymol_id, potencial, energy]}
         self.step = self.step + 1

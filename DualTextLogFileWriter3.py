@@ -86,7 +86,7 @@ def DualTextLog(path, filename="log.gui.txt"):
     log_out = open(os.path.join(path, filename), "a")
 
     localtime = time.asctime(time.localtime(time.time()))                 #
-    localtime = "Generated on:" + localtime + '\n\n'
+    localtime = "Generated on " + localtime + '\n\n'
     header = header + localtime
     log_out.write(header)
     log_out.close()

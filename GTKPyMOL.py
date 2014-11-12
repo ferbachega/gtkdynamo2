@@ -365,9 +365,10 @@ def mousemove(button, event):
 
     calc_y2  = (float(Zero_pointery - pointery))/10.0
     calc_y   = height - pointery
-
+    
     if clicado:
         global ZeroY
+        #print 'a'
         #print clicado
         #print Menu
         #Buffer = (calc_y2)
@@ -605,17 +606,64 @@ class gtkdynamo_main():
 
         print self.project.settings['qc_table']
 
+
+    def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem):    
+        self.project.clean_qc_table()
+        print self.project.settings['qc_table']
+
+
     def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
         table = PymolGetTable('sele')
         self.project.put_fix_table(table)
         print self.project.settings['fix_table']
+
+    def on_GLAreaMenu_itemActive_CleanFixTable(self, menuitem):    
+        self.project.clean_fix_table()
+        print self.project.settings['fix_table']
+
+
+    
+    
+    
     
     def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
         print "aqui"
         table = PymolGetTable('sele')
-        self.project.put_prune_table(table)
-        print self.project.settings['prune_table']
-        #print "aqui"
+        '''
+                                                  d i a l o g
+                                         #  -  I M P O R T A N T  -  #                                   
+                            #---------------------------------------------------------#                  
+                            #                                                         #                  
+                            #        Message Dialog  -  when 2 buttons will be showed #                  
+                            #  1 -create the warning message                          #                  
+                            #  2 -hide the actual dialog - optional                   #                  
+                            #  3 -show the message dialog                             #                  
+                            #  4 -hide the message dialog                             #                  
+                            #  5 -check the returned valor by the message dialog      #                  
+                            #  6 -do something                                        #                  
+                            #  7 -restore the actual dialog - optional                #                  
+                            #---------------------------------------------------------#                  
+        '''
+                                                                                              
+        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: Prune the system is an irreversible process. Do you want to continue?")  
+        dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                          
+        a = dialog.run()  # possible "a" valors                                                           
+        # 4 step          # -8  -  yes                                                                    
+        dialog.hide()     # -9  -  no                                                                     
+                          # -4  -  close                                                                  
+                          # -5  -  OK                                                                     
+                          # -6  -  Cancel                                                                 
+                                                                                                          
+        # 5 step                                                                                          
+        if a == -8:                                                                                       
+            # 6 step 
+            self.project.put_prune_table(table)
+            print self.project.settings['prune_table']                                                                                     
+            #self.QuantumChemistrySetupDialog.dialog.run()
+            #self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
+        else:                                                                                             
+            return 0                                                                                      
 
 
 
@@ -777,6 +825,38 @@ class gtkdynamo_main():
     def BARSET_SETFRAME (self, hscale, text= None,  data=None):            # SETUP  trajectory window
         valor = hscale.get_value()
         cmd.frame( int (valor) )
+        
+        if self.builder.get_object('trajectory_QC_bonds_checkbutton1').get_active():
+            lista     = self.project.settings['qc_table']
+            PyMOL_Obj= self.project.PyMOL_Obj
+            for i in range(0, len(lista)):
+                
+                for j in range(1, len(lista)): 
+                    if i != j:
+                        
+                        dist = cmd.get_distance(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]), int (valor) )
+                        
+                        #if dist >= 1.9:
+                        #
+                        #    #cmd.bond(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]))
+                        #
+                        ##else:
+                        #
+                        #    cmd.unbond(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]))   
+    
+    def TRAJECTORY_TOOL_ENTRY_PUSH(self, entry, data=None):
+		MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
+		MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+
+		scale = self.builder.get_object("trajectory_hscale")
+		scale.set_range(MIN, MAX)
+		scale.set_increments(1, 10)
+		scale.set_digits(0)	
+
+
+
+
+
 
 
 
