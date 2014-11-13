@@ -78,6 +78,36 @@ class NEBDialog():
                           
         for i in parameters:
             print i, parameters[i]
+		
+
+        if self.project != None:
+            data_path = self.project.data_path
+        else:
+            data_path = "/home/teste"
+
+        
+                
+        # reactants
+        if self.builder.get_object('NEBDialog_checkbutton_REACTANTS').get_active():
+            reactants_file          = self.builder.get_object('NEBDialog_filechooserbutton_REACTANTS').get_filename()
+        else:
+            pymol_object            = self.builder.get_object('NEBDialog_entry_REACTANTS').get_text()
+            label       	        = pymol_object + " XYZ file - REACTANTS"
+            file_out                = "reactants_NEB.xyz"	
+            reactants_file          = PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, -1)			
+
+        if self.builder.get_object('NEBDialog_checkbutton_PRODUCTS').get_active():
+            products_file       = self.builder.get_object('NEBDialog_filechooserbutton_PRODUCTS').get_filename()
+        else:
+            pymol_object            = self.builder.get_object('NEBDialog_entry_PRODUCTS').get_text()
+            label       	        = pymol_object + " XYZ file - PRODUCTS"
+            file_out                = "products_NEB.xyz"	
+            products_file           =PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, -1)
+
+        print reactants_file
+        print products_file
+       
+       
         #trajectory           = self.builder.get_object("02_window_entry_traj_name").get_text()
         #maximumIterations    = int(self.builder.get_object("02_window_entry_max_int").get_text())
         #logFrequency         = int(self.builder.get_object("02_window_entry_log_freq").get_text())
