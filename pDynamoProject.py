@@ -301,15 +301,6 @@ class pDynamoProject():
 
 
 
-
-
-
-
-
-
-
-
-
     def Create_New_Project(self, name="UNK",  # str
                            data_path=None,  # str
                            FileType=None,  # str
@@ -748,9 +739,6 @@ class pDynamoProject():
         
         
 
-
-
-
     def set_nbModel_to_system(self):
         ABFS_options = self.settings['ABFS_options']
         nbModel = self.settings['nbModel_type']
@@ -788,7 +776,6 @@ class pDynamoProject():
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
         print 'pruned'        
         
-
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         
@@ -796,18 +783,14 @@ class pDynamoProject():
         
         self.SystemCheck()
 
-
     def clean_fix_table(self):
         self.system.DefineFixedAtoms(None)
         self.settings['fix_table'] = []
         self.SystemCheck()
 
-
-
     def put_qc_table(self, qc_table):
         self.settings['qc_table'] = qc_table
         #self.settings['QCMM'] = 'yes'
-
     def clean_qc_table(self):
         self.system.DefineQCModel (None)
         self.settings['qc_table'] = []
@@ -859,7 +842,6 @@ class pDynamoProject():
             print "file type not supported"
 
         return filename, type_
-
 
     def ComputeEnergy(self):  # Compute Energy
         self.ActiveModeCheck()

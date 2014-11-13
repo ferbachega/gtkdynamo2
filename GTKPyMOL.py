@@ -93,6 +93,7 @@ from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
 from NonBondDialog               import *
 from ScanDialog                  import *
+from Scan2dDialog                import *
 from TrajectoryDialog            import *
 # pDynamo
 from pDynamoProject import *
@@ -403,11 +404,11 @@ def my_menu_func(menu):
 
 def context_menu():
     builder = gtkdynamo.builder
-    menu = builder.get_object('menu8')
+    menu = builder.get_object('GLArea_menu')
     #menu = gtk.Menu()
     #menu_item = gtk.MenuItem("Sweet menu")
     #menu_item.connect(
-    #    'activate', gtkdynamo.on_01_main_window_OpenNewProjectDialog_clicked)
+    #    'activate', gtkdynamo.on_MainMenu_File_NewProject_activete)
     #menu.append(menu_item)
    #menu_item.show()
    #menu_item = gtk.MenuItem("Salty menu")
@@ -606,11 +607,9 @@ class gtkdynamo_main():
 
         print self.project.settings['qc_table']
 
-
     def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem):    
         self.project.clean_qc_table()
         print self.project.settings['qc_table']
-
 
     def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
         table = PymolGetTable('sele')
@@ -621,11 +620,6 @@ class gtkdynamo_main():
         self.project.clean_fix_table()
         print self.project.settings['fix_table']
 
-
-    
-    
-    
-    
     def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
         print "aqui"
         table = PymolGetTable('sele')
@@ -667,20 +661,18 @@ class gtkdynamo_main():
 
 
 
-
+    '''                                            
+    #      ---------------------------------  
+    #              MAIN MENU  methods    
+    #      ---------------------------------
+    
     '''
-    #--------------------------------------------#
-    #               01_main_window               #
-    #--------------------------------------------#
-    '''
-
-
-    def on_menuitem_import_trajectory_activate (self, menuitem):
+    def on_MainMenu_File_Import_menuitemImportTrajectory_activete (self, menuitem):
         """ Function doc """
         self.TrajectoryDialog.dialog.run()
         self.TrajectoryDialog.dialog.hide()
 
-    def on_01_main_window_ShowValences_toggled(self, button):
+    def on_MainMenu_View_menuitemShowValences_activete(self, button):
         print """ Function doc """
         if self.builder.get_object('ShowValences').get_active() == True:
             #cmd.set('valence', 0.1)
@@ -689,18 +681,12 @@ class gtkdynamo_main():
             #cmd.set('valence', 0.0)
             cmd.do('set valence, 0.0')
 
-    def on_PyMOLCommandLine_entry1_activate(self, button):
-        """ Function doc """
-        command = self.builder.get_object('entry1').get_text()
-        print command
-        cmd.do(command)
-
-    def on_01_main_window_OpenNewProjectDialog_clicked(self, button):
+    def on_MainMenu_File_NewProject_activete(self, button):
         """ Function doc """
         self._NewProjectDialog.dialog.run()
         self._NewProjectDialog.dialog.hide()
 
-    def on_01_main_window_OpenFileChooserWindow_clicked(self, button):
+    def on_MainMenu_File_OpenFileChooserWindow_clicked(self, button):
         """ Function doc """
 
         FileChooser = FileChooserWindow()
@@ -714,36 +700,42 @@ class gtkdynamo_main():
         except:
             pass
 
-
-
-
-    def  on_menuitem22bScan1_activate(self, menuItem):
+    def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
         """ Function doc """
         self.ScanDialog.dialog.run()
         self.ScanDialog.dialog.hide()  
 
-    def on_menuitem46_activate(self, button):
+    def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
+        self.Scan2dDialog.dialog.run()
+        self.Scan2dDialog.dialog.hide()
+
+    def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
         """ Function doc """
         self.NonBondDialog.dialog.run()
         self.NonBondDialog.dialog.hide()
 
-    def on_toolbuttonCheckSystem_clicked(self, button):
+
+
+    '''                                            
+    #      ---------------------------------  
+    #              TOOL BAR  methods    
+    #      ---------------------------------
+    
+    '''
+    def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
         self.project.SystemCheck()
 
-    def on_toolbuttonSinglePoint_clicked(self, button):
+    def on_ToolBar_buttonSinglePoint_clicked(self, button):
         """ Function doc """
         self.project.ComputeEnergy()    
 
-
-
-
-    def on_toolbutton5_clicked(self, button):
+    def on_ToolBar_buttonQuantumChemistrySetup_clicked(self, button):
         """ Function doc """
         self.QuantumChemistrySetupDialog.dialog.run()
         self.QuantumChemistrySetupDialog.dialog.hide()
 
-    def on_01_main_window_OpenMinimizationWindow_clicked(self, button):
+    def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
         """ Function doc """
         print self.project.step
         text = str(self.project.step + 1) + '_step_GeometryOptmization'
@@ -752,7 +744,7 @@ class gtkdynamo_main():
         self._02MinimizationWindow.dialog.run()
         self._02MinimizationWindow.dialog.hide()
 
-    def on_01_main_window_MD_toolbutton9_clicked (self, button):
+    def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
         """ Function doc """
         print self.project.step
         text = str(self.project.step + 1) + '_step_MolecularDynamics'
@@ -760,11 +752,7 @@ class gtkdynamo_main():
         self.MolecularDynamicsWindow.dialog.run()
         self.MolecularDynamicsWindow.dialog.hide()
         
-
-
-
-
-    def on_01_main_window_ChangeSelectionMode_togglebutton1_toggled(self, button):
+    def on_ToolBar_togglebbuttonChangeSelectionMode_toggled(self, button):
         if self.builder.get_object('togglebutton1').get_active():
             # print '# If control reaches here, the toggle button is down'
             self.builder.get_object('togglebutton1').set_label('Editing')
@@ -778,7 +766,7 @@ class gtkdynamo_main():
             self.builder.get_object('combobox1').set_sensitive(True)
             cmd.edit_mode(0)
 
-    def on_01_main_window_ChangeSelection_combobox1_changed(self, button):
+    def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
         if mode == "Atom":
@@ -790,6 +778,14 @@ class gtkdynamo_main():
         if mode == "Molecule":
             cmd.set("mouse_selection_mode", 5)
 
+    
+    '''                                            
+    #      ---------------------------------  
+    #           PyMOL TREEVIEW  methods    
+    #      ---------------------------------
+    
+    '''   
+    
     def row_activated(self, tree, path, column):
 
         model = tree.get_model()   
@@ -799,7 +795,6 @@ class gtkdynamo_main():
         string2 = 'select sele, '+ pymol_object
         cmd.do(string2)
         cmd.enable('sele')
-    
     
     def row_activated2(self, tree, path, column):
 
@@ -821,8 +816,40 @@ class gtkdynamo_main():
             true_or_false = False
             model.set(iter, 0, true_or_false)
             # print true_or_false
+    
 
-    def BARSET_SETFRAME (self, hscale, text= None,  data=None):            # SETUP  trajectory window
+
+    '''                                            
+    #      ---------------------------------  
+    #           PyMOL COMMAND LINE    
+    #      ---------------------------------
+    
+    '''
+
+    def on_PyMOLCommandLine_entry1_activate(self, button):
+        """ Function doc """
+        command = self.builder.get_object('entry1').get_text()
+        print command
+        cmd.do(command)
+
+
+    
+    '''                                            
+    #      ---------------------------------  
+    #          TrajectoryTool  methods    
+    #      ---------------------------------
+    
+    ''' 
+    def on_TrajectoryTool_Entry_Push(self, entry, data=None):
+		MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
+		MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+
+		scale = self.builder.get_object("trajectory_hscale")
+		scale.set_range(MIN, MAX)
+		scale.set_increments(1, 10)
+		scale.set_digits(0)	
+
+    def on_TrajectoryTool_BarSetFrame(self, hscale, text= None,  data=None):            # SETUP  trajectory window
         valor = hscale.get_value()
         cmd.frame( int (valor) )
         
@@ -843,20 +870,6 @@ class gtkdynamo_main():
                         ##else:
                         #
                         #    cmd.unbond(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]))   
-    
-    def TRAJECTORY_TOOL_ENTRY_PUSH(self, entry, data=None):
-		MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
-		MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
-
-		scale = self.builder.get_object("trajectory_hscale")
-		scale.set_range(MIN, MAX)
-		scale.set_increments(1, 10)
-		scale.set_digits(0)	
-
-
-
-
-
 
 
 
@@ -978,15 +991,17 @@ class gtkdynamo_main():
             self.window_control, self.builder)                                                            #
                                                                                                           #
         self.ScanDialog = ScanDialog(self.project,                                                        #
-            self.window_control, self.builder)                                                            #        
-        
-        self.TrajectoryDialog = TrajectoryDialog(self.project,                                                        #
-            self.window_control, self.builder)
-        
-        
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
+        self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
+        self.TrajectoryDialog = TrajectoryDialog(self.project,                                            #
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
+                                                                                                          #
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
-
 
     def run(self):
         gtk.main()

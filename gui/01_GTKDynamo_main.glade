@@ -277,6 +277,63 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_save_as_16x16.png</property>
   </object>
+  <object class="GtkMenu" id="menu4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem11">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image34</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem12">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image38</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem13">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image39</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image40</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem15">
+        <property name="label">gtk-quit</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="image41">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -354,113 +411,7 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_import_16x16.png</property>
   </object>
-  <object class="GtkImage" id="image55">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_distance3.png</property>
-  </object>
-  <object class="GtkImage" id="image6">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_open_project_16x16.png</property>
-  </object>
-  <object class="GtkImage" id="image7">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_delete_16x16.png</property>
-  </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_scan_16x16.png</property>
-  </object>
-  <object class="GtkImage" id="image9">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_minimization_16x16.png</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="liststore2">
-    <columns>
-      <!-- column-name gboolean1 -->
-      <column type="gboolean"/>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
-      <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="liststore3">
-    <columns>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-    </columns>
-  </object>
-  <object class="GtkMenu" id="menu4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem11">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image34</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem12">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image38</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem13">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image39</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem14">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image40</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem15">
-        <property name="label">gtk-quit</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem6">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-  </object>
-  <object class="GtkMenu" id="menu8">
+  <object class="GtkMenu" id="GLArea_menu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
@@ -629,6 +580,49 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="image55">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_distance3.png</property>
+  </object>
+  <object class="GtkImage" id="image6">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_open_project_16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image7">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_delete_16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_scan_16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image9">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_minimization_16x16.png</property>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name gboolean1 -->
+      <column type="gboolean"/>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray2 -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray3 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="win">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">GTKDynamo 2.0</property>
@@ -661,7 +655,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image44</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_01_main_window_OpenNewProjectDialog_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_File_NewProject_activete" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -671,7 +665,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image35</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_01_main_window_OpenFileChooserWindow_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_File_OpenFileChooserWindow_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -723,7 +717,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Trajectory</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem_import_trajectory_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_File_Import_menuitemImportTrajectory_activete" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -848,7 +842,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">NonBond Model</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_menuitem46_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Edit_menuitemNonBondingModels_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -887,7 +881,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show Valences</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_01_main_window_ShowValences_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowValences_activete" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -966,7 +960,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image46</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_01_main_window_OpenMinimizationWindow_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_ToolBar_buttonOptmizationSetup_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -976,7 +970,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image47</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_01_main_window_MD_toolbutton9_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_ToolBar_buttonMolecularDynamicsSetup_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1014,7 +1008,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scan</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem22bScan1_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemScan1D_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1023,6 +1017,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scan 2D</property>
                                 <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemScan2D_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1160,7 +1155,7 @@
                 <property name="label" translatable="yes">new project</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image1</property>
-                <signal name="clicked" handler="on_01_main_window_OpenNewProjectDialog_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_MainMenu_File_NewProject_activete" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1175,7 +1170,7 @@
                 <property name="label" translatable="yes">open</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image2</property>
-                <signal name="clicked" handler="on_01_main_window_OpenFileChooserWindow_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_MainMenu_File_OpenFileChooserWindow_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1252,7 +1247,7 @@
                 <property name="label" translatable="yes">Quantum Chemistry</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image33</property>
-                <signal name="clicked" handler="on_toolbutton5_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_buttonQuantumChemistrySetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1277,7 +1272,7 @@
                 <property name="label" translatable="yes">check system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image15</property>
-                <signal name="clicked" handler="on_toolbuttonCheckSystem_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_buttonCheckSystem_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1292,7 +1287,7 @@
                 <property name="label" translatable="yes">compute energy (single point))</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image16</property>
-                <signal name="clicked" handler="on_toolbuttonSinglePoint_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_buttonSinglePoint_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1307,7 +1302,7 @@
                 <property name="label" translatable="yes">geometry optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
-                <signal name="clicked" handler="on_01_main_window_OpenMinimizationWindow_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_buttonOptmizationSetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1322,7 +1317,7 @@
                 <property name="label" translatable="yes">molecular dynamics</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image18</property>
-                <signal name="clicked" handler="on_01_main_window_MD_toolbutton9_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_buttonMolecularDynamicsSetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1411,7 +1406,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="toggled" handler="on_01_main_window_ChangeSelectionMode_togglebutton1_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_ToolBar_togglebbuttonChangeSelectionMode_toggled" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -1439,7 +1434,7 @@
                       <object class="GtkComboBox" id="combobox1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <signal name="changed" handler="on_01_main_window_ChangeSelection_combobox1_changed" swapped="no"/>
+                        <signal name="changed" handler="on_ToolBar_comboboxChangeSelectionMode_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -1661,7 +1656,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="round_digits">1</property>
-                                <signal name="change-value" handler="BARSET_SETFRAME" swapped="no"/>
+                                <signal name="change-value" handler="on_TrajectoryTool_BarSetFrame" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1706,7 +1701,7 @@
                                         <property name="secondary_icon_activatable">False</property>
                                         <property name="primary_icon_sensitive">True</property>
                                         <property name="secondary_icon_sensitive">True</property>
-                                        <signal name="activate" handler="TRAJECTORY_TOOL_ENTRY_PUSH" swapped="no"/>
+                                        <signal name="activate" handler="on_TrajectoryTool_Entry_Push" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -1742,7 +1737,7 @@
                                         <property name="secondary_icon_activatable">False</property>
                                         <property name="primary_icon_sensitive">True</property>
                                         <property name="secondary_icon_sensitive">True</property>
-                                        <signal name="activate" handler="TRAJECTORY_TOOL_ENTRY_PUSH" swapped="no"/>
+                                        <signal name="activate" handler="on_TrajectoryTool_Entry_Push" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -2053,5 +2048,11 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="liststore3">
+    <columns>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+    </columns>
   </object>
 </interface>
