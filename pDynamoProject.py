@@ -129,7 +129,24 @@ class pDynamoProject():
         self.ActiveMode = False #True 
 
         self.PyMOL_Obj  = None
-
+        
+        
+        ''' 
+                   BondTable  
+        
+        
+        
+                          A1   A2      Bond   Active
+                                     
+        BondTable      = {(1,  2)  :   [1.1,   True]}
+        
+        BondTable[1,2] = [atomic_dic["C"][2] + atomic_dic["H"][2], True]
+        
+        
+        '''
+        self.BondTable = {}
+        
+        
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
         self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
