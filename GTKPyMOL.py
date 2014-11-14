@@ -557,7 +557,7 @@ class gtkdynamo_main():
     #--------------------------------------------#  
     '''
     
-    def on_GLAreaMenu_itemActive_SetQCTable(self, menuitem):    
+    def on_GLAreaMenu_itemActive_SetQCTable(self, menuitem, click = None):    
         table    = PymolGetTable('sele')
         oldTable = self.project.settings['qc_table']
         self.project.put_qc_table(table)
@@ -607,7 +607,7 @@ class gtkdynamo_main():
 
         print self.project.settings['qc_table']
 
-    def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem):    
+    def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem, click = None):    
         self.project.clean_qc_table()
         print self.project.settings['qc_table']
 
@@ -852,25 +852,39 @@ class gtkdynamo_main():
     def on_TrajectoryTool_BarSetFrame(self, hscale, text= None,  data=None):            # SETUP  trajectory window
         valor = hscale.get_value()
         cmd.frame( int (valor) )
+        BondTable = self.project.BondTable
         
         if self.builder.get_object('trajectory_QC_bonds_checkbutton1').get_active():
             lista     = self.project.settings['qc_table']
             PyMOL_Obj= self.project.PyMOL_Obj
-            for i in range(0, len(lista)):
-                
-                for j in range(1, len(lista)): 
+            
+            for i in lista:
+                for j in lista: 
                     if i != j:
+                        bond_unbond1 = self.project.BondTable[i+1,j+1][1]
+                        Rcov         = self.project.BondTable[i+1,j+1][0]
+                        #print lista[i], lista[j]
                         
-                        dist = cmd.get_distance(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]), int (valor) )
-                        
-                        #if dist >= 1.9:
+                        dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1), 
+                                                        PyMOL_Obj+' and index '+ str(j+1), 
+                                                        int (valor) )
+                        #if dist <= Rcov:
+                        #    bond_unbond2 = True
+                        #else:
+                        #    bond_unbond2 = False
                         #
-                        #    #cmd.bond(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]))
                         #
-                        ##else:
-                        #
-                        #    cmd.unbond(PyMOL_Obj+ ' and index ' + str(lista[i]), PyMOL_Obj+ ' and index '+ str(lista[j]))   
-
+                        #if bond_unbond2 != bond_unbond1:
+                        #    if bond_unbond2 == True:
+                        #        #cmd.bond(PyMOL_Obj+' and index '+str(i+1), 
+                        #        #         PyMOL_Obj+' and index '+str(j+1))
+                        #        self.project.BondTable[i+1,j+1][1]  = bond_unbond2
+                        #    else:
+                        #        #cmd.unbond(PyMOL_Obj+ ' and index '+str(i+1), 
+                        #        #           PyMOL_Obj+ ' and index '+str(j+1))
+                        #        self.project.BondTable[i+1,j+1][1]  = bond_unbond2
+                        #else:
+                        #    pass
 
 
     def __init__(self):

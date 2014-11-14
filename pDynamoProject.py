@@ -231,11 +231,13 @@ class pDynamoProject():
             self.settings['potencial'] = "QCMM"
             self.settings['QCMM']      = True
             self.set_nbModel_to_system()
+            
         else:
             self.system.DefineQCModel ( qcModel )
             self.settings['potencial'] = "QC"
             self.settings['QCMM']      = True
         self.SystemCheck()
+        self.set_qc_DynamicBondsList()
 
     def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
         nbModel   = self.settings['nbModel']
@@ -297,7 +299,33 @@ class pDynamoProject():
             self.settings['QCMM']      = 'no'	
         self.system.electronicState           = ElectronicState  ( charge = charge, multiplicity = multiplicity )
 
+    def set_qc_DynamicBondsList(self):
+        lista  = self.settings['qc_table']
+        self.BondTable       = {}
+        for i in lista:
+            for j in lista: 
+                if i != j:
+                    atom1    = self.system.atoms[i]
+                    atom2    = self.system.atoms[j]
+                    element1 = PeriodicTable.Symbol (atom1.atomicNumber ).upper ( )
+                    element2 = PeriodicTable.Symbol (atom2.atomicNumber ).upper ( )
+                    #BondTable[i,j] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
 
+
+
+                    Distance_i_j             = self.system.coordinates3.Distance (i,j)
+                    Rcov                     = (atomic_dic[element1][2] + atomic_dic[element2][2]) + (atomic_dic[element1][2] + atomic_dic[element2][2])/50
+                    Bond_Unbond              = None
+                    if Distance_i_j <= Rcov:
+                        Bond_Unbond  = True
+                    else:
+                        Bond_Unbond  = False
+
+                    #PyMOL_BondTable[i+1,j+1] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
+                    #print i+1, element1, j+1,element2, "BOND: ", Rcov, Distance_i_j, Bond_Unbond
+                    self.BondTable[i+1,j+1] = [Rcov, Bond_Unbond]
+
+        print self.BondTable
 
 
 
