@@ -1042,4 +1042,9 @@ gtkdynamo = gtkdynamo_main()
 #glarea.connect_object("button_press_event", show_context_menu, context_menu())
 glarea.connect_object("button_release_event", show_context_menu, context_menu())
 
+import sys
+if len(sys.argv) > 1:
+    gtkdynamo.project.load_coordinate_file_as_new_system(sys.argv[1])
+    gtkdynamo.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
 gtkdynamo.run()
