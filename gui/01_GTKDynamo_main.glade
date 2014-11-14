@@ -478,6 +478,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Import as QC Atoms</property>
                 <property name="use_underline">True</property>
+                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
               </object>
             </child>
