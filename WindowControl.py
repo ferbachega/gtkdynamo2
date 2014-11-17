@@ -24,7 +24,7 @@
 #
 import gtk
 import gobject
-
+import pango
 
 class WindowControl():
 
@@ -72,24 +72,27 @@ class WindowControl():
 
     def TREEVIEW_ADD_DATA2(self, liststore=None, job_history=[], pymol_id=None):
         """ Function doc """
-        #model = liststore  # @+
-        #model.clear()
-        #n = 0
-        #for i in pymol_objects:
-        #    data = [False, i,i,i]
-        #    if i == pymol_id:
-        #        data = [True, i,i,i]
-        #    model.append(data)
-        #    n = n + 1
 
         model = liststore  # @+
         model.clear()
         n = 0
+        
         for i in job_history:
+            cell = self.builder.get_object('cellrenderertext2')
+            cell.props.weight_set = True
+            cell.props.weight = pango.WEIGHT_NORMAL
             data = [False, job_history[i][0],job_history[i][1],job_history[i][2]]
+            
+
+            
             if job_history[i][0] == pymol_id:
-                #print "aqui"
+               
+                cell = self.builder.get_object('cellrenderertext2')
+                #cell.props.weight_set = True
+                cell.props.weight = pango.WEIGHT_BOLD
+                
                 data = [True, job_history[i][0],job_history[i][1],job_history[i][2]]
+            
             model.append(data)
             n = n + 1
 

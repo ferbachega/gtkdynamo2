@@ -131,10 +131,10 @@ if not os.path.isdir(GTKDYNAMO_TMP):
 
 
 global slab
-slab = 50
-zoom = 1.0
-angle = 0.0
-sprite = None
+slab    = 50
+zoom    = 1.0
+angle   = 0.0
+sprite  = None
 zfactor = 0.005
 global clicado, ZeroX, ZeroY, Buffer, Zero_ViewBuffer, Menu
 clicado = False
@@ -785,6 +785,8 @@ class gtkdynamo_main():
     #      ---------------------------------
     
     '''   
+    def on_treeview2_select(self, tree, path, column):
+        print "aqui"
     
     def row_activated(self, tree, path, column):
 

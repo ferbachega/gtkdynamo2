@@ -423,6 +423,7 @@ class pDynamoProject():
                 #print self.parameters['Number of Fixed Atoms']
                 StatusText = StatusText + '  Step: ' + str(self.step)+ "   "
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
+                #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
                 #print self.parameters['Crystal Class']
             self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         else:

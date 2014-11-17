@@ -277,63 +277,6 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_save_as_16x16.png</property>
   </object>
-  <object class="GtkMenu" id="menu4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem11">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image34</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem12">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image38</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem13">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image39</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem14">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image40</property>
-        <property name="use_stock">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="imagemenuitem15">
-        <property name="label">gtk-quit</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="use_underline">True</property>
-        <property name="use_stock">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="menuitem6">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkImage" id="image41">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -623,6 +566,69 @@
       <!-- column-name gchararray3 -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkListStore" id="liststore3">
+    <columns>
+      <!-- column-name GdkPixbuf1 -->
+      <column type="GdkPixbuf"/>
+    </columns>
+  </object>
+  <object class="GtkMenu" id="menu4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem11">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image34</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem12">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image38</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem13">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image39</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image40</property>
+        <property name="use_stock">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="imagemenuitem15">
+        <property name="label">gtk-quit</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem6">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
   </object>
   <object class="GtkWindow" id="win">
     <property name="can_focus">False</property>
@@ -1504,7 +1510,9 @@
                                     <property name="headers_clickable">False</property>
                                     <property name="rules_hint">True</property>
                                     <property name="search_column">0</property>
+                                    <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
                                     <signal name="row-activated" handler="row_activated2" swapped="no"/>
+                                    <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
                                     <child>
                                       <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                         <property name="clickable">True</property>
@@ -2049,11 +2057,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkListStore" id="liststore3">
-    <columns>
-      <!-- column-name GdkPixbuf1 -->
-      <column type="GdkPixbuf"/>
-    </columns>
   </object>
 </interface>
