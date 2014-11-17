@@ -611,16 +611,16 @@ class gtkdynamo_main():
         self.project.clean_qc_table()
         print self.project.settings['qc_table']
 
-    def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem):    
+    def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem, click=None):
         table = PymolGetTable('sele')
         self.project.put_fix_table(table)
         print self.project.settings['fix_table']
 
-    def on_GLAreaMenu_itemActive_CleanFixTable(self, menuitem):    
+    def on_GLAreaMenu_itemActive_CleanFixTable(self, menuitem, click=None):
         self.project.clean_fix_table()
         print self.project.settings['fix_table']
 
-    def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem):
+    def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem, click=None):
         print "aqui"
         table = PymolGetTable('sele')
         '''

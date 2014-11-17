@@ -431,6 +431,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Import as Fix Atoms</property>
                 <property name="use_underline">True</property>
+                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
               </object>
             </child>
@@ -440,6 +441,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Clean the QC selection</property>
                 <property name="use_underline">True</property>
+                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_CleanQCTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_CleanQCTable" swapped="no"/>
               </object>
             </child>
@@ -449,6 +451,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Clean the FIX selection</property>
                 <property name="use_underline">True</property>
+                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
               </object>
             </child>
@@ -459,6 +462,7 @@
                 <property name="label" translatable="yes">Prune Atoms</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
+                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
               </object>
             </child>
           </object>
