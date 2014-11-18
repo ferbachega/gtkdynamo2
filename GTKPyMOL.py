@@ -92,7 +92,11 @@ from FileChooserWindow           import *
 from NewProjectDialog            import *
 from QuantumChemistrySetupDialog import *
 from NonBondDialog               import *
+
 from ScanDialog                  import *
+from ScanWindow                  import *
+
+
 from Scan2dDialog                import *
 from TrajectoryDialog            import *
 # pDynamo
@@ -408,7 +412,7 @@ def context_menu():
     #menu = gtk.Menu()
     #menu_item = gtk.MenuItem("Sweet menu")
     #menu_item.connect(
-    #    'activate', gtkdynamo.on_MainMenu_File_NewProject_activete)
+    #    'activate', gtkdynamo.on_MainMenu_File_NewProject_activate)
     #menu.append(menu_item)
    #menu_item.show()
    #menu_item = gtk.MenuItem("Salty menu")
@@ -569,7 +573,7 @@ class gtkdynamo_main():
                                              #  -  I M P O R T A N T  -  #                                   
                                 #---------------------------------------------------------#                  
                                 #                                                         #                  
-                                #        Message Dialog  -  when 2 buttons will be showed #                  
+                                #        Message Dialog  -  when 2 buttons will be shown  #                  
                                 #  1 -create the warning message                          #                  
                                 #  2 -hide the actual dialog - optional                   #                  
                                 #  3 -show the message dialog                             #                  
@@ -667,12 +671,12 @@ class gtkdynamo_main():
     #      ---------------------------------
     
     '''
-    def on_MainMenu_File_Import_menuitemImportTrajectory_activete (self, menuitem):
+    def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
         """ Function doc """
         self.TrajectoryDialog.dialog.run()
         self.TrajectoryDialog.dialog.hide()
 
-    def on_MainMenu_View_menuitemShowValences_activete(self, button):
+    def on_MainMenu_View_menuitemShowValences_activate(self, button):
         print """ Function doc """
         if self.builder.get_object('ShowValences').get_active() == True:
             #cmd.set('valence', 0.1)
@@ -681,7 +685,7 @@ class gtkdynamo_main():
             #cmd.set('valence', 0.0)
             cmd.do('set valence, 0.0')
 
-    def on_MainMenu_File_NewProject_activete(self, button):
+    def on_MainMenu_File_NewProject_activate(self, button):
         """ Function doc """
         self._NewProjectDialog.dialog.run()
         self._NewProjectDialog.dialog.hide()
@@ -700,11 +704,28 @@ class gtkdynamo_main():
         except:
             pass
 
-    def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
+    #def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
+    #    """ Function doc """
+    #    self.ScanDialog.dialog.run()
+    #    self.ScanDialog.dialog.hide()  
+    
+    def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuitem):
         """ Function doc """
-        self.ScanDialog.dialog.run()
-        self.ScanDialog.dialog.hide()  
-
+        
+        if self.Scanwindow.Visible == False:
+            self.Scanwindow.OpenWindow()
+        
+        
+        #try:
+        #    _FileType = GetFileType(FileName)
+        #
+        #    if _FileType in ['pkl', 'yaml']:
+        #        self.project.load_coordinate_file_as_new_system(FileName)
+        #        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+        #except:
+        #    pass
+    
+    
     def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
         self.Scan2dDialog.dialog.run()
         self.Scan2dDialog.dialog.hide()
@@ -1006,8 +1027,12 @@ class gtkdynamo_main():
         self.NonBondDialog = NonBondDialog(self.project,                                                  #
             self.window_control, self.builder)                                                            #
                                                                                                           #
-        self.ScanDialog = ScanDialog(self.project,                                                        #
+        #self.ScanDialog = ScanDialog(self.project,                                                        #
+        #    self.window_control, self.builder)                                                            #
+        
+        self.Scanwindow = ScanWindow(self.project,                                                        #
             self.window_control, self.builder)                                                            #
+ 
                                                                                                           #
         self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
             self.window_control, self.builder)                                                            #

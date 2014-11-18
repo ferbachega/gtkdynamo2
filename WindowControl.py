@@ -42,8 +42,10 @@ class WindowControl():
         """ Class initialiser """
         self.builder = builder
         self.FileChooserWindow_TrueFalse = False
-        self.window3 = False  # not available yet
-
+        self.window3                     = False  # not available yet
+        self.ScanWindow                  = False
+        self.Scan2DWindow                = False
+        
     def SETUP_COMBOBOXES(self, combobox=None, combolist=[], active=0):
         """ Function doc """
 

@@ -666,7 +666,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image44</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_MainMenu_File_NewProject_activete" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_File_NewProject_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -728,7 +728,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Trajectory</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_File_Import_menuitemImportTrajectory_activete" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_File_Import_menuitemImportTrajectory_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -892,7 +892,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show Valences</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowValences_activete" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowValences_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1166,7 +1166,7 @@
                 <property name="label" translatable="yes">new project</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image1</property>
-                <signal name="clicked" handler="on_MainMenu_File_NewProject_activete" swapped="no"/>
+                <signal name="clicked" handler="on_MainMenu_File_NewProject_activate" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
