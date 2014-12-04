@@ -960,6 +960,7 @@ class gtkdynamo_main():
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
+        cmd.set('auto_zoom', 0)
         #cmd.distance('pk1','pk2')
         #-------------------------------------------------------#
         print text1
