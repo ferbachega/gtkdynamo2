@@ -71,6 +71,8 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import gtk.gtkgl
+from pprint import pprint
+
 
 #import thread
 import threading
@@ -701,6 +703,7 @@ class gtkdynamo_main():
             if _FileType in ['pkl', 'yaml']:
                 self.project.load_coordinate_file_as_new_system(FileName)
                 self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
         except:
             pass
 
@@ -743,6 +746,12 @@ class gtkdynamo_main():
     #      ---------------------------------
     
     '''
+    def on_toolbutton7_print_tudo_clicked (self, button):
+        """ Function doc """
+        pprint(self.project.settings)
+        self.project.Save_Project_To_File()
+
+        
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
         self.project.SystemCheck()
@@ -758,8 +767,8 @@ class gtkdynamo_main():
 
     def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
         """ Function doc """
-        print self.project.step
-        text = str(self.project.step + 1) + '_step_GeometryOptmization'
+        print self.project.settings['step']
+        text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
         self._02MinimizationWindow.builder.get_object(
             "02_window_entry_traj_name").set_text(text)
         self._02MinimizationWindow.dialog.run()
@@ -767,8 +776,8 @@ class gtkdynamo_main():
 
     def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
         """ Function doc """
-        print self.project.step
-        text = str(self.project.step + 1) + '_step_MolecularDynamics'
+        print self.project.settings['step']
+        text = str(self.project.settings['step'] + 1) + '_step_MolecularDynamics'
         self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
         self.MolecularDynamicsWindow.dialog.run()
         self.MolecularDynamicsWindow.dialog.hide()
@@ -960,7 +969,7 @@ class gtkdynamo_main():
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
-        cmd.set('auto_zoom', 0)
+        cmd.set('auto_zoom', 1)
         #cmd.distance('pk1','pk2')
         #-------------------------------------------------------#
         print text1

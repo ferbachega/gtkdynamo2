@@ -381,24 +381,22 @@ def ExportFramesToPymol(project=None, prefix='teste'):
     obs:An XYZ file is also exportes when an PDB files is exported
 
     """
-    print project.types_allowed
+    print project.settings['types_allowed']
     if project == None:
         print 'only testing ExportFramesToPymol'
 
     else:
-        data_path = project.data_path
-        types_allowed = project.types_allowed
+        data_path = project.settings['data_path']
+        types_allowed = project.settings['types_allowed']
 
         tmp_path = data_path + '/tmp'
-        print tmp_path
         if not os.path.exists(tmp_path):
             os.mkdir(tmp_path)
 
         # creating a xyz file - coordienate reference
         if types_allowed['xyz'] == True:
             type_ = 'xyz'
-            #pymol_id = prefix + '_' + type_ + '_step' + str(project.step)
-            pymol_id ='Step_' + str(project.step)
+            pymol_id ='Step_' + str(project.settings['step'])
             tmp_file = os.path.join(
                 tmp_path, AddFileTypeSuffix(pymol_id, type_))
             project.ExportStateToFile(tmp_file, type_)
@@ -418,7 +416,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
             type_ = 'pdb'
             #pymol_id = prefix + '_' + type_ + '_step' + \
             #    str(project.step)  # - Object Name
-            pymol_id ='Step_' + str(project.step)
+            pymol_id ='Step_' + str(project.settings['step'])
 
             # - Object Name +  type
             tmp_file = os.path.join(

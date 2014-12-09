@@ -72,39 +72,76 @@ class WindowControl():
             model.append(data)
             n = n + 1
 
-    def TREEVIEW_ADD_DATA2(self, liststore=None, job_history=[], pymol_id=None):
+    def TREEVIEW_ADD_DATA2(self, liststore=None, job_history={}, pymol_id=None):
         """ Function doc """
 
-        model = liststore  # @+
+        model = liststore  
         model.clear()
         n = 0
-        
-        for i in job_history:
+                       
+                       
+                       
+                         # this is necessary to sort the job_history #
+        #-----------------------------------------------------------------------------#
+        numbers  = list(job_history)                                                  #
+        print job_history                                                             #
+        numbers2 = []                                                                 #
+        print numbers                                                                 #
+                                                                                      #
+        for i in numbers:                                                             #
+            numbers2.append(int(i))                                                   #
+        numbers2.sort()                                                               #
+        print numbers2                                                                #
+        #-----------------------------------------------------------------------------#
+
+
+        for i in numbers2:
+            i = str(i)
             cell = self.builder.get_object('cellrenderertext2')
             cell.props.weight_set = True
             cell.props.weight = pango.WEIGHT_NORMAL
-            data = [False, job_history[i][0],job_history[i][1],job_history[i][2]]
-            
+            data = [False, job_history[i]['object']   , #job_history[i][0],
+                           job_history[i]['type']     , #job_history[i][1],
+                           job_history[i]['potencial']] #job_history[i][2]]
 
-            
-            if job_history[i][0] == pymol_id:
+            if job_history[i]['object'] == pymol_id:
                
                 cell = self.builder.get_object('cellrenderertext2')
                 #cell.props.weight_set = True
                 cell.props.weight = pango.WEIGHT_BOLD
                 
-                data = [True, job_history[i][0],job_history[i][1],job_history[i][2]]
-            
+                data = [True, job_history[i]['object']   , 
+                              job_history[i]['type']     ,
+                              job_history[i]['potencial']]
+
             model.append(data)
             n = n + 1
+        
 
+        '''
+        for i in job_history:
+            cell = self.builder.get_object('cellrenderertext2')
+            cell.props.weight_set = True
+            cell.props.weight = pango.WEIGHT_NORMAL
+            data = [False, job_history[i]['object']   , #job_history[i][0],
+                           job_history[i]['type']     , #job_history[i][1],
+                           job_history[i]['potencial']] #job_history[i][2]]
+            
 
+            
+            if job_history[i]['object'] == pymol_id:
+               
+                cell = self.builder.get_object('cellrenderertext2')
+                #cell.props.weight_set = True
+                cell.props.weight = pango.WEIGHT_BOLD
+                
+                data = [True, job_history[i]['object']   , 
+                              job_history[i]['type']     ,
+                              job_history[i]['potencial']]
 
-
-
-
-
-
+            model.append(data)
+            n = n + 1
+        '''
 
 
     def STATUSBAR_SET_TEXT(self, text):
