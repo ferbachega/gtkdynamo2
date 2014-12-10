@@ -81,7 +81,7 @@ class pDynamoProject():
                        'coordinates'  : None,
                        
                        'nbModel_type' : 'NBModelABFS',
-                       'nbModel'      : "NBModelABFS()",
+                       #'nbModel'      : "NBModelABFS()",
                        'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
                        'types_allowed': {'pdb': True, 'xyz': False, 'mol2': False},
 
@@ -118,7 +118,7 @@ class pDynamoProject():
                        'pymol_session' : None,   #  - pdynamo pkl/yaml file
                        'pDynamo_system': None    #  - pymol pse file
                        } 
-                       
+        self.nbModel        = "NBModelABFS()"
         self.parameters     = None
         self.system         = None          
         self.PyMOL          = PyMOL         
@@ -217,7 +217,7 @@ class pDynamoProject():
 
     def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
         qc_table = self.settings['qc_table']                                                     
-        nbModel  = self.settings['nbModel']
+        nbModel  = self.nbModel
         qcModel  = QCModelMNDO (qc_method )
         self.system.electronicState = ElectronicState  ( charge = charge, multiplicity = multiplicity )
 
@@ -239,7 +239,7 @@ class pDynamoProject():
         self.set_qc_DynamicBondsList()
 
     def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
-        nbModel   = self.settings['nbModel']
+        nbModel   = self.nbModel
         qc_table  = self.settings['qc_table']                                                     
         converger = DIISSCFConverger ( densityTolerance = float(density_tol), maximumSCFCycles = int(Maximum_SCF) )
         
@@ -338,7 +338,7 @@ class pDynamoProject():
         self.name = name
 
         if data_path is not None:
-            self.data_path = data_path
+            self.settings['data_path'] = data_path
 
         FileType = FileType
         filesin = filesin
@@ -400,7 +400,7 @@ class pDynamoProject():
         """ Function doc """
         FOLDER  = self.settings['data_path']
         print self.settings['data_path'] + '/ProjectHistory.dat'
-        json.dump(self.settings['job_history'], open( self.settings['data_path'] + '/ProjectHistory.dat', 'w'), indent=2)
+        json.dump(self.settings, open( self.settings['data_path'] + '/ProjectHistory.dat', 'w'), indent=2)
     
     
     def SystemCheck(self, status = True, PyMOL = True ):
@@ -815,7 +815,7 @@ class pDynamoProject():
             self.system.DefineNBModel(nbModel)
         
         
-        self.settings['nbModel'] = nbModel
+        self.nbModel = nbModel
         self.SystemCheck()
 
     def put_prune_table(self, prune_table):
