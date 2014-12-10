@@ -808,6 +808,58 @@ class gtkdynamo_main():
         if mode == "Molecule":
             cmd.set("mouse_selection_mode", 5)
 
+    def on_ToolBar_toolbutton_ClearSystemInMemory_clicked (self, button):
+        """ Function doc """
+        if self.project.system != None:
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #                                   
+                                #---------------------------------------------------------#                  
+                                #                                                         #                  
+                                #        Message Dialog  -  when 2 buttons will be showed #                  
+                                #  1 -create the warning message                          #                  
+                                #  2 -hide the actual dialog - optional                   #                  
+                                #  3 -show the message dialog                             #                  
+                                #  4 -hide the message dialog                             #                  
+                                #  5 -check the returned valor by the message dialog      #                  
+                                #  6 -do something                                        #                  
+                                #  7 -restore the actual dialog - optional                #                  
+                                #---------------------------------------------------------#                  
+            '''
+                                                                                                  
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: there is a system loaded in memory. Are you sure that you want to delete it?")  
+            dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                              
+            a = dialog.run()  # possible "a" valors                                                           
+            # 4 step          # -8  -  yes                                                                    
+            dialog.hide()     # -9  -  no                                                                     
+                              # -4  -  close                                                                  
+                              # -5  -  OK                                                                     
+                              # -6  -  Cancel                                                                 
+                                                                                                              
+            # 5 step                                                                                          
+            if a == -8:                                                                                       
+                # 6 step 
+                self.project       = pDynamoProject(data_path = GTKDYNAMO_TMP, 
+                                                      builder = self.builder, 
+                                               window_control = self.window_control) 
+                self.project.PyMOL = True
+                pymol_objects  = cmd.get_names()
+                liststore = self.builder.get_object('liststore2')
+                self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
+                self.project.SystemCheck()
+                cmd.delete('all')                                                                                  
+            else:                                                                                             
+                return 0 
+
+
+
+
+
+
+
+
+            
     
     '''                                            
     #      ---------------------------------  
@@ -832,7 +884,7 @@ class gtkdynamo_main():
 
         model = tree.get_model()  # @+
         iter = model.get_iter(path)  # @+
-        pymol_object = model.get_value(iter, 1)  # @+
+        pymol_object = model.get_value(iter, 2)  # @+
         true_or_false = model.get_value(iter, 0)
         # atomtype = model.get_value( iter, 2) #@+
         # print true_or_false

@@ -100,7 +100,8 @@ class WindowControl():
             cell = self.builder.get_object('cellrenderertext2')
             cell.props.weight_set = True
             cell.props.weight = pango.WEIGHT_NORMAL
-            data = [False, job_history[i]['object']   , #job_history[i][0],
+            data = [False, i                          ,
+                           job_history[i]['object']   , #job_history[i][0],
                            job_history[i]['type']     , #job_history[i][1],
                            job_history[i]['potencial']] #job_history[i][2]]
 
@@ -110,7 +111,8 @@ class WindowControl():
                 #cell.props.weight_set = True
                 cell.props.weight = pango.WEIGHT_BOLD
                 
-                data = [True, job_history[i]['object']   , 
+                data = [True, i                          ,
+                              job_history[i]['object']   , 
                               job_history[i]['type']     ,
                               job_history[i]['potencial']]
 

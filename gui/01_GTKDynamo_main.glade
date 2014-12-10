@@ -5,7 +5,7 @@
   <object class="GtkImage" id="01_main_window_image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_new_project_24x24.png</property>
+    <property name="pixbuf">NewProject2.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image10">
     <property name="visible">True</property>
@@ -30,7 +30,7 @@
   <object class="GtkImage" id="01_main_window_image14">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_save_as_24x24.png</property>
+    <property name="pixbuf">Save_as.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image15">
     <property name="visible">True</property>
@@ -45,17 +45,17 @@
   <object class="GtkImage" id="01_main_window_image17">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_minimization_24x24.png</property>
+    <property name="pixbuf">minimization.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image18">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_MD_24x24.png</property>
+    <property name="pixbuf">molecularDynamics.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image19">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_normal_modes_24x24_4.png</property>
+    <property name="pixbuf">normalModes.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image2">
     <property name="visible">True</property>
@@ -70,7 +70,7 @@
   <object class="GtkImage" id="01_main_window_image3">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_save_24x24.png</property>
+    <property name="pixbuf">Save2.png</property>
   </object>
   <object class="GtkImage" id="01_main_window_image4">
     <property name="visible">True</property>
@@ -397,7 +397,7 @@
   <object class="GtkImage" id="image52">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_scan_24x24_2.png</property>
+    <property name="pixbuf">Scan.png</property>
   </object>
   <object class="GtkImage" id="image53">
     <property name="visible">True</property>
@@ -620,11 +620,13 @@
     <columns>
       <!-- column-name gboolean1 -->
       <column type="gboolean"/>
-      <!-- column-name gchararray1 -->
+      <!-- column-name gchararray1_ID -->
       <column type="gchararray"/>
-      <!-- column-name gchararray2 -->
+      <!-- column-name gchararray2_object -->
       <column type="gchararray"/>
-      <!-- column-name gchararray3 -->
+      <!-- column-name gchararray3_process -->
+      <column type="gchararray"/>
+      <!-- column-name gchararray4_potencial -->
       <column type="gchararray"/>
     </columns>
   </object>
@@ -1375,6 +1377,20 @@
                 <property name="label" translatable="yes">delete system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image20</property>
+                <signal name="clicked" handler="on_ToolBar_toolbutton_ClearSystemInMemory_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="toolbutton7">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">toolbutton7</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">document-save</property>
                 <signal name="clicked" handler="testGTKMatplotLib" swapped="no"/>
               </object>
               <packing>
@@ -1518,7 +1534,19 @@
                                         <child>
                                           <object class="GtkCellRendererToggle" id="cellrenderertoggle1"/>
                                           <attributes>
+                                            <attribute name="activatable">0</attribute>
                                             <attribute name="active">0</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="treeviewcolumn6">
+                                        <property name="title" translatable="yes">ID</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
                                           </attributes>
                                         </child>
                                       </object>
@@ -1529,7 +1557,7 @@
                                         <child>
                                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                                           <attributes>
-                                            <attribute name="text">1</attribute>
+                                            <attribute name="text">2</attribute>
                                           </attributes>
                                         </child>
                                       </object>
@@ -1540,7 +1568,7 @@
                                         <child>
                                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
                                           <attributes>
-                                            <attribute name="text">2</attribute>
+                                            <attribute name="text">3</attribute>
                                           </attributes>
                                         </child>
                                       </object>
@@ -1551,7 +1579,7 @@
                                         <child>
                                           <object class="GtkCellRendererText" id="cellrenderertext4"/>
                                           <attributes>
-                                            <attribute name="text">3</attribute>
+                                            <attribute name="text">4</attribute>
                                           </attributes>
                                         </child>
                                       </object>

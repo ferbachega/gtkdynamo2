@@ -396,7 +396,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
         # creating a xyz file - coordienate reference
         if types_allowed['xyz'] == True:
             type_ = 'xyz'
-            pymol_id ='Step_' + str(project.settings['step'])
+            pymol_id ='Step' + str(project.settings['step'])
             tmp_file = os.path.join(
                 tmp_path, AddFileTypeSuffix(pymol_id, type_))
             project.ExportStateToFile(tmp_file, type_)
@@ -416,7 +416,7 @@ def ExportFramesToPymol(project=None, prefix='teste'):
             type_ = 'pdb'
             #pymol_id = prefix + '_' + type_ + '_step' + \
             #    str(project.step)  # - Object Name
-            pymol_id ='Step_' + str(project.settings['step'])
+            pymol_id ='Step' + str(project.settings['step'])
 
             # - Object Name +  type
             tmp_file = os.path.join(
