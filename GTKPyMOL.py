@@ -102,9 +102,9 @@ from ScanWindow                  import *
 from Scan2dDialog                import *
 from TrajectoryDialog            import *
 # pDynamo
-from pDynamoProject import *
-from WindowControl  import *
-
+from pDynamoProject  import *
+from WindowControl   import *
+from WorkSpaceDialog import WorkSpaceDialog
 #-------------------------#
 #                         #
 #   GTKDYNAMO TEMP DIR    #
@@ -689,6 +689,20 @@ class gtkdynamo_main():
 
     def on_MainMenu_File_NewProject_activate(self, button):
         """ Function doc """
+        localtime = time.asctime(time.localtime(time.time()))
+        #print "Local current time :", localtime
+        localtime = localtime.split()        
+        #  0     1    2       3         4
+        #[Sun] [Sep] [28] [02:32:04] [2014]
+        text = 'NewProjec_' + localtime[1] + \
+            '_' + localtime[2] + '_' + localtime[4]
+        self._NewProjectDialog.builder.get_object("new_project_entry").set_text(text)
+        
+        
+        WorkSpace = self.GTKDynamoConfig['WorkSpace']
+        path      = os.path.join(WorkSpace, text)
+        self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
+
         self._NewProjectDialog.dialog.run()
         self._NewProjectDialog.dialog.hide()
 
@@ -776,6 +790,9 @@ class gtkdynamo_main():
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
+ 
+ 
+ 
         chooser.set_current_folder(data_path)
         response = chooser.run()
         if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
@@ -1004,8 +1021,50 @@ class gtkdynamo_main():
                         #        self.project.BondTable[i+1,j+1][1]  = bond_unbond2
                         #else:
                         #    pass
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    def Save_GTKDYNAMO_ConfigFile (self, filename = None):
+        """ Function doc """
+        path = os.path.join(self.home,'.config')
+        if not os.path.exists (path): 
+            os.mkdir (path)
 
+        path = os.path.join(path, 'GTKDynamo')
+        if not os.path.exists (path): 
+            os.mkdir (path)
+        
+        filename = os.path.join(path,'gtkdynamo.config')
+        json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
+        
 
+    
+    def Load_GTKDYNAMO_ConfigFile (self, filename = None):
+        """ Function doc """
+        #.config
+        path = os.path.join(self.home,'.config', 'GTKDynamo', 'gtkdynamo.config')
+        
+        try:
+            self.GTKDynamoConfig = json.load(open(path)) 
+        except:
+            print 'error: GTKDynamo config file not found'
+            print 'open WorkSpace Dialog'
+        
+        
+        
+        
+        
+        
     def __init__(self):
 
         print '           Intializing GTKdynamo GUI object          '
@@ -1014,30 +1073,30 @@ class gtkdynamo_main():
 
         #---------------------------------- GTKDYNAMO ------------------------------------#
         #                                                                                 #
-        #                                                                                 #
         self.builder = gtk.Builder()                                                      #
         self.builder.add_from_file(                                                       #
             os.path.join(GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
         self.builder.add_from_file(                                                       #
             os.path.join(GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))                   #
-        #                                                                                 #
         self.win = self.builder.get_object("win")                                         #
-        #                                                                                 #
         self.win.show()                                                                   #
-        #                                                                                 #
         self.builder.connect_signals(self)                                                #
-        #                                                                                 #
         #---------------------------------------------------------------------------------#
+        self.GTKDynamoConfig = {                              
+                               'HideWorkSpaceDialog': False,  
+                               'WorkSpace'          : None ,  
+                               'History'            : {}   }                              
 
+        #-------------------- config GLarea --------------------#
+        container = self.builder.get_object("container")        #
+        pymol.start()                                           #
+        cmd = pymol.cmd                                         #
+        container.pack_end(glarea)                              #
+        glarea.show()                                           #
+        #-------------------------------------------------------#
 
-        container = self.builder.get_object("container")
-        #container = self.builder.get_object("hpaned1")
-        pymol.start()
-        cmd = pymol.cmd
-        # container.pack2(glarea)
-        container.pack_end(glarea)
-        glarea.show()
-
+        
+        
         #-------------------- config PyMOL ---------------------#
         #                                                       #
         pymol.cmd.set("internal_gui", 0)                        #
@@ -1056,47 +1115,43 @@ class gtkdynamo_main():
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
-        cmd.set('auto_zoom', 1)
-        #cmd.distance('pk1','pk2')
+        cmd.set('auto_zoom', 1)                                 #
         #-------------------------------------------------------#
+        
+        
         print text1
 
-        '''
-        -------------------------------------------------
-        -                                               -
-        -                 WindowControl                 -
-        -                                               -
-        -------------------------------------------------
-        '''
-        self.window_control = WindowControl(self.builder)
-        scale = self.builder.get_object("trajectory_hscale")
-        scale.set_range(1, 100)
-        scale.set_increments(1, 10)
-        scale.set_digits(0)
+        
 
+        
+              #------------------------------------------------#
+              #-                 WindowControl                 #
+              #------------------------------------------------#
+        #------------------------------------------------------------#
+        self.window_control = WindowControl(self.builder)            #
+        scale = self.builder.get_object("trajectory_hscale")         #
+        scale.set_range(1, 100)                                      #
+        scale.set_increments(1, 10)                                  #
+        scale.set_digits(0)                                          #
+        #------------------------------------------------------------#
 
-
-        #----------------- Setup ComboBoxes -------------------------#
+        #--------------------- Setup ComboBoxes ---------------------#
         #                                                            #
         combobox = 'combobox1'                                       #
         combolist = ["Atom", "Residue", "Chain", "Molecule"]         #
         self.window_control.SETUP_COMBOBOXES(combobox, combolist, 1) #
-        #                                                            #
         #------------------------------------------------------------#
 
 
+        
         #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
-        #                                                                                                                            #
         self.project = pDynamoProject(                                                                                               #
             data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)                                       #
-        #                                                                                                                            #
         self.project.PyMOL = True                                                                                                    #
-        #                                                                                                                            #
         #----------------------------------------------------------------------------------------------------------------------------#
 
+       
         self.project.data_path = GTKDYNAMO_TMP
-        # self.project.load_coordinate_file_as_new_system("/home/fernando/Dropbox/GTKPyMOL/test/test.pkl")
-
 
 
         #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
@@ -1104,19 +1159,16 @@ class gtkdynamo_main():
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
         # que o usuario farah nas 'entries' '''                                                           #
         #                                                                                                 #
-        self._02MinimizationWindow = MinimizationWindow(self.project, self.window_control, self.builder)  #                                           #
+        self._02MinimizationWindow = MinimizationWindow(self.project, self.window_control, self.builder)  #
                                                                                                           #
         self.MolecularDynamicsWindow = MolecularDynamicsWindow(self.project,                              #
                                                                self.window_control,                       #
-                                                               self.builder)                              #        
+                                                               self.builder)                              #
         #self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text) #
         #self.MolecularDynamicsWindow.dialog.run()                                                        #
         #self.MolecularDynamicsWindow.dialog.hide()                                                       #
                                                                                                           #
-                                                                                                          #
-                                                                                                          #
-        self._NewProjectDialog = NewProjectDialog(                                                        #
-            self.project, self.window_control, self.builder)                                              #
+        self._NewProjectDialog = NewProjectDialog(self)                                                   #
                                                                                                           #
         self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self.project,                      #
             self.window_control, self.builder)                                                            #
@@ -1124,12 +1176,11 @@ class gtkdynamo_main():
         self.NonBondDialog = NonBondDialog(self.project,                                                  #
             self.window_control, self.builder)                                                            #
                                                                                                           #
-        #self.ScanDialog = ScanDialog(self.project,                                                        #
-        #    self.window_control, self.builder)                                                            #
-        
+        #self.ScanDialog = ScanDialog(self.project,                                                       #
+        #    self.window_control, self.builder)                                                           #
+                                                                                                          #
         self.Scanwindow = ScanWindow(self.project,                                                        #
             self.window_control, self.builder)                                                            #
- 
                                                                                                           #
         self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
             self.window_control, self.builder)                                                            #
@@ -1137,9 +1188,47 @@ class gtkdynamo_main():
         self.TrajectoryDialog = TrajectoryDialog(self.project,                                            #
             self.window_control, self.builder)                                                            #
                                                                                                           #
-                                                                                                          #
+        self.WorkSpaceDialog = WorkSpaceDialog(self)
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
+
+
+
+
+
+
+
+        #------------------------ GTKDynamo Config -------------------------#
+        '''                                                                 #
+                                                                            #
+        '''                                                                 #
+                                                                            #
+
+                                                                            #
+        #-------------------------------------------------------------------#
+        self.Load_GTKDYNAMO_ConfigFile()
+        
+        if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
+            self.WorkSpaceDialog.dialog.run()
+            self.WorkSpaceDialog.dialog.hide()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     def run(self):
         gtk.main()

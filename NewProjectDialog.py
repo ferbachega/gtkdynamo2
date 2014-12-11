@@ -39,7 +39,14 @@ GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 class NewProjectDialog():
 
     """ Class doc """
-
+    def on_new_project_entry_changed (self, entry):
+        """ Function doc """
+        text      =  self.builder.get_object("new_project_entry").get_text()
+        WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+        path      = os.path.join(WorkSpace, text)
+        
+        self.builder.get_object("ProjectDirectory").set_text(path)
+        
     def on_combobox1_changed(self, combobox):
         """ Function doc """
 
@@ -102,12 +109,20 @@ class NewProjectDialog():
 
     # "old import_molmec_system(*args): "
     def on_button1_clicked_create_new_project(self, button):
-        project = self.project
-        name = self.builder.get_object("new_project_entry").get_text()
-        data_path = self.builder.get_object(
-            "filechooserbutton1").get_filename()
-        FileType = self.builder.get_object(
-            "combobox1").get_active_text()			# combo box combox_model
+        project          = self.project
+        name             = self.builder.get_object("new_project_entry").get_text()
+        ProjectDirectory = self.builder.get_object("ProjectDirectory").get_text()
+        
+        ProjectDirectory = ProjectDirectory.split('/')
+        path = '/'
+        for i in ProjectDirectory:
+            path = os.path.join(path, i)
+            if not os.path.exists (path): 
+                os.mkdir (path)
+        
+       #data_path = self.builder.get_object("filechooserbutton1").get_filename()
+        data_path = self.builder.get_object("ProjectDirectory").get_text()
+        FileType = self.builder.get_object("combobox1").get_active_text()			# combo box combox_model
 
         filesin = {}
 
@@ -161,11 +176,14 @@ class NewProjectDialog():
 
         #
 
-    def __init__(self, project=None, window_control=None, main_builder=None):
+    def __init__(self, GTKDynamoSession = None):
         """ Class initialiser """
-        self.project = project
-        self.builder = gtk.Builder()
-        self.main_builder = main_builder
+        self.builder          = gtk.Builder()
+        
+        if GTKDynamoSession != None:
+            self.project          = GTKDynamoSession.project
+            self.main_builder     = GTKDynamoSession.builder
+            self.GTKDynamoSession = GTKDynamoSession
 
         self.builder.add_from_file(
             os.path.join(GTKDYNAMO_GUI, 'NewProjectDialog.glade'))
@@ -206,7 +224,11 @@ class NewProjectDialog():
         text = 'NewProjec_' + localtime[1] + \
             '_' + localtime[2] + '_' + localtime[4]
         self.builder.get_object("new_project_entry").set_text(text)
-
+        
+        
+        #WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+        #path      = os.path.join(WorkSpace, text)
+        #self.builder.get_object("ProjectDirectory").set_text(text)
 
 def main():
     dialog = NewProjectDialog()
