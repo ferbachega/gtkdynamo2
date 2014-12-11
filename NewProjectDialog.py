@@ -152,6 +152,8 @@ class NewProjectDialog():
             filesin['coordinates'] = self.builder.get_object(
                 "amber_inpcrd_chooser").get_filename()					#
 
+        
+        self.project.DeleteActualProject()
         self.project.Create_New_Project(
             name, data_path, FileType, filesin, BufferText)
         # self.project.From_PDYNAMO_to_GTKDYNAMO()

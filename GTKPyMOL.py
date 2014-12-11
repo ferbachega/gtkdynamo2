@@ -697,13 +697,19 @@ class gtkdynamo_main():
 
         FileChooser = FileChooserWindow()
         FileName = FileChooser.GetFileName(self.builder)
+        print FileName
         try:
             _FileType = GetFileType(FileName)
 
             if _FileType in ['pkl', 'yaml']:
                 self.project.load_coordinate_file_as_new_system(FileName)
                 self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
-
+            
+            if _FileType in ['gtkdyn']:
+                self.project.load_GTKDYNAMO_project(FileName)
+        
+        
+        
         except:
             pass
 
@@ -749,9 +755,38 @@ class gtkdynamo_main():
     def on_toolbutton7_print_tudo_clicked (self, button):
         """ Function doc """
         pprint(self.project.settings)
-        self.project.Save_Project_To_File()
+        #self.project.Save_Project_To_File()
 
         
+    
+    
+    
+    
+    
+    
+    def on_ToolBar_buttonSaveProject_clicked(self, button):
+        """ Function doc """
+        _01_window_main = self.builder.get_object("win")
+        data_path       = self.project.settings['data_path']
+
+        filename = None
+
+        chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
+                                        gtk.FILE_CHOOSER_ACTION_SAVE         ,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+
+        chooser.set_current_folder(data_path)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
+        chooser.destroy()
+
+        #return filename	        
+                
+
+        self.project.Save_Project_To_File (filename, 'pkl')
+    
+    
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
         self.project.SystemCheck()
