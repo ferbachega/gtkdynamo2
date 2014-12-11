@@ -577,6 +577,8 @@ class pDynamoProject():
                 StatusText = StatusText + '  Step: ' + str(self.settings['step'])+ "   "
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
                 #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
+                
+                StatusText = StatusText + '  Working Folder: ' + self.settings['data_path']+ "   "
                 #print self.parameters['Crystal Class']
             self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         else:

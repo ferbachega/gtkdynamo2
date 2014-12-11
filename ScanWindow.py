@@ -58,7 +58,7 @@ class ScanWindow():
         rms_grad      = float(self.builder.get_object("ScanDialog_SCAN_mim_param_entry_rmsd_grad1").get_text())    #
         mim_method	  = self.builder.get_object      ('ScanDialog_combobox_optimization_method').get_active_text() #
         log_freq      = None                                                                                       #
-        data_path     = self.project.data_path                                                                     #
+        data_path     = self.project.settings['data_path']                                                         #
         #----------------------------------------------------------------------------------------------------------#
 
 
