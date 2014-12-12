@@ -948,6 +948,14 @@ class gtkdynamo_main():
     #      ---------------------------------
     
     '''   
+    # History panel events
+    def handle_history_click(self, widget, event):
+        print event.button, dir(event)
+
+    def handle_history_keypress(self, widget, event):
+        if gtk.gdk.keyval_name(event.keyval) == 'Delete':
+            print 'Should delete item'
+
     def on_treeview2_select(self, tree, path, column):
         print "aqui"
     
