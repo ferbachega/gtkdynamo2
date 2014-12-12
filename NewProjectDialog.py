@@ -41,7 +41,7 @@ class NewProjectDialog():
     """ Class doc """
     def on_new_project_entry_changed (self, entry):
         """ Function doc """
-        text      =  self.builder.get_object("new_project_entry").get_text()
+        text      = self.builder.get_object("new_project_entry").get_text()
         WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
         path      = os.path.join(WorkSpace, text)
         

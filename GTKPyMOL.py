@@ -948,30 +948,163 @@ class gtkdynamo_main():
     #      ---------------------------------
     
     '''   
-    # History panel events
-    def handle_history_click(self, widget, event):
+    def on_menuitem_pink_activate(self, item):
+        """ Function doc """
+        print 'on_menuitem_pink_activate'
+        
+    def on_color_items_activate (self, item, event):
+        """ Function doc """
+        #print 'view log'
+        #pprint(self.project.settings['job_history'][self.selectedID])
+        
+        PyMOL_Obj = self.selectedObj
+        
+        if item == self.builder.get_object('menuitem_black'):
+            cmd.color('grey10',PyMOL_Obj)
+            cmd.util.cnc(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_green'):
+            cmd.util.cbag(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_cyan'):
+            cmd.util.cbac(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_magenta'):
+            cmd.util.cbam(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_yellow'):
+            cmd.util.cbay(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_salmon'):
+            cmd.util.cbas(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_white'):
+            cmd.util.cbaw(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_slate'):
+            cmd.util.cbab(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_orange'):
+            cmd.util.cbao(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_purple'):
+            cmd.util.cbap(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_pink'):
+            cmd.util.cbak(PyMOL_Obj)
+
+
+    def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
         if event.button == 3:
-            print "Mostrar menu de contexto"
+            #print "Mostrar menu de contexto botao3"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            if iter != None:
+                self.selectedID  = str(model.get_value(iter, 1))  # @+
+                self.selectedObj = str(model.get_value(iter, 2))
+                widget = self.builder.get_object('treeview_menu')
+                widget.popup(None, None, None, event.button, event.time)
+            
+        if event.button == 1:
+            #print "Mostrar menu de contexto botao1"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            
+            if iter != None:
+                #print model, iter
+                pymol_object  = model.get_value(iter, 2)  # @+
+                true_or_false = model.get_value(iter, 0)
+                #print pymol_object
+                if true_or_false == False:
+                    cmd.enable(pymol_object)
+                    true_or_false = True
+                    model.set(iter, 0, true_or_false)
+                    # print true_or_false
+                
+                else:
+                    cmd.disable(pymol_object)
+                    true_or_false = False
+                    model.set(iter, 0, true_or_false)
 
-    def handle_history_keypress(self, widget, event):
-        if gtk.gdk.keyval_name(event.keyval) == 'Delete':
-            print 'Excluir item'
-
-    def on_treeview2_select(self, tree, path, column):
-        print "aqui"
     
-    def row_activated(self, tree, path, column):
-
-        model = tree.get_model()   
-        iter = model.get_iter(path)  
+    def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
+        """ Function doc """
+        selection     = tree.get_selection()
+        model         = tree.get_model()
+        (model, iter) = selection.get_selected()
         pymol_object = model.get_value(iter, 0)  
 
         string2 = 'select sele, '+ pymol_object
         cmd.do(string2)
         cmd.enable('sele')
     
-    def row_activated2(self, tree, path, column):
+    
+    
+    
+    
+    
+    def handle_history_click(self, tree, event):
+        if event.button == 3:
+            print "Mostrar menu de contexto botao3"
+       
+        if event.button == 1:
+            print "Mostrar menu de contexto botao1"
 
+     
+            
+    def on_treeview2_select_cursor_parent (self, tree, path, column):
+        """ Function doc """
+        print 'select_cursor_parent' 
+    
+    def handle_history_keypress(self, widget, event):
+        if gtk.gdk.keyval_name(event.keyval) == 'Delete':
+            print 'Excluir item'
+
+    def on_treeview2_select(self, tree, path, column):
+        print "aqui keybord"
+    
+    
+    
+    
+    def on_treeview2_select_cursor_row (self, tree, path, column):
+        """ Function doc """
+        print "aqui select_cursor_row"
+
+
+
+    def  on_treeviewcolumn2_clicked(self, column):
+        """ Function doc """
+        print 'treeviewcolumn2_clicked'
+
+    
+    
+    def on_cellrenderertoggle1_toggled (self, cell, path):
+        """ Function doc """
+        print 'cellrenderertoggle1'
+        """
+        Sets the toggled state on the toggle button to true or false.
+        """
+        print cell, path
+        #model[path][1] = not model[path][1]
+        #print "Toggle '%s' to: %s" % (model[path][0], model[path][1],)
+        #return
+
+    #def on_treeview2_select_cursor_row2 (self, tree, path, column):
+    #   """ Function doc """
+    #   print "Mostrar menu de contexto botao1"
+    #   selection     = tree.get_selection()
+    #   model         = tree.get_model()
+    #   (model, iter) = selection.get_selected()
+    #   pymol_object  = model.get_value(iter, 2)  # @+
+    #   true_or_false = model.get_value(iter, 0)
+    #   
+    #   print pymol_object, true_or_false
+    
+    
+    def  on_treeview2_select_cursor_parent(self, tree, path, column):
+        """ Function doc """
         model = tree.get_model()  # @+
         iter = model.get_iter(path)  # @+
         pymol_object = model.get_value(iter, 2)  # @+
@@ -990,6 +1123,52 @@ class gtkdynamo_main():
             true_or_false = False
             model.set(iter, 0, true_or_false)
             # print true_or_false
+    
+    
+    '''
+    --------------------------------------------------------------------------------
+    '''
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    def row_activated(self, tree, path, column):
+
+        model = tree.get_model()   
+        iter = model.get_iter(path)  
+        pymol_object = model.get_value(iter, 0)  
+
+        string2 = 'select sele, '+ pymol_object
+        cmd.do(string2)
+        cmd.enable('sele')
+    
+    def row_activated2(self, tree, path, column):
+        model = tree.get_model()  # @+
+        iter = model.get_iter(path)  # @+
+        ID = model.get_value(iter, 1)  # @+
+        pprint (self.project.settings['job_history'][ID])
+
+        
+        #true_or_false = model.get_value(iter, 0)
+        ## atomtype = model.get_value( iter, 2) #@+
+        ## print true_or_false
+        #
+        #if true_or_false == False:
+        #    cmd.enable(pymol_object)
+        #    true_or_false = True
+        #    model.set(iter, 0, true_or_false)
+        #    # print true_or_false
+        #
+        #else:
+        #    cmd.disable(pymol_object)
+        #    true_or_false = False
+        #    model.set(iter, 0, true_or_false)
+        #    # print true_or_false
     
 
 
@@ -1119,12 +1298,16 @@ class gtkdynamo_main():
         self.win = self.builder.get_object("win")                                         #
         self.win.show()                                                                   #
         self.builder.connect_signals(self)                                                #
+        self.selectedID = None                                                            #
+                                                                                          #
         #---------------------------------------------------------------------------------#
         self.GTKDynamoConfig = {                              
                                'HideWorkSpaceDialog': False,  
                                'WorkSpace'          : None ,  
                                'History'            : {}   }                              
 
+        self.Load_GTKDYNAMO_ConfigFile()
+        
         #-------------------- config GLarea --------------------#
         container = self.builder.get_object("container")        #
         pymol.start()                                           #
@@ -1132,7 +1315,7 @@ class gtkdynamo_main():
         container.pack_end(glarea)                              #
         glarea.show()                                           #
         #-------------------------------------------------------#
-
+    
         
         
         #-------------------- config PyMOL ---------------------#
@@ -1233,7 +1416,7 @@ class gtkdynamo_main():
 
                                                                             #
         #-------------------------------------------------------------------#
-        self.Load_GTKDYNAMO_ConfigFile()
+
         
         if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
             self.WorkSpaceDialog.dialog.run()
@@ -1258,9 +1441,9 @@ glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTT
 
 
                                                       
-glarea.connect("button_press_event", mousepress)      
+glarea.connect("button_press_event"  , mousepress)      
 glarea.connect("button_release_event", mouserelease)  
-glarea.connect("motion_notify_event", mousemove)      
+glarea.connect("motion_notify_event" , mousemove)      
 
 
 #glarea.connect("button_press_event",   _mouseButton)
