@@ -807,6 +807,13 @@ class gtkdynamo_main():
         
         filename = None
         
+        
+        if 'filename' in self.project.settings:
+            pass
+        else:
+            self.project.settings['filename'] = None
+        
+        
         if self.project.settings['filename'] == None:
             chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
                                             gtk.FILE_CHOOSER_ACTION_SAVE         ,
