@@ -30,6 +30,11 @@ from pMolecule import *
 from pMoleculeScripts import *
 
 
+
+def AdditionalInformation (text = 'No additional information', filename = "log.gui.txt"):
+    """ Function doc """
+    pass
+
 def DualTextLog(path, filename="log.gui.txt"):
     """ The new  DualTextLog writes the log files right to the 
     diretory where the job is already running."""

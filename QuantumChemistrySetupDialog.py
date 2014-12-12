@@ -366,12 +366,21 @@ class QuantumChemistrySetupDialog():
 
 
              
-    def __init__(self, project=None, window_control=None, main_builder=None):
-        """ Class initialiser """
-        self.project = project
-        self.window_control = window_control
+    #def __init__(self, project=None, window_control=None, main_builder=None):
+
+    def __init__(self, GTKDynamoSession = None):
+        ''''''
+
         self.builder = gtk.Builder()
-        self.main_builder = main_builder
+        if GTKDynamoSession != None:
+            self.project          = GTKDynamoSession.project
+            self.main_builder     = GTKDynamoSession.builder
+            self.window_control   = GTKDynamoSession.window_control
+            self.GTKDynamoSession = GTKDynamoSession
+            
+        #self.project = project
+        #self.window_control = window_control
+        #self.main_builder = main_builder
 
         self.builder.add_from_file(
             os.path.join(GTKDYNAMO_GUI, 'QuantumChemistrySetupDialog.glade'))

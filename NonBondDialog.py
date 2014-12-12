@@ -95,12 +95,20 @@ class NonBondDialog():
         
         
         
-    def __init__(self, project=None, window_control=None, main_builder=None):
+    def __init__(self, GTKDynamoSession = None):
         """ Class initialiser """
-        self.project = project
-        self.window_control = window_control
-        self.builder = gtk.Builder()
-        self.main_builder = main_builder
+        self.builder          = gtk.Builder()
+        
+        if GTKDynamoSession != None:
+            self.project          = GTKDynamoSession.project
+            self.main_builder     = GTKDynamoSession.builder
+            self.GTKDynamoSession = GTKDynamoSession        
+            self.window_control   = GTKDynamoSession.window_control
+        
+        #self.project = project
+        #self.window_control = window_control
+        #self.builder = gtk.Builder()
+        #self.main_builder = main_builder
 
         self.builder.add_from_file(
             os.path.join(GTKDYNAMO_GUI, 'NonBondDialog.glade'))

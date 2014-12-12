@@ -29,7 +29,7 @@
 #                                                                             #
 #-----------------------------------------------------------------------------#
 
-Generated on Thu Dec 11 03:14:20 2014
+Generated on Fri Dec 12 00:21:37 2014
 
 
 --------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ Charge                 =              0  Multiplicity           =              1
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-                    Summary for Energy Model "AMBER/AM1/ABFS"
+                    Summary for Energy Model "AMBER/AM1/Full"
 --------------------------------------------------------------------------------
 
 ----------------------------------- Summary for MM Model "AMBER" -----------------------------------
@@ -75,19 +75,9 @@ Fitting Functions      =              0  Energy Base Line       =       78.97146
 QC Parameter Centers   =              4
 --------------------------------------------------------------------------------
 
------------------------------ ABFS NB Model Summary ----------------------------
-Dielectric             =       1.000000  El. 1-4 Scaling        =       0.833333
-Damping Cutoff         =       0.500000  Inner Cutoff           =       8.000000
-List Cutoff            =      13.500000  Outer Cutoff           =      12.000000
-QC/MM Coupling         =    RC Coupling  Use Centering          =          False
---------------------------------------------------------------------------------
-
--------------------------- Pairlist Generator Summary --------------------------
-Cell Size              =          6.750  Cutoff                 =         13.500
-Cutoff Cell Size Factor =          0.500  Grid Cell/Cell Method  =           True
-Minimum Cell Extent    =              2  Minimum Cell Size      =          3.000
-Minimum Extent Factor  =          1.500  Minimum Points         =            500
-Sort Indices           =          False
+----------------------------- Full NB Model Summary ----------------------------
+Dielectric                =    1.000000  El. 1-4 Scaling           =    0.833333
+QC/MM Coupling            = RC Coupling
 --------------------------------------------------------------------------------
 
 ---------------------------- Hard Constraint Container Summary ---------------------------

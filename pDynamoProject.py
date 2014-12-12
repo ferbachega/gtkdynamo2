@@ -116,6 +116,7 @@ class pDynamoProject():
                        
                        'PyMOL_Obj'     : None,
                        'pymol_session' : None,   #  - pdynamo pkl/yaml file
+                       'filename'      : None,
                        'pDynamo_system': None    #  - pymol pse file
                        } 
         self.nbModel        = "NBModelABFS()"
@@ -332,6 +333,7 @@ class pDynamoProject():
         """ Function doc """
         
         self.settings = {
+                       'add_info'     : None,
                        'force_field'  : None,
                        'parameters'   : None,
                        'topology'     : None,
@@ -372,8 +374,9 @@ class pDynamoProject():
                                        },
                        
                        'PyMOL_Obj'     : None,
-                       'pymol_session' : None,   #  - pdynamo pkl/yaml file
-                       'pDynamo_system': None    #  - pymol pse file
+                       'filename'      : None,   # ex.  /home/fernando/pDynamoWorkSpace/Enolase_Dec_11_2014/projectBaseName
+                       'pymol_session' : None,   #    - pdynamo pkl/yaml file
+                       'pDynamo_system': None    #    - pymol pse file
                        } 
         #self.nbModel        = "NBModelABFS()"
         #self.parameters     = None
@@ -467,6 +470,7 @@ class pDynamoProject():
         
         self.settings['pDynamo_system' ] = FileName + '.pkl'
         self.settings['pymol_session']   = FileName + '.pse'
+        self.settings['filename']        = filename
         
         settings2 = self.settings
         settings2['prune_table'] = []
@@ -525,29 +529,7 @@ class pDynamoProject():
 			print "file type not supported"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+   
     def SystemCheck(self, status = True, PyMOL = True ):
         if self.system == None:
             print "System empty"
@@ -578,7 +560,7 @@ class pDynamoProject():
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
                 #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
                 
-                StatusText = StatusText + '  Working Folder: ' + self.settings['data_path']+ "   "
+                StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
                 #print self.parameters['Crystal Class']
             self.window_control.STATUSBAR_SET_TEXT(StatusText)        
         else:

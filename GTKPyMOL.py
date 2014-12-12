@@ -735,8 +735,8 @@ class gtkdynamo_main():
     def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuitem):
         """ Function doc """
         
-        if self.Scanwindow.Visible == False:
-            self.Scanwindow.OpenWindow()
+        if self.ScanWindow.Visible == False:
+            self.ScanWindow.OpenWindow()
         
         
         #try:
@@ -775,11 +775,7 @@ class gtkdynamo_main():
     
     
     
-    
-    
-    
-    def on_ToolBar_buttonSaveProject_clicked(self, button):
-        """ Function doc """
+    def on_ToolBar_buttonSave_As_Project_clicked(self, button):
         _01_window_main = self.builder.get_object("win")
         data_path       = self.project.settings['data_path']
 
@@ -802,6 +798,32 @@ class gtkdynamo_main():
                 
 
         self.project.Save_Project_To_File (filename, 'pkl')
+    
+    
+    def on_ToolBar_buttonSaveProject_clicked(self, button):
+        """ Function doc """
+        _01_window_main = self.builder.get_object("win")
+        data_path       = self.project.settings['data_path']
+        
+        filename = None
+        
+        if self.project.settings['filename'] == None:
+            chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
+                                            gtk.FILE_CHOOSER_ACTION_SAVE         ,
+                                           (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                            gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+            chooser.set_current_folder(data_path)
+            response = chooser.run()
+            if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
+            chooser.destroy()
+
+            self.project.Save_Project_To_File (filename, 'pkl')
+        else:
+            filename = self.project.settings['filename']
+            self.project.Save_Project_To_File (filename, 'pkl')
+    
+    
+    
     
     
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
@@ -1159,27 +1181,17 @@ class gtkdynamo_main():
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
         # que o usuario farah nas 'entries' '''                                                           #
         #                                                                                                 #
-        self._02MinimizationWindow = MinimizationWindow(self.project, self.window_control, self.builder)  #
+        self._02MinimizationWindow       = MinimizationWindow(self)                                       #
                                                                                                           #
-        self.MolecularDynamicsWindow = MolecularDynamicsWindow(self.project,                              #
-                                                               self.window_control,                       #
-                                                               self.builder)                              #
-        #self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text) #
-        #self.MolecularDynamicsWindow.dialog.run()                                                        #
-        #self.MolecularDynamicsWindow.dialog.hide()                                                       #
+        self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                                  #
                                                                                                           #
-        self._NewProjectDialog = NewProjectDialog(self)                                                   #
+        self._NewProjectDialog           = NewProjectDialog(self)                                         #
                                                                                                           #
-        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self.project,                      #
-            self.window_control, self.builder)                                                            #
+        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                              #
                                                                                                           #
-        self.NonBondDialog = NonBondDialog(self.project,                                                  #
-            self.window_control, self.builder)                                                            #
+        self.NonBondDialog               = NonBondDialog(self)                                            #
                                                                                                           #
-        #self.ScanDialog = ScanDialog(self.project,                                                       #
-        #    self.window_control, self.builder)                                                           #
-                                                                                                          #
-        self.Scanwindow = ScanWindow(self.project,                                                        #
+        self.ScanWindow = ScanWindow(self.project,                                                        #
             self.window_control, self.builder)                                                            #
                                                                                                           #
         self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
@@ -1191,7 +1203,6 @@ class gtkdynamo_main():
         self.WorkSpaceDialog = WorkSpaceDialog(self)
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
-
 
 
 
@@ -1211,22 +1222,6 @@ class gtkdynamo_main():
         if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
             self.WorkSpaceDialog.dialog.run()
             self.WorkSpaceDialog.dialog.hide()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

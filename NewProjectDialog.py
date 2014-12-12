@@ -109,6 +109,14 @@ class NewProjectDialog():
 
     # "old import_molmec_system(*args): "
     def on_button1_clicked_create_new_project(self, button):
+        
+        
+        BufferText =  self.builder.get_object('textview1').get_buffer()  #
+        BufferText = BufferText.get_text(*BufferText.get_bounds(), include_hidden_chars=False)
+        print BufferText
+        
+        
+                
         project          = self.project
         name             = self.builder.get_object("new_project_entry").get_text()
         ProjectDirectory = self.builder.get_object("ProjectDirectory").get_text()
@@ -123,11 +131,14 @@ class NewProjectDialog():
        #data_path = self.builder.get_object("filechooserbutton1").get_filename()
         data_path = self.builder.get_object("ProjectDirectory").get_text()
         FileType = self.builder.get_object("combobox1").get_active_text()			# combo box combox_model
-
+        filename = os.path.join(data_path,name)
+        
+        
+        
         filesin = {}
 
-        BufferText = self.builder.get_object('textview1').get_buffer()  #
 
+        
         try:
             import shutil
         except:
@@ -171,8 +182,13 @@ class NewProjectDialog():
         self.project.DeleteActualProject()
         self.project.Create_New_Project(
             name, data_path, FileType, filesin, BufferText)
+        
+        self.project.Save_Project_To_File (filename = filename, type_ = 'pkl')
+        
+        
         # self.project.From_PDYNAMO_to_GTKDYNAMO()
         self.project.system.Summary()
+        self.project.settings['add_info']  =  BufferText
 
         #
 
