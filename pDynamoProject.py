@@ -570,7 +570,8 @@ class pDynamoProject():
         if PyMOL == True:
             PyMOL_Obj      = self.settings['PyMOL_Obj']
             #cmd.util.cbap(PyMOL_Obj)
-            cmd.color('grey10',PyMOL_Obj)
+            #cmd.color('slate',PyMOL_Obj)
+            cmd.color('gray10',PyMOL_Obj)
             cmd.util.cnc(PyMOL_Obj)
             
             if self.settings['QC'] == True:
@@ -661,7 +662,7 @@ class pDynamoProject():
         # ao PyMOL > From_PDYNAMO_to_GTKDYNAMO
 
 
-    def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK'):
+    def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
 
@@ -697,10 +698,11 @@ class pDynamoProject():
             #            
             self.settings['job_history'][str(self.settings['step'])] = {
                                                                    'object'    : pymol_id                             ,
-                                                                   'type'      : type_                                , 
-                                                                   'parameters': self.parameters                      , 
-                                                                   'potencial' : self.parameters['Energy Model']      , 
-                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'], 
+                                                                   'type'      : type_                                ,
+                                                                   'parameters': self.parameters                      ,
+                                                                   'potencial' : self.parameters['Energy Model']      ,
+                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'],
+                                                                   'log'       : log                                  ,
                                                                    'color'     : 'black'
                                                                    }
 
@@ -1088,11 +1090,11 @@ class pDynamoProject():
         # _type_  : 'ConjugateGradient' 'SteepestDescent' 'LBFGS'
         # #
 
-        pDynamoMinimization(self.system, method, parameters, self.settings['data_path'])
+        logFile = pDynamoMinimization(self.system, method, parameters, self.settings['data_path'])
 
         #------------------  increment step  ---------------#
         #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='min')
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='min', log = logFile )
         #
         #---------------------------------------------------#
 
@@ -1105,34 +1107,34 @@ class pDynamoProject():
         self.ActiveModeCheck()
 
         #pDynamoMinimization(self.system, method, parameters, self.data_path)
-        RunMolecularDynamics( self.system, self.settings['data_path'], parameters)
+        logFile = RunMolecularDynamics( self.system, self.settings['data_path'], parameters)
         
         
         #------------------  increment step  ---------------#
         #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn', log = logFile)
         #
         #---------------------------------------------------#
 
         return True
     
-    def Scan1D (self, parameters):
-        """ Function doc """
-        print parameters
-
-        self.ActiveModeCheck()
-
-        #pDynamoMinimization(self.system, method, parameters, self.data_path)
-        RunScan( self.system, self.settings['data_path'], parameters)
-        
-        
-        #------------------  increment step  ---------------#
-        #                                                   #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')         #
-        #                                                   #
-        #---------------------------------------------------#
-
-        return True   
+    #def Scan1D (self, parameters):
+    #    """ Function doc """
+    #    print parameters
+    #
+    #    self.ActiveModeCheck()
+    #
+    #    #pDynamoMinimization(self.system, method, parameters, self.data_path)
+    #    RunScan( self.system, self.settings['data_path'], parameters)
+    #    
+    #    
+    #    #------------------  increment step  ---------------#
+    #    #                                                   #
+    #    self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')         #
+    #    #                                                   #
+    #    #---------------------------------------------------#
+    #
+    #    return True   
     
     def ActiveModeCheck(self):
         """ Function doc """

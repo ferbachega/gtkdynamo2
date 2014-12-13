@@ -71,6 +71,7 @@ def RunMolecularDynamics( system, data_path, parameters):
             else:
                 trajectory = SystemGeometryTrajectory(TrajectoryOutputPath, system, mode="w")
 
+            logFile      = os.path.join(TrajectoryOutputPath, trajectory_name + ".log")
             log = DualTextLog(TrajectoryOutputPath, trajectory_name + ".log")  # LOG
             trajectories = [(trajectory, trajectory_freq)]
 
@@ -81,6 +82,8 @@ def RunMolecularDynamics( system, data_path, parameters):
             if not os.path.isdir(TrajectoryOutputPath):
                 os.mkdir(TrajectoryOutputPath)
                 print "Log files will be saved in:  %s" % TrajectoryOutputPath
+            
+            logFile      = os.path.join(TrajectoryOutputPath, trajectory_name + ".log")
             log = DualTextLog(TrajectoryOutputPath, trajectory_name + ".log")  # LOG
             trajectories = None
         #---------------------------------------------------------------------------#
@@ -129,7 +132,8 @@ def RunMolecularDynamics( system, data_path, parameters):
                             timeStep            = timestep )
     else:
         print "Select a method"
-
+    
+    return logFile
 
 def main():
 	

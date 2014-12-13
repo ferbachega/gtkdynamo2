@@ -951,7 +951,11 @@ class gtkdynamo_main():
     def on_menuitem_pink_activate(self, item):
         """ Function doc """
         print 'on_menuitem_pink_activate'
-        
+    
+    def on_treeview2_show_logFile (self, item):
+        """ Function doc """
+        pprint(self.project.settings['job_history'][self.selectedID]['log'])
+    
     def on_color_items_activate (self, item, event):
         """ Function doc """
         #print 'view log'
@@ -1003,6 +1007,8 @@ class gtkdynamo_main():
             if iter != None:
                 self.selectedID  = str(model.get_value(iter, 1))  # @+
                 self.selectedObj = str(model.get_value(iter, 2))
+                self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
+                
                 widget = self.builder.get_object('treeview_menu')
                 widget.popup(None, None, None, event.button, event.time)
             
@@ -1324,6 +1330,7 @@ class gtkdynamo_main():
         pymol.cmd.set("internal_gui_mode", 0)                   #
         pymol.cmd.set("internal_feedback", 0)                   #
         pymol.cmd.set("internal_gui_width", 220)                #
+        pymol.cmd.set("cartoon_fancy_helices", 'on')            #  
         sphere_scale = 0.25                                     #
         stick_radius = 0.15                                     #
         label_distance_digits = 4                               #

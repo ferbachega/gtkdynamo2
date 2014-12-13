@@ -100,7 +100,7 @@ class ScanWindow():
                           'rms_grad'     : rms_grad,                                                      #
                           'mim_method'   : mim_method,                                                    #
                           'data_path'    : data_path  }                                                   #
-            x, y   = ScanSimpleDistance(parameters, self.project)                                   #
+            x, y, logFile = ScanSimpleDistance(parameters, self.project)                                   #
         #-------------------------------------------------------------------------------------------------#
 
 
@@ -147,14 +147,14 @@ class ScanWindow():
                           'data_path'    : data_path  }                                                   #
                                                                                                           #
                                                                                                           #
-            x, y   = ScanMultipleDistances(parameters, self.project)                                      #
+            x, y, logFile = ScanMultipleDistances(parameters, self.project)                                      #
         #-------------------------------------------------------------------------------------------------#
-        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn')
+        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
         
         
         self.Visible  =  False
         self.window.destroy()
-        return x, y
+        return x, y, 
 
     def ScanDialog_ImportFromPyMOL(self, button):
         mode        =  self.builder.get_object('ScanDialog_combobox_SCAN_reaction_coordiante_type').get_active_text()

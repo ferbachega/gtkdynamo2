@@ -70,8 +70,8 @@ def ScanSimpleDistance(parameters = None, project = None):
         OutputPath      =  outpath
     else:
         pass
-
-    log = DualTextLog(outpath, "ScanLog-SimpleDistance.log")
+    logFile = (outpath, "ScanLog-SimpleDistance.log")
+    log     = DualTextLog(outpath, "ScanLog-SimpleDistance.log")
     project.system.Summary(log=log)
     LogFileName  = 'ScanLog-SimpleDistance.log'
     
@@ -172,9 +172,9 @@ def ScanSimpleDistance(parameters = None, project = None):
     arq.close()
     for i in X_general:
         print i, Y_general[i]
-    return X_general, Y_general
-
-
+    return X_general, Y_general , logFile
+    
+    
 
 def ScanMultipleDistances(parameters = None, project = None):
     method          = parameters['method'       ]
@@ -197,7 +197,7 @@ def ScanMultipleDistances(parameters = None, project = None):
     mim_method      = parameters['mim_method'   ]
     data_path       = parameters['data_path'    ]
 
-
+    logFile = (outpath, "ScanLog-SimpleDistance.log")
     log = DualTextLog(outpath, "ScanLog-MultipleDistance.log")
     project.system.Summary(log=log)
     LogFileName  = 'ScanLog-MultipleDistance.log'
@@ -285,8 +285,9 @@ def ScanMultipleDistances(parameters = None, project = None):
     arq.writelines(text)
     arq.close()
     project.system.DefineSoftConstraints ( None )
-    return X_general, Y_general	
-
+    return X_general, Y_general	, logFile 
+    
+    
 
 def back_orca_output(output_path, step):
     try:
