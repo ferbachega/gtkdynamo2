@@ -97,6 +97,7 @@ from NonBondDialog               import *
 
 from ScanDialog                  import *
 from ScanWindow                  import *
+import TextEditor.TextEditorWindow as TextEditor
 
 
 from Scan2dDialog                import *
@@ -954,8 +955,13 @@ class gtkdynamo_main():
     
     def on_treeview2_show_logFile (self, item):
         """ Function doc """
-        pprint(self.project.settings['job_history'][self.selectedID]['log'])
-    
+        #pprint(self.project.settings['job_history'][self.selectedID]['log'])
+        filein = self.project.settings['job_history'][self.selectedID]['log']
+        print    self.project.settings['job_history'][self.selectedID]['log']
+        editor = TextEditor.GTKDynamoTextEditor(filein)
+        #editor.load_file(filein)
+        #editor.main()
+        
     def on_color_items_activate (self, item, event):
         """ Function doc """
         #print 'view log'

@@ -70,7 +70,7 @@ def ScanSimpleDistance(parameters = None, project = None):
         OutputPath      =  outpath
     else:
         pass
-    logFile = (outpath, "ScanLog-SimpleDistance.log")
+    logFile = os.path.join(outpath, "ScanLog-SimpleDistance.log")
     log     = DualTextLog(outpath, "ScanLog-SimpleDistance.log")
     project.system.Summary(log=log)
     LogFileName  = 'ScanLog-SimpleDistance.log'
@@ -197,7 +197,7 @@ def ScanMultipleDistances(parameters = None, project = None):
     mim_method      = parameters['mim_method'   ]
     data_path       = parameters['data_path'    ]
 
-    logFile = (outpath, "ScanLog-SimpleDistance.log")
+    logFile = os.path.join(outpath, "ScanLog-SimpleDistance.log")
     log = DualTextLog(outpath, "ScanLog-MultipleDistance.log")
     project.system.Summary(log=log)
     LogFileName  = 'ScanLog-MultipleDistance.log'
