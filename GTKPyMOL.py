@@ -98,7 +98,7 @@ from NonBondDialog               import *
 from ScanDialog                  import *
 from ScanWindow                  import *
 import TextEditor.TextEditorWindow as TextEditor
-
+from   MatplotGTK.MatplotGTK     import PlotGTKWindow
 
 from Scan2dDialog                import *
 from TrajectoryDialog            import *
@@ -960,8 +960,25 @@ class gtkdynamo_main():
         print    self.project.settings['job_history'][self.selectedID]['log']
         editor = TextEditor.GTKDynamoTextEditor(filein)
         #editor.load_file(filein)
-        #editor.main()
+
+    def on_menuitem_PlotLogFile_activate(self, item):
+        """ Function doc """
+        filein = self.project.settings['job_history'][self.selectedID]['log']
+        print    self.project.settings['job_history'][self.selectedID]['log']
+        X,Y = ParseProcessLogFile(filein)
         
+        title = os.path.split(filein)[-1]
+        print X, Y
+        
+        parameters = {
+                     'title' : title,
+                     'X'     : X    ,
+                     'Y'     : Y  
+                     }
+        
+        PlotGTKWindow(parameters)
+
+
     def on_color_items_activate (self, item, event):
         """ Function doc """
         #print 'view log'

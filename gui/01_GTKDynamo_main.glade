@@ -824,6 +824,7 @@
         <property name="can_focus">False</property>
         <property name="label" translatable="yes">plotlog</property>
         <property name="use_underline">True</property>
+        <signal name="activate" handler="on_menuitem_PlotLogFile_activate" swapped="no"/>
       </object>
     </child>
     <child>
