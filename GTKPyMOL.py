@@ -967,13 +967,17 @@ class gtkdynamo_main():
         print    self.project.settings['job_history'][self.selectedID]['log']
         X,Y = ParseProcessLogFile(filein)
         
-        title = os.path.split(filein)[-1]
-        print X, Y
+        xlabel = 'Frames'
+        ylabel = 'Energy (KJ)' 
+        title  = os.path.split(filein)[-1]
+        print  X, Y
         
         parameters = {
-                     'title' : title,
-                     'X'     : X    ,
-                     'Y'     : Y  
+                     'title' : title ,
+                     'X'     : X     ,
+                     'Y'     : Y     ,
+                     'xlabel': xlabel,
+                     'ylabel': ylabel,
                      }
         
         PlotGTKWindow(parameters)

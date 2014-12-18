@@ -31,27 +31,40 @@ class PlotGTKWindow:
         """ Function doc """
         self.win = gtk.Window()
         self.win.connect("destroy", lambda x: gtk.main_quit())
-        self.win.set_default_size(400,300)
+        self.win.set_default_size(520,420)
         self.win.set_title("Embedding in GTK")
 
         vbox = gtk.VBox()
         self.win.add(vbox)
 
-        fig = Figure(figsize=(5,4), dpi=100)
+        fig = Figure(figsize=(1,1), dpi=80)
         ax = fig.add_subplot(111)
         
         if parameters == None:
             x = arange(0.0,3.0,0.01)
-            y = sin(2*pi*t)
+            y = sin(2*pi*x)
+            parameters = {
+                         'title' : 'test',
+                         'X'     : x     ,
+                         'y'     : y     ,
+                         'xlabel': 'x'   ,
+                         'ylabel': 'sin'
+                         }
+            
+            
         else:
-            self.win.set_title(parameters['title'])
             x = parameters['X']
             y = parameters['Y']
 
         
+        self.win.set_title(parameters['title'])
         #ax.plot(t,s)
         ax.plot(x, y, 'ko',x, y,'k')
 
+        ax.set_xlabel(parameters['xlabel'])
+        ax.set_ylabel(parameters['ylabel'])        
+        ax.grid(True)
+        
         self.canvas = FigureCanvas(fig)  # a gtk.DrawingArea
         vbox.pack_start(self.canvas)
         self.toolbar = NavigationToolbar(self.canvas, self.win)
@@ -64,6 +77,6 @@ class PlotGTKWindow:
 
    
 if __name__ == "__main__":
-    PlotGTKWindow = PlotGTKWindow('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
+    PlotGTKWindow = PlotGTKWindow()
     #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
     
