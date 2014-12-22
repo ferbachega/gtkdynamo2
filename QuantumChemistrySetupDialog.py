@@ -275,8 +275,8 @@ class QuantumChemistrySetupDialog():
             print ORCA_method , ORCA_SCF  , ORCA_basis , ORCA_POLARIZATION, ORCA_DIFFUSE    , PAL,  ORCA_String
 
 
-        print charge, multiplicity 
-        nbModel         = self.project.settings['nbModel']
+        #print charge, multiplicity 
+        #nbModel         = self.project.settings['nbModel']
         orca_string     = self.builder.get_object('ORCA_entry_keywords').get_text()
         #self.project.settings['qc_method']     = qc_method
         self.project.settings['charge']        = charge

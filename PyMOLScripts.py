@@ -279,7 +279,62 @@ SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 '''
 
+def DihedralFromPKSelection (selections = []):
+    """ Function doc """
+    dihedral = {}
+    if 'pk4' in selections:
+        dihedral['pk1pk2pk3pk4'] = str(cmd.get_dihedral ('pk1','pk2','pk3','pk4')) 
+    else:
+        dihedral['pk1pk2pk3pk4'] = None  
+    return dihedral
 
+def AnglesFromPKSelection(selections = []):
+    """ Function doc """
+    angles = {} 
+    
+    if 'pk3' in selections:
+        angles['pk1pk2pk3'] = str(cmd.get_angle('pk1','pk2','pk3')) 
+    else:    
+        angles['pk1pk2pk3'] = None
+    
+    if 'pk4' in selections:
+        angles['pk2pk3pk4'] = str(cmd.get_angle('pk2','pk3', 'pk4') )
+    else:
+        angles['pk2pk3pk4'] = None
+    
+    return angles
+
+def DistancesFromPKSelection(selections = []):
+    """ Function doc """
+    distances = {} 
+    try:
+        distances['pk1pk2'] = str(cmd.get_distance('pk1','pk2') )
+    except:
+        distances['pk1pk2'] = None
+    try:
+        distances['pk1pk3'] = str(cmd.get_distance('pk1','pk3') )
+    except:
+        distances['pk1pk3'] = None
+    try:
+        distances['pk1pk4'] = str(cmd.get_distance('pk1','pk4') )
+    except:
+        distances['pk1pk4'] = None
+    try:
+        distances['pk2pk3'] = str(cmd.get_distance('pk2','pk3') )
+    except:
+        distances['pk2pk3'] = None
+    try:
+        distances['pk2pk4'] = str(cmd.get_distance('pk2','pk4') )
+    except:
+        distances['pk2pk4'] = None
+    try:
+        distances['pk3pk4'] = str(cmd.get_distance('pk3','pk4') )
+    except:
+        distances['pk3pk4'] = None
+    return distances
+        
+        
+        
 def GetFileType(filename):
     file_type = filename.split('.')
     return file_type[-1]
@@ -321,7 +376,7 @@ def PymolGetTable(selection):
         table.append(py_id)
         ids = str(ids)
         n = n + 1
-    print table
+    #print table
     return table
 
 

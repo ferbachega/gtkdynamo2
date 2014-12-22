@@ -58,7 +58,7 @@ class NonBondDialog():
                   kappa   )   
         else:
 
-            self.project.settings['ABFS_options']  = {"innerCutoff": innercutoff, "outerCutoff": outercutoff, "listCutoff": listcutoff},
+            self.project.ABFS_options  = {"innerCutoff": innercutoff, "outerCutoff": outercutoff, "listCutoff": listcutoff}
             self.project.settings['nbModel_type']  = nbModel
             self.project.set_nbModel_to_system()
         

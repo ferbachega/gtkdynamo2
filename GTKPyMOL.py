@@ -351,9 +351,14 @@ def mousepress(button, event):
         pointery = int(mousepress.y)
         calc_y = height - pointery
         pymol.button(button, 0, pointerx, calc_y, 0)
-
-
-
+    
+    if gtkdynamo.builder.get_object('toolbutton6_measure').get_active():
+        Distances = DistancesFromPKSelection()
+        Angles    = AnglesFromPKSelection()
+        Dihedral  = DihedralFromPKSelection()
+        gtkdynamo.MeasureToolPutValores(Distances, Angles, Dihedral)
+        
+        
 def mouserelease(button, event):
     x, y, width, height = glarea.get_allocation()
     mouserelease = event
@@ -362,6 +367,10 @@ def mouserelease(button, event):
     pointery = int(mouserelease.y)
     calc_y = height - pointery
     pymol.button(button, 1, pointerx, calc_y, 0)
+    
+
+    
+    
     
 def mousemove(button, event):
     global clicado, Buffer,Zero_pointerx, Zero_pointery, Zero_ViewBuffer, Menu
@@ -676,6 +685,8 @@ class gtkdynamo_main():
     '''
     def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
         """ Function doc """
+        self.TrajectoryDialog.builder.get_object('filechooserbutton1').set_filename(self.project.settings['data_path'])
+        self.TrajectoryDialog.builder.get_object('filechooserbutton2').set_filename(self.project.settings['data_path'])
         self.TrajectoryDialog.dialog.run()
         self.TrajectoryDialog.dialog.hide()
 
@@ -772,10 +783,6 @@ class gtkdynamo_main():
         pprint(self.project.settings)
         #self.project.Save_Project_To_File()
 
-        
-    
-    
-    
     def on_ToolBar_buttonSave_As_Project_clicked(self, button):
         _01_window_main = self.builder.get_object("win")
         data_path       = self.project.settings['data_path']
@@ -831,8 +838,16 @@ class gtkdynamo_main():
             self.project.Save_Project_To_File (filename, 'pkl')
     
     
-    
-    
+    def on_ToolBar_buttonMeasure_toggled (self, button):
+        """ Function doc """
+        if button.get_active():
+            # print '# If control reaches here, the toggle button is down'
+            self.builder.get_object('notebook3').show()
+            self.builder.get_object('togglebutton1').set_active (1)
+        else:
+            # print '# If control reaches here, the toggle button is up'
+            self.builder.get_object('notebook3').hide()
+            
     
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
@@ -840,7 +855,13 @@ class gtkdynamo_main():
 
     def on_ToolBar_buttonSinglePoint_clicked(self, button):
         """ Function doc """
-        self.project.ComputeEnergy()    
+        energy = self.project.ComputeEnergy()
+        self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")   
+        dialog = self.builder.get_object('EnergyMessageDialog')
+        dialog.run()                                                                
+        dialog.hide()
+        
+            
 
     def on_ToolBar_buttonQuantumChemistrySetup_clicked(self, button):
         """ Function doc """
@@ -936,13 +957,6 @@ class gtkdynamo_main():
 
 
 
-
-
-
-
-
-            
-    
     '''                                            
     #      ---------------------------------  
     #           PyMOL TREEVIEW  methods    
@@ -1073,11 +1087,7 @@ class gtkdynamo_main():
         cmd.do(string2)
         cmd.enable('sele')
     
-    
-    
-    
-    
-    
+
     def handle_history_click(self, tree, event):
         if event.button == 3:
             print "Mostrar menu de contexto botao3"
@@ -1086,7 +1096,6 @@ class gtkdynamo_main():
             print "Mostrar menu de contexto botao1"
 
      
-            
     def on_treeview2_select_cursor_parent (self, tree, path, column):
         """ Function doc """
         print 'select_cursor_parent' 
@@ -1098,21 +1107,15 @@ class gtkdynamo_main():
     def on_treeview2_select(self, tree, path, column):
         print "aqui keybord"
     
-    
-    
-    
+  
     def on_treeview2_select_cursor_row (self, tree, path, column):
         """ Function doc """
         print "aqui select_cursor_row"
 
-
-
     def  on_treeviewcolumn2_clicked(self, column):
         """ Function doc """
         print 'treeviewcolumn2_clicked'
-
-    
-    
+ 
     def on_cellrenderertoggle1_toggled (self, cell, path):
         """ Function doc """
         print 'cellrenderertoggle1'
@@ -1156,19 +1159,6 @@ class gtkdynamo_main():
             true_or_false = False
             model.set(iter, 0, true_or_false)
             # print true_or_false
-    
-    
-    '''
-    --------------------------------------------------------------------------------
-    '''
-    
-    
-    
-    
-    
-    
-    
-    
     
     def row_activated(self, tree, path, column):
 
@@ -1240,49 +1230,111 @@ class gtkdynamo_main():
         cmd.frame( int (valor) )
         BondTable = self.project.BondTable
         
-        if self.builder.get_object('trajectory_QC_bonds_checkbutton1').get_active():
-            lista     = self.project.settings['qc_table']
-            PyMOL_Obj= self.project.PyMOL_Obj
-            
+        if self.builder.get_object('checkbutton_DynamicBonds').get_active():
+            lista     = self.project.settings['dynamic_list']
+            PyMOL_Obj = self.project.settings['PyMOL_Obj']
+            #print lista, PyMOL_Obj
             for i in lista:
                 for j in lista: 
                     if i != j:
-                        bond_unbond1 = self.project.BondTable[i+1,j+1][1]
-                        Rcov         = self.project.BondTable[i+1,j+1][0]
+                        #print i, j 
+                        #bond_unbond1 = self.project.BondTable[i+1,j+1][1]
+                        #Rcov         = self.project.BondTable[i+1,j+1][0]
                         #print lista[i], lista[j]
+                        #print bond_unbond1, Rcov
                         
                         dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1), 
                                                         PyMOL_Obj+' and index '+ str(j+1), 
                                                         int (valor) )
-                        #if dist <= Rcov:
-                        #    bond_unbond2 = True
-                        #else:
-                        #    bond_unbond2 = False
-                        #
-                        #
-                        #if bond_unbond2 != bond_unbond1:
-                        #    if bond_unbond2 == True:
-                        #        #cmd.bond(PyMOL_Obj+' and index '+str(i+1), 
-                        #        #         PyMOL_Obj+' and index '+str(j+1))
-                        #        self.project.BondTable[i+1,j+1][1]  = bond_unbond2
-                        #    else:
-                        #        #cmd.unbond(PyMOL_Obj+ ' and index '+str(i+1), 
-                        #        #           PyMOL_Obj+ ' and index '+str(j+1))
-                        #        self.project.BondTable[i+1,j+1][1]  = bond_unbond2
-                        #else:
-                        #    pass
+                        
+                        if dist > self.project.BondTable[i+1,j+1][0]:
+                            cmd.unbond(PyMOL_Obj+' and index '+ str(i+1), 
+                                       PyMOL_Obj+' and index '+ str(j+1))
+                        else:
+                            cmd.bond(PyMOL_Obj+' and index '+ str(i+1), 
+                                     PyMOL_Obj+' and index '+ str(j+1))
+
+        if self.builder.get_object('toolbutton6_measure').get_active():
+            selections = cmd.get_names("selections")
+            Distances  = DistancesFromPKSelection(selections)
+            Angles     = AnglesFromPKSelection(selections)
+            Dihedral   = DihedralFromPKSelection(selections)
+            self.MeasureToolPutValores(Distances, Angles, Dihedral)
+
+        
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    def MeasureToolPutValores(self, distances = None, angles = None, dihedral = None):
+        if distances != None:
+            if distances['pk1pk2'] != None:
+                self.builder.get_object('pk1pk2').set_sensitive(True)
+                self.builder.get_object('pk1pk2').set_text(distances['pk1pk2'])
+            else:
+                self.builder.get_object('pk1pk2').set_sensitive(False)
+                self.builder.get_object('pk1pk2').set_text('')
+                
+                
+            if distances['pk1pk3'] != None:
+                self.builder.get_object('pk1pk3').set_sensitive(True)
+                self.builder.get_object('pk1pk3').set_text(distances['pk1pk3'])
+            else:
+                self.builder.get_object('pk1pk3').set_sensitive(False)
+                self.builder.get_object('pk1pk3').set_text('')
+                
+                
+            if distances['pk1pk4'] != None:
+                self.builder.get_object('pk1pk4').set_sensitive(True)
+                self.builder.get_object('pk1pk4').set_text(distances['pk1pk4'])
+            else:
+                self.builder.get_object('pk1pk4').set_sensitive(False)
+                self.builder.get_object('pk1pk4').set_text('')
+                
+                
+            if distances['pk2pk3'] != None:
+                self.builder.get_object('pk2pk3').set_sensitive(True)
+                self.builder.get_object('pk2pk3').set_text(distances['pk2pk3'])
+            else:
+                self.builder.get_object('pk2pk3').set_sensitive(False)
+                self.builder.get_object('pk2pk3').set_text('')
+
+            if distances['pk2pk4'] != None:
+                self.builder.get_object('pk2pk4').set_sensitive(True)
+                self.builder.get_object('pk2pk4').set_text(distances['pk2pk4'])
+            else:
+                self.builder.get_object('pk2pk4').set_sensitive(False)
+                self.builder.get_object('pk2pk4').set_text('')
+                 
+            if distances['pk3pk4'] != None:
+                self.builder.get_object('pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk3pk4').set_text(distances['pk3pk4'])
+            else:
+                self.builder.get_object('pk3pk4').set_sensitive(False)   
+                self.builder.get_object('pk3pk4').set_text('')
+
+        if  angles != None:
+            if angles['pk1pk2pk3'] != None:
+                self.builder.get_object('pk1pk2pk3').set_sensitive(True)
+                self.builder.get_object('pk1pk2pk3').set_text(angles['pk1pk2pk3'])
+            else:
+                self.builder.get_object('pk1pk2pk3').set_sensitive(False)
+                self.builder.get_object('pk1pk2pk3').set_text('')
+
+
+            if angles['pk2pk3pk4'] != None:
+                self.builder.get_object('pk2pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk2pk3pk4').set_text(angles['pk2pk3pk4'])
+            else:
+                self.builder.get_object('pk2pk3pk4').set_sensitive(False) 
+                self.builder.get_object('pk2pk3pk4').set_text('')
+        #print dihedral
+        if  dihedral != None:
+            if dihedral['pk1pk2pk3pk4'] != None:
+                self.builder.get_object('pk1pk2pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk1pk2pk3pk4').set_text(dihedral['pk1pk2pk3pk4'])
+            else:
+                self.builder.get_object('pk1pk2pk3pk4').set_sensitive(False)
+
     
     def Save_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
@@ -1298,7 +1350,6 @@ class gtkdynamo_main():
         json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
         
 
-    
     def Load_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
         #.config
@@ -1310,11 +1361,53 @@ class gtkdynamo_main():
             print 'error: GTKDynamo config file not found'
             print 'open WorkSpace Dialog'
         
+
+    def on_button_ImportPKSelectionToDynamicList_activate (self, button):
+        """ Function doc """
         
         
+        text = ''
+        #print 'aqui'
+        DynamicList = []
+        try:
+            atom1 = PymolGetTable('pk1')
+            DynamicList.append(atom1[0])
+        except:
+            pass
+        try:
+            atom2 = PymolGetTable('pk2')
+            DynamicList.append(atom2[0])
+        except:
+            pass
+        try:
+            atom3 = PymolGetTable('pk3')
+            DynamicList.append(atom3[0])
+        except:
+            pass
+        try:
+            atom4 = PymolGetTable('pk4')
+            DynamicList.append(atom4[0])
+        except:
+            pass
+        print 'Index:', DynamicList  # remover este print no futuro
+        self.project.settings['dynamic_list'] = DynamicList
+        self.project.set_qc_DynamicBondsList()
+
         
-        
-        
+        #pymol_obj   = cmd.get_model(obj, state)                 # importing pymol selection
+        #model_split = pymol_obj.atom	
+        #
+        #for i in model_split:
+        #    line = [] 		
+        #    idx = i.name			                                          
+        #    X = i.coord[0]			                                          
+        #    Y = i.coord[1]			                                          
+        #    Z = i.coord[2]			                                          
+        #    line = idx +"     " + str(X)+ "     "+ str(Y)+ "     " + str(Z)   
+        #    text.append(line + "\n")										  
+
+    
+    
     def __init__(self):
 
         print '           Intializing GTKdynamo GUI object          '
@@ -1332,6 +1425,8 @@ class gtkdynamo_main():
         self.win.show()                                                                   #
         self.builder.connect_signals(self)                                                #
         self.selectedID = None                                                            #
+        self.MeasureToolVisible = False                                                   #
+        self.builder.get_object('notebook3').hide()
                                                                                           #
         #---------------------------------------------------------------------------------#
         self.GTKDynamoConfig = {                              
@@ -1340,6 +1435,9 @@ class gtkdynamo_main():
                                'History'            : {}   }                              
 
         self.Load_GTKDYNAMO_ConfigFile()
+        self.changed = False
+        
+        
         
         #-------------------- config GLarea --------------------#
         container = self.builder.get_object("container")        #

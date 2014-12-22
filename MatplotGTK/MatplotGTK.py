@@ -19,7 +19,7 @@ from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as Navig
 
 # implement the default mpl key bindings
 from matplotlib.backend_bases import key_press_handler
-
+#from matplotlib.widgets import Cursor
 
 class PlotGTKWindow:
     
@@ -27,18 +27,32 @@ class PlotGTKWindow:
         print('you pressed %s'%event.key)
         key_press_handler(event, self.canvas, self.toolbar)
     
+    
+
+    
+
+
+    def on_pick(self, event):
+        thisline = event.artist
+        xdata, ydata = thisline.get_data()
+        ind = event.ind
+        print('on pick line:', zip(xdata[ind], ydata[ind]))
+        self.ax.plot(xdata[ind], ydata[ind], 'bo', picker=5)
+
+
+
     def __init__ (self, parameters = None):
         """ Function doc """
         self.win = gtk.Window()
         self.win.connect("destroy", lambda x: gtk.main_quit())
-        self.win.set_default_size(520,420)
+        self.win.set_default_size(560,420)
         self.win.set_title("Embedding in GTK")
 
         vbox = gtk.VBox()
         self.win.add(vbox)
 
-        fig = Figure(figsize=(1,1), dpi=80)
-        ax = fig.add_subplot(111)
+        self.fig = Figure(figsize=(1,1), dpi=80)
+        self.ax  = self.fig.add_subplot(111)
         
         if parameters == None:
             x = arange(0.0,3.0,0.01)
@@ -47,8 +61,8 @@ class PlotGTKWindow:
                          'title' : 'test',
                          'X'     : x     ,
                          'y'     : y     ,
-                         'xlabel': 'x'   ,
-                         'ylabel': 'sin'
+                         'xlabel': 'x\n '   ,
+                         'ylabel': '\nsin'
                          }
             
             
@@ -58,19 +72,26 @@ class PlotGTKWindow:
 
         
         self.win.set_title(parameters['title'])
-        #ax.plot(t,s)
-        ax.plot(x, y, 'ko',x, y,'k')
+        #self.ax.plot(t,s)
+        self.ax.plot(x, y, 'ko',x, y,'k', picker=5)
 
-        ax.set_xlabel(parameters['xlabel'])
-        ax.set_ylabel(parameters['ylabel'])        
-        ax.grid(True)
+        self.ax.set_xlabel(parameters['xlabel'])
+        self.ax.set_ylabel(parameters['ylabel'])        
+        self.ax.grid(True)
+        #cursor = Cursor(self.ax, useblit=True, color='red', linewidth=2 )
+
         
-        self.canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+        self.canvas = FigureCanvas(self.fig)  # a gtk.DrawingArea
         vbox.pack_start(self.canvas)
         self.toolbar = NavigationToolbar(self.canvas, self.win)
         vbox.pack_start(self.toolbar, False, False)
+        
+        
+        
         self.canvas.mpl_connect('key_press_event', self.on_key_event)
-
+        print 'antes'
+        self.canvas.mpl_connect('pick_event', self.on_pick)
+        print 'depois'
         self.win.show_all()
         gtk.main()
     

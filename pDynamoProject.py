@@ -21,57 +21,6 @@ class pDynamoProject():
 
     def __init__(self, data_path=None, PyMOL=False, name='untitled', builder=None, window_control=None):
 
-        #self.name = name
-        '''
-        self.AtomColors = {1 : 'util.cbag',   # green
-                           2 : 'util.cbac',   # cyan
-                           3 : 'util.cbam',   # light magenta
-                           4 : 'util.cbay',   # yellow
-                           5 : 'util.cbas',   # salmon
-                           6 : 'util.cbaw',   # white/grey
-                           7 : 'util.cbab',   # slate
-                           8 : 'util.cbao',   # bright orange
-                           9 : 'util.cbap',   # purple
-                          10 : 'util.cbak'}   # pink 
-
-        self.parameters = {
-                          'Number of Atoms'      : '0', 
-                          'Energy Model'         : 'UNK',
-                          'Number of QC Atoms'   : '0',
-                          'Number of Fixed Atoms': '0'         
-                          }
-        
-        MM_representation  = {'lines'  :True ,
-                              'stick'  :False,
-                              'ribbon' :False,
-                              'cartoon':False,
-                              'dot'    :False,
-                              'sphere' :False,
-                              'mesh'   :False,
-                              'surface':False                             
-                              }
-                           
-        QC_representation  = {'lines'  :False,
-                               'stick'  :True ,
-                              'ribbon' :False,
-                              'cartoon':False,
-                              'dot'    :False,
-                              'sphere' :True ,
-                              'mesh'   :False,
-                              'surface':False                             
-                              }
-        
-        FIX_representation = {'lines'  :False,
-                              'stick'  :False,
-                              'ribbon' :False,
-                              'cartoon':False,
-                              'dot'    :False,
-                              'sphere' :False,
-                              'mesh'   :False,
-                              'surface':False,
-                              'color'  :'grey80'                          
-                              }
-        '''
 
         
         self.settings = {
@@ -82,7 +31,7 @@ class pDynamoProject():
                        
                        'nbModel_type' : 'NBModelABFS',
                        #'nbModel'      : "NBModelABFS()",
-                       'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
+                       #'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
                        'types_allowed': {'pdb': True, 'xyz': False, 'mol2': False},
 
                        'prune_table'  : [],
@@ -117,9 +66,11 @@ class pDynamoProject():
                        'PyMOL_Obj'     : None,
                        'pymol_session' : None,   #  - pdynamo pkl/yaml file
                        'filename'      : None,
-                       'pDynamo_system': None    #  - pymol pse file
+                       'pDynamo_system': None,   #  - pymol pse file
+                       'dynamic_list'  : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
-        self.nbModel        = "NBModelABFS()"
+        self.nbModel        = 'NBModelFull()'
+        self.ABFS_options   = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
         self.parameters     = None
         self.system         = None          
         self.PyMOL          = PyMOL         
@@ -225,7 +176,9 @@ class pDynamoProject():
         if len(qc_table) != 0:
             Qgroup = Selection (qc_table)
             self.system.DefineQCModel ( qcModel, qcSelection = Qgroup)
-            self.system.DefineNBModel ( nbModel )
+            
+            self.set_nbModel_to_system()
+            
             self.settings['potencial'] = "QC"
             self.settings['QC']        = True
             self.set_nbModel_to_system()
@@ -237,7 +190,7 @@ class pDynamoProject():
         
         
         self.SystemCheck()
-        self.set_qc_DynamicBondsList()
+        #self.set_qc_DynamicBondsList()
 
     def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
         nbModel   = self.nbModel
@@ -300,7 +253,8 @@ class pDynamoProject():
         self.system.electronicState           = ElectronicState  ( charge = charge, multiplicity = multiplicity )
 
     def set_qc_DynamicBondsList(self):
-        lista  = self.settings['qc_table']
+        pass
+        lista  = self.settings['dynamic_list']
         self.BondTable       = {}
         for i in lista:
             for j in lista: 
@@ -311,8 +265,6 @@ class pDynamoProject():
                     element2 = PeriodicTable.Symbol (atom2.atomicNumber ).upper ( )
                     #BondTable[i,j] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
 
-
-
                     Distance_i_j             = self.system.coordinates3.Distance (i,j)
                     Rcov                     = (atomic_dic[element1][2] + atomic_dic[element2][2]) + (atomic_dic[element1][2] + atomic_dic[element2][2])/50
                     Bond_Unbond              = None
@@ -320,11 +272,11 @@ class pDynamoProject():
                         Bond_Unbond  = True
                     else:
                         Bond_Unbond  = False
-
+        
                     #PyMOL_BondTable[i+1,j+1] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
                     #print i+1, element1, j+1,element2, "BOND: ", Rcov, Distance_i_j, Bond_Unbond
                     self.BondTable[i+1,j+1] = [Rcov, Bond_Unbond]
-
+        
         print self.BondTable
 
 
@@ -475,7 +427,7 @@ class pDynamoProject():
         settings2 = self.settings
         settings2['prune_table'] = []
         settings2['fix_table'  ] = []  
-        #settings2['qc_table'   ] = []  
+        settings2['qc_table'   ] = []  
         settings2['data_path'  ] = new_data_path
         
         FOLDER  = self.settings['data_path']
@@ -528,8 +480,6 @@ class pDynamoProject():
 		else:
 			print "file type not supported"
 
-
-   
     def SystemCheck(self, status = True, PyMOL = True ):
         if self.system == None:
             print "System empty"
@@ -643,25 +593,6 @@ class pDynamoProject():
         else:
             pass
         
-    
-    
-    
-    
-
-    #def Open_GTKDYN_Project():
-    #    '''Function description'''
-    #    self.load_coordinate_file_as_new_system(NewSystem)
-    #
-    #    #                parei aqui !!!
-    #
-        # para abrir um projeto eh preciso inicialmente abrir uma arquivo pkl
-        # abrir um sessao do pymol
-        # resgatar os objetos do pymol conectados ao pDynamo
-
-        # para abrir um projeto do pDynamo basta abrir um arquivo pkl e enviar
-        # ao PyMOL > From_PDYNAMO_to_GTKDYNAMO
-
-
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
@@ -971,9 +902,8 @@ class pDynamoProject():
         self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , self.settings['PyMOL_Obj'])
         self.SystemCheck()
         
-
     def set_nbModel_to_system(self):
-        ABFS_options = self.settings['ABFS_options']
+        #ABFS_options = self.settings['ABFS_options']
         nbModel = self.settings['nbModel_type']
 
         if nbModel == 'NBModelFull':
@@ -982,11 +912,11 @@ class pDynamoProject():
 
         elif nbModel == 'NBModelABFS':
             nbModel = NBModelABFS()
-            self.system.DefineNBModel(NBModelABFS(**ABFS_options))
-
+            #self.system.DefineNBModel(NBModelABFS(**ABFS_options))
+            self.system.DefineNBModel(NBModelABFS(**self.ABFS_options))
         elif nbModel == 'NBModelGABFS':
             nbModel = NBModelGABFS()
-            self.system.DefineNBModel(NBModelGABFS(**ABFS_options))
+            self.system.DefineNBModel(NBModelGABFS(**self.ABFS_options))
 
         elif nbModel == 'NBModelSSBP':
             nbModel = NBModelSSBP()
@@ -1029,8 +959,6 @@ class pDynamoProject():
         self.settings['qc_table'] = []
         self.SystemCheck()
 
-    
-    
     def IncrementStep(self):
         # {1:[process, pymol_id, potencial, energy]}
         #self.step = self.step + 1
@@ -1079,8 +1007,9 @@ class pDynamoProject():
 
     def ComputeEnergy(self):  # Compute Energy
         self.ActiveModeCheck()
-        pDynamoEnergy(self.system, self.settings['data_path'])
-
+        energy = pDynamoEnergy(self.system, self.settings['data_path'])
+        return energy
+        
     def Minimization(self, method='Conjugate Gradient', parameters=None):
         """ Function doc """
 

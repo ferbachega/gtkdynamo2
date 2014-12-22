@@ -44,82 +44,58 @@ if not os.path.isdir(GTKDYNAMO_TMP):
     print "Temporary files directory:  %s" % GTKDYNAMO_TMP
 
 
-class pDynamoEnergy():
+def pDynamoEnergy (system=None, data_path=None):
 
-    """ Class doc """
+                               # Local time  -  LogFileName 
+    #----------------------------------------------------------------------------------------
+    localtime = time.asctime(time.localtime(time.time()))                                    
+    localtime = localtime.split()                                                            
+    #  0     1    2       3         4                                                        
+    #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
+    LogFile = 'Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
+    #----------------------------------------------------------------------------------------
 
-    def __init__(self, system=None, data_path=None):
-        """ Class initialiser """
-        self.system = system
-        if data_path == None:
-            data_path = GTKDYNAMO_TMP
 
+    log = DualTextLog(data_path, LogFile)  # LOG
 
-        # self.system.Summary()
+    #--------------------#
+    #    Initial time    #
+    #--------------------#
+    t_initial = time.time()
 
-        #---------------------------------------------------------------------------#
-        #                    Removing the temp file: log.gui.txt                    #
-        #---------------------------------------------------------------------------#
-        #
-        try:
-            os.rename(
-                GTKDYNAMO_TMP + '/log.gui.txt', GTKDYNAMO_TMP + '/log.gui.old')
-        #
-        except:
-            a = None		                                                        #
-        #---------------------------------------------------------------------------#
-        
-        
-                                   # Local time  -  LogFileName 
-        #----------------------------------------------------------------------------------------
-        localtime = time.asctime(time.localtime(time.time()))                                    
-        localtime = localtime.split()                                                            
-        #  0     1    2       3         4                                                        
-        #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
-        LogFile = 'Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
-        #----------------------------------------------------------------------------------------
-        
+    #---------------------------------#
+    #             SUMMARY             #
+    #---------------------------------#
+    system.Summary(log=log)
+    energy = system.Energy(log=log)
+    dipolo = system.DipoleMoment ()
 
-        log = DualTextLog(data_path, LogFile)  # LOG
+    #back_orca_output(output_path, step)
 
-        #--------------------#
-        #    Initial time    #
-        #--------------------#
-        t_initial = time.time()
-
-        #---------------------------------#
-        #             SUMMARY             #
-        #---------------------------------#
-        self.system.Summary(log=log)
-        energy = self.system.Energy(log=log)
-        dipolo = self.system.DipoleMoment ()
-        
-        #back_orca_output(output_path, step)
-        
-        #--------------------#
-        #     final time     #
-        #--------------------#      
-        t_final = time.time()
-        total_time  = t_final - t_initial
-        print "Total time = : ", t_final - t_initial
-        #return energy, total_time
+    #--------------------#
+    #     final time     #
+    #--------------------#      
+    t_final = time.time()
+    total_time  = t_final - t_initial
+    print "Total time = : ", t_final - t_initial
+    return energy
 
     
     
-    def back_orca_output(self, output_path, step):
-        try:
-            SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
-            #os.rename(SCRATCH + "/job.out", output_path+'/orca_step' + str(step) + ".out" )
-            #os.rename(SCRATCH + "/job.gbw", output_path+'/orca_step' + str(step) + ".gbw" )
-            #print   "Saving orca output: ", output_path+'/orca_step' + str(step) + ".out"
+def back_orca_output(output_path, step):
+    try:
+        SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
+        #os.rename(SCRATCH + "/job.out", output_path+'/orca_step' + str(step) + ".out" )
+        #os.rename(SCRATCH + "/job.gbw", output_path+'/orca_step' + str(step) + ".gbw" )
+        #print   "Saving orca output: ", output_path+'/orca_step' + str(step) + ".out"
 
-            os.rename(SCRATCH + "/job.out", output_path+'/step_' + str(step) + "_orca_output.out" )
-            os.rename(SCRATCH + "/job.gbw", output_path+'/step_' + str(step) + "_orca_output.gbw" )
-            print   "Saving orca output log:", output_path+'/step_' + str(step)  + "_orca_output.out"
-            print   "Saving orca output gbw:", output_path+'/step_' + str(step) + "_orca_output.gbw"
+        os.rename(SCRATCH + "/job.out", output_path+'/step_' + str(step) + "_orca_output.out" )
+        os.rename(SCRATCH + "/job.gbw", output_path+'/step_' + str(step) + "_orca_output.gbw" )
+        print   "Saving orca output log:", output_path+'/step_' + str(step)  + "_orca_output.out"
+        print   "Saving orca output gbw:", output_path+'/step_' + str(step) + "_orca_output.gbw"
 
-        except:
-            a = None
+    except:
+        a = None
 
 
 def main():
