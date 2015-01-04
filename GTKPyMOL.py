@@ -733,9 +733,14 @@ class gtkdynamo_main():
             
             if _FileType in ['gtkdyn']:
                 self.project.load_GTKDYNAMO_project(FileName)
-        
-        
-        
+                try:
+                    if self.project.settings['edit_mode_button'] == True:
+                        self.builder.get_object('togglebutton1').set_active (1)
+                    else:
+                        self.builder.get_object('togglebutton1').set_active (0)
+                except:
+                    pass
+                
         except:
             pass
 
@@ -892,12 +897,16 @@ class gtkdynamo_main():
             self.builder.get_object('label_viewing').set_label('Picking')
             self.builder.get_object('combobox1').set_sensitive(False)
             cmd.edit_mode(1)
+            self.project.settings['edit_mode_button'] = True
+
         else:
             # print '# If control reaches here, the toggle button is up'
+
             self.builder.get_object('togglebutton1').set_label('Viewing')
             self.builder.get_object('label_viewing').set_label('Selecting')
             self.builder.get_object('combobox1').set_sensitive(True)
             cmd.edit_mode(0)
+            self.project.settings['edit_mode_button'] = False
 
     def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
         """ Function doc """
@@ -1367,11 +1376,23 @@ class gtkdynamo_main():
         
         
         text = ''
+        atoms = []
         #print 'aqui'
         DynamicList = []
         try:
             atom1 = PymolGetTable('pk1')
             DynamicList.append(atom1[0])
+            model = cmd.get_model('pk1') 
+            atoms  = model.atoms
+
+            for i in atoms:
+                print i 
+                name  = i.name
+                print name
+            
+            print 'depois'
+
+            
         except:
             pass
         try:

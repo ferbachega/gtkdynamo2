@@ -2512,29 +2512,19 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkCheckButton" id="checkbutton_DynamicBonds">
-                                                <property name="label" translatable="yes">Dynamic bonds</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">True</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">2</property>
-                                              </packing>
+                                              <placeholder/>
                                             </child>
                                           </object>
                                         </child>
                                       </object>
                                     </child>
                                     <child type="label">
-                                      <object class="GtkLabel" id="label9">
+                                      <object class="GtkCheckButton" id="checkbutton_DynamicBonds">
+                                        <property name="label" translatable="yes">Dynamics bonds</property>
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">&lt;b&gt;Bonds&lt;/b&gt;</property>
-                                        <property name="use_markup">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="draw_indicator">True</property>
                                       </object>
                                     </child>
                                   </object>

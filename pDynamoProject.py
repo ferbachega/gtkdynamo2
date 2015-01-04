@@ -24,50 +24,52 @@ class pDynamoProject():
 
         
         self.settings = {
-                       'force_field'  : None,
-                       'parameters'   : None,
-                       'topology'     : None,
-                       'coordinates'  : None,
+                       'force_field'     : None,
+                       'parameters'      : None,
+                       'topology'        : None,
+                       'coordinates'     : None,
+                                        
+                       'nbModel_type'    : 'NBModelABFS',
+                                        
+                       #'nbModel'         : "NBModelABFS()",
+                       #'ABFS_options'    : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
+                       'types_allowed'   : {'pdb': True, 'xyz': False, 'mol2': False},
+                                        
+                       'prune_table'     : [],
+                       'fix_table'       : [],
+                       'qc_table'        : [],
+                                        
+                       'QC'              : False,
+                       'potencial'       : None,
+                       'qc_method'       : None,
+                                        
+                       'data_path'       : data_path,   # estah sendo usado 
+                       'step'            : 0,
+                       'last_step'       : None,
+                                        
+                                        
+                                        
+                       'job_history'     :{
+                                          # actual style
+                                          #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
+                                          
+                                          # new propose
+                                          #'1': {                                                      
+                                          #      'object'    : 'Step1'           ,
+                                          #      'type'      : 'new/min/dyn/prn' ,
+                                          #      'parameters': parameters        ,       -  extracted from the log -  checksystem
+                                          #      'potencial' : "AMBER/AM1/ABFS"  ,
+                                          #      'CQatoms'   : '43'              ,
+                                          #      'color'     : 'black'
+                                          #     }
+                                          },
                        
-                       'nbModel_type' : 'NBModelABFS',
-                       #'nbModel'      : "NBModelABFS()",
-                       #'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
-                       'types_allowed': {'pdb': True, 'xyz': False, 'mol2': False},
-
-                       'prune_table'  : [],
-                       'fix_table'    : [],
-                       'qc_table'     : [],
-                       
-                       'QC'           : False,
-                       'potencial'    : None,
-                       'qc_method'    : None,
-                       
-                       'data_path'    : data_path,   # estah sendo usado 
-                       'step'         : 0,
-                       'last_step'    : None,
-                      
-                       
-                       
-                       'job_history'  :{
-                                       # actual style
-                                       #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
-                                       
-                                       # new propose
-                                       #'1': {                                                      
-                                       #      'object'    : 'Step1'           ,
-                                       #      'type'      : 'new/min/dyn/prn' ,
-                                       #      'parameters': parameters        ,       -  extracted from the log -  checksystem
-                                       #      'potencial' : "AMBER/AM1/ABFS"  ,
-                                       #      'CQatoms'   : '43'              ,
-                                       #      'color'     : 'black'
-                                       #     }
-                                       },
-                       
-                       'PyMOL_Obj'     : None,
-                       'pymol_session' : None,   #  - pdynamo pkl/yaml file
-                       'filename'      : None,
-                       'pDynamo_system': None,   #  - pymol pse file
-                       'dynamic_list'  : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
+                       'edit_mode_button': False,
+                       'PyMOL_Obj'       : None,
+                       'pymol_session'   : None,   #  - pdynamo pkl/yaml file
+                       'filename'        : None,
+                       'pDynamo_system'  : None,   #  - pymol pse file
+                       'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
         self.nbModel        = 'NBModelFull()'
         self.ABFS_options   = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
