@@ -122,6 +122,67 @@ except:
 
        #-----------------------------------#
        #                                   #
+       #               GTKGL               #
+       #                                   #
+       #-----------------------------------#
+
+#Checking GTKGL
+#----------------------------------------------------------------------------------------#
+print "\nChecking GTKGL"                                                                 #
+try:                                                                                     #
+    import gtk.gtkgl
+                                                                         #
+	print "GTKGL.......................OK"                                               #
+except:                                                                                  #
+	print "GTKGL.......................Fail"                                             #
+	print "Please install GTKGL"                                                         #
+	                                                                                     #
+	s = raw_input('\nWould like install GTKGL - Ubuntu/Debian/Mint users only - (Y/n):') #
+	if s in answer:                                                                      #
+		try:                                                                             #
+			os.system("sudo apt-get install python-gtkglext1")                           #
+		except:                                                                          #
+			pass 	                                                                     #
+	else:                                                                                #
+		system = False                                                                   #
+#----------------------------------------------------------------------------------------#
+
+
+
+
+
+       #-----------------------------------#
+       #                                   #
+       #              PyOpenGL             #
+       #                                   #
+       #-----------------------------------#
+       
+#Checking PyOpenGL
+#------------------------------------------------------------------------------------------#
+print "\nChecking PyOpenGL"                                                                #
+try:                                                                                       #
+    from OpenGL.GL import *                                                                #
+    from OpenGL.GLU import *                                                               #
+                                                                                           #
+	print "PyOpenGL.......................OK"                                              #
+except:                                                                                    #
+	print "PyOpenGL.......................Fail"                                            #
+	print "Please install PyOpenGL"                                                        #
+	                                                                                       #
+	s = raw_input('\nWould like install PyOpenGL - Ubuntu/Debian/Mint users only - (Y/n):')#
+	if s in answer:                                                                        #
+		try:                                                                               #
+			os.system("sudo apt-get install python-opengl")                                #
+		except:                                                                            #
+			pass 	                                                                       #
+	else:                                                                                  #
+		system = False                                                                     #
+#------------------------------------------------------------------------------------------#
+
+
+
+       #-----------------------------------#
+       #                                   #
        #               PYMOL               #
        #                                   #
        #-----------------------------------#
