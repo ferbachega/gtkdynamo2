@@ -30,7 +30,9 @@ from PyMOLScripts import *
 from WindowControl import *
 from pDynamoScan   import *
 
-GTKDYNAMO_ROOT = os.getcwd()
+#GTKDYNAMO_ROOT = os.getcwd()
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 texto_d1   = "\n\n                       -- simple-distance --\n\nFor simple-distance, select two atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n         ^            ^\n         |            |\n        pk1  . . . . pk2\n                d1\n"

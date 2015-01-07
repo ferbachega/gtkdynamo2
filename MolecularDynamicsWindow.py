@@ -32,7 +32,9 @@ from pDynamoMolecularDynamics import *
 #GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
 #GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
 #GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-GTKDYNAMO_ROOT = os.getcwd()
+#GTKDYNAMO_ROOT = os.getcwd()
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 

@@ -34,7 +34,9 @@ from pMoleculeScripts       import *
 from DualTextLogFileWriter3 import *
 from LogParse               import *
 
-GTKDYNAMO_ROOT = os.getcwd()
+#GTKDYNAMO_ROOT = os.getcwd()
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 
