@@ -87,25 +87,30 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 
-# GUI
-from MinimizationWindow          import *  # window 2  - minimization
-from MolecularDynamicsWindow     import *
-from FileChooserWindow           import *
-from NewProjectDialog            import *
-from QuantumChemistrySetupDialog import *
-from NonBondDialog               import *
+# GUI 
+from gui.MinimizationWindow          import *  # window 2  - minimization
+from gui.MolecularDynamicsWindow     import *
 
-from ScanDialog                  import *
-from ScanWindow                  import *
+from gui.FileChooserWindow           import *
+from gui.NewProjectDialog            import *
+from gui.QuantumChemistrySetupDialog import *
+
+from gui.NonBondDialog               import *
+from gui.ScanDialog                  import *
+from gui.ScanWindow                  import *
+
+from gui.Scan2dDialog                import *
+from gui.TrajectoryDialog            import *
+from gui.WorkSpaceDialog             import WorkSpaceDialog
+
 import TextEditor.TextEditorWindow as TextEditor
-from   MatplotGTK.MatplotGTK     import PlotGTKWindow
 
-from Scan2dDialog                import *
-from TrajectoryDialog            import *
+from   MatplotGTK.MatplotGTK          import PlotGTKWindow
+
+
 # pDynamo
 from pDynamoProject  import *
 from WindowControl   import *
-from WorkSpaceDialog import WorkSpaceDialog
 #-------------------------#
 #                         #
 #   GTKDYNAMO TEMP DIR    #

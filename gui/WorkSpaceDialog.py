@@ -25,7 +25,7 @@
 import os
 import gtk
 import gobject
-
+import sys
 
 from   PyMOLScripts      import *
 from   WindowControl     import *

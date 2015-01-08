@@ -1,17 +1,17 @@
 # pDynamo
-from pBabel import *
-from pCore import *
-from pMolecule import *
+from pBabel           import *
+from pCore            import *
+from pMolecule        import *
 from pMoleculeScripts import *
 
 #
 # GTKDynamo
-from pDynamoMinimization      import *
-from pDynamoEnergy            import *
-from pDynamoMolecularDynamics import *
+from pDynamoMethods.pDynamoMinimization      import *
+from pDynamoMethods.pDynamoEnergy            import *
+from pDynamoMethods.pDynamoMolecularDynamics import *
+from PyMOLScripts.PyMOLScripts import *
+from MatplotGTK.LogParse import ParseSummaryLogFile, ParseProcessLogFile
 from pymol import cmd
-from PyMOLScripts import *
-from LogParse import ParseSummaryLogFile, ParseProcessLogFile
 
 import time
 import json

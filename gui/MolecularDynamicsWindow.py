@@ -28,7 +28,7 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
-from pDynamoMolecularDynamics import *
+from pDynamoMethods.pDynamoMolecularDynamics import *
 #GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
 #GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
 #GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'

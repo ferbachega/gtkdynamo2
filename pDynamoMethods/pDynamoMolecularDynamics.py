@@ -33,7 +33,7 @@ from pMolecule              import *
 from pMoleculeScripts       import *
 
 from DualTextLogFileWriter3 import *
-from LogParse               import *
+from MatplotGTK.LogParse    import *
 from random                 import *
 
 def RunMolecularDynamics( system, data_path, parameters):

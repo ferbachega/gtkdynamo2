@@ -287,18 +287,23 @@ if _pDynamo == False:
 	if s in answer:
 		try:
 
-			s = raw_input('\n(1)pDynamo-1.8.0\n(2)pDynamo-1.7.2\n(3)other\nSelect a pDynamo version(1):')
+			s = raw_input('\n(1)pDynamo-1.9.0\n(2)pDynamo-1.8.0\n(3)pDynamo-1.7.2\n(4)other\nSelect a pDynamo version(1):')
 			if s == "1" or s == "":
-				version = "1.8.0"
+				version = "1.9.0"
 				Cython  = "Cython-0.19"
 				PyYAML  = "PyYAML-3.10"
 			
 			if s == "2":
+				version = "1.8.0"
+				Cython  = "Cython-0.19"
+				PyYAML  = "PyYAML-3.10"
+			
+            if s == "3":
 				version = "1.7.2"
 				Cython  = "Cython-0.15.1"
 				PyYAML  = "PyYAML-3.09"
-				
-			if s == "3":
+			
+            if s == "4":
 				s2      = raw_input('Type the required version (eg. "1.7.2"):')
 				Cython  = raw_input('Type the Cython version (Cython-0.19):')
 				PyYAML  = raw_input('Type the PyYAML version (PyYAML-3.10):')
@@ -485,7 +490,7 @@ if system == True:
 			
 		text = "\n#GTKDynamo \n"
 		text = text + "source " + folder + "/environment_bash.com\n"
-		text = text + "alias gtkdynamo='" + folder +"/gtkdynamo.py'\n"
+		text = text + "alias gtkdynamo='" + folder +"/GTKPyMOL.py'\n"
 		text = text + "export LC_ALL=en_US.UTF-8\n"		
 		text = text + "export LANG=en_US.UTF-8\n"	
 		text = text + "export LANGUAGE=en_US.UTF-8\n"	
@@ -508,7 +513,7 @@ if system == True:
 		print "Fail, trying to build the environment file: permission denied"
 
 	try:
-		os.system("chmod +x gtkdynamo.py")
+		os.system("chmod +x GTKPyMOL.py")
 	except:
 		pass
 

@@ -32,7 +32,7 @@ from pMolecule              import *
 from pMoleculeScripts       import *
 
 from DualTextLogFileWriter3 import *
-from LogParse               import *
+from MatplotGTK.LogParse    import *
 
 #GTKDYNAMO_ROOT = os.getcwd()
 GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')

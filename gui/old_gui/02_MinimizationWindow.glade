@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkDialog" id="02_MinimizationWindow">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Geometry Optmization</property>
+    <property name="resizable">False</property>
+    <property name="icon">.icon_minimization_24x24.png</property>
+    <property name="type_hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox32">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area32">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="02_window_button1">
+                <property name="label">gtk-cancel</property>
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="02_window_button_RUN_MINIMIZATION1">
+                <property name="label" translatable="yes">Minimize</property>
+                <property name="width_request">100</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_02_window_button_RUN_MINIMIZATION1_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">15</property>
+            <child>
+              <object class="GtkFrame" id="02_window_frame1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="02_window_alignment1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkAlignment" id="02_window_alignment8">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="top_padding">10</property>
+                        <property name="bottom_padding">10</property>
+                        <property name="left_padding">10</property>
+                        <property name="right_padding">10</property>
+                        <child>
+                          <object class="GtkComboBox" id="02_window_combobox_minimization_method">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="02_window_label_Method1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Method&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="02_window_frame2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="02_window_alignment7">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="top_padding">10</property>
+                    <property name="bottom_padding">10</property>
+                    <property name="left_padding">10</property>
+                    <property name="right_padding">10</property>
+                    <child>
+                      <object class="GtkTable" id="table1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="n_rows">4</property>
+                        <property name="n_columns">2</property>
+                        <property name="column_spacing">15</property>
+                        <property name="row_spacing">2</property>
+                        <child>
+                          <object class="GtkLabel" id="02_window_label123">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">1</property>
+                            <property name="label" translatable="yes">Trajectory Log:</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="02_window_label72">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">1</property>
+                            <property name="label" translatable="yes">Frequency Log:</property>
+                          </object>
+                          <packing>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="02_window_label121">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">1</property>
+                            <property name="label" translatable="yes">Maximum Iterations:</property>
+                          </object>
+                          <packing>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="02_window_label122">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xalign">1</property>
+                            <property name="label" translatable="yes">RMS Grad. Tolerance:</property>
+                            <property name="justify">right</property>
+                          </object>
+                          <packing>
+                            <property name="top_attach">3</property>
+                            <property name="bottom_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="02_window_entry_traj_freq">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                            <property name="text" translatable="yes">5</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="02_window_entry_max_int">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                            <property name="text" translatable="yes">200</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="02_window_entry_log_freq">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                            <property name="text" translatable="yes">5</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="02_window_entry_rmsGRAD">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                            <property name="text" translatable="yes">0.1</property>
+                            <property name="invisible_char_set">True</property>
+                            <property name="primary_icon_activatable">False</property>
+                            <property name="secondary_icon_activatable">False</property>
+                            <property name="primary_icon_sensitive">True</property>
+                            <property name="secondary_icon_sensitive">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">3</property>
+                            <property name="bottom_attach">4</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="02_window_label5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Parameters&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="02_window_frame3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0.5</property>
+                <child>
+                  <object class="GtkAlignment" id="02_window_alignment4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="top_padding">10</property>
+                    <property name="bottom_padding">10</property>
+                    <property name="left_padding">10</property>
+                    <property name="right_padding">10</property>
+                    <child>
+                      <object class="GtkVBox" id="vbox2">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="spacing">15</property>
+                        <child>
+                          <object class="GtkHBox" id="hbox1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="spacing">15</property>
+                            <child>
+                              <object class="GtkCheckButton" id="02_window_Output_trajectory_checkbox">
+                                <property name="label" translatable="yes">Save trajectory:</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="active">True</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="02_window_entry_traj_name">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">●</property>
+                                <property name="text" translatable="yes">traj_pDynamo_min.trj</property>
+                                <property name="invisible_char_set">True</property>
+                                <property name="primary_icon_activatable">False</property>
+                                <property name="secondary_icon_activatable">False</property>
+                                <property name="primary_icon_sensitive">True</property>
+                                <property name="secondary_icon_sensitive">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="02_window_AMBER_trajectory_checkbox">
+                            <property name="label" translatable="yes">Save as a AMBER trajectory file.</property>
+                            <property name="width_request">291</property>
+                            <property name="height_request">30</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="02_window_label6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;Output Files&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">02_window_button1</action-widget>
+      <action-widget response="0">02_window_button_RUN_MINIMIZATION1</action-widget>
+    </action-widgets>
+  </object>
+</interface>

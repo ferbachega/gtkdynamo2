@@ -28,7 +28,7 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
-from pDynamoScan   import *
+from pDynamoMethods.pDynamoScan   import *
 
 #GTKDYNAMO_ROOT = os.getcwd()
 GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')

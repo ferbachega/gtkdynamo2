@@ -102,7 +102,7 @@ class MinimizationWindow():
             
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, '02_MinimizationWindow.glade'))
+            os.path.join(GTKDYNAMO_GUI, 'MinimizationWindow.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('02_MinimizationWindow')
 
