@@ -131,8 +131,7 @@ except:
 print "\nChecking GTKGL"                                                                 #
 try:                                                                                     #
     import gtk.gtkgl
-                                                                         #
-	print "GTKGL.......................OK"                                               #
+    print "GTKGL.......................OK"                                               #
 except:                                                                                  #
 	print "GTKGL.......................Fail"                                             #
 	print "Please install GTKGL"                                                         #
@@ -163,10 +162,9 @@ print "\nChecking PyOpenGL"                                                     
 try:                                                                                       #
     from OpenGL.GL import *                                                                #
     from OpenGL.GLU import *                                                               #
-                                                                                           #
-	print "PyOpenGL.......................OK"                                              #
+    print "PyOpenGL....................OK"                                                 #
 except:                                                                                    #
-	print "PyOpenGL.......................Fail"                                            #
+	print "PyOpenGL....................Fail"                                               #
 	print "Please install PyOpenGL"                                                        #
 	                                                                                       #
 	s = raw_input('\nWould like install PyOpenGL - Ubuntu/Debian/Mint users only - (Y/n):')#
@@ -280,148 +278,147 @@ except:
 	_pDynamo = False
 
 if _pDynamo == False:
-	print "\npDynamo is not installed.\n"
-	#bashrc
-	
-	s = raw_input('\nWould like to auto install pDynamo? - Ubuntu/Debian/Mint users only - (Y/n):')
-	if s in answer:
-		try:
+    print "\npDynamo is not installed.\n"
+    #bashrc
 
-			s = raw_input('\n(1)pDynamo-1.9.0\n(2)pDynamo-1.8.0\n(3)pDynamo-1.7.2\n(4)other\nSelect a pDynamo version(1):')
-			if s == "1" or s == "":
-				version = "1.9.0"
-				Cython  = "Cython-0.19"
-				PyYAML  = "PyYAML-3.10"
-			
-			if s == "2":
-				version = "1.8.0"
-				Cython  = "Cython-0.19"
-				PyYAML  = "PyYAML-3.10"
-			
+    s = raw_input('\nWould like to auto install pDynamo? - Ubuntu/Debian/Mint users only - (Y/n):')
+    if s in answer:
+        try:
+            s = raw_input('\n(1)pDynamo-1.9.0\n(2)pDynamo-1.8.0\n(3)pDynamo-1.7.2\n(4)other\nSelect a pDynamo version(1):')
+            if s == "1" or s == "":
+                version = "1.9.0"
+                Cython  = "Cython-0.19"
+                PyYAML  = "PyYAML-3.10"
+
+            if s == "2":
+                version = "1.8.0"
+                Cython  = "Cython-0.19"
+                PyYAML  = "PyYAML-3.10"
+
             if s == "3":
-				version = "1.7.2"
-				Cython  = "Cython-0.15.1"
-				PyYAML  = "PyYAML-3.09"
-			
-            if s == "4":
-				s2      = raw_input('Type the required version (eg. "1.7.2"):')
-				Cython  = raw_input('Type the Cython version (Cython-0.19):')
-				PyYAML  = raw_input('Type the PyYAML version (PyYAML-3.10):')
-				
-				if Cython == "":
-					Cython = "Cython-0.19"
-				if PyYAML == "":
-					PyYAML  = "PyYAML-3.10"
-				version = s2
-				
-			
-			verison = "pDynamo-" + version
-			
-			
-			s = raw_input('\nWhere would you like to install pDynamo? (' + HOME +'):')
-			if s == '':
-				s = HOME					
-			folder = s
-			os.chdir(s)
-			
-			# WGET - DOWNLOAD
-			#-------------------------------------------------------------------------------------#
-			os.system("wget https://sites.google.com/site/pdynamomodeling/" + verison + ".tgz")   #
-			#-------------------------------------------------------------------------------------#
-			
-			# TARGZ
-			#-------------------------------------------------------------------------------------#
-			os.system("tar -xzvf "+ verison + ".tgz")                                             #
-			#-------------------------------------------------------------------------------------#
-			
-			
-			s = raw_input('\nWould like install Cython - Ubuntu/Debian/Mint users only - (Y/n):')
-			if s in answer:   			
-				#Cython-0.19 
-				#-------------------------------------------------------------------------------------#
-				#folder = os.getcwd()                                                                 #
-				print "\n\n\nInstalling Cython (superuser permission required)..."                    #
-				path   = os.path.join(folder, verison + "/thirdParty/" + Cython)                      #
-				os.chdir(path)                                                                        #
-				#os.system("ls ")                                                                     #
-				os.system("sudo python setup.py install")                                             #
-				print "Cython installation done."                                                     #
-				#-------------------------------------------------------------------------------------#
-			
-			
-			s = raw_input('\nWould like install PyYAML - Ubuntu/Debian/Mint users only - (Y/n):')
-			if s in answer:  
-				#PyYAML-3.10
-				#-------------------------------------------------------------------------------------#
-				os.system("ls ")                                                                      #
-				print "\n\n\nInstalling PyYAML..."                                                    #
-				path   = os.path.join(folder, verison + "/thirdParty/" + PyYAML)                      #
-				os.chdir(path)                                                                        #
-				#os.system("ls ")                                                                     #
-				os.system("sudo python setup.py install")	                                          #
-				print "PyYAML installation done."                                                     #
-				#-------------------------------------------------------------------------------------#
-				
-			
-			
-			# PDYNAMO
-			#--------------------------------------------------------------------------------------------#
-			path   = os.path.join(folder, verison + "/installation")                                     #
-			os.chdir(path)                                                                               #
-			os.system("ls ")                                                                             #
-			                                                                                             #
-			pDy_installation_path = path                                                                 #
-			                                                                                             #
-			try:                                                                                         #
-				os.system("sudo apt-get install python-dev")                                             #
-			except:                                                                                      #
-				pass                                                                                     #
-			                                                                                             #
-			print "Installing pDynamo"                                                                   #
-			os.system("python Install.py")	                                                             #
-			                                                                                             #
-			#bashrc  -  pDynamo                                                                          #
-			answer = ["Y", "y", "Yes", "yes", "YES", "yEs", "yeS", ""]	                                 #
-			s = raw_input('\nWould like to auto add information to the .bashrc file? -pDynamo- (Y/n):')  #
-			                                                                                             #
-				                                                                                         #
-			text = "\n#pDynamo \n"                                                                       #
-			text = text + "source " + pDy_installation_path + "/environment_bash.com\n"                  #
-			                                                                                             #
-			if s in answer:                                                                              #
-				arq  = open(os.path.join(HOME +"/.bashrc"), "a")                                         #
-				arq.writelines(text)                                                                     #
-				arq.close()                                                                              #
-				print "The .bashrc file has been modified"                                               #
-				print "obs:if you are using CSH please do it manually"                                   #
-#				os.system("source " + pDy_installation_path + "/environment_bash.com")                   #
-				                                                                                         #
-			else:                                                                                        #
-				print "\n\nPlease add to the .bashrc the following lines:"                               #
-				print text                                                                               #
-				print "\n\nobs:if you are using CSH please do it manually"		                         #
-						                                                                                 #
-			#--------------------------------------------------------------------------------------------# 
-			
-			_pDynamo = True
-			system = True
-			
-	
-			if version == "1.7.2":
-				try:
-					print "replacing GaussianCubeFileWriter.py"
-					shutil.copy2("GaussianCubeFileWriter.py ", pDy_installation_path +"/pBabel-1.7.2/pBabel")
-					#print "\n\nPlease move GaussianCubeFileWriter.py  to" +pDy_installation_path+ "/pBabel-1.7.2/pBabel manualy""
-				except:
-					print "Fail, trying to move GaussianCubeFileWriter.py  to" +pDy_installation_path+ "/pBabel-1.7.2/pBabel"
+                version = "1.7.2"
+                Cython  = "Cython-0.15.1"
+                PyYAML  = "PyYAML-3.09"
 
+            if s == "4":
+                s2      = raw_input('Type the required version (eg. "1.7.2"):')
+                Cython  = raw_input('Type the Cython version (Cython-0.19):')
+                PyYAML  = raw_input('Type the PyYAML version (PyYAML-3.10):')
+                
+                if Cython == "":
+                    Cython = "Cython-0.19"
+                if PyYAML == "":
+                    PyYAML  = "PyYAML-3.10"
+                version = s2
+                
+
+            verison = "pDynamo-" + version
+
+
+            s = raw_input('\nWhere would you like to install pDynamo? (' + HOME +'):')
+            if s == '':
+                s = HOME					
+            folder = s
+            os.chdir(s)
+
+            # WGET - DOWNLOAD
+            #-------------------------------------------------------------------------------------#
+            os.system("wget https://sites.google.com/site/pdynamomodeling/" + verison + ".tgz")   #
+            #-------------------------------------------------------------------------------------#
+
+            # TARGZ
+            #-------------------------------------------------------------------------------------#
+            os.system("tar -xzvf "+ verison + ".tgz")                                             #
+            #-------------------------------------------------------------------------------------#
+
+
+            s = raw_input('\nWould like install Cython - Ubuntu/Debian/Mint users only - (Y/n):')
+            if s in answer:   			
+                #Cython-0.19 
+                #-------------------------------------------------------------------------------------#
+                #folder = os.getcwd()                                                                 #
+                print "\n\n\nInstalling Cython (superuser permission required)..."                    #
+                path   = os.path.join(folder, verison + "/thirdParty/" + Cython)                      #
+                os.chdir(path)                                                                        #
+                #os.system("ls ")                                                                     #
+                os.system("sudo python setup.py install")                                             #
+                print "Cython installation done."                                                     #
+                #-------------------------------------------------------------------------------------#
+
+
+            s = raw_input('\nWould like install PyYAML - Ubuntu/Debian/Mint users only - (Y/n):')
+            if s in answer:  
+                #PyYAML-3.10
+                #-------------------------------------------------------------------------------------#
+                os.system("ls ")                                                                      #
+                print "\n\n\nInstalling PyYAML..."                                                    #
+                path   = os.path.join(folder, verison + "/thirdParty/" + PyYAML)                      #
+                os.chdir(path)                                                                        #
+                #os.system("ls ")                                                                     #
+                os.system("sudo python setup.py install")	                                          #
+                print "PyYAML installation done."                                                     #
+                #-------------------------------------------------------------------------------------#
+                
+
+
+            # PDYNAMO
+            #--------------------------------------------------------------------------------------------#
+            path   = os.path.join(folder, verison + "/installation")                                     #
+            os.chdir(path)                                                                               #
+            os.system("ls ")                                                                             #
+                                                                                                         #
+            pDy_installation_path = path                                                                 #
+                                                                                                         #
+            try:                                                                                         #
+                os.system("sudo apt-get install python-dev")                                             #
+            except:                                                                                      #
+                pass                                                                                     #
+                                                                                                         #
+            print "Installing pDynamo"                                                                   #
+            os.system("python Install.py")	                                                             #
+                                                                                                         #
+            #bashrc  -  pDynamo                                                                          #
+            answer = ["Y", "y", "Yes", "yes", "YES", "yEs", "yeS", ""]	                                 #
+            s = raw_input('\nWould like to auto add information to the .bashrc file? -pDynamo- (Y/n):')  #
+                                                                                                         #
+                                                                                                         #
+            text = "\n#pDynamo \n"                                                                       #
+            text = text + "source " + pDy_installation_path + "/environment_bash.com\n"                  #
+                                                                                                         #
+            if s in answer:                                                                              #
+                arq  = open(os.path.join(HOME +"/.bashrc"), "a")                                         #
+                arq.writelines(text)                                                                     #
+                arq.close()                                                                              #
+                print "The .bashrc file has been modified"                                               #
+                print "obs:if you are using CSH please do it manually"                                   #
+            #				os.system("source " + pDy_installation_path + "/environment_bash.com")                   #
+                                                                                                         #
+            else:                                                                                        #
+                print "\n\nPlease add to the .bashrc the following lines:"                               #
+                print text                                                                               #
+                print "\n\nobs:if you are using CSH please do it manually"		                         #
+                                                                                                         #
+            #--------------------------------------------------------------------------------------------# 
+
+            _pDynamo = True
+            system = True
+
+
+            if version == "1.7.2":
+                try:
+                    print "replacing GaussianCubeFileWriter.py"
+                    shutil.copy2("GaussianCubeFileWriter.py ", pDy_installation_path +"/pBabel-1.7.2/pBabel")
+                    #print "\n\nPlease move GaussianCubeFileWriter.py  to" +pDy_installation_path+ "/pBabel-1.7.2/pBabel manualy""
+                except:
+                    print "Fail, trying to move GaussianCubeFileWriter.py  to" +pDy_installation_path+ "/pBabel-1.7.2/pBabel"
+
+                    
 					
 					
 					
-					
-		except:
-			print "\n - - -pDynamo installation failed - - - "
-			print "\nPlease check: \nhttps://sites.google.com/site/pdynamomodeling/installation\n"
+        except:
+            print "\n - - -pDynamo installation failed - - - "
+            print "\nPlease check: \nhttps://sites.google.com/site/pdynamomodeling/installation\n"
 	else:
 		print "\nPlease check: \nhttps://sites.google.com/site/pdynamomodeling/installation\n"
 	
