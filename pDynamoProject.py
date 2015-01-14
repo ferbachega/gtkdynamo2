@@ -71,16 +71,16 @@ class pDynamoProject():
                        'pDynamo_system'  : None,   #  - pymol pse file
                        'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
-        self.nbModel        = 'NBModelFull()'
-        self.ABFS_options   = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
-        self.parameters     = None
-        self.system         = None          
-        self.PyMOL          = PyMOL         
-        self.dualLog        = None          
-        self.builder        = builder       
-        self.window_control = window_control
-        self.ActiveMode     = False 
-        
+        self.nbModel         = 'NBModelFull()'
+        self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
+        self.parameters      = None
+        self.system          = None          
+        self.PyMOL           = PyMOL         
+        self.dualLog         = None          
+        self.builder         = builder       
+        self.window_control  = window_control
+        self.ActiveMode      = False 
+        self.pdbInfo         = {} # usado no pDynamoSelections
         
         ''' 
                    BondTable  
@@ -940,6 +940,7 @@ class pDynamoProject():
         self.settings['prune_table'].append(prune_table)
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
         print 'pruned'        
+        self.clean_fix_table()
         
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))

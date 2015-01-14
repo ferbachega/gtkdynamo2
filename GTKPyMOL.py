@@ -96,10 +96,11 @@ from gui.NewProjectDialog            import *
 from gui.QuantumChemistrySetupDialog import *
 
 from gui.NonBondDialog               import *
-from gui.ScanDialog                  import *
 from gui.ScanWindow                  import *
+from gui.pDynamoSelectionsWindow     import pDynamoSelectionWindow
 
 from gui.Scan2dDialog                import *
+
 from gui.TrajectoryDialog            import *
 from gui.WorkSpaceDialog             import WorkSpaceDialog
 
@@ -861,6 +862,14 @@ class gtkdynamo_main():
             self.builder.get_object('notebook3').hide()
             
     
+    def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
+        """ Function doc """
+        if self.project.system == None:
+            print 'system empty'
+        else:
+            if self.pDynamoSelectionWindow.Visible == False:
+                self.pDynamoSelectionWindow.OpenWindow()  
+    
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
         self.project.SystemCheck()
@@ -1560,6 +1569,9 @@ class gtkdynamo_main():
             self.window_control, self.builder)                                                            #
                                                                                                           #
         self.WorkSpaceDialog = WorkSpaceDialog(self)
+        
+        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)
+        
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
 
