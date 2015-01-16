@@ -872,7 +872,14 @@ class gtkdynamo_main():
     
     def on_ToolBar_buttonCheckSystem_clicked(self, button):
         """ Function doc """
-        self.project.SystemCheck()
+        filein = self.project.SystemCheck()
+        #filein = self.project.settings['job_history'][self.selectedID]['log']
+        editor = TextEditor.GTKDynamoTextEditor(filein)
+        #editor.load_file(filein)
+
+
+
+
 
     def on_ToolBar_buttonSinglePoint_clicked(self, button):
         """ Function doc """
@@ -967,16 +974,24 @@ class gtkdynamo_main():
                                                                                                               
             # 5 step                                                                                          
             if a == -8:                                                                                       
-                # 6 step 
-                self.project       = pDynamoProject(data_path = GTKDYNAMO_TMP, 
-                                                      builder = self.builder, 
-                                               window_control = self.window_control) 
-                self.project.PyMOL = True
-                pymol_objects  = cmd.get_names()
-                liststore = self.builder.get_object('liststore2')
-                self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
-                self.project.SystemCheck()
-                cmd.delete('all')                                                                                  
+				# 6 step 
+				#--------------------------------------------------GTKDynamo project---------------------------------------------------------#
+				self.project = None
+				self.project = pDynamoProject(data_path  =GTKDYNAMO_TMP, 
+											  builder=self.builder, 
+											  window_control=self.window_control)                                   
+
+				self.project.PyMOL = True                                                                                                    #
+				#----------------------------------------------------------------------------------------------------------------------------#  
+
+				cmd.delete('all')
+				pymol_objects  = cmd.get_names()
+				liststore = self.builder.get_object('liststore2')
+				self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
+				
+				
+				self.project.SystemCheck()
+				#cmd.delete('all')                                                                                  
             else:                                                                                             
                 return 0 
 
@@ -1242,13 +1257,17 @@ class gtkdynamo_main():
     
     ''' 
     def on_TrajectoryTool_Entry_Push(self, entry, data=None):
-		MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
-		MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+		self.on_TrajectoryTool_HSCALE_update()	
 
-		scale = self.builder.get_object("trajectory_hscale")
-		scale.set_range(MIN, MAX)
-		scale.set_increments(1, 10)
-		scale.set_digits(0)	
+    def on_TrajectoryTool_HSCALE_update (self):
+        """ Function doc """
+        MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
+        MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+
+        scale = self.builder.get_object("trajectory_hscale")
+        scale.set_range(MIN, MAX)
+        scale.set_increments(1, 10)
+        scale.set_digits(0)
 
     def on_TrajectoryTool_BarSetFrame(self, hscale, text= None,  data=None):            # SETUP  trajectory window
         valor = hscale.get_value()
@@ -1565,8 +1584,7 @@ class gtkdynamo_main():
         self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
             self.window_control, self.builder)                                                            #
                                                                                                           #
-        self.TrajectoryDialog = TrajectoryDialog(self.project,                                            #
-            self.window_control, self.builder)                                                            #
+        self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
                                                                                                           #
         self.WorkSpaceDialog = WorkSpaceDialog(self)
         

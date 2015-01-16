@@ -349,74 +349,66 @@ class pDynamoProject():
                            FileType   = None,  # str
                            filesin    = None,  # dictionary
                            BufferText = None):  # buffertext
-        """ Function doc """
+		""" Function doc """
 
-        self.name = name
+		self.name = name
 
-        if data_path is not None:
-            self.settings['data_path'] = data_path
+		if data_path is not None:
+			self.settings['data_path'] = data_path
 
-        FileType = FileType
-        filesin = filesin
+		FileType = FileType
+		filesin = filesin
 
-        if FileType == "AMBER":
-            amber_params = filesin['amber_params']
-            amber_coords = filesin['amber_coords']
-            self.set_AMBER_MM(amber_params, amber_coords, self.dualLog)
-            self.set_nbModel_to_system()
-        
-        elif FileType == "CHARMM":
-            charmm_params = filesin['charmm_params']
-            charmm_topologies = filesin['charmm_topologies']
-            charmm_coords = filesin['charmm_coords']
-            
-            self.set_CHARMM_MM(charmm_params, charmm_topologies, self.dualLog)
-            filetype = self.load_coordinate_file_to_system(
-                charmm_coords, self.dualLog)
-            self.set_nbModel_to_system()
-        
-        elif FileType == "GROMACS":
-            gromacs_params = filesin['gromacs_params']
-            gromacs_coords = filesin['gromacs_coords']
+		if FileType == "AMBER":
+			amber_params = filesin['amber_params']
+			amber_coords = filesin['amber_coords']
+			self.set_AMBER_MM(amber_params, amber_coords, self.dualLog)
+			self.set_nbModel_to_system()
 
-            self.set_GROMACS_MM(gromacs_params, gromacs_coords, self.dualLog)
-            self.set_nbModel_to_system()
-        
-        
-        elif FileType == "OPLS":
-            opls_params = filesin['opls_params']
-            opls_coords = filesin['opls_coords']
-            self.set_OPLS_MM(opls_params, opls_coords, self.dualLog)
-            self.set_nbModel_to_system()
-        
-        elif FileType == "pDynamo files(*.pkl,*.yaml)":
-            NewSystem = filesin["pDynamoFile"]					#
-            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+		elif FileType == "CHARMM":
+			charmm_params = filesin['charmm_params']
+			charmm_topologies = filesin['charmm_topologies']
+			charmm_coords = filesin['charmm_coords']
+			
+			self.set_CHARMM_MM(charmm_params, charmm_topologies, self.dualLog)
+			filetype = self.load_coordinate_file_to_system(
+				charmm_coords, self.dualLog)
+			self.set_nbModel_to_system()
 
-        
-        elif FileType == "Other(*.pdb,*.xyz,*.mol2...)":
-            NewSystem = filesin["coordinates"]					#
-            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+		elif FileType == "GROMACS":
+			gromacs_params = filesin['gromacs_params']
+			gromacs_coords = filesin['gromacs_coords']
 
-        
-        print BufferText
-        #text  = BufferText.get_text()
-        #print text
-        ## nbModel applied
-        #if FileType is not "pDynamo files(*.pkl,*.yaml)":
-        #    self.set_nbModel_to_system()
+			self.set_GROMACS_MM(gromacs_params, gromacs_coords, self.dualLog)
+			self.set_nbModel_to_system()
 
-        
-        #self.system.Summary(
-        #    log=DualTextLog(self.data_path, str(self.step + 1) + '_' + self.name + ".log"))
 
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+		elif FileType == "OPLS":
+			opls_params = filesin['opls_params']
+			opls_coords = filesin['opls_coords']
+			self.set_OPLS_MM(opls_params, opls_coords, self.dualLog)
+			self.set_nbModel_to_system()
+
+		elif FileType == "pDynamo files(*.pkl,*.yaml)":
+			NewSystem = filesin["pDynamoFile"]					#
+			self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+
+
+		elif FileType == "Other(*.pdb,*.xyz,*.mol2...)":
+			NewSystem = filesin["coordinates"]					#
+			self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+
+
+		print BufferText
+		self.system.label = name
+		self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
     def Save_Project_To_File (self, filename = 'actual_state', type_ = 'pkl'):
 		""" Function doc """
 		path     = filename.split('/')
 
 		FileName = path.pop()
+		self.system.label = FileName
 
 		new_data_path = '/'
 		for i in path:
@@ -604,6 +596,11 @@ class pDynamoProject():
     
         else:
             pass
+        
+        if status == True:
+			SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
+			return SummaryFile 
+        
         
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
@@ -879,6 +876,8 @@ class pDynamoProject():
             liststore = self.builder.get_object('liststore2')
             self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'], self.settings['PyMOL_Obj'])
             self.SystemCheck()
+        
+        return a
         
     def load_GTKDYNAMO_project(self, filename):
         """ Function doc """

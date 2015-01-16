@@ -25,7 +25,7 @@
 import os
 import gtk
 import gobject
-from PyMOLScripts import *
+#from PyMOLScripts import *
 from WindowControl import *
 #GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
 #GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
@@ -47,6 +47,8 @@ class NonBondDialog():
     """ Class doc """
     def on_button1_apply_NBModel_clicked(self, button):
         """ Function doc """
+        self.project          = self.GTKDynamoSession.project
+
         nbModel     = self.builder.get_object('combobox1_nb_types').get_active_text()
         innercutoff = float(self.builder.get_object('entry1').get_text())
         outercutoff = float(self.builder.get_object('entry2').get_text())

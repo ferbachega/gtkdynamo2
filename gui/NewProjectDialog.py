@@ -25,7 +25,7 @@
 import os
 import gtk
 import gobject
-from PyMOLScripts import *
+from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 import time
 
@@ -180,7 +180,9 @@ class NewProjectDialog():
             filesin['coordinates'] = self.builder.get_object(
                 "amber_inpcrd_chooser").get_filename()					#
 
-        
+
+        self.project          = self.GTKDynamoSession.project
+       
         self.project.DeleteActualProject()
         self.project.Create_New_Project(
             name, data_path, FileType, filesin, BufferText)

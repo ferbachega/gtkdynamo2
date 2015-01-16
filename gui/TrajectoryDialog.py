@@ -26,14 +26,12 @@ import os
 import gtk
 import gobject
 from pymol import cmd
-from PyMOLScripts import *
+#from PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 
+
+
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 
@@ -48,6 +46,8 @@ comentarios serao salvos no history dos processos
 class TrajectoryDialog():
     def on_TrajectoryDialog_button_load_clicked(self, button):
         """ Function doc """
+        self.project     = self.GTKDynamoSession.project
+               
         first            = int(self.builder.get_object('TrajectoryDialog_first').get_text() )
         last             = int(self.builder.get_object('TrajectoryDialog_last').get_text()  )
         stride           = int(self.builder.get_object('TrajectoryDialog_stride').get_text())
@@ -70,10 +70,9 @@ class TrajectoryDialog():
               new_pymol_object ,
               mode)            
         
-        self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object)
-        
-        
-
+        frames = self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object)
+        self.GTKDynamoSession.builder.get_object('trajectory_max_entrey').set_text(str(frames))
+        self.GTKDynamoSession.on_TrajectoryTool_HSCALE_update()
         
     def on_combobox1_changed(self, button):
         mode        = self.builder.get_object('combobox1').get_active_text()
@@ -86,13 +85,13 @@ class TrajectoryDialog():
             self.builder.get_object('filechooserbutton1').hide()
 
 
-    def __init__(self, project=None, window_control=None, main_builder=None):
+    def __init__(self, GTKDynamoSession):
         """ Class initialiser """
-        self.project = project
-        self.window_control = window_control
-        self.builder = gtk.Builder()
-        self.main_builder = main_builder
+        self.GTKDynamoSession = GTKDynamoSession
+        self.project          = GTKDynamoSession.project
+        self.main_builder     = GTKDynamoSession.builder
 
+        self.builder = gtk.Builder()
         self.builder.add_from_file(
             os.path.join(GTKDYNAMO_GUI, 'TrajectoryDialog.glade'))
         self.builder.connect_signals(self)

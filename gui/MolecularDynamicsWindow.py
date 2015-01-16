@@ -55,6 +55,8 @@ class MolecularDynamicsWindow():
     """ Class doc """
 
     def on_MMDialog_button1_RUN_DYNAMICS_clicked(self, button):
+        self.project        = self.GTKDynamoSession.project
+                    
         trajectory_name     = self.builder.get_object      ("MMDialog_entry_trajectory_name").get_text()
         nsteps              = int(self.builder.get_object  ('MMDialog_n_steps_dy').get_text())
         log_freq            = int(self.builder.get_object  ("MMDialog_entry_log_freq_dy").get_text())

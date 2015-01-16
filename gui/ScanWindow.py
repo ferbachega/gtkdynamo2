@@ -26,7 +26,7 @@ import os
 import gtk
 import gobject
 from pymol import cmd
-from PyMOLScripts import *
+from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 from pDynamoMethods.pDynamoScan   import *
 

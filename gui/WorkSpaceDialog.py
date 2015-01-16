@@ -27,7 +27,7 @@ import gtk
 import gobject
 import sys
 
-from   PyMOLScripts      import *
+#from   PyMOLScripts      import *
 from   WindowControl     import *
 from   FileChooserWindow import FileChooserWindow
 

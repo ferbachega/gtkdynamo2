@@ -25,12 +25,11 @@
 import os
 import gtk
 import gobject
-from pymol import cmd
-from PyMOLScripts import *
+#from pymol import cmd
+#from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 
@@ -153,46 +152,10 @@ SCF_ORCA = ["NORMALSCF",
 class QuantumChemistrySetupDialog():
 
     """ Class doc """
-
-    def on_02_window_button_RUN_MINIMIZATION1_clicked(self, button):
-        """ Function doc """
-        trajectory = self.builder.get_object(
-            "02_window_entry_traj_name").get_text()
-        maximumIterations = int(
-            self.builder.get_object("02_window_entry_max_int").get_text())
-        logFrequency = int(
-            self.builder.get_object("02_window_entry_log_freq").get_text())
-        trajectory_freq = int(
-            self.builder.get_object("02_window_entry_traj_freq").get_text())
-        rmsGradientTolerance = float(
-            self.builder.get_object("02_window_entry_rmsGRAD").get_text())
-        method = self.builder.get_object(
-            "02_window_combobox_minimization_method").get_active_text()
-        AmberTrajectoryFlag = self.builder.get_object(
-            "02_window_AMBER_trajectory_checkbox").get_active()
-        TrajectoryFlag = self.builder.get_object(
-            "02_window_Output_trajectory_checkbox").get_active()
-
-        parameters = {'trajectory'          : trajectory,
-                      'maximumIterations'   : maximumIterations,
-                      'logFrequency'        : logFrequency,
-                      'trajectory_freq'     : trajectory_freq,
-                      'rmsGradientTolerance': rmsGradientTolerance,
-                      'method'              : method,
-                      'AmberTrajectoryFlag' : AmberTrajectoryFlag,
-                      'TrajectoryFlag'      : TrajectoryFlag}
-
-
-        if self.project.system is not None:
-            #------------------------------------------------------------------#
-            #                     Geometry optmization                         #
-            #                                                                  #
-            #    requires: method = 'Conjugate Gradient', parameters = None    #
-            # -----------------------------------------------------------------#
-            self.project.Minimization(method, parameters)
-
     def SetQCParameters (self, button):
         """Function doc """
+        self.project          = self.GTKDynamoSession.project
+
         qc_table      = self.project.settings['qc_table']                                                     
 
         if self.project.system == None:
@@ -285,14 +248,6 @@ class QuantumChemistrySetupDialog():
         self.project.settings['multiplicity']  = multiplicity	
 
 
-
-
-
-
-
-
-
-
     def QCcomboxChange(self, combobox):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
@@ -322,10 +277,6 @@ class QuantumChemistrySetupDialog():
             self.builder.get_object('06_window_label75_ORCA1').set_sensitive(False)
     
 	
-    
-    
-    
-    
     def ORCA_check_parameters(self, widget):
         """ Function doc """
         orca_method = self.builder.get_object('combobox1_ORCA_method'      ).get_active_text()
@@ -363,12 +314,6 @@ class QuantumChemistrySetupDialog():
 
         self.builder.get_object("ORCA_entry_keywords").set_text(orca_string)
 
-
-
-
-
-             
-    #def __init__(self, project=None, window_control=None, main_builder=None):
 
     def __init__(self, GTKDynamoSession = None):
         ''''''

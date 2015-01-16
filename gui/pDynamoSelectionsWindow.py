@@ -28,7 +28,7 @@ import gobject
 from pymol import cmd
 
 from PyMOLScripts.PyMOLScripts    import *
-#from PyMOLScripts     import PymolPutTable
+
 
 from WindowControl    import *
 
@@ -85,6 +85,9 @@ class pDynamoSelectionWindow():
         treeview = self.builder.get_object("selection_treeview1")		
         model    = self.builder.get_object("selection_liststore1") 
         model.clear()
+        
+        self.project          = self.GTKDynamoSession.project
+
         print self.project.settings['data_path']
         PDBFile_FromSystem (self.project.settings['data_path'] + "/my_system_full.pdb", self.project.system)
         AMBER_READ  = open (self.project.settings['data_path'] + "/my_system_full.pdb", "r")
@@ -174,12 +177,8 @@ class pDynamoSelectionWindow():
 
     def apply_pdynamo_selection(self, button):    #pdynamo method
         """Fucntion that permits select atoms from pDynamo arguments"""
-        
-        #model       = self.builder.get_object("selection_liststore1") 
-        #treeview    = self.builder.get_object("selection_treeview1")
-        #selection   = treeview.get_selection()
-        #model, iter = selection.get_selected()
 
+        self.project          = self.GTKDynamoSession.project
 
         iter3 = self.builder.get_object('selection_entry1').get_text()
         iter2 = self.builder.get_object('selection_entry2').get_text()
