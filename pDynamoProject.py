@@ -12,7 +12,7 @@ from pDynamoMethods.pDynamoMolecularDynamics import *
 from PyMOLScripts.PyMOLScripts import *
 from MatplotGTK.LogParse import ParseSummaryLogFile, ParseProcessLogFile
 from pymol import cmd
-
+from pprint import pprint
 import time
 import json
 
@@ -332,14 +332,16 @@ class pDynamoProject():
                        'pymol_session' : None,   #    - pdynamo pkl/yaml file
                        'pDynamo_system': None    #    - pymol pse file
                        } 
-        #self.nbModel        = "NBModelABFS()"
-        #self.parameters     = None
-        #self.system         = None          
-        #self.PyMOL          = True       
-        #self.dualLog        = None          
-        #self.builder        = builder       
-        #self.window_control = window_control
-        #self.ActiveMode     = False 
+        self.nbModel         = 'NBModelFull()'
+        self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
+        self.parameters      = None
+        self.system          = None          
+        #self.PyMOL           = PyMOL         
+        self.dualLog         = None          
+        #self.builder         = builder       
+        #self.window_control  = window_control
+        #self.ActiveMode      = False 
+        self.pdbInfo         = {}
         
     
     def Create_New_Project(self, name = "UNK",  # str
@@ -411,39 +413,39 @@ class pDynamoProject():
         self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
     def Save_Project_To_File (self, filename = 'actual_state', type_ = 'pkl'):
-        """ Function doc """
-        path     = filename.split('/')
-        
-        FileName = path.pop()
-        
-        new_data_path = '/'
-        for i in path:
-            new_data_path = os.path.join(new_data_path,i)
+		""" Function doc """
+		path     = filename.split('/')
+
+		FileName = path.pop()
+
+		new_data_path = '/'
+		for i in path:
+			new_data_path = os.path.join(new_data_path,i)
 
 
-        
-        self.settings['pDynamo_system' ] = FileName + '.pkl'
-        self.settings['pymol_session']   = FileName + '.pse'
-        self.settings['filename']        = filename
-        
-        settings2 = self.settings
-        settings2['prune_table'] = []
-        settings2['fix_table'  ] = []  
-        settings2['qc_table'   ] = []  
-        settings2['data_path'  ] = new_data_path
-        
-        FOLDER  = self.settings['data_path']
-        
-        print 'New data path:  ',new_data_path
-        json.dump(settings2,     open(filename+'.gtkdyn', 'w'), indent=2) # json file
-        print 'exporting file: ', filename+'.gtkdyn'
-        
-        self.export_state_to_file    (filename, type_)                    # pkl  file
-        print 'exporting file: ', filename+'.pkl'
-        
-        cmd.save                     (filename+'.pse', 'pse')             # pse  file
-        print 'exporting file: ', filename+'.pse'
 
+		self.settings['pDynamo_system' ] = FileName + '.pkl'
+		self.settings['pymol_session']   = FileName + '.pse'
+		self.settings['filename']        = filename
+
+		settings2 = self.settings
+		#settings2['prune_table'] = []
+		#settings2['fix_table'  ] = []  
+		#settings2['qc_table'   ] = []  
+		settings2['data_path'  ] = new_data_path
+
+		FOLDER  = self.settings['data_path']
+
+		print 'New data path:  ',new_data_path
+		json.dump(settings2,     open(filename+'.gtkdyn', 'w'), indent=2) # json file
+		print 'exporting file: ', filename+'.gtkdyn'
+
+		self.export_state_to_file    (filename, type_)                    # pkl  file
+		print 'exporting file: ', filename+'.pkl'
+
+		cmd.save                     (filename+'.pse', 'pse')             # pse  file
+		print 'exporting file: ', filename+'.pse'
+		self.SystemCheck(status = True, PyMOL = False)
     
     def export_state_to_file (self, filename, type_):
 
@@ -504,17 +506,25 @@ class pDynamoProject():
                 #print self.parameters['Number of Atoms']
                 StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
                 #print self.parameters['Energy Model']
-                StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
+                
+                
+                #StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
+                StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
+                
                 #print self.parameters['Number of QC Atoms']
-                StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
-                #print self.parameters['Number of Fixed Atoms']
-                StatusText = StatusText + '  Step: ' + str(self.settings['step'])+ "   "
+                
+                #StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
+                StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
+                
+                #print 'Number of Fixed Atoms: ', self.parameters['Number of Fixed Atoms']
+                StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
                 #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
                 
                 StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
-                #print self.parameters['Crystal Class']
-            self.window_control.STATUSBAR_SET_TEXT(StatusText)        
+                #pprint (self.parameters['Crystal Class'])
+            self.window_control.STATUSBAR_SET_TEXT(StatusText) 
+            pprint(self.parameters)      
         else:
             pass
 
@@ -683,7 +693,7 @@ class pDynamoProject():
             self.system = Unpickle(filename)
             try:
                 self.settings[
-                    'fix_table'] = self.system.hardConstraints.fixedAtoms
+                    'fix_table'] = list(self.system.hardConstraints.fixedAtoms)
                 # print 'fix_table = :',self.settings['fix_table']
             except:
                 a = None
