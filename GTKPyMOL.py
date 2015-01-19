@@ -683,7 +683,35 @@ class gtkdynamo_main():
         else:                                                                                             
             return 0                                                                                      
 
+    def on_GLAreaMenu_PutLalbel_itemActive(self, menuitem, click=None):
+        """ Function doc """
+        print 'teste'
+        
+        
+        string = ""
+        showTable = []
+        
+        if self.builder.get_object('menuitem_index').get_active():
+            showdic.append('index')
+        
+        if self.builder.get_object('menuitem_atom_name').get_active():
+            showdic.append('name')
 
+        if self.builder.get_object('menuitem_residue_name').get_active():
+            showdic.append('resn')
+
+        if self.builder.get_object('menuitem_residue_number').get_active():
+            showdic.append('resi')
+            
+        if self.builder.get_object('menuitem_partial_charge').get_active():
+            showdic.append('partial_charge')
+        
+        if item in showTable:
+            string = string + item +','
+
+       
+        cmd.label('sele', string)
+        #if menu
 
     '''                                            
     #      ---------------------------------  
@@ -794,6 +822,8 @@ class gtkdynamo_main():
     def on_toolbutton7_print_tudo_clicked (self, button):
         """ Function doc """
         pprint(self.project.settings)
+        cell = self.project.importCellParameters()
+        print cell
         #self.project.Save_Project_To_File()
 
     def on_ToolBar_buttonSave_As_Project_clicked(self, button):
@@ -820,6 +850,18 @@ class gtkdynamo_main():
 
         self.project.Save_Project_To_File (filename, 'pkl')
     
+    
+    def on_toolbar_showCell_toggled (self, button):
+        """ Function doc """
+        
+        if button.get_active():
+            self.project.ShowCell = True
+        
+        else:
+            self.project.ShowCell = False
+            # print '# If control reaches here, the toggle button is up'
+            #self.builder.get_object('notebook3').hide()
+        self.project.SystemCheck()
     
     def on_ToolBar_buttonSaveProject_clicked(self, button):
         """ Function doc """
@@ -1524,6 +1566,9 @@ class gtkdynamo_main():
         cmd.bg_color("grey")            # background color      #
         cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
+        cmd.do('set cartoon_highlight_color, 24')               #
+        cmd.set('label_size', 20.00)
+        cmd.set('label_color', 'white')
         cmd.set('auto_zoom', 1)                                 #
         #-------------------------------------------------------#
         

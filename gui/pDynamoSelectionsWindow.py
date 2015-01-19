@@ -74,104 +74,57 @@ class pDynamoSelectionWindow():
             combolist = ["Select in PyMOl","FIX atoms","PRUNE atoms"]      #
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)   #                                                                                   
             #--------------------------------------------------------------#
-            self.build_treeview()
+            
+            
+            # SPINBUTTON 
+            spinbutton = 'selection_radius_spinbutton'                        
+            config     = [0.0, 1.0, 500.0, 1.0, 0.0, 0.0]       
+            self.window_control.SETUP_SPINBUTTON(spinbutton, config)
+            self.builder.get_object('selection_radius_spinbutton').set_value(int(self.radius_distance))
+            
+            self.project = self.GTKDynamoSession.project
+            self.project.importPDBInformantion()
+            #self.build_treeview()
             self.window.show()                                               
             self.builder.connect_signals(self)                                   
             
             self.Visible  =  True
             gtk.main()
 
-    def build_treeview(self):
-        treeview = self.builder.get_object("selection_treeview1")		
-        model    = self.builder.get_object("selection_liststore1") 
-        model.clear()
-        
-        self.project          = self.GTKDynamoSession.project
-
-        print self.project.settings['data_path']
-        PDBFile_FromSystem (self.project.settings['data_path'] + "/my_system_full.pdb", self.project.system)
-        AMBER_READ  = open (self.project.settings['data_path'] + "/my_system_full.pdb", "r")
-
-        for line in AMBER_READ:						
-            line2 = line.split()				
-            line1 = line[0:6]					
-            if line1 == "ATOM  " or line1 == "HETATM" :	
-                index   = line[6:11]	
-                A_name  = line[11:16]	
-                resn    = line[16:20] 	
-                chain   = line[20:22]	
-                resi    = line[22:26]	
-                gap     = line[26:30]	
-                x       = line[30:38]	
-                y       = line[38:46]	
-                z       = line[46:54]	
-                                        
-                b       = line[54:60]	
-                oc      = line[60:66]	
-                gap2    = line[66:76]	
-                atom    = line[76:78] 	
-                
-                index2  = index.split()
-                index2  = int(index2[0])			
-
-                        
-                A_name2 = A_name.split()		
-                A_name2 = A_name2[0]				
-
-
-                resn2 = resn.split()
-                resn2 = resn2[0]
-
-                
-                #chain2 = chain.split()
-                #chain2 = chain2[0]
-
-                
-                resi2 = resi.split()
-                resi2 = int(resi2[0])			
-
-                
-                atom2 = atom.split()
-                atom2 = atom2[0]			
-                if chain   == "  ":
-                    chain2 = 'A' 
-                else:
-                    chain2 = chain.split()
-                    chain2 = chain2[0]
-                    
-                lista  = ( index2, A_name2, resn2, chain2, resi2, atom2 )
-                
-                self.project.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
-                model.append(lista)		
+    
+    def on_selection_radius_spinbutton_value_changed (self, widget):
+        """ Function doc """
+        self.radius_distance = float(self.builder.get_object("selection_radius_spinbutton").get_value_as_int())
+    
 
     def importResidueInformation(self, button):
-        print 'button'
-        try:
-            model = cmd.get_model("pk1")
-            index = []
-            resn = None
-            resi = None 
-            for a in model.atom:
-                #resn = a.resn
-                #resi = a.resi
-                #print resn
-                #print resi
-                #print a.index
-                index = a.index
-                
-                
-                chain     = self.project.pdbInfo[index][1]
-                resn      = self.project.pdbInfo[index][0]
-                resi      = self.project.pdbInfo[index][2]
-                atom_name = self.project.pdbInfo[index][3]
-                
-                self.builder.get_object('selection_entry1').set_text(chain)
-                self.builder.get_object('selection_entry2').set_text(resn)
-                self.builder.get_object('selection_entry3').set_text(str(resi))
-                self.builder.get_object('selection_entry4').set_text(atom_name)
-        except:
-            cmd.edit_mode()
-            print "pk1 selection not found"
+        #print 'button'
+        #try:
+        model = cmd.get_model("pk1")
+        index = []
+        resn = None
+        resi = None 
+        for a in model.atom:
+            #resn = a.resn
+            #resi = a.resi
+            #print resn
+            #print resi
+            #print a.index
+            index = a.index
+            
+            
+            chain     = self.project.pdbInfo[index][1]
+            resn      = self.project.pdbInfo[index][0]
+            resi      = self.project.pdbInfo[index][2]
+            atom_name = self.project.pdbInfo[index][3]
+            
+            self.builder.get_object('selection_entry1').set_text(chain)
+            self.builder.get_object('selection_entry2').set_text(resn)
+            self.builder.get_object('selection_entry3').set_text(str(resi))
+            self.builder.get_object('selection_entry4').set_text(atom_name)
+        #except:
+        #    cmd.edit_mode()
+        #    print "pk1 selection not found"
 
     
 
@@ -190,7 +143,7 @@ class pDynamoSelectionWindow():
         import_type2    =       self.builder.get_object("combobox_select_as_prune_fix_pymol").get_active_text()
         import_type     =       self.builder.get_object("combobox_selection_type").get_active_text()
         selection_type  =       self.builder.get_object("combobox_selection_type").get_active_text()
-        radius_distance = float(self.builder.get_object("selection_radius_distance_entry1").get_text())
+        radius_distance = float(self.builder.get_object("selection_radius_spinbutton").get_value_as_int())
 
         print str_teste
         
@@ -217,6 +170,10 @@ class pDynamoSelectionWindow():
             pymolIndex	 = Selection ( pymolIndex )		
         
         #print pymolIndex
+        try:
+            cmd.delete('sele')
+        except:
+            pass
         index_list = list(pymolIndex)
         PymolPutTable (index_list, "sele")
         pymol_id  =  self.project.settings['PyMOL_Obj'] 
@@ -281,9 +238,11 @@ class pDynamoSelectionWindow():
     
     def __init__(self, GTKDynamoSession):
         """ Class initialiser """
-        self.project = GTKDynamoSession.project
-        self.Visible = False
-        print self.project.settings['data_path']
+        self.radius_distance  = 16
+        self.GTKDynamoSession = GTKDynamoSession
+        #self.project          = GTKDynamoSession.project
+        self.Visible          = False
+        #print self.project.settings['data_path']
 
 def main():
     dialog = ScanWindow()

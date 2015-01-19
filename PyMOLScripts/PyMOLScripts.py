@@ -268,6 +268,9 @@ atomic_dic = {
 
 
 from pymol import *
+from pymol import cmd
+from pymol.cgo import *
+
 SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 
@@ -436,11 +439,19 @@ def ExportFramesToPymol(project=None, prefix='teste'):
     obs:An XYZ file is also exportes when an PDB files is exported
 
     """
-    print project.settings['types_allowed']
+    #print project.settings['types_allowed']
     if project == None:
         print 'only testing ExportFramesToPymol'
+    
 
+    
     else:
+        try:
+            charges = project.system.energyModel.mmAtoms.AtomicCharges()
+            charge_table = list(charges)
+        except:
+            charge_table = None
+                
         data_path = project.settings['data_path']
         types_allowed = project.settings['types_allowed']
 
@@ -516,14 +527,23 @@ def ExportFramesToPymol(project=None, prefix='teste'):
             n = 0
             for a in model3.atom:
                 # print a.coord[0], a.coord[1], a.coord[2]
-                a.coord[0] = new_coord[n][0]
-                a.coord[1] = new_coord[n][1]
-                a.coord[2] = new_coord[n][2]
+                
+                if charge_table != None:
+                    a.partial_charge = charge_table[n]
+                    #a.b              = charge_table[n]
+                
+                #print a.partial_charge , a.b 
+                a.coord[0]       = new_coord[n][0]
+                a.coord[1]       = new_coord[n][1]
+                a.coord[2]       = new_coord[n][2]
                 n = n + 1
-
-            cmd.load_model(model3, "_tmp")
-            cmd.update(pymol_id, "_tmp")
-            cmd.delete("_tmp")
+            
+            cmd.delete(pymol_id)
+            cmd.load_model(model3, pymol_id)
+            
+            #cmd.load_model(model3, "_tmp")
+            #cmd.update(pymol_id, "_tmp")
+            #cmd.delete("_tmp")
 
         project.settings['last_pymol_id'] = pymol_id
         cmd.disable("all")
@@ -576,18 +596,18 @@ def LoadGTKDynamoProjectSettings(filein):
                         'system': system,
                         'pymol_session': pymol_session,
                         'last_pymol_id': last_pymol_id}
-    print last_step
-    print working_folder
-    print system
-    print pymol_session
-    print last_pymol_id
+    #print last_step
+    #print working_folder
+    #print system
+    #print pymol_session
+    #print last_pymol_id
     # return 	last_step ,	working_folder,	system,	pymol_session, last_pymol_id
     return _ProjectSettings
 
 
 def PyMOLRepresentations (representation, selection):
     """ Function doc """
-    print "aqui"
+    #print "aqui"
     if representation['lines'  ]:
         cmd.show("lines",  selection)
 
@@ -733,7 +753,86 @@ def import_ATOM1_ATOM2(pka,pkb):   # get PyMOL pk1 and pk2
 	return name1 , atom1_index, name2,  atom2_index, distance
 
 
+def DrawCell (cell):
+    if cell == None:
+        try:
+            cmd.delete("box_1")
+        except:
+            pass
+    else:
+        #print cell
+        minX  = 0.0
+        minY  = 0.0
+        minZ  = 0.0
+        maxX  = cell['a']
+        maxY  = cell['b']
+        maxZ  = cell['c']
 
+
+        
+        selection="(all)"
+        padding=0.0
+        linewidth=2.0
+        r=1.0
+        g=1.0
+        b=1.0
+
+        boundingBox = [
+                LINEWIDTH, float(linewidth),
+
+                BEGIN, LINES,
+                COLOR, float(r), float(g), float(b),
+
+                VERTEX, minX, minY, minZ,       #1
+                VERTEX, minX, minY, maxZ,       #2
+
+                VERTEX, minX, maxY, minZ,       #3
+                VERTEX, minX, maxY, maxZ,       #4
+
+                VERTEX, maxX, minY, minZ,       #5
+                VERTEX, maxX, minY, maxZ,       #6
+
+                VERTEX, maxX, maxY, minZ,       #7
+                VERTEX, maxX, maxY, maxZ,       #8
+
+
+                VERTEX, minX, minY, minZ,       #1
+                VERTEX, maxX, minY, minZ,       #5
+
+                VERTEX, minX, maxY, minZ,       #3
+                VERTEX, maxX, maxY, minZ,       #7
+
+                VERTEX, minX, maxY, maxZ,       #4
+                VERTEX, maxX, maxY, maxZ,       #8
+
+                VERTEX, minX, minY, maxZ,       #2
+                VERTEX, maxX, minY, maxZ,       #6
+
+
+                VERTEX, minX, minY, minZ,       #1
+                VERTEX, minX, maxY, minZ,       #3
+
+                VERTEX, maxX, minY, minZ,       #5
+                VERTEX, maxX, maxY, minZ,       #7
+
+                VERTEX, minX, minY, maxZ,       #2
+                VERTEX, minX, maxY, maxZ,       #4
+
+                VERTEX, maxX, minY, maxZ,       #6
+                VERTEX, maxX, maxY, maxZ,       #8
+
+                END
+        ]
+        
+        try:
+            cmd.delete("box_1")
+        except:
+            pass
+        
+        boxName = "box_1"
+        cmd.set('auto_zoom', 0)
+        cmd.load_cgo(boundingBox,boxName)
+        #cmd.set_frame(-1)
 
 
 

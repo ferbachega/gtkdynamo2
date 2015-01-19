@@ -9,7 +9,10 @@ from pMoleculeScripts import *
 from pDynamoMethods.pDynamoMinimization      import *
 from pDynamoMethods.pDynamoEnergy            import *
 from pDynamoMethods.pDynamoMolecularDynamics import *
+
 from PyMOLScripts.PyMOLScripts import *
+#from PyMOLScripts.DrawCell     import DrawCell
+
 from MatplotGTK.LogParse import ParseSummaryLogFile, ParseProcessLogFile
 from pymol import cmd
 from pprint import pprint
@@ -96,7 +99,7 @@ class pDynamoProject():
         
         '''
         self.BondTable = {}
-        
+        self.ShowCell  = False
         
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
@@ -155,8 +158,10 @@ class pDynamoProject():
                 os.path.join(opls_coords), log=dualLog)
 
         elif file_type == "pdb":
-            self.system = PDBFile_ToSystem(
-                opls_coords, log=dualLog, modelNumber=1, useComponentLibrary=True)
+            self.system = PDBFile_ToSystem(opls_coords, 
+                                           log=dualLog, 
+                                           #modelNumber=1, 
+                                           useComponentLibrary=True)
 
         elif file_type == "mol2":
             self.system = MOL2File_ToSystem(
@@ -279,7 +284,7 @@ class pDynamoProject():
                     #print i+1, element1, j+1,element2, "BOND: ", Rcov, Distance_i_j, Bond_Unbond
                     self.BondTable[i+1,j+1] = [Rcov, Bond_Unbond]
         
-        print self.BondTable
+        #print self.BondTable
 
 
     
@@ -399,7 +404,7 @@ class pDynamoProject():
 			self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
 
 
-		print BufferText
+		#print BufferText
 		self.system.label = name
 		self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
@@ -476,6 +481,169 @@ class pDynamoProject():
 		else:
 			print "file type not supported"
 
+
+    
+    
+    def importCellParameters (self):
+        """ Function doc """
+        try:
+            print 'a', self.system.symmetryParameters.a
+            print 'b', self.system.symmetryParameters.b
+            print 'c', self.system.symmetryParameters.c
+            a = self.system.symmetryParameters.a
+            b = self.system.symmetryParameters.b
+            c = self.system.symmetryParameters.c
+            cell = {
+                   'a'     : self.system.symmetryParameters.a ,
+                   'b'     : self.system.symmetryParameters.b ,
+                   'c'     : self.system.symmetryParameters.c 
+                   }
+        except:
+            cell = None
+        #try:
+        #    cell = {
+        #           'a'     : self.system.symmetryParameters.a    ,
+        #           'b'     : self.system.symmetryParameters.b    ,
+        #           'c'     : self.system.symmetryParameters.c    ,
+        #           'aplha' : self.system.symmetryParameters.aplha,
+        #           'beta ' : self.system.symmetryParameters.beta ,
+        #           'gamma' : self.system.symmetryParameters.gamma
+        #           }
+        #    
+        #except:
+        #    cell = None
+        return cell
+    
+    
+    def importPDBInformantion(self):
+        """ Function doc """
+
+               
+        self.settings['PyMOL_Obj']
+        atoms = cmd.get_model(self.settings['PyMOL_Obj'])
+        n = 0
+        for at in atoms.atom:
+            index  = str(at.index)
+            A_name = at.name
+            resn   = at.resn
+            
+            if at.chain == "":
+                at.chain = '*'
+                chain  = at.chain
+            else:
+                chain  = at.chain
+            resi   = str(at.resi)
+            x      = str(at.coord[0]) 
+            y      = str(at.coord[1])
+            z      = str(at.coord[2])
+               
+            #print      charge_table[n]
+            #at.partial_charge   = charge_table[n]
+            atom   = at.symbol
+            
+            #print at.partial_charge, charge_table[n]
+            
+            #print "ATOM DEFINITION: "+at.chain+" "\
+            #                         +at.resn+" "\
+            #                         +str(at.resi)+" "\
+            #                         +at.name+" "\
+            #                         +str(at.index)+" "\
+            #                         +at.b+" "\
+            #                         +str(at.coord[0])+" "\
+            #                         +str(at.coord[1])+" "\
+            #                         +str(at.coord[2])
+            
+            index2  = int(index)
+            A_name2 = A_name
+            resn2   = resn
+            resi2   = resi
+            atom2   = atom
+            chain2  = chain
+            lista  = ( index2, A_name2, resn2, chain2, resi2, atom2 )
+            self.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
+            n = n + 1
+    
+        #cmd.delete(self.settings['PyMOL_Obj'])
+        #cmd.load_model(atoms, self.settings['PyMOL_Obj'])
+        #cmd.update(self.settings['PyMOL_Obj'], "_tmp")
+        #cmd.delete("_tmp")
+    
+        #print self.pdbInfo
+
+        
+        #PDBFile_FromSystem (self.settings['data_path'] + "/my_system_full.pdb", self.system)
+        #AMBER_READ  = open (self.settings['data_path'] + "/my_system_full.pdb", "r")
+        #
+        #for line in AMBER_READ:						
+        #    line2 = line.split()				
+        #    line1 = line[0:6]					
+        #    if line1 == "ATOM  " or line1 == "HETATM" :	
+        #        index   = line[6:11]	
+        #        A_name  = line[11:16]	
+        #        resn    = line[16:20] 	
+        #        chain   = line[20:22]	
+        #        resi    = line[22:26]	
+        #        gap     = line[26:30]	
+        #        x       = line[30:38]	
+        #        y       = line[38:46]	
+        #        z       = line[46:54]	
+        #                                
+        #        b       = line[54:60]	
+        #        oc      = line[60:66]	
+        #        gap2    = line[66:76]	
+        #        atom    = line[76:78] 	
+        #        
+        #        index2  = index.split()
+        #        index2  = int(index2[0])			
+        #
+        #                
+        #        A_name2 = A_name.split()		
+        #        A_name2 = A_name2[0]				
+        #
+        #
+        #        resn2 = resn.split()
+        #        resn2 = resn2[0]
+        #
+        #        
+        #        #chain2 = chain.split()
+        #        #chain2 = chain2[0]
+        #
+        #        
+        #        resi2 = resi.split()
+        #        resi2 = int(resi2[0])			
+        #
+        #        
+        #        atom2 = atom.split()
+        #        atom2 = atom2[0]			
+        #        if chain   == "  ":
+        #            chain2 = 'A' 
+        #        else:
+        #            chain2 = chain.split()
+        #            chain2 = chain2[0]
+        #            
+        #        lista  = ( index2, A_name2, resn2, chain2, resi2, atom2 )
+        #        
+        #        self.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
+        #        #for i in self.pdbInfo:
+        #        #    print i, self.pdbInfo[i]
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    
+    
+    
     def SystemCheck(self, status = True, PyMOL = True ):
         if self.system == None:
             print "System empty"
@@ -516,7 +684,7 @@ class pDynamoProject():
                 StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
                 #pprint (self.parameters['Crystal Class'])
             self.window_control.STATUSBAR_SET_TEXT(StatusText) 
-            pprint(self.parameters)      
+            #pprint(self.parameters)      
         else:
             pass
 
@@ -530,7 +698,7 @@ class pDynamoProject():
             
             if self.settings['QC'] == True:
                 if self.settings['qc_table'] != []:
-                    print PyMOL_Obj
+                    #print PyMOL_Obj
                     cmd.hide('stick',  PyMOL_Obj)
                     cmd.hide("sphere", PyMOL_Obj)
                     try:
@@ -589,10 +757,28 @@ class pDynamoProject():
             pymol_objects2 = cmd.get_names('selections')
             liststore      = self.builder.get_object('liststore1')
             self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
+            
 
-            if self.PyMOL == True:
-                #print self.parameters
-                pass
+            #-----------------------------------------------#
+            #                   DrawCell                    #
+            #-----------------------------------------------#
+
+            if self.ShowCell == True:
+                cell = self.importCellParameters()
+                DrawCell(cell)
+                #print cell
+                try:
+                    cmd.enable('box_1')
+                except:
+                    pass
+            else:
+                try:
+                    cmd.disable('box_1')
+                except:
+                    pass
+            #-----------------------------------------------#
+
+
     
         else:
             pass
@@ -613,9 +799,9 @@ class pDynamoProject():
                 e adicionar informacoes ao history  via IncrementStep()
         """
         
-        print 'step antes',self.settings['step']
+        #print 'step antes',self.settings['step']
         self.IncrementStep()
-        print 'step depois',self.settings['step']
+        #print 'step depois',self.settings['step']
 
         if self.PyMOL == True:
             self.SystemCheck(True, False)
@@ -665,8 +851,8 @@ class pDynamoProject():
         self.settings['qc_table']   = []
         self.settings['QC']         = False
         type_ = GetFileType(filename)
-        print filename
-        print type_
+        #print filename
+        #print type_
         if type_ == "xyz":
             self.system = XYZFile_ToSystem(filename,  dualLog)
 
@@ -714,10 +900,12 @@ class pDynamoProject():
 
                 self.settings['qc_table'] = qc
                 self.settings['QC']       = True
-                print 'qc_table : ', self.settings['qc_table']
+                #print 'qc_table : ', self.settings['qc_table']
+
             except:
                 print "System has no QC atoms"
-
+            
+       
         # --- yaml ---
 
         elif type_ == "yaml":
@@ -726,7 +914,7 @@ class pDynamoProject():
             try:
                 self.settings['fix_table'] = list(
                     self.system.hardConstraints.fixedAtoms)
-                print 'fix_table = :', self.settings['fix_table']
+                #print 'fix_table = :', self.settings['fix_table']
             except:
                 a = None
 
@@ -749,7 +937,7 @@ class pDynamoProject():
 
                 self.settings['qc_table'] = qc
                 self.settings['QC']     = True
-                print 'qc_table : ', self.settings['qc_table']
+                #print 'qc_table : ', self.settings['qc_table']
             except:
                 print "System has no QC atoms"
 
@@ -882,7 +1070,7 @@ class pDynamoProject():
     def load_GTKDYNAMO_project(self, filename):
         """ Function doc """
         #print self.settings
-        print filename
+        #print filename
         
         
         path     = filename.split('/')
@@ -890,7 +1078,7 @@ class pDynamoProject():
         new_data_path = '/'
         for i in path:
             new_data_path = os.path.join(new_data_path,i)
-        print new_data_path
+        #print new_data_path
         
 
         
@@ -898,8 +1086,8 @@ class pDynamoProject():
         self.settings              = json.load(open(filename)) 
         self.settings['data_path'] = new_data_path
         
-        print os.path.join( new_data_path, self.settings['pymol_session'])
-        print os.path.join(new_data_path,self.settings['pDynamo_system'])
+        #print os.path.join( new_data_path, self.settings['pymol_session'])
+        #print os.path.join(new_data_path,self.settings['pDynamo_system'])
 
         self.load_coordinate_file_as_new_system(os.path.join(new_data_path,self.settings['pDynamo_system']))
         cmd.load (  os.path.join( new_data_path, self.settings['pymol_session'])   )
@@ -907,8 +1095,8 @@ class pDynamoProject():
         pymol_objects  = cmd.get_names()
         liststore      = self.builder.get_object('liststore2')
         
-        print pymol_objects
-        print self.settings['job_history']
+        #print pymol_objects
+        #print self.settings['job_history']
         pymol_id =  self.settings['PyMOL_Obj']
         self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , self.settings['PyMOL_Obj'])
         self.SystemCheck()
@@ -947,9 +1135,19 @@ class pDynamoProject():
         self.system                 = PruneByAtom(self.system, Selection(prune_table))
       
         self.settings['prune_table'].append(prune_table)
+        
+        try:
+            cmd.delete('pk1')
+        except:
+            pass
+        
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
         print 'pruned'        
         self.clean_fix_table()
+        self.importPDBInformantion()
+        
+
+        
         
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
@@ -1043,7 +1241,7 @@ class pDynamoProject():
 
     def MolecularDynamics(self, parameters):
         """ Function doc """
-        print parameters
+        #print parameters
 
         self.ActiveModeCheck()
 
@@ -1086,14 +1284,14 @@ class pDynamoProject():
             data_path  	 = self.settings['data_path']
             pymol_object = self.settings['PyMOL_Obj']
             
-            print pymol_object
+            #print pymol_object
             
             state    	 = -1
             label        = "tmp file"
             file_out     = "tmp.xyz"	
             
             filename     = PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, state)	
-            print filename
+            #print filename
             self.load_coordinate_file_to_system  ( filename , self.dualLog)	
         else:
             print "Using GTKDynamo in passive mode"
