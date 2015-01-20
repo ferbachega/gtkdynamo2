@@ -199,7 +199,7 @@ def ScanMultipleDistances(parameters = None, project = None):
     mim_method      = parameters['mim_method'   ]
     data_path       = parameters['data_path'    ]
 
-    logFile = os.path.join(outpath, "ScanLog-SimpleDistance.log")
+    logFile = os.path.join(outpath, "ScanLog-MultipleDistance.log")
     log = DualTextLog(outpath, "ScanLog-MultipleDistance.log")
     project.system.Summary(log=log)
     LogFileName  = 'ScanLog-MultipleDistance.log'

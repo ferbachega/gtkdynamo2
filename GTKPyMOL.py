@@ -1623,8 +1623,7 @@ class gtkdynamo_main():
                                                                                                           #
         self.NonBondDialog               = NonBondDialog(self)                                            #
                                                                                                           #
-        self.ScanWindow = ScanWindow(self.project,                                                        #
-            self.window_control, self.builder)                                                            #
+        self.ScanWindow = ScanWindow(self)                                                                #
                                                                                                           #
         self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
             self.window_control, self.builder)                                                            #

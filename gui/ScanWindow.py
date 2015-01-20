@@ -297,6 +297,7 @@ class ScanWindow():
     def OpenWindow (self):
         """ Function doc """
         if self.Visible  ==  False:
+            self.project          = self.GTKDynamoSession.project
             self.builder = gtk.Builder()
             self.builder.add_from_file(
                 os.path.join(GTKDYNAMO_GUI, 'ScanWindow.glade'))
@@ -337,9 +338,15 @@ class ScanWindow():
         #print "Bacheguissimo"
         self.window.destroy()
 
-    def __init__(self, project=None, window_control=None, main_builder=None):
+    def __init__(self, GTKDynamoSession = None):
         """ Class initialiser """
-        self.project   =  project
+        if GTKDynamoSession != None:
+            self.project          = GTKDynamoSession.project
+            self.main_builder     = GTKDynamoSession.builder
+            self.GTKDynamoSession = GTKDynamoSession        
+            self.window_control   = GTKDynamoSession.window_control
+        
+        #self.project   =  project
         self.Visible    =  False
         #self.window_control = window_control
         #self.builder = gtk.Builder()
