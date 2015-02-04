@@ -27,11 +27,6 @@ class PlotGTKWindow:
         print('you pressed %s'%event.key)
         key_press_handler(event, self.canvas, self.toolbar)
     
-    
-
-    
-
-
     def on_pick(self, event):
         thisline = event.artist
         xdata, ydata = thisline.get_data()
