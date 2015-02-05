@@ -82,9 +82,39 @@ import glob
 import math
 import os
 
+
+
 # Imports
 from OpenGL.GL import *
 from OpenGL.GLU import *
+
+
+
+
+if not sys.platform.startswith('win'):
+    HOME = os.environ.get('HOME')
+else:
+    HOME = os.environ.get('PYMOL_PATH')
+
+
+#GTKDYNAMO_ROOT = os.getcwd()
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+
+GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+print GTKDYNAMO_GUI
+
+
+PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
+if not os.path.isdir(PDYNAMO_SCRATCH):
+    print PDYNAMO_SCRATCH, "not found"
+    os.mkdir(PDYNAMO_SCRATCH)
+    print "creating: ", PDYNAMO_SCRATCH 
+    
+GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
+if not os.path.isdir(GTKDYNAMO_TMP):
+    os.mkdir(GTKDYNAMO_TMP)
+    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
+
 
 
 # GUI 
@@ -125,24 +155,6 @@ GTKDYNAMO_ROOT is a system variable exported by
 GTKDYNAMO_TMP is a temporary folder where logs will be genareted
 '''
 
-if not sys.platform.startswith('win'):
-    HOME = os.environ.get('HOME')
-else:
-    HOME = os.environ.get('PYMOL_PATH')
-
-
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
-print GTKDYNAMO_GUI
-
-
-PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
-if not os.path.isdir(GTKDYNAMO_TMP):
-    os.mkdir(GTKDYNAMO_TMP)
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
 
 
 global slab
