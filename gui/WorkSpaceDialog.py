@@ -34,18 +34,7 @@ from   FileChooserWindow import FileChooserWindow
 
 import time
 
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
-
-
 class WorkSpaceDialog():
-    
-    
     
     def on_button_workspace_chooser_clicked (self, button):
         """ Function doc """
@@ -84,13 +73,14 @@ class WorkSpaceDialog():
     
     def __init__(self, GTKDynamoSession, window_control=None, main_builder=None):
         """ Class initialiser """
-        self.builder               = gtk.Builder()
-        self.main_builder          = main_builder
-        self.GTKDynamoSession      = GTKDynamoSession
-
+        self.builder           = gtk.Builder()
+        self.main_builder      = main_builder
+        self.GTKDynamoSession  = GTKDynamoSession
+        self.GTKDYNAMO_ROOT    = GTKDynamoSession.GTKDYNAMO_ROOT
+        self.GTKDYNAMO_GUI     = GTKDynamoSession.GTKDYNAMO_GUI 
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'WorkSpaceDialog.glade'))
+            os.path.join(self.GTKDYNAMO_GUI, 'WorkSpaceDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
         

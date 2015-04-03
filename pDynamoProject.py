@@ -9,7 +9,7 @@ from pMoleculeScripts import *
 from pDynamoMethods.pDynamoMinimization      import *
 from pDynamoMethods.pDynamoEnergy            import *
 from pDynamoMethods.pDynamoMolecularDynamics import *
-
+from pDynamoMethods.pDynamoCharges           import *
 from PyMOLScripts.PyMOLScripts import *
 #from PyMOLScripts.DrawCell     import DrawCell
 
@@ -174,6 +174,8 @@ class pDynamoProject():
         self.settings['coordinates'] = opls_coords
         #return self.system
 
+    
+    
     def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
         qc_table = self.settings['qc_table']                                                     
         nbModel  = self.nbModel
@@ -348,7 +350,6 @@ class pDynamoProject():
         #self.ActiveMode      = False 
         self.pdbInfo         = {}
         
-    
     def Create_New_Project(self, name = "UNK",  # str
                            data_path  = None,  # str
                            FileType   = None,  # str

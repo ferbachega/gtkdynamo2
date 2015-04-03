@@ -99,10 +99,11 @@ from gui.NonBondDialog               import *
 from gui.ScanWindow                  import *
 from gui.pDynamoSelectionsWindow     import pDynamoSelectionWindow
 
-from gui.Scan2dDialog                import *
+from gui.ScanWindow2D                import *
 
 from gui.TrajectoryDialog            import *
 from gui.WorkSpaceDialog             import WorkSpaceDialog
+from gui.ChargeRescaleDialog         import ChargeRescaleDialog
 
 import TextEditor.TextEditorWindow as TextEditor
 
@@ -334,11 +335,11 @@ def mousepress(button, event):
     
     x, y, width, height = glarea.get_allocation()
 
-        
+    print event.button
+    
     if event.button == 3:
         global clicado
         clicado = True
-        #print 'gordao'
         x, y, width, height = glarea.get_allocation()
         #print x, y, width, height
         mousepress = event
@@ -349,6 +350,8 @@ def mousepress(button, event):
         #print pointerx,pointery,calc_y
         #cmd.zoom(buffer=calc_y)
         pymol.button(button, 0, pointerx , calc_y, 0)
+
+
 
         
     if event.button != 3:
@@ -374,8 +377,13 @@ def mouserelease(button, event):
     pointerx = int(mouserelease.x)
     pointery = int(mouserelease.y)
     calc_y = height - pointery
-    pymol.button(button, 1, pointerx, calc_y, 0)
     
+    if event.button != 3:
+        pymol.button(button, 1, pointerx, calc_y, 0)
+    
+    if event.button == 3:
+        #clicado = False
+        pymol.button(button, 1, pointerx, calc_y, 0)
 
     
     
@@ -391,34 +399,36 @@ def mousemove(button, event):
     calc_y2  = (float(Zero_pointery - pointery))/10.0
     calc_y   = height - pointery
     
-    if clicado:
-        global ZeroY
-        #print 'a'
-        #print clicado
-        #print Menu
-        #Buffer = (calc_y2)
-        #_view   = cmd.get_view()
-        #
-        #print _view
-        #if Zero_ViewBuffer == None:
-        #   Zero_ViewBuffer = _view[11]
-        #
-        #_view11 = Zero_ViewBuffer - Buffer
-        #_view15 = _view[15]       - Buffer
-        #_view16 = _view[16]       + Buffer
-        #
-        #_view2 = (_view[0], _view[1], _view[2],
-        #         _view[3], _view[4], _view[5],
-        #         _view[6], _view[7], _view[8],
-        #         _view[9], _view[10],_view11,
-        #         _view[12],_view[13],_view[14],
-        #         _view15,  _view16,  _view[17])
-        #
-        #print Buffer, _view11, _view15,_view16
-        #cmd.set_view(_view2)
-        #Zero_pointerx   = pointerx
-        #Zero_pointery   = pointery
-        #Zero_ViewBuffer = _view11
+    #if clicado:
+    #    global ZeroY
+    #    print 'a'
+    #    print clicado
+    #    print Menu
+    #    Buffer = (calc_y2)
+    #    _view   = cmd.get_view()
+    #    
+    #    print _view
+    #    if Zero_ViewBuffer == None:
+    #       Zero_ViewBuffer = _view[11]
+    #    
+    #    _view11 = Zero_ViewBuffer - Buffer
+    #    _view15 = _view[15]       - Buffer
+    #    _view16 = _view[16]       + Buffer
+    #    
+    #    _view2 = (_view[0], _view[1], _view[2],
+    #             _view[3], _view[4], _view[5],
+    #             _view[6], _view[7], _view[8],
+    #             _view[9], _view[10],_view11,
+    #             _view[12],_view[13],_view[14],
+    #             _view15,  _view16,  _view[17])
+    #    
+    #    print Buffer, _view11, _view15,_view16
+    #    cmd.set_view(_view2)
+    #    Zero_pointerx   = pointerx
+    #    Zero_pointery   = pointery
+    #    Zero_ViewBuffer = _view11
+    #    pymol.drag(pointerx, calc_y, 0)
+    #    pymol.idle()
     #else:
     pymol.drag(pointerx, calc_y, 0)
     pymol.idle()
@@ -780,8 +790,15 @@ class gtkdynamo_main():
         except:
             pass
 
+    
+    def on_imagemenuitem9_activate (self, menuitem):
+        """ Function doc """
+        self.ChargeRescaleDialog.dialog.run()
+        self.ChargeRescaleDialog.dialog.hide()
+    
+    
     #def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
-    #    """ Function doc """
+    #    """ Function ChargeRescaleDialogdoc """
     #    self.ScanDialog.dialog.run()
     #    self.ScanDialog.dialog.hide()  
     
@@ -803,8 +820,8 @@ class gtkdynamo_main():
     
     
     def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
-        self.Scan2dDialog.dialog.run()
-        self.Scan2dDialog.dialog.hide()
+        if self.ScanWindow2D.Visible == False:
+            self.ScanWindow2D.OpenWindow()
 
     def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
         """ Function doc """
@@ -1511,14 +1528,18 @@ class gtkdynamo_main():
         print '           Intializing GTKdynamo GUI object          '
         self.home = os.environ.get('HOME')
         self.scratch = os.environ.get('PDYNAMO_SCRATCH')
+        
+        self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+        self.GTKDYNAMO_GUI = os.path.join(self.GTKDYNAMO_ROOT, "gui")
+        
 
         #---------------------------------- GTKDYNAMO ------------------------------------#
         #                                                                                 #
         self.builder = gtk.Builder()                                                      #
         self.builder.add_from_file(                                                       #
-            os.path.join(GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
+            os.path.join(self.GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
         self.builder.add_from_file(                                                       #
-            os.path.join(GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))                   #
+            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))                   #
         self.win = self.builder.get_object("win")                                         #
         self.win.show()                                                                   #
         self.builder.connect_signals(self)                                                #
@@ -1608,36 +1629,36 @@ class gtkdynamo_main():
         self.project.data_path = GTKDYNAMO_TMP
 
 
-        #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
-        #                                                                                                 #
-        '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
-        # que o usuario farah nas 'entries' '''                                                           #
-        #                                                                                                 #
-        self._02MinimizationWindow       = MinimizationWindow(self)                                       #
-                                                                                                          #
-        self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                                  #
-                                                                                                          #
-        self._NewProjectDialog           = NewProjectDialog(self)                                         #
-                                                                                                          #
-        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                              #
-                                                                                                          #
-        self.NonBondDialog               = NonBondDialog(self)                                            #
-                                                                                                          #
-        self.ScanWindow = ScanWindow(self.project,                                                        #
-            self.window_control, self.builder)                                                            #
-                                                                                                          #
-        self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
-            self.window_control, self.builder)                                                            #
-                                                                                                          #
-        self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
-                                                                                                          #
-        self.WorkSpaceDialog = WorkSpaceDialog(self)
-        
-        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)
-        
-        #-------------------------------------------------------------------------------------------------#
+        #------------------------------ GTKDynamo Dialogs --------------------------------------#
+        #                                                                                       #
+        '''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
+        # que o usuario farah nas 'entries' '''                                                 #
+        #                                                                                       #
+        self._02MinimizationWindow       = MinimizationWindow(self)                             #
+                                                                                                #
+        self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                        #
+                                                                                                #
+        self._NewProjectDialog           = NewProjectDialog(self)                               #
+                                                                                                #
+        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                    #
+                                                                                                #
+        self.NonBondDialog               = NonBondDialog(self)                                  #
+                                                                                                #
+        self.ScanWindow = ScanWindow(self.project,                                              #
+            self.window_control, self.builder)                                                  #
+                                                                                                #
+        self.ScanWindow2D = ScanWindow2D(self)                                                  #                               
+                                                                                                #
+        self.TrajectoryDialog = TrajectoryDialog(self)                                          #
+                                                                                                #
+        self.WorkSpaceDialog = WorkSpaceDialog(self)                                            #
+                                                                                                #
+        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
+                                                                                                #
+        self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
+        #---------------------------------------------------------------------------------------#
         self.graph = None
-
+ 
 
 
 

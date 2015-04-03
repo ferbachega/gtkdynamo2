@@ -29,8 +29,8 @@ import gobject
 #from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+#GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 
 
 dialog_text = {
@@ -324,16 +324,17 @@ class QuantumChemistrySetupDialog():
             self.main_builder     = GTKDynamoSession.builder
             self.window_control   = GTKDynamoSession.window_control
             self.GTKDynamoSession = GTKDynamoSession
-            
+            self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
+            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
         #self.project = project
         #self.window_control = window_control
         #self.main_builder = main_builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'QuantumChemistrySetupDialog.glade'))
+            os.path.join(self.GTKDYNAMO_GUI, 'QuantumChemistrySetupDialog.glade'))
         
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))
+            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))
                 
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
