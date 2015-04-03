@@ -1549,15 +1549,15 @@ class gtkdynamo_main():
         #                                                                                 #
         self.builder = gtk.Builder()                                                      #
         self.builder.add_from_file(                                                       #
-            os.path.join(self.GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                       #
+            os.path.join(self.GTKDYNAMO_GUI, "01_GTKDynamo_main.glade"))                  #
         self.builder.add_from_file(                                                       #
-            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))                   #
+            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))              #
         self.win = self.builder.get_object("win")                                         #
         self.win.show()                                                                   #
         self.builder.connect_signals(self)                                                #
         self.selectedID = None                                                            #
         self.MeasureToolVisible = False                                                   #
-        self.builder.get_object('notebook3').hide()
+        self.builder.get_object('notebook3').hide()                                       #
                                                                                           #
         #---------------------------------------------------------------------------------#
         self.GTKDynamoConfig = {                              
@@ -1641,7 +1641,6 @@ class gtkdynamo_main():
         self.project.data_path = GTKDYNAMO_TMP
 
 
-<<<<<<< HEAD
         #------------------------------ GTKDynamo Dialogs --------------------------------------#
         #                                                                                       #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
@@ -1657,8 +1656,7 @@ class gtkdynamo_main():
                                                                                                 #
         self.NonBondDialog               = NonBondDialog(self)                                  #
                                                                                                 #
-        self.ScanWindow = ScanWindow(self.project,                                              #
-            self.window_control, self.builder)                                                  #
+        self.ScanWindow                  = ScanWindow(self)
                                                                                                 #
         self.ScanWindow2D = ScanWindow2D(self)                                                  #                               
                                                                                                 #
@@ -1670,7 +1668,7 @@ class gtkdynamo_main():
                                                                                                 #
         self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
         #---------------------------------------------------------------------------------------#
-=======
+
         #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
         #                                                                                                 #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
@@ -1687,10 +1685,7 @@ class gtkdynamo_main():
         self.NonBondDialog               = NonBondDialog(self)                                            #
                                                                                                           #
         self.ScanWindow = ScanWindow(self)                                                                #
-                                                                                                          #
-        self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
-            self.window_control, self.builder)                                                            #
-                                                                                                          #
+                                                                                                          #                                                                                                          #
         self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
                                                                                                           #
         self.WorkSpaceDialog = WorkSpaceDialog(self)
@@ -1698,7 +1693,6 @@ class gtkdynamo_main():
         self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)
         
         #-------------------------------------------------------------------------------------------------#
->>>>>>> 03301e9944cc9bb971316da1fe32acbac52a46cb
         self.graph = None
  
 
