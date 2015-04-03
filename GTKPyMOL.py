@@ -82,9 +82,39 @@ import glob
 import math
 import os
 
+
+
 # Imports
 from OpenGL.GL import *
 from OpenGL.GLU import *
+
+
+
+
+if not sys.platform.startswith('win'):
+    HOME = os.environ.get('HOME')
+else:
+    HOME = os.environ.get('PYMOL_PATH')
+
+
+#GTKDYNAMO_ROOT = os.getcwd()
+GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+
+GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+print GTKDYNAMO_GUI
+
+
+PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
+if not os.path.isdir(PDYNAMO_SCRATCH):
+    print PDYNAMO_SCRATCH, "not found"
+    os.mkdir(PDYNAMO_SCRATCH)
+    print "creating: ", PDYNAMO_SCRATCH 
+    
+GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
+if not os.path.isdir(GTKDYNAMO_TMP):
+    os.mkdir(GTKDYNAMO_TMP)
+    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
+
 
 
 # GUI 
@@ -126,24 +156,6 @@ GTKDYNAMO_ROOT is a system variable exported by
 GTKDYNAMO_TMP is a temporary folder where logs will be genareted
 '''
 
-if not sys.platform.startswith('win'):
-    HOME = os.environ.get('HOME')
-else:
-    HOME = os.environ.get('PYMOL_PATH')
-
-
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
-print GTKDYNAMO_GUI
-
-
-PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
-if not os.path.isdir(GTKDYNAMO_TMP):
-    os.mkdir(GTKDYNAMO_TMP)
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
 
 
 global slab
@@ -1629,6 +1641,7 @@ class gtkdynamo_main():
         self.project.data_path = GTKDYNAMO_TMP
 
 
+<<<<<<< HEAD
         #------------------------------ GTKDynamo Dialogs --------------------------------------#
         #                                                                                       #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
@@ -1657,6 +1670,35 @@ class gtkdynamo_main():
                                                                                                 #
         self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
         #---------------------------------------------------------------------------------------#
+=======
+        #------------------------------ GTKDynamo Dialogs ------------------------------------------------#
+        #                                                                                                 #
+        '''os dialogs precisam ser criados aqui para que nao percam as alteracoes                         #
+        # que o usuario farah nas 'entries' '''                                                           #
+        #                                                                                                 #
+        self._02MinimizationWindow       = MinimizationWindow(self)                                       #
+                                                                                                          #
+        self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                                  #
+                                                                                                          #
+        self._NewProjectDialog           = NewProjectDialog(self)                                         #
+                                                                                                          #
+        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                              #
+                                                                                                          #
+        self.NonBondDialog               = NonBondDialog(self)                                            #
+                                                                                                          #
+        self.ScanWindow = ScanWindow(self)                                                                #
+                                                                                                          #
+        self.Scan2dDialog = Scan2dDialog(self.project,                                                    #
+            self.window_control, self.builder)                                                            #
+                                                                                                          #
+        self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
+                                                                                                          #
+        self.WorkSpaceDialog = WorkSpaceDialog(self)
+        
+        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)
+        
+        #-------------------------------------------------------------------------------------------------#
+>>>>>>> 03301e9944cc9bb971316da1fe32acbac52a46cb
         self.graph = None
  
 
