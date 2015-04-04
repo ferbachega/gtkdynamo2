@@ -287,7 +287,9 @@ def Scan2D(outpath            ,
                 distance_a3_a4 = project.system.coordinates3.Distance (coord2_ATOM1, coord2_ATOM2)                                #
                                                                                                                                   #
                 try:                                                                                                              #
-                    x,y = ParseProcessLogFile (outpath+ "/"+"tmp.log")                                                            #
+                    parameters = ParseProcessLogFile (outpath+ "/"+"tmp.log")                                                     #
+                    x = parameters['X']
+                    y = parameters['Y']
                     X[i][j] = y[-1]                                                                                               #
                     text = text + "%18.8f  " % (X[i][j])                                                                          #
                     #print text                                                                                                   #

@@ -148,8 +148,10 @@ def ScanSimpleDistance(parameters = None, project = None):
             except:
                 print 'LBFGS has failed (LBFGS is only available in pDynamo ver 1.8.2 or newer).'
 
-        x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
-
+        #x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
+        parameters = ParseProcessLogFile (outpath + '/' + "_scan_step"+str(i)+".log") 
+        x = parameters['X']
+        y = parameters['Y']
         X_general.append(i)
         Y_general.append(y[-1])
 
@@ -266,8 +268,10 @@ def ScanMultipleDistances(parameters = None, project = None):
             except:
                 print 'LBFGS has failed (LBFGS is only available in pDynamo ver 1.8.2 or newer).'
 
-        x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
-
+        #x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
+        parameters = ParseProcessLogFile (outpath + '/' + "_scan_step"+str(i)+".log") 
+        x = parameters['X']
+        y = parameters['Y']
         X_general.append(i)
         Y_general.append(y[-1])
 

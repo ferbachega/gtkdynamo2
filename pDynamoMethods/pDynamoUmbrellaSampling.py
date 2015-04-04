@@ -1,0 +1,354 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  pDynamoMinimization.py
+#
+#  Copyright 2014 Labio <labio@labio-XPS-8300>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#
+#
+import os
+import time
+#import sys
+from random import Random
+from math import *
+import glob
+
+
+
+# pDynamo
+from pBabel                 import *
+from pCore                  import *
+from pMolecule              import *
+from pMoleculeScripts       import *
+
+from DualTextLogFileWriter3 import *
+from MatplotGTK.LogParse    import *
+
+def umbrella_sampling(outpath                 , 
+					  REACTION_COORD1         ,
+					  MINIMIZATION_PARAMETERS ,
+					  MDYNAMICS_PARAMETERS    ,
+					  project
+					  ):
+	
+	text = ""
+	minimization =  False
+	mdynamics    =  True
+															#-----------------#
+															#   REAC COORD 1  #
+															#-----------------#
+	#-----------------------------------------------------------------------------------------------------------------------------------#
+	mode1 = REACTION_COORD1['MODE']                                                                                                     #
+	if mode1 == 'simple-distance':                                                                                                      #
+		coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]                                                                         #
+		coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']                                                                         #
+		coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]                                                                         #
+		coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']                                                                         #
+																																		#
+																																		#
+		coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']                                                                         #
+		coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']                                                                           #
+		coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
+		coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
+																																		#
+		text = text + "\n----------------------- Coordinate 1 - Simple-Distance -------------------------"								#				
+		text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
+		text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
+		text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
+		text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
+		text = text + "\n--------------------------------------------------------------------------------"                              #
+																																		#
+	if mode1 == "multiple-distance":                                                                                                    #
+		coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]                                                                         #
+		coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']                                                                         #
+		coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]                                                                         #
+		coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']	                                                                        #
+		coord1_ATOM3            = REACTION_COORD1['ATOM3'     ]                                                                         #
+		coord1_ATOM3_name       = REACTION_COORD1['ATOM3_name']	                                                                        #
+																																		#
+		coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']                                                                         #
+		coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']                                                                           #
+		coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
+		coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
+																																		#
+		coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']                                                                      #
+		coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']                                                                      #
+																																		#
+		text = text + "\n--------------------- Coordinate 1 - Multiple-Distance -------------------------"								#				
+		text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
+		text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
+		text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (coord1_ATOM3,     coord1_ATOM3_name)        #
+		text = text + "\nSIGMA ATOM1/ATOM3      =%15.5f  SIGMA ATOM3/ATOM1      =%15.5f" % (coord1_sigma_pk1_pk3, coord1_sigma_pk3_pk1) #
+		text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
+		text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
+		text = text + "\n--------------------------------------------------------------------------------"                              #
+	#-----------------------------------------------------------------------------------------------------------------------------------#
+    
+    
+				    
+				    
+				     
+	                 #  MINIMIZATION_PARAMETERS  #
+	#---------------------------------------------------------------#
+	if MINIMIZATION_PARAMETERS == {}:                               #
+		minimization =  False                                       #
+	else:                                                           #
+		max_int      = MINIMIZATION_PARAMETERS['max_int'   ]        #
+		log_freq     = MINIMIZATION_PARAMETERS['log_freq'  ]        #
+		rms_grad     = MINIMIZATION_PARAMETERS['rms_grad'  ]        #
+		mim_method   = MINIMIZATION_PARAMETERS['mim_method']        #
+		minimization = True                                         #
+	#---------------------------------------------------------------#
+	
+
+	# . Define a constraint container and assign it to the system.
+	constraints = SoftConstraintContainer ( )
+	project.system.DefineSoftConstraints ( constraints )
+	
+	
+									  #--------------------------#
+									  #     SAMPLING DISTANCE    #
+									  #--------------------------#	
+	#-------------------------------------------------------------------------------------------------------------------#
+	for i in range ( coord1_NWINDOWS1 ):                                                                                #
+		if mode1 == 'simple-distance':                                                                                  #
+			rxncoord     = coord1_DMINIMUM1 + coord1_DINCREMENT1 * float   ( i )                                        #
+			scModel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                        #
+			constraint   = SoftConstraintDistance         ( coord1_ATOM1, coord1_ATOM2, scModel )                       #
+			constraints["ReactionCoord"] = constraint                                                                   #
+																														#
+		if mode1 == "multiple-distance":                                                                                #
+			rxncoord     = coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                                          #
+			scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                        #
+			constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                               #
+															  coord1_sigma_pk1_pk3],                                    #
+															  [coord1_ATOM2, coord1_ATOM3, coord1_sigma_pk3_pk1]],      #
+															  scmodel )                                                 #                                                               #
+			constraints["ReactionCoord"] = constraint			                                                        #
+	#-------------------------------------------------------------------------------------------------------------------#
+			
+		##----------   LOG files   --------------#
+		#tmp  = DualTextLog(outpath,  "tmp.log") #
+		#project.system.Summary(log=tmp)         #
+		##---------------------------------------#
+			
+									  #--------------------------#
+									  #    ENERGY MINIMIZATION   #
+									  #--------------------------#
+		#------------------------------------------------------------------------------------------#                                         
+		if minimization == True:                                                                   #
+			if mim_method == 'Conjugate Gradient':                                                 #
+				ConjugateGradientMinimize_SystemGeometry (project.system                  ,        #
+														  logFrequency         = 1        ,        #
+														  maximumIterations    = max_int  ,        #
+														  rmsGradientTolerance = rms_grad )        #
+		#------------------------------------------------------------------------------------------#                                         
+
+
+
+		
+									  
+									  
+									  
+									  #--------------------------#
+									  #    MOLECULAR DYNAMICS    #
+									  #--------------------------#
+		rng = Random ( )
+		rng.seed ( 291731 + i )
+		# . Equilibration.
+		MD_mode = MDYNAMICS_PARAMETERS['MD_mode']                                                                                          
+		traj_name = 'window'
+
+		if MD_mode == "Leap Frog Dynamics":	
+									  #--------------------------#
+									  #       EQUILIBRATION      #
+									  #--------------------------#
+		#----------------------------------------------------------------------------------------------------------------------------------#                         
+																																		   #
+			logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                                                         #
+			steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                                                        #
+			temperature         = MDYNAMICS_PARAMETERS['temperature']                                                                      #
+			temperatureCoupling = MDYNAMICS_PARAMETERS['temperatureCoupling']                                                              #
+			timeStep            = MDYNAMICS_PARAMETERS['timestep']                                                                         #
+																																		   #
+			# . Equilibration.                                                                                                             #
+			LeapFrogDynamics_SystemGeometry ( project.system,                                                                              #
+											  logFrequency        = logFrequency,                                                          #
+											  #rng                 = rng,                                                                  #
+											  steps               = steps,                                                                 #
+											  temperature         = temperature,                                                           #
+											  temperatureCoupling = temperatureCoupling,                                                   #
+											  timeStep            = timeStep  )                                                            #
+		#----------------------------------------------------------------------------------------------------------------------------------#                         
+		
+									  #--------------------------#
+									  #      DATA COLLECTION     #
+									  #--------------------------#
+		#------------------------------------------------------------------------------------------------------------------------------------#                   
+																																		     #
+			# . Data-collection.                                                                                                             #
+			trajectory = SystemSoftConstraintTrajectory ( os.path.join ( outpath, traj_name + str(i) + ".trj" ), project.system, mode = "w" )#
+																																             #
+			steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                                                          #
+			LeapFrogDynamics_SystemGeometry ( project.system,                                                                                #
+											  logFrequency        = logFrequency,                                                            #
+											  #rng                 = rng,                                                                    #
+											  steps               = steps,                                                                   #
+											  temperature         = temperature,                                                             #
+											  temperatureCoupling = temperatureCoupling,                                                     #
+											  timeStep            = timeStep,                                                                #
+											  trajectories        = [ ( trajectory, 1 ) ] )                                                  #
+		#------------------------------------------------------------------------------------------------------------------------------------#
+
+		if MD_mode == "Velocity Verlet Dynamics":
+								  #--------------------------#
+								  #       EQUILIBRATION      #
+								  #--------------------------#
+		#---------------------------------------------------------------------------------------------------------------------------------# 
+																																		  #
+			logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                                                        #
+			steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                                                       #
+			temperature         = MDYNAMICS_PARAMETERS['temperature']                                                                     #
+			timeStep            = MDYNAMICS_PARAMETERS['timestep']                                                                        #
+			temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']                                                                 #
+																																		  #
+			# . Equilibration.                                                                                                            #
+			VelocityVerletDynamics_SystemGeometry(project.system,                                                                            #
+												#rng                       =   rng,                                                       #
+												logFrequency              =   logFrequency,                                               #
+												steps                     =   steps,                                                      #
+												timeStep                  =   0.001,                                                      #
+												temperatureScaleFrequency =   temp_scale_freq,                                            #
+												temperatureScaleOption    =   "constant",                                                 #
+												temperatureStart          =   temperature )                                               #
+		#---------------------------------------------------------------------------------------------------------------------------------#                         
+			
+			
+									  #--------------------------#
+									  #      DATA COLLECTION     #
+									  #--------------------------#
+		#---------------------------------------------------------------------------------------------------------------------------------#  
+			steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                                                       #
+			trajectory = SystemSoftConstraintTrajectory ( os.path.join ( outpath, traj_name + str(i) + ".trj" ), project.system, mode = "w" )#
+			VelocityVerletDynamics_SystemGeometry(project.system,                                                                            #
+												trajectories              =[ ( trajectory, 1) ],                                          #
+												#rng                       =   rng,                                                       #
+												logFrequency              =   logFrequency,                                               #
+												steps                     =   steps,                                                      #
+												timeStep                  =   0.001,                                                      #
+												temperatureScaleFrequency =   temp_scale_freq,                                            #
+												temperatureScaleOption    =   "constant",                                                 #
+												temperatureStart          =   temperature )                                               #
+		#---------------------------------------------------------------------------------------------------------------------------------#                        
+		
+		if MD_mode ==  "Langevin Dynamics":
+								  #--------------------------#
+								  #       EQUILIBRATION      #
+								  #--------------------------#
+		#---------------------------------------------------------------------------------------------------------------------------------#
+			logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                                                        #
+			steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                                                       #
+			temperature         = MDYNAMICS_PARAMETERS['temperature']                                                                     #
+			timeStep            = MDYNAMICS_PARAMETERS['timestep']                                                                        #
+			coll_freq           = MDYNAMICS_PARAMETERS['coll_freq']                                                                       #
+			# . Equilibration.                                                                                                            #
+			LangevinDynamics_SystemGeometry (project.system,                                                                                 #
+							logFrequency              =   logFrequency,                                                                   #
+							log                       =   dualLog,                                                                        #
+							#rng                       =   rng,                                                                           #
+							steps                     =   steps,                                                                          #
+							timeStep                  =   0.001,                                                                          #
+							collisionFrequency        = coll_freq,                                                                        #
+							temperature               = temperature)                                                                      #
+		#---------------------------------------------------------------------------------------------------------------------------------#
+			
+			
+									  #--------------------------#
+									  #      DATA COLLECTION     #
+									  #--------------------------#
+		#---------------------------------------------------------------------------------------------------------------------------------#
+			steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                                                       #
+			trajectory = SystemSoftConstraintTrajectory ( os.path.join ( outpath, traj_name + str(i) + ".trj" ), project.system, mode = "w" )#
+																																		  #
+			LangevinDynamics_SystemGeometry (project.system,                                                                                 #
+							trajectories              =[ ( trajectory, 1) ],                                                              #
+							logFrequency              =   logFrequency,                                                                   #
+							log                       =   dualLog,                                                                        #
+							#rng                       =   rng,                                                                           #
+							steps                     =   steps,                                                                          #
+							timeStep                  =   0.001,                                                                          #
+							collisionFrequency        = coll_freq,                                                                        #
+							temperature               = temperature)                                                                      #
+		#---------------------------------------------------------------------------------------------------------------------------------#
+
+
+		#------------------------------------------------------------------------------------------------------#
+		try:                                                                                                   #
+			XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )     #
+		except:                                                                                                #
+			Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )	   #
+		#------------------------------------------------------------------------------------------------------#
+
+
+
+
+
+
+	fileNames = glob.glob( os.path.join ( outpath, traj_name+"*.trj" ) )
+	trajectories = []
+	for fileName in fileNames:
+		trajectories.append ( SystemSoftConstraintTrajectory ( fileName, project.system, mode = "r" ) )
+
+	#project.system.Summary ()
+	# LOG FILE 
+	#os.rename('log.gui.txt', (outpath+"/process.log"))
+	
+	
+	
+	
+	#arq = open(data_path +'/log.gui.txt', "a")
+	#if MD_mode == "Langevin Dynamics":
+	#	text = text + "\n--------- Molecular-Dynamics-Langevin-Dynamics -----------"
+    #
+	#if MD_mode == "Velocity Verlet Dynamics":
+	#	text = text + "\n---------- Molecular-Dynamics-Velocity-Verlet ------------"
+	#if MD_mode == "Leap Frog Dynamics":
+	#	text = text + "\n------------- Molecular-Dynamics-Leap-Frog ---------------"	
+    #
+	#text = text + "\nNumber of steps(equilibrate)         =%20i" % (MDYNAMICS_PARAMETERS['nsteps_EQ'])
+	#text = text + "\nNumber of steps(data collection)     =%20i" % (MDYNAMICS_PARAMETERS['nsteps_DC'])
+	#text = text + "\ntemperature(K)                       =%20i" % (MDYNAMICS_PARAMETERS['temperature'])
+	#text = text + "\nstep size(ps)                        =%20f" % (MDYNAMICS_PARAMETERS['timestep'])
+	#if MD_mode ==  "Langevin Dynamics":
+	#	text = text + "\ncollision frequency                  =%20i" % (MDYNAMICS_PARAMETERS['coll_freq'])
+	#text = text + "\n----------------------------------------------------------"
+	#text = text + "\n"
+    #
+	#text = str(text)
+	#arq.writelines(text)
+	#arq.close()		
+
+	WHAMEquationSolver ( trajectories,          \
+						 log         = dualLog, \
+						 bins        = 100,     \
+						 temperature = temperature )		
+
+	project.system.DefineSoftConstraints ( None )
+	#os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"process.log")
+	#x,y = parse_log_file (outpath+ "/"+"process.log")
+	#return x,y

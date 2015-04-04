@@ -134,6 +134,7 @@ from gui.ScanWindow2D                import *
 from gui.TrajectoryDialog            import *
 from gui.WorkSpaceDialog             import WorkSpaceDialog
 from gui.ChargeRescaleDialog         import ChargeRescaleDialog
+from gui.UmbrellaSamplingWindow      import UmbrellaSamplingWindow
 
 import TextEditor.TextEditorWindow as TextEditor
 
@@ -835,6 +836,13 @@ class gtkdynamo_main():
         if self.ScanWindow2D.Visible == False:
             self.ScanWindow2D.OpenWindow()
 
+    def on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate(self, menuItem):
+        if self.UmbrellaSamplingWindow.Visible == False:
+            self.UmbrellaSamplingWindow.OpenWindow()
+
+
+
+
     def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
         """ Function doc """
         self.NonBondDialog.dialog.run()
@@ -1090,20 +1098,23 @@ class gtkdynamo_main():
         """ Function doc """
         filein = self.project.settings['job_history'][self.selectedID]['log']
         print    self.project.settings['job_history'][self.selectedID]['log']
-        X,Y = ParseProcessLogFile(filein)
         
-        xlabel = 'Frames'
-        ylabel = 'Energy (KJ)' 
-        title  = os.path.split(filein)[-1]
-        print  X, Y
         
-        parameters = {
-                     'title' : title ,
-                     'X'     : X     ,
-                     'Y'     : Y     ,
-                     'xlabel': xlabel,
-                     'ylabel': ylabel,
-                     }
+        
+        parameters = ParseProcessLogFile(filein)
+        
+        #xlabel = 'Frames'
+        #ylabel = 'Energy (KJ)' 
+        #title  = os.path.split(filein)[-1]
+        #print  X, Y
+        #
+        #parameters = {
+        #             'title' : title ,
+        #             'X'     : X     ,
+        #             'Y'     : Y     ,
+        #             'xlabel': xlabel,
+        #             'ylabel': ylabel,
+        #             }
         
         PlotGTKWindow(parameters)
 
@@ -1688,10 +1699,11 @@ class gtkdynamo_main():
                                                                                                           #                                                                                                          #
         self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
                                                                                                           #
-        self.WorkSpaceDialog = WorkSpaceDialog(self)
-        
-        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)
-        
+        self.WorkSpaceDialog = WorkSpaceDialog(self)                                                      #
+                                                                                                          #
+        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                                        #
+                                                                                                          #
+        self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                                        #
         #-------------------------------------------------------------------------------------------------#
         self.graph = None
  

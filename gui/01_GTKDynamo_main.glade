@@ -1395,6 +1395,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Umbrella Sampling</property>
                                 <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
