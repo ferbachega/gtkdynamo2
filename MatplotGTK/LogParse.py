@@ -339,7 +339,41 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
                  'xlabel': 'x label' ,   # xlabel,
                  'ylabel': 'y label' ,   # ylabel,
                  }
+
+
+    #lines = []
+    #for line in log:
+    #    lines.append(line)
+    #
+    #print lines 
     
+    #if '    ReactionCoord            PMF                 PDF' in lines:
+    #    ReactionCoord = []
+    #    PDF           = []    
+    #    PMF           = []    
+    #    index = lines.index('    ReactionCoord            PMF                 PDF\n')
+    #    
+    #    print index
+    #    
+    #    for line in lines[index:-1]:
+    #        line2 = line.split()
+    #        if len(line2) == 3:
+    #            try:
+    #                ReactionCoord.append(float(line2[0]))
+    #                PDF.append(float(line2[1]))
+    #                PMF.append(float(line2[2]))
+    #            except:
+    #                pass
+    #
+    #
+    #    parameters['type'  ] = 'line'
+    #    parameters['title' ] = 'Potential of mean force'
+    #    parameters['X'     ] = ReactionCoord
+    #    parameters['Y'     ] = PMF
+    #    parameters['xlabel'] = 'ReactionCoord'
+    #    parameters['ylabel'] = 'Energy (KJ)'
+    #    #print parameters
+    #    return parameters
     for line in log:
         linex = line.split()
         try:                                # Check if the Log is Molecular Dynamics
@@ -934,6 +968,12 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
 
 
 from pprint import pprint
+
+logList = []
+
+
+
+
 def main():
     log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.GTKDynamo/2_step_GeometryOptmization/2_step_GeometryOptmization.log'
     parameters = ParseProcessLogFile (log_file)

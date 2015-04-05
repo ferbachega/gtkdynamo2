@@ -45,10 +45,23 @@ def umbrella_sampling(outpath                 ,
 					  MDYNAMICS_PARAMETERS    ,
 					  project
 					  ):
+                        #
 	
-	text = ""
+	text = "\n\n"
+	text = text + "\n--------------------------------------------------------------------------------"
+	text = text + "\n--                                                                            --"
+	text = text + "\n--                           Umbrella-Samplig                                 --"
+	text = text + "\n--                                                                            --"
+	text = text + "\n--------------------------------------------------------------------------------"
+	text = text + "\n"
+
+
+
+	log     = DualTextLog(outpath,  "UmbrellaSampling.log")  #
+	project.system.Summary(log=log)  
 	minimization =  False
 	mdynamics    =  True
+	
 															#-----------------#
 															#   REAC COORD 1  #
 															#-----------------#
@@ -66,7 +79,7 @@ def umbrella_sampling(outpath                 ,
 		coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
 		coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
 																																		#
-		text = text + "\n----------------------- Coordinate 1 - Simple-Distance -------------------------"								#				
+		text = text + "\n----------------------- Coordinate1  - Simple-Distance -------------------------"								#				
 		text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
 		text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
 		text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
@@ -89,7 +102,7 @@ def umbrella_sampling(outpath                 ,
 		coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']                                                                      #
 		coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']                                                                      #
 																																		#
-		text = text + "\n--------------------- Coordinate 1 - Multiple-Distance -------------------------"								#				
+		text = text + "\n--------------------- Coordinate1  - Multiple-Distance -------------------------"								#				
 		text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
 		text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
 		text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (coord1_ATOM3,     coord1_ATOM3_name)        #
@@ -146,6 +159,12 @@ def umbrella_sampling(outpath                 ,
 		#tmp  = DualTextLog(outpath,  "tmp.log") #
 		#project.system.Summary(log=tmp)         #
 		##---------------------------------------#
+			
+			
+			
+			
+			
+			
 			
 									  #--------------------------#
 									  #    ENERGY MINIMIZATION   #
@@ -309,46 +328,77 @@ def umbrella_sampling(outpath                 ,
 
 
 
-	fileNames = glob.glob( os.path.join ( outpath, traj_name+"*.trj" ) )
-	trajectories = []
-	for fileName in fileNames:
-		trajectories.append ( SystemSoftConstraintTrajectory ( fileName, project.system, mode = "r" ) )
 
-	#project.system.Summary ()
-	# LOG FILE 
-	#os.rename('log.gui.txt', (outpath+"/process.log"))
-	
-	
-	
-	
-	#arq = open(data_path +'/log.gui.txt', "a")
-	#if MD_mode == "Langevin Dynamics":
-	#	text = text + "\n--------- Molecular-Dynamics-Langevin-Dynamics -----------"
-    #
-	#if MD_mode == "Velocity Verlet Dynamics":
-	#	text = text + "\n---------- Molecular-Dynamics-Velocity-Verlet ------------"
-	#if MD_mode == "Leap Frog Dynamics":
-	#	text = text + "\n------------- Molecular-Dynamics-Leap-Frog ---------------"	
-    #
-	#text = text + "\nNumber of steps(equilibrate)         =%20i" % (MDYNAMICS_PARAMETERS['nsteps_EQ'])
-	#text = text + "\nNumber of steps(data collection)     =%20i" % (MDYNAMICS_PARAMETERS['nsteps_DC'])
-	#text = text + "\ntemperature(K)                       =%20i" % (MDYNAMICS_PARAMETERS['temperature'])
-	#text = text + "\nstep size(ps)                        =%20f" % (MDYNAMICS_PARAMETERS['timestep'])
-	#if MD_mode ==  "Langevin Dynamics":
-	#	text = text + "\ncollision frequency                  =%20i" % (MDYNAMICS_PARAMETERS['coll_freq'])
-	#text = text + "\n----------------------------------------------------------"
-	#text = text + "\n"
-    #
-	#text = str(text)
-	#arq.writelines(text)
-	#arq.close()		
 
-	WHAMEquationSolver ( trajectories,          \
-						 log         = dualLog, \
-						 bins        = 100,     \
-						 temperature = temperature )		
+	                                 #-------------------------------------#
+	                                 #              LOG FILES              #
+	                                 #-------------------------------------#
+	#----------------------------------------------------------------------------------------------------------------------#
+	arq = open(os.path.join(outpath,  "UmbrellaSampling.log"), "a")                                                        #
+	                                                                                                                       #
+	if MD_mode == "Langevin Dynamics":                                                                                     #
+		text = text + "\n--------- Molecular-Dynamics-Langevin-Dynamics -----------"                                       #
+                                                                                                                           #
+	if MD_mode == "Velocity Verlet Dynamics":                                                                              #
+		text = text + "\n---------- Molecular-Dynamics-Velocity-Verlet ------------"                                       #
+	                                                                                                                       #
+	if MD_mode == "Leap Frog Dynamics":                                                                                    #
+		text = text + "\n------------- Molecular-Dynamics-Leap-Frog ---------------"	                                   #
+                                                                                                                           #
+	text = text + "\nNumber of steps(equilibrate)         =%20i" % (MDYNAMICS_PARAMETERS['nsteps_EQ'])                     #
+	text = text + "\nNumber of steps(data collection)     =%20i" % (MDYNAMICS_PARAMETERS['nsteps_DC'])                     #
+	text = text + "\ntemperature(K)                       =%20i" % (MDYNAMICS_PARAMETERS['temperature'])                   #
+	text = text + "\nstep size(ps)                        =%20f" % (MDYNAMICS_PARAMETERS['timestep'])                      #
+	if MD_mode ==  "Langevin Dynamics":                                                                                    #
+		text = text + "\ncollision frequency                  =%20i" % (MDYNAMICS_PARAMETERS['coll_freq'])                 #
+	text = text + "\n----------------------------------------------------------"                                           #
+	text = text + "\n"                                                                                                     #
+	#----------------------------------------------------------------------------------------------------------------------#
+	
+	
+	
+	
+	
+	                                 #-------------------------------------#
+	                                 #              PMF BLOCK              #
+	                                 #-------------------------------------#
+	#----------------------------------------------------------------------------------------------------------------------#
+	text = text + "\n----------------------------------------------------------------------------------------------------" #
+	text = text + "\n                                           PMF-BLOCK                                                " #
+	text = text + "\n----------------------------------------------------------------------------------------------------" #
+	text = text + "\n"                                                                                                     #
+	text = str(text)                                                                                                       #
+	                                                                                                                       #
+	arq.writelines(text)                                                                                                   #
+	arq.close()	                                                                                                           #
+	                                                                                                                       #
+	                                                                                                                       #
+	                                                                                                                       #
+	fileNames = glob.glob(os.path.join ( outpath, traj_name+"*.trj" ))                                                     #
+	trajectories = []                                                                                                      #
+	for fileName in fileNames:                                                                                             #
+		trajectories.append (SystemSoftConstraintTrajectory (fileName, project.system, mode = "r" ) )                      #
+	                                                                                                                       #
+	print trajectories                                                                                                     #
+                                                                                                                           #
+                                                                                                                           #
+	# . Calculate the PMF.                                                                                                 #
+	state = WHAM_ConjugateGradientMinimize ( fileNames                      ,                                              #
+											 bins                 = [ 100 ] ,                                              #
+											 log                  = log     ,                                              #
+											 logFrequency         =      1  ,                                              #
+											 maximumIterations    =   1000  ,                                              #
+											 rmsGradientTolerance = 1.0e-3  ,                                              #
+											 temperature          = temperature)                                           #
+                                                                                                                           #
+	# . Write the PMF to a file.                                                                                           #
+	histogram = state["Histogram"]                                                                                         #
+	pmf       = state["PMF"      ]                                                                                         #
+	histogram.ToTextFileWithData ( os.path.join ( outpath, "system_pmf.dat" ), [ pmf ], format = "{:20.3f} {:20.3f}\n" )   #
+	#----------------------------------------------------------------------------------------------------------------------#	
 
 	project.system.DefineSoftConstraints ( None )
-	#os.rename(data_path +'/log.gui.txt',  outpath+ "/"+"process.log")
-	#x,y = parse_log_file (outpath+ "/"+"process.log")
-	#return x,y
+	
+	logFile = os.path.join(outpath,  "UmbrellaSampling.log")
+	return logFile
+

@@ -223,13 +223,16 @@ class UmbrellaSamplingWindow():
 		pprint(MINIMIZATION_PARAMETERS)
 		pprint(MDYNAMICS_PARAMETERS)
 
-		umbrella_sampling (outpath         , 
-			               REACTION_COORD1 ,
-			               MINIMIZATION_PARAMETERS ,
-			               MDYNAMICS_PARAMETERS,
-			               self.project
-			               )
-	
+		logFile = umbrella_sampling (outpath                 , 
+			                         REACTION_COORD1         ,
+			                         MINIMIZATION_PARAMETERS ,
+			                         MDYNAMICS_PARAMETERS    ,
+			                         self.project
+			                         )
+
+		self.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
+		self.Visible  =  False
+		self.window.destroy()
 	
 	
 	
