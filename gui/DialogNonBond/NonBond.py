@@ -115,7 +115,7 @@ class NonBondDialog():
         #self.main_builder = main_builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'NonBondDialog.glade'))
+            os.path.join(GTKDYNAMO_GUI,'DialogNonBond', 'NonBondDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
 

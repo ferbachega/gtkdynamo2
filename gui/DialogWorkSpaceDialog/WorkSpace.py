@@ -29,7 +29,7 @@ import sys
 
 #from   PyMOLScripts      import *
 from   WindowControl     import *
-from   FileChooserWindow import FileChooserWindow
+from   gui.FileChooserWindow import FileChooserWindow
 
 
 import time
@@ -80,7 +80,7 @@ class WorkSpaceDialog():
         self.GTKDYNAMO_GUI     = GTKDynamoSession.GTKDYNAMO_GUI 
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'WorkSpaceDialog.glade'))
+            os.path.join(self.GTKDYNAMO_GUI,'DialogWorkSpaceDialog', 'WorkSpaceDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
         

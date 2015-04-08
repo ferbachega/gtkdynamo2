@@ -564,7 +564,7 @@ class UmbrellaSamplingWindow():
 			
 			self.builder = gtk.Builder()
 			self.builder.add_from_file(
-				os.path.join(GTKDYNAMO_GUI, 'UmbrellaSampling2.glade'))
+				os.path.join(GTKDYNAMO_GUI,'WindowUmbrellaSampling', 'UmbrellaSampling2.glade'))
 			
 			self.builder.connect_signals(self)
 			self.window = self.builder.get_object('window1')

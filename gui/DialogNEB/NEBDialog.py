@@ -149,7 +149,7 @@ class NEBDialog():
         self.main_builder = main_builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'NEBDialog.glade'))
+            os.path.join(GTKDYNAMO_GUI,'DialogNEB', 'NEBDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('NEBDialog')
 

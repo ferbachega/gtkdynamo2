@@ -80,9 +80,7 @@ def Scan2D(outpath            ,
     
     text = ""
     text = text + "\n--------------------------------------------------------------------------------"
-    text = text + "\n--                                                                            --"
-    text = text + "\n--                          GTKDynamo SCAN  2D                                --"
-    text = text + "\n--                                                                            --"
+    text = text + "\n                              GTKDynamo SCAN2D"
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n"
     arq = open(os.path.join(outpath, "Scan2D.log"), 'a') 

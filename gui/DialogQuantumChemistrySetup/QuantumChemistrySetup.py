@@ -331,7 +331,7 @@ class QuantumChemistrySetupDialog():
         #self.main_builder = main_builder
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'QuantumChemistrySetupDialog.glade'))
+            os.path.join(self.GTKDYNAMO_GUI, 'DialogQuantumChemistrySetup',  'QuantumChemistrySetupDialog.glade'))
         
         self.builder.add_from_file(
             os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))

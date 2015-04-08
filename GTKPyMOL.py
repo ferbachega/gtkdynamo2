@@ -118,23 +118,24 @@ if not os.path.isdir(GTKDYNAMO_TMP):
 
 
 # GUI 
-from gui.MinimizationWindow          import *  # window 2  - minimization
-from gui.MolecularDynamicsWindow     import *
+from gui.DialogMinimization.Minimization                    import *  # window 2  - minimization
+from gui.DialogMolecularDynamics.MolecularDynamics          import *
+                                                   
+from gui.FileChooserWindow                                  import *
+from gui.DialogNewProject.NewProject                        import *
+from gui.DialogQuantumChemistrySetup.QuantumChemistrySetup  import *
+                                                   
+from gui.DialogNonBond.NonBond                              import *
+from gui.WindowScan1D.Scan                                  import *
+from gui.WindowScan2D.Scan2D                                import *
 
-from gui.FileChooserWindow           import *
-from gui.NewProjectDialog            import *
-from gui.QuantumChemistrySetupDialog import *
-
-from gui.NonBondDialog               import *
-from gui.ScanWindow                  import *
-from gui.pDynamoSelectionsWindow     import pDynamoSelectionWindow
-
-from gui.ScanWindow2D                import *
-
-from gui.TrajectoryDialog            import *
-from gui.WorkSpaceDialog             import WorkSpaceDialog
-from gui.ChargeRescaleDialog         import ChargeRescaleDialog
-from gui.UmbrellaSamplingWindow      import UmbrellaSamplingWindow
+from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelectionWindow
+                                                   
+                                                   
+from gui.DialogLoadTrajectory.Trajectory                    import *
+from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog
+from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog
+from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow
 
 import TextEditor.TextEditorWindow as TextEditor
 
@@ -771,6 +772,8 @@ class gtkdynamo_main():
         
         
         WorkSpace = self.GTKDynamoConfig['WorkSpace']
+        print WorkSpace, text
+        
         path      = os.path.join(WorkSpace, text)
         self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
 
@@ -803,6 +806,12 @@ class gtkdynamo_main():
         except:
             pass
 
+    def on_menuitem_quit_activate (self, menuitem):
+        """ Function doc """
+        print '''\n\nThanks for use GTKDynamo - EasyHybrid\n\n'''
+        gtk.main_quit()
+        cmd.quit()
+    
     
     def on_imagemenuitem9_activate (self, menuitem):
         """ Function doc """
@@ -1464,7 +1473,7 @@ class gtkdynamo_main():
     
     def Save_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
-        path = os.path.join(self.home,'.config')
+        path = os.path.join(self.HOME,'.config')
         if not os.path.exists (path): 
             os.mkdir (path)
 
@@ -1479,7 +1488,7 @@ class gtkdynamo_main():
     def Load_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
         #.config
-        path = os.path.join(self.home,'.config', 'GTKDynamo', 'gtkdynamo.config')
+        path = os.path.join(self.HOME,'.config', 'GTKDynamo', 'gtkdynamo.config')
         
         try:
             self.GTKDynamoConfig = json.load(open(path)) 
@@ -1549,11 +1558,12 @@ class gtkdynamo_main():
     def __init__(self):
 
         print '           Intializing GTKdynamo GUI object          '
-        self.home = os.environ.get('HOME')
         self.scratch = os.environ.get('PDYNAMO_SCRATCH')
         
+        self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
+        self.HOME           = os.environ.get('HOME')
         self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-        self.GTKDYNAMO_GUI = os.path.join(self.GTKDYNAMO_ROOT, "gui")
+        self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
         
 
         #---------------------------------- GTKDYNAMO ------------------------------------#
@@ -1573,7 +1583,7 @@ class gtkdynamo_main():
         #---------------------------------------------------------------------------------#
         self.GTKDynamoConfig = {                              
                                'HideWorkSpaceDialog': False,  
-                               'WorkSpace'          : None ,  
+                               'WorkSpace'          : self.HOME,  
                                'History'            : {}   }                              
 
         self.Load_GTKDYNAMO_ConfigFile()

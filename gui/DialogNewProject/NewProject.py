@@ -42,13 +42,16 @@ class NewProjectDialog():
 
     """ Class doc """
     def on_new_project_entry_changed (self, entry):
-        """ Function doc """
-        text      = self.builder.get_object("new_project_entry").get_text()
-        WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
-        path      = os.path.join(WorkSpace, text)
-        
-        self.builder.get_object("ProjectDirectory").set_text(path)
-        
+		""" Function doc """
+		text      = self.builder.get_object("new_project_entry").get_text()
+		WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+		try:
+			path      = os.path.join(WorkSpace, text)
+			
+			self.builder.get_object("ProjectDirectory").set_text(path)
+		except:
+			pass
+			
     def on_combobox1_changed(self, combobox):
         """ Function doc """
 
@@ -197,58 +200,60 @@ class NewProjectDialog():
         #
 
     def __init__(self, GTKDynamoSession = None):
-        """ Class initialiser """
-        self.builder          = gtk.Builder()
-        
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession
+		""" Class initialiser """
+		self.builder          = gtk.Builder()
 
-        self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'NewProjectDialog.glade'))
-        self.builder.connect_signals(self)
-        self.dialog = self.builder.get_object('dialog1')
-        self.dualLog = None
+		if GTKDynamoSession != None:
+			self.project          = GTKDynamoSession.project
+			self.main_builder     = GTKDynamoSession.builder
+			self.GTKDynamoSession = GTKDynamoSession
 
-        '''
+		self.builder.add_from_file(
+			os.path.join(GTKDYNAMO_GUI,'DialogNewProject', 'NewProjectDialog.glade'))
+		self.builder.connect_signals(self)
+		self.dialog = self.builder.get_object('dialog1')
+		self.dualLog = None
+		#self.scrath  = os.environ.get('PDYNAMO_SCRATCH')
+		#
+		#self.builder.get_object('ProjectDirectory').set_text(self.scrath )
+		'''
 		--------------------------------------------------
 		-                                                -
 		-	              WindowControl                  -
 		-                                                -
 		--------------------------------------------------
 		'''
-        self.window_control = WindowControl(self.builder)
+		self.window_control = WindowControl(self.builder)
 
-        #----------------- Setup ComboBoxes -------------------------#
-        combobox = 'combobox1'                                      #
-        combolist = ["AMBER",                                        #
-                     "CHARMM",                                       #
-                     #
-                     "GROMACS",
-                     #
-                     "OPLS",
-                     #
-                     "pDynamo files(*.pkl,*.yaml)",
-                     "Other(*.pdb,*.xyz,*.mol2...)"]                 #
-        #
-        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
-        #------------------------------------------------------------#
+		#----------------- Setup ComboBoxes -------------------------#
+		combobox = 'combobox1'                                      #
+		combolist = ["AMBER",                                        #
+					 "CHARMM",                                       #
+					 #
+					 "GROMACS",
+					 #
+					 "OPLS",
+					 #
+					 "pDynamo files(*.pkl,*.yaml)",
+					 "Other(*.pdb,*.xyz,*.mol2...)"]                 #
+		#
+		self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
+		#------------------------------------------------------------#
 
-        localtime = time.asctime(time.localtime(time.time()))
-        print "Local current time :", localtime
-        localtime = localtime.split()
+		localtime = time.asctime(time.localtime(time.time()))
+		print "Local current time :", localtime
+		localtime = localtime.split()
 
-        #  0     1    2       3         4
-        #[Sun] [Sep] [28] [02:32:04] [2014]
-        text = 'NewProjec_' + localtime[1] + \
-            '_' + localtime[2] + '_' + localtime[4]
-        self.builder.get_object("new_project_entry").set_text(text)
-        
-        
-        #WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
-        #path      = os.path.join(WorkSpace, text)
-        #self.builder.get_object("ProjectDirectory").set_text(text)
+		#  0     1    2       3         4
+		#[Sun] [Sep] [28] [02:32:04] [2014]
+		text = 'NewProjec_' + localtime[1] + \
+			'_' + localtime[2] + '_' + localtime[4]
+		self.builder.get_object("new_project_entry").set_text(text)
+
+
+		#WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+		#path      = os.path.join(WorkSpace, text)
+		#self.builder.get_object("ProjectDirectory").set_text(text)
 
 def main():
     dialog = NewProjectDialog()

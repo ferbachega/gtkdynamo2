@@ -60,7 +60,7 @@ class ChargeRescaleDialog():
 
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'ChargeRescale.glade'))
+            os.path.join(self.GTKDYNAMO_GUI, 'DialogChargeRescale',  'ChargeRescale.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog_charge_rescale')
 

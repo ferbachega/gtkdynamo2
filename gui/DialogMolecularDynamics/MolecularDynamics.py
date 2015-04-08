@@ -99,7 +99,7 @@ class MolecularDynamicsWindow():
 
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'MolecularDynamicsDialog.glade'))
+            os.path.join(GTKDYNAMO_GUI,'DialogMolecularDynamics', 'MolecularDynamicsDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('MMDialog_molecular_dynamics')
 

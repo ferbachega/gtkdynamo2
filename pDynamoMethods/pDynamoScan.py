@@ -79,6 +79,12 @@ def ScanSimpleDistance(parameters = None, project = None):
     
     arq = open(os.path.join(outpath, LogFileName), "a") # entra aqui o log do scan		
     text = ""
+    
+    text = text + "\n"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n                              GTKDynamo SCAN1D"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n"
     text = text + "\n------------------------ GTKDynamo SCAN  Simple-Distance -----------------------"
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,      ATOM1_name    )
     text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % ( ATOM2,      ATOM2_name    )			
@@ -87,7 +93,7 @@ def ScanSimpleDistance(parameters = None, project = None):
     text = text + "\nSTEP SIZE              =%15.7f  RMS GRAD               =%15.7f" % ( DINCREMENT, rms_grad      )
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n\n------------------------------------------------------"
-    text = text + "\n       Frame    distance pK1 - pK2         Energy     "
+    text = text + "\n       Frame     distance-pK1-pK2         Energy      "
     text = text + "\n------------------------------------------------------"
 
 
@@ -207,6 +213,11 @@ def ScanMultipleDistances(parameters = None, project = None):
     LogFileName  = 'ScanLog-MultipleDistance.log'
     arq = open(os.path.join(outpath, LogFileName), "a") # entra aqui o log do scan			
     text = ""
+    text = text + "\n"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n                              GTKDynamo SCAN1D"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n"
     text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,         ATOM1_name    )
     text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % ( ATOM2,         ATOM2_name    )
@@ -217,7 +228,7 @@ def ScanMultipleDistances(parameters = None, project = None):
     text = text + "\nSigma atom1 - atom3    =%15.5f  Sigma atom3 - atom1    =%15.5f" % ( sigma_pk1_pk3, sigma_pk3_pk1 )		
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n\n---------------------------------------------------------------------------"
-    text = text + "\n      Frame    distance pK1 - pK2    distance pK2 - pK3         Energy     "
+    text = text + "\n      Frame     distance-pK1-pK2      distance-pK2-pK3         Energy      "
     text = text + "\n---------------------------------------------------------------------------"
     
 

@@ -57,7 +57,7 @@ class pDynamoSelectionWindow():
         if self.Visible  ==  False:
             self.builder = gtk.Builder()
             self.builder.add_from_file(
-                os.path.join(GTKDYNAMO_GUI, 'pDynamoSelectionsWindow.glade'))
+                os.path.join(GTKDYNAMO_GUI,'WindowpDynamoSelections', 'pDynamoSelectionsWindow.glade'))
             
             self.builder.connect_signals(self)
             self.window = self.builder.get_object('window1')

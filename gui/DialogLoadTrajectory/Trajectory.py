@@ -93,7 +93,7 @@ class TrajectoryDialog():
 
         self.builder = gtk.Builder()
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI, 'TrajectoryDialog.glade'))
+            os.path.join(GTKDYNAMO_GUI,'DialogLoadTrajectory','TrajectoryDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('TrajectoryDialog')
 
