@@ -82,10 +82,10 @@ def ScanSimpleDistance(parameters = None, project = None):
     
     text = text + "\n"
     text = text + "\n--------------------------------------------------------------------------------"
-    text = text + "\n                              GTKDynamo SCAN1D"
+    text = text + "\n                              GTKDynamo SCAN"
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n"
-    text = text + "\n------------------------ GTKDynamo SCAN  Simple-Distance -----------------------"
+    text = text + "\n------------------------- GTKDynamo SCAN Simple-Distance -----------------------"
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,      ATOM1_name    )
     text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % ( ATOM2,      ATOM2_name    )			
     text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i"     % ( NWINDOWS,   FORCECONSTANT )            
@@ -215,7 +215,7 @@ def ScanMultipleDistances(parameters = None, project = None):
     text = ""
     text = text + "\n"
     text = text + "\n--------------------------------------------------------------------------------"
-    text = text + "\n                              GTKDynamo SCAN1D"
+    text = text + "\n                              GTKDynamo SCAN"
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n"
     text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	

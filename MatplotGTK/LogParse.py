@@ -22,9 +22,35 @@
 #  
 #  
 import os
+from pprint import pprint
+logList = [
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/2_step_MolecularDynamics.log'   , 
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/6_step_GeometryOptmization.log' , 
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/9_step_GeometryOptmization.log' , 
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/10_step_GeometryOptmization.log', 
+        '/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/Scan2D.log'                     , 
+		'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/Scan2D_m.log',
+		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/ScanLog-MultipleDistance.log',
+		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/ScanLog-SimpleDistance.log',
+        
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/system_pmf.dat'                 , 
+        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/UmbrellaSampling.log'           ,
+		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/11_step_MolecularDynamics.log',
+		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/12_step_MolecularDynamics.log',
+		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/13_step_MolecularDynamics.log',
+        ] 
 
-#
-#
+
+
+parameters = {
+             'type'  : 'line'    ,   # line / matrix
+             'title' : ''        ,   #
+             'X'     : []        ,   # X 
+             'Y'     : []        ,   # Y 
+             'xlabel': 'x label' ,   # xlabel,
+             'ylabel': 'y label' ,   # ylabel,
+             }
+             
 def ParseSummaryLogFile (log_file):
     """ Reads a Summary log - Status Bar"""
     
@@ -326,658 +352,586 @@ def ParseSummaryLogFile (log_file):
         
     return parameters
 
-
-def ParseProcessLogFile(log_file):                              #  PROCESS  LOG  READER
-    matrix_lines  =   []
-    log = open( log_file , "r")
-
-    parameters = {
-                 'type'  : 'line'    ,   # line / matrix
-                 'title' : ''        ,   #
-                 'X'     : []        ,   # X 
-                 'Y'     : []        ,   # Y 
-                 'xlabel': 'x label' ,   # xlabel,
-                 'ylabel': 'y label' ,   # ylabel,
-                 }
-
-
-    #lines = []
-    #for line in log:
-    #    lines.append(line)
-    #
-    #print lines 
-    
-    #if '    ReactionCoord            PMF                 PDF' in lines:
-    #    ReactionCoord = []
-    #    PDF           = []    
-    #    PMF           = []    
-    #    index = lines.index('    ReactionCoord            PMF                 PDF\n')
-    #    
-    #    print index
-    #    
-    #    for line in lines[index:-1]:
-    #        line2 = line.split()
-    #        if len(line2) == 3:
-    #            try:
-    #                ReactionCoord.append(float(line2[0]))
-    #                PDF.append(float(line2[1]))
-    #                PMF.append(float(line2[2]))
-    #            except:
-    #                pass
-    #
-    #
-    #    parameters['type'  ] = 'line'
-    #    parameters['title' ] = 'Potential of mean force'
-    #    parameters['X'     ] = ReactionCoord
-    #    parameters['Y'     ] = PMF
-    #    parameters['xlabel'] = 'ReactionCoord'
-    #    parameters['ylabel'] = 'Energy (KJ)'
-    #    #print parameters
-    #    return parameters
-    for line in log:
-        linex = line.split()
-        try:                                # Check if the Log is Molecular Dynamics
-            if linex[0] == "Time":
-                if linex[1] == "Total":
-                    Time = []
-                    Total_energy = []
-                    Kinetic_Energy = []
-                    Potential_Energy = []
-                    Temperature = []
-                                
-                    for line in log:
-                        line2 = line.split()
-                        lengh = len(line2)
-
-                        if lengh == 5:
-                            tipo = line2[0].split(".")
-                            lengh = len(tipo)
-                            if lengh == 2:
-
-                                try:
-                                    Time.append(float(line2[0]))
-                                    Total_energy.append(float(line2[1]))
-                                    Kinetic_Energy.append(float(line2[2]))
-                                    Potential_Energy.append(float(line2[3]))
-                                    Temperature.append(float(line2[4]))
-
-                                except:
-                                    pass
-            #print_graf2(Time,Total_energy,Kinetic_Energy,Potential_Energy,Temperature)
-        except:
-            a = None
-        try:                                # Check if the Log is Molecular Dynamics
-            if linex[0] == "Time":
-                if linex[1] == "Total":
-                    Time = []
-                    Total_energy = []
-                    Kinetic_Energy = []
-                    Potential_Energy = []
-                    Temperature = []
-                                
-                    for line in log:
-                        line2 = line.split()
-                        lengh = len(line2)
-                        
-                        if lengh == 5:
-                            tipo = line2[0].split(".")
-                            lengh = len(tipo)
-                            if lengh == 2:
-                                
-                                try:
-                                    Time.append(float(line2[0]))
-                                    Total_energy.append(float(line2[1]))
-                                    Kinetic_Energy.append(float(line2[2]))
-                                    Potential_Energy.append(float(line2[3]))
-                                    Temperature.append(float(line2[4]))
-                
-                                except:
-                                    pass
-            #print_graf2(Time,Total_energy,Kinetic_Energy,Potential_Energy,Temperature)
-        except:
-            a = None
-
-        try:                                # Check if the Log is SAW process
-            if linex[1] == "Self-Avoiding":
-                if linex[2] == "Walk":
-                    print "SAW log file"   
-                    Structure = []
-                    Energy = []
-                    for line in log:
-                        #print line
-                        line2 = line.split()
-                        lengh = len(line2)
-                        
-                        if lengh == 4:
-                            tipo = line2[0].split(".")
-                            lengh = len(tipo)
-                            if lengh == 1:
-                                
-                                try:
-                                    n = 0
-                                    Structure.append(float(line2[0]))
-                                    Energy.append(float(line2[1]))
-                                except:
-                                    pass
-                        if lengh == 2:
-                            tipo = line2[0].split(".")
-                            lengh = len(tipo)
-                            if lengh == 1:
-                                
-                                try:
-                                    n = 0
-                                    Structure.append(float(line2[0]))
-                                    Energy.append(float(line2[1]))
-                                except:
-                                    pass						
-                            
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'Self-Avoiding Walk'
-                parameters['X'     ] = Structure
-                parameters['Y'     ] = Energy
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                
-                #return Structure,Energy
-        except:
-            a = None
-
-        try:                                #check if Conjugate-Gradient
-            if linex[1] == "Conjugate-Gradient":   # Check if the Log is a log of a minimization process
-                interact = []
-                Function = []
-                RMS_Grad = []
-                Mac_Grad = []
-                RMS_disp = []
-                MAS_Disp = []
-
-                for line in log:
-                    line2 = line.split()
-                    lengh = len(line2)
-
-                    if lengh == 6:
-                        try:
-                            n = 0
-                            interact.append(float(line2[0]))
-                            Function.append(float(line2[1]))
-                            RMS_Grad.append(float(line2[2]))
-                            Mac_Grad.append(float(line2[3]))
-                            RMS_disp.append(float(line2[4]))
-                            MAS_Disp.append(float(line2[5]))
-                        except:
-                            pass
-                
-                
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
-                parameters['X'     ] = interact
-                parameters['Y'     ] = Function
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                #return interact, Function
-        except:
-            a = None
-            
-
-
-        try:                                #check if Conjugate-Gradient
-            if linex[1] == "Conjugate":     # Check if the Log is a log of a minimization process
-                interact = []
-                Function = []
-                RMS_Grad = []
-                Mac_Grad = []
-                RMS_disp = []
-                MAS_Disp = []
-
-                for line in log:
-                    line2 = line.split()
-                    lengh = len(line2)
-
-                    if lengh == 7:
-                        try:
-                            n = 0
-                            interact.append(float(line2[0]))
-                            Function.append(float(line2[2]))
-                            RMS_Grad.append(float(line2[3]))
-                            Mac_Grad.append(float(line2[4]))
-                            RMS_disp.append(float(line2[5]))
-                            MAS_Disp.append(float(line2[6]))
-                        except:
-                            pass
-                
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
-                parameters['X'     ] = interact
-                parameters['Y'     ] = Function
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                #return interact, Function
-        except:
-            a = None
-
-
-
-
-
-
-        try:
-            if linex[1] == "Steepest-Descent":   # Check if the Log is a minimization log
-                interact = []
-                Function = []
-                RMS_Grad = []
-                Mac_Grad = []
-                RMS_disp = []
-                MAS_Disp = []
-
-                for line in log:
-                    line2 = line.split()
-                    lengh = len(line2)
-
-                    if lengh == 6:
-                        try:
-                            n = 0
-                            interact.append(float(line2[0]))
-                            Function.append(float(line2[1]))
-                            RMS_Grad.append(float(line2[2]))
-                            Mac_Grad.append(float(line2[3]))
-                            RMS_disp.append(float(line2[4]))
-                            MAS_Disp.append(float(line2[5]))
-
-                        except:
-                            pass
-
-                    if lengh == 7:
-                        try:
-                            n = 0
-                            interact.append(float(line2[0]))
-                            Function.append(float(line2[2]))
-                            RMS_Grad.append(float(line2[3]))
-                            Mac_Grad.append(float(line2[4]))
-                            RMS_disp.append(float(line2[5]))
-                            MAS_Disp.append(float(line2[6]))
-
-                        except:
-                            pass
-
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'Energy minimization: Steepest-Descent'
-                parameters['X'     ] = interact
-                parameters['Y'     ] = Function
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                #return interact, Function
-        except:
-            a = None
-
-
-
-
-
-
-        #n = 0 
-        try:                                # Check if the Log is a NEB process
-            if linex[0] == "Growing":
-                if linex[1] == "String":  
-                    Structure = []
-                    Energy = []
-                    Energy_absolut = []
-                    EnergyKcal = []
-                    for line in log:
-                        print line
-                        line2 = line.split()
-                        lengh = len(line2)
-                        n = 0
-                        
-                        if lengh == 5:
-                            tipo = line2[0].split(".")
-                            tipo2= line2[1].split(".")
-                            tipo3= line2[2].split(".")
-                            
-                            
-                            lengh = len(tipo)
-                            lengh2 = len(tipo2)
-                            lengh3 = len(tipo3)
-                            if lengh == 1:
-                                if 	lengh2 == 2:
-                                    if lengh3 == 2: 
-                                        try:
-                                            n = 0
-                                            Energy_absolut.append(float(line2[1]))											
-                                            
-                                            Structure.append(float(line2[0]))
-                                            Energy.append(float(line2[1]) - Energy_absolut[0])
-                                            
-                                            EnergyKcal.append((float(line2[1]) - Energy_absolut[0])*0.23923445  )
-
-                                        except:
-                                            pass	
-                            n = 1
-
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'NEB'
-                parameters['X'     ] = Structure
-                parameters['Y'     ] = Energy
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                #return Structure,Energy
-        except:
-            a = None
-
-
-
-
-
-
-
-        try:                                # Check if the Log is a log of a minimization process
-            if linex[0] == "-------------------------------------":
-                if linex[1] == "L-BFGS":   # Check if the Log is a log of a minimization process
-                    interact = []
-                    Function = []
-                    RMS_Grad = []
-                    Mac_Grad = []
-                    RMS_disp = []
-                    MAS_Disp = []
-
-                    for line in log:
-                        line2 = line.split()
-                        lengh = len(line2)
-
-                        if lengh == 7:
-                            try:
-                                n = 0
-                                interact.append(float(line2[0]))
-                                Function.append(float(line2[2]))
-                                RMS_Grad.append(float(line2[3]))
-                                Mac_Grad.append(float(line2[4]))
-                                RMS_disp.append(float(line2[5]))
-                                MAS_Disp.append(float(line2[6]))
-                            except:
-                                pass
-                    
-                    parameters['type'  ] = 'line'
-                    parameters['title' ] = 'Energy minimization: L-BFGS'
-                    parameters['X'     ] = interact
-                    parameters['Y'     ] = Function
-                    parameters['xlabel'] = 'Frames'
-                    parameters['ylabel'] = 'Energy (KJ)'
-                    return parameters
-                    #return interact, Function
-        except:
-            a = None		
-
-
-
-
-
-
-
-        try:                                # Check if the Log is a Self-Diffusion Function process
-            if linex[0] == "Self-Diffusion":
-                if linex[1] == "Function":  
-                    Structure = []
-                    Energy = []
-                    for line in log:
-                        #print line
-                        line2 = line.split()
-                        lengh = len(line2)
-                        if lengh == 2:
-                            tipo = line2[0].split(".")
-                            lengh = len(tipo)
-                            if lengh == 1:
-                                try:
-                                    n = 0
-                                    Structure.append(float(line2[0]))
-                                    Energy.append(float(line2[1]))
-                                except:
-                                    pass
-                parameters['type'  ] = 'line'
-                parameters['title' ] = 'Self-Diffusion'
-                parameters['X'     ] = Structure
-                parameters['Y'     ] = Energy
-                parameters['xlabel'] = 'Frames'
-                parameters['ylabel'] = 'Energy (KJ)'
-                return parameters
-                #return Structure, Energy
-        except:
-            a = None
-
-        '''
-        try:                                      # Check if the Log is a UMBRELLA SAMPLING process
-            if linex[0] == "Potential":
-                if linex[1] == "of":
-                    if linex[2] == "Mean": 
-                        #print linex[0],linex[1],  linex[2]
-                        #ReactionCoord = []
-                        #PDF           = []
-                        #PMF           = []
-                        for line in log:
-                            if len(line) == 60:
-                                print line
-                            
-                            #line2 = line.split()
-                            #lengh = len(line2)
-                            #if lengh == 3:
-                            #	tipo = line2[0].split(".")
-                            #	lengh = len(tipo)
-                            #	if lengh == 2:
-                            #		try:
-                            #			n = 0
-                            #			ReactionCoord.append(float(line2[0]))
-                            #			PDF.append(float(line2[1]))
-                            #			PMF.append(float(line2[2]))
-                            #		except:
-                            #			print " "
-                    #return ReactionCoord, PMF
-        except:
-            pass
-        '''
-        try:                                # Check if the Log is a UMBRELLA SAMPLING process  old function
-            if linex[0] == "Potential":
-                if linex[1] == "of":
-                    if linex[2] == "Mean": 
-                        print linex[0],linex[1],  linex[2]
-                        ReactionCoord = []
-                        PDF           = []
-                        PMF           = []
-                        for line in log:
-                            line2 = line.split()
-                            lengh = len(line2)
-                            if lengh == 3:
-                                tipo = line2[0].split(".")
-                                lengh = len(tipo)
-                                if lengh == 2:
-                                    try:
-                                        n = 0
-                                        ReactionCoord.append(float(line2[0]))
-                                        PDF.append(float(line2[1]))
-                                        PMF.append(float(line2[2]))
-                                    except:
-                                        pass
-                    
-                    
-                    parameters['type'  ] = 'line'
-                    parameters['title' ] = 'Potential of mean force'
-                    parameters['X'     ] = ReactionCoord
-                    parameters['Y'     ] = PMF
-                    parameters['xlabel'] = 'ReactionCoord'
-                    parameters['ylabel'] = 'Energy (KJ)'
-                    return parameters
-                    #return ReactionCoord, PMF
-        except:
-            a = None
-
-
-
-
-        #------------------------ GTKDynamo SCAN Multiple-Distance ----------------------
-        #      [0]                  [1]      [2]        [3]                 [4]
-        try:                                      # Check if the Log is a SCAN process of the GTKDYN
-            if linex[1] == "GTKDynamo":
-                if linex[2] == "SCAN":
-                    if linex[3] == 'Multiple-Distance':
-                        print linex[2],linex[3]
-                        Frame      = []
-                        PK1_PK2    = []
-                        PK2_PK3    = []
-                        Energy     = []
-                        
-                        for line in log:
-                            line2 = line.split()
-                            lengh = len(line2)
-                            
-                            if lengh == 4:
-                                print line
-                                try:
-                                    Frame.append(float(line2[0]))
-                                    Energy.append(float(line2[-1]))
-                                except:
-                                    a = None
-                    
-                    parameters['type'  ] = 'line'
-                    parameters['title' ] = 'SCAN - Multiple-Distance'
-                    parameters['X'     ] = Frame
-                    parameters['Y'     ] = Energy
-                    parameters['xlabel'] = 'Frames'
-                    parameters['ylabel'] = 'Energy (KJ)'
-                    return parameters
-                    #return Frame, Energy
-        except:
-            a = None
-
-
-
-        #------------------------ GTKDynamo SCAN  Simple-Distance -----------------------
-        #      [0]                  [1]      [2]        [3]                 [4]
-        try:                                      # Check if the Log is a SCAN process of the GTKDYN
-            if linex[1] == "GTKDynamo":
-                if linex[2] == "SCAN":
-                    if linex[3] == 'Simple-Distance':
-                        print linex[2],linex[3]
-                        Frame      = []
-                        PK1_PK2    = []
-                        Energy     = []
-
-                        for line in log:
-                            line2 = line.split()
-                            lengh = len(line2)
-                            
-                            if lengh == 3:
-                                print line
-                                try:
-                                    Frame.append(float(line2[0]))
-                                    Energy.append(float(line2[-1]))
-                                except:
-                                    a = None
-                    
-                    parameters['type'  ] = 'line'
-                    parameters['title' ] = 'SCAN - Simple-Distance'
-                    parameters['X'     ] = Frame
-                    parameters['Y'     ] = Energy
-                    parameters['xlabel'] = 'Frames'
-                    parameters['ylabel'] = 'Energy (KJ)'
-                    return parameters
-                    #return Frame, Energy
-        except:
-            a = None		
-
-                
-
-        '''
-        --------------------------------------------------------------------------------
-        --                                                                            --
-        --                          GTKDynamo SCAN  2D                                --
-        [0]                            [1]    [2]  [3]                              [4]
-        --                                                                            --
-        --------------------------------------------------------------------------------
-
-        ----------------------- Coordinate 1 - Simple-Distance -------------------------
-        ATOM1                  =              1  ATOM NAME1             =             Br
-        ATOM2                  =              2  ATOM NAME2             =              C
-        NWINDOWS               =             20  FORCE CONSTANT         =     4000.00000
-        DMINIMUM               =        1.94753  DINCREMENT             =        0.05000
-        --------------------------------------------------------------------------------
-        ----------------------- Coordinate 2 - Simple-Distance -------------------------
-        ATOM1                  =              2  ATOM NAME1             =              C
-        ATOM2                  =              0  ATOM NAME2             =             Cl
-        NWINDOWS               =             25  FORCE CONSTANT         =     4000.00000
-        DMINIMUM               =        2.86655  DINCREMENT             =       -0.05000
-        --------------------------------------------------------------------------------
-
-        MATRIX2         0.00000000          0.28827311          1.02210627          2.36403063  
-        MATRIX2         0.09029504          0.36777736          1.07893998          2.37828860  
-        MATRIX2         0.78146785          1.00737346          1.64857823          2.86669789  
-
-        try:                                      # Check se o Log eh processo SCAN 2D do GTKDYN
-            print line
-            if line == "--                          GTKDynamo SCAN  2D                                --":
-                return "matrix", "2d scan"
-        except:
-            a = None
-        '''
-        try:                                      # Check if the Log is a SCAN2D process of the GTKDYN
-            i             =   0
-            j             =   0
-            
-            #matrix_lines  =   []
+        
              
-            if linex[0] == "MATRIX2":
-                #print linex
-                i = len(linex) - 1
-                j = j + 1
-                
-                
-                for line in log:
-                    lineX = line.split()
-                    mline = []
-                    if lineX[0] == "MATRIX2":
-                        for a in lineX:
-                            if a == "MATRIX2":
-                                a = None
-                            else:
-                                mline.append(float(a))
-                                
-                        #print mline
-                    matrix_lines.append(mline)
-                
-                #print matrix_lines
-                
-                
-                
-                import numpy as np
-                X = np.array(matrix_lines)
-                #print X
-                parameters['type'  ] = 'matrix'
-                parameters['title' ] = 'SCAN2D'
-                parameters['matrix'] =  X
-                parameters['xlabel'] = 'r1'
-                parameters['ylabel'] = 'r2'
-                return parameters
-                
-                
-                #return "matrix", X
-        except:
-            a = None
-        #print matrix_lines
-        #print X
+             
+def ParseProcessLogFile(log_file):
+	""" Function doc """
+	log = open( log_file , "r")
+	#print log
+	lines = log.readlines()
+	#print lines
 
-
-from pprint import pprint
-
-logList = []
+	interact = []
+	Function = []
+	RMS_Grad = []
+	Mac_Grad = []
+	RMS_disp = []
+	MAS_Disp = []
 
 
 
+	if '                              GTKDynamo SCAN2D\n' in lines:
+		index = lines.index('                              GTKDynamo SCAN2D\n')
+		print lines[index]
+		print index
+		i             =   0
+		j             =   0        
+		matrix_lines  = []
+		r1 = ''
+		r2 = ''
+		for line in lines[index: -1]:
+			if line == '----------------------- Coordinate 1 - Simple-Distance -------------------------\n':
+				index2 = lines.index('----------------------- Coordinate 1 - Simple-Distance -------------------------\n')
+				for atomLine in lines[index2+1 :index2+4]:
+					atom = atomLine.split()
+					if atom[0][0:4] == 'ATOM':
+						
+						if atom[0][-1] == '2':
+							r1 = r1 +atom[2] + '(' +atom[6] + ')'
+						else:
+							r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
+						print r1
 
-def main():
-    log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.GTKDynamo/2_step_GeometryOptmization/2_step_GeometryOptmization.log'
-    parameters = ParseProcessLogFile (log_file)
-    pprint (parameters)
+
+			if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
+				index2 = lines.index('--------------------- Coordinate 1 - Multiple-Distance -------------------------\n')
+				for atomLine in lines[index2+1 :index2+4]:
+					atom = atomLine.split()
+					if atom[0][0:4] == 'ATOM':
+						if atom[0][-1] == '*':
+							r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+						else:
+							r1 = r1 +atom[2] + '(' +atom[6] + ')'
+						print r1
+
+			
+			
+			
+			
+			
+			if line == '----------------------- Coordinate 2 - Simple-Distance -------------------------\n':
+				index2 = lines.index('----------------------- Coordinate 2 - Simple-Distance -------------------------\n')
+				for atomLine in lines[index2+1 :index2+4]:
+					atom = atomLine.split()
+					if atom[0][0:4] == 'ATOM':
+						if atom[0][-1] == '2':
+							r2 = r2 +atom[2] + '(' +atom[6] + ')'
+						else:
+							r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
+						print r2
+			
+			if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
+				index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
+				for atomLine in lines[index2+1 :index2+4]:
+					atom = atomLine.split()
+					if atom[0][0:4] == 'ATOM':
+						if atom[0][-1] == '*':
+							r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+						else:
+							r2 = r2 +atom[2] + '(' +atom[6] + ')'
+						print r2
+
+			
+			
+			
+			#print line
+			try:
+				linex = line.split()
+				if linex[0] == "MATRIX2":
+					#print linex
+					i = len(linex) - 1
+					j = j + 1
+					mline = []
+					
+					for item in linex[1:-1]:
+						#print item
+						mline.append(float(item))
+					#print mline
+					
+					matrix_lines.append(mline)
+					
+			except:
+				pass	
+		import numpy as np
+		X = np.array(matrix_lines)
+
+				
+		parameters['type'  ] = 'matrix'
+		parameters['title' ] = 'SCAN2D'
+		parameters['matrix'] =  X
+		parameters['xlabel'] = r1
+		parameters['ylabel'] = r2
+		print parameters
+		return parameters
+
+
+	
+	if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
+		index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
+		print lines[index]
+		print index
+		Frame      = []
+		PK1_PK2    = []
+		PK2_PK3    = []
+		Energy     = []
+
+		
+		for line in lines[index: -1]:
+			linex = line.split()
+			#print linex
+			
+			if len(linex) == 4:
+				print linex
+				
+				try:
+					Frame.append(float(linex[0]))
+					
+				
+					Energy.append(float(linex[-1]))
+				except:
+					a = None
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'SCAN Multiple-Distance'
+		parameters['X'     ] = Frame
+		parameters['Y'     ] = Energy
+		parameters['xlabel'] = 'Frames'
+		parameters['ylabel'] = 'Energy (KJ)'
+		print parameters
+		return parameters
+	
+	
+	
+	if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
+		index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
+		print lines[index]
+		print index
+		Frame      = []
+		PK1_PK2    = []
+		PK2_PK3    = []
+		Energy     = []
+
+		
+		for line in lines[index: -1]:
+			linex = line.split()
+			#print linex
+			
+			if len(linex) == 3:
+				print linex
+				
+				try:
+					Frame.append(float(linex[0]))
+					
+				
+					Energy.append(float(linex[-1]))
+				except:
+					a = None
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'SCAN Multiple-Distance'
+		parameters['X'     ] = Frame
+		parameters['Y'     ] = Energy
+		parameters['xlabel'] = 'Frames'
+		parameters['ylabel'] = 'Energy (KJ)'
+		print parameters
+		return parameters	
+
+
+
+	
+
+	
+	'''   
+	------------------------------------------------------------
+					   Potential of Mean Force
+	------------------------------------------------------------
+		ReactionCoord            PMF                 PDF
+	------------------------------------------------------------
+				 1.58169                   0              158.96
+				 1.58798        2.49434e+300                   0
+				 1.59428        2.49434e+300                   0
+	'''
+	if '    ReactionCoord            PMF                 PDF\n' in lines:
+		index = lines.index('    ReactionCoord            PMF                 PDF\n')
+		print lines[index]
+		print index
+		
+		
+		ReactionCoord = []
+		PDF           = []
+		PMF           = []
+		
+		for line in lines[index: -1]:
+			print line 
+			line2 = line.split()
+			if len(line2) == 3:
+				try:
+					ReactionCoord.append(float(line2[0]))
+					PDF.append(float(line2[2]))
+					PMF.append(float(line2[1]))
+				except:
+					pass
+		
+		
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Potential of mean force'
+		parameters['X'     ] = ReactionCoord
+		parameters['Y'     ] = PMF
+		parameters['xlabel'] = 'ReactionCoord'
+		parameters['ylabel'] = 'Energy (KJ)'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+
+
+	'''
+	------------------------------------- L-BFGS Minimizer Options -------------------------------------
+	History                          =             10  Log Frequency                    =              5
+	Maximum Iterations               =            200  Maximum Step                     =           0.01
+	RMS Gradient Tolerance           =            0.1
+	----------------------------------------------------------------------------------------------------
+
+	----------------------------------------------------------------------------------------------------------------
+	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+	----------------------------------------------------------------------------------------------------------------
+		 0     I      -2861.47060058          0.16863474          2.57918121          0.00000000          0.00000000
+	----------------------------------------------------------------------------------------------------------------
+	'''
+
+
+	if '------------------------------------- L-BFGS Minimizer Options -------------------------------------\n' in lines:
+		index = lines.index('------------------------------------- L-BFGS Minimizer Options -------------------------------------\n')
+		print lines[index]
+		print index
+		interact = []
+		Function = []
+		RMS_Grad = []
+		Mac_Grad = []
+		RMS_disp = []
+		MAS_Disp = []
+		for line in lines[index: -1]:
+			line2 = line.split()
+			lengh = len(line2)
+			if lengh == 7:
+				try:
+					n = 0
+					interact.append(float(line2[0]))
+					Function.append(float(line2[2]))
+					RMS_Grad.append(float(line2[3]))
+					Mac_Grad.append(float(line2[4]))
+					RMS_disp.append(float(line2[5]))
+					MAS_Disp.append(float(line2[6]))
+				except:
+					pass
+		
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Energy minimization: L-BFGS'
+		parameters['X'     ] = interact
+		parameters['Y'     ] = Function
+		parameters['xlabel'] = 'Frames'
+		parameters['ylabel'] = 'Energy (KJ)'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+
+	'''
+	-------------------------------  Conjugate Gradient Minimizer Options ------------------------------
+	Beta Type                        =              1  Initial Step                     =            0.1
+	Line Searcher                    =           None  Log Frequency                    =              5
+	Maximum Iterations               =            200  Maximum Theta                    =          1e+10
+	Minimum Theta                    =          1e-10  RMS Gradient Tolerance           =            0.1
+	Steepest Descent Tolerance       =          0.001  Use Spectral Theta               =           True
+	----------------------------------------------------------------------------------------------------
+
+	----------------------------------------------------------------------------------------------------------------
+	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+	----------------------------------------------------------------------------------------------------------------
+		 0     I      -1142.98230437        118.93269476       2669.91104143          0.00227862          0.05115256
+	'''
+
+	if '-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n' in lines:
+		index = lines.index('-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n')
+		print lines[index]
+		print index
+		interact = []
+		Function = []
+		RMS_Grad = []
+		Mac_Grad = []
+		RMS_disp = []
+		MAS_Disp = []
+		
+		for line in lines[index: -1]:
+			line2 = line.split()
+			lengh = len(line2)
+			if lengh == 7:
+				try:
+					n = 0
+					interact.append(float(line2[0]))
+					Function.append(float(line2[2]))
+					RMS_Grad.append(float(line2[3]))
+					Mac_Grad.append(float(line2[4]))
+					RMS_disp.append(float(line2[5]))
+					MAS_Disp.append(float(line2[6]))
+				except:
+					pass
+		
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
+		parameters['X'     ] = interact
+		parameters['Y'     ] = Function
+		parameters['xlabel'] = 'Frames'
+		parameters['ylabel'] = 'Energy (KJ)'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+
+
+
+
+	'''
+	-------------------------------- Steepest-Descent Minimizer Options --------------------------------
+	Log Frequency                    =              1  Maximum Iterations               =             10
+	Maximum Step Size                =              1  Minimum Step Size                =          1e-06
+	RMS Gradient Tolerance           =            0.1  Scale Down                       =            0.5
+	Scale Up                         =            1.2  Step Size                        =           0.01
+	----------------------------------------------------------------------------------------------------
+
+	----------------------------------------------------------------------------------------------------------------
+	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+	----------------------------------------------------------------------------------------------------------------
+		 0     I      -2814.85409217          0.47710045         12.37630814          0.00000000          0.00000000
+	'''
+	if '-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n' in lines:
+		index = lines.index('-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n')
+		print lines[index]
+		print index
+		for line in lines[index: -1]:
+			line2 = line.split()
+			lengh = len(line2)
+			if lengh == 6:
+				try:
+					n = 0
+					interact.append(float(line2[0]))
+					Function.append(float(line2[1]))
+					RMS_Grad.append(float(line2[2]))
+					Mac_Grad.append(float(line2[3]))
+					RMS_disp.append(float(line2[4]))
+					MAS_Disp.append(float(line2[5]))
+
+				except:
+					pass
+
+			if lengh == 7:
+				try:
+					n = 0
+					interact.append(float(line2[0]))
+					Function.append(float(line2[2]))
+					RMS_Grad.append(float(line2[3]))
+					Mac_Grad.append(float(line2[4]))
+					RMS_disp.append(float(line2[5]))
+					MAS_Disp.append(float(line2[6]))
+
+				except:
+					pass
+
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Energy minimization: Steepest-Descent'
+		parameters['X'     ] = interact
+		parameters['Y'     ] = Function
+		parameters['xlabel'] = 'Frames'
+		parameters['ylabel'] = 'Energy (KJ)'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+			
+			
+			
+	'''
+	----------------------------------------------------------------------------------------------------
+								 Velocity Verlet Integrator Results
+	----------------------------------------------------------------------------------------------------
+		Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
+	----------------------------------------------------------------------------------------------------
+		  0.00000000       -423.80962900       2394.56813435      -2818.37776335        300.00000000
+	'''
+	if '                                 Velocity Verlet Integrator Results\n' in lines:
+		index = lines.index('                                 Velocity Verlet Integrator Results\n')
+		print lines[index]
+		print index
+		Time             = []
+		Total_energy     = []
+		Kinetic_Energy   = []
+		Potential_Energy = []
+		Temperature      = []
+		
+		for line in lines[index: -1]:
+			linex = line.split()
+			
+			if len(linex) == 5:
+				tipo = linex[0].split(".")
+				lengh = len(tipo)
+				if lengh == 2:
+					try:
+						Time.append(float(linex[0]))
+						Total_energy.append(float(linex[1]))
+						Kinetic_Energy.append(float(linex[2]))
+						Potential_Energy.append(float(linex[3]))
+						Temperature.append(float(linex[4]))
+					except:
+						pass
+
+
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Velocity Verlet Integrator'
+		parameters['X'     ] = Time
+		parameters['Y'     ] = Total_energy
+		parameters['xlabel'] = 'Time'
+		parameters['ylabel'] = 'Total_energy'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+	'''
+	--------------------------------------------------------------------------------------------------------------------------------------------
+														 Leapfrog Verlet Integrator Results
+	--------------------------------------------------------------------------------------------------------------------------------------------
+			Time            Total Energy       Kinetic Energy     Potential Energy       Temperature          Pressure             Volume
+	--------------------------------------------------------------------------------------------------------------------------------------------
+			  0.00000000       1920.46434760       2394.56813435       -474.10378674        300.00000000          0.00000000          0.00000000
+	'''
+	if '                                                     Leapfrog Verlet Integrator Results\n' in lines:
+		index = lines.index('                                                     Leapfrog Verlet Integrator Results\n')
+		print lines[index]
+		print index
+		Time             = []
+		Total_energy     = []
+		Kinetic_Energy   = []
+		Potential_Energy = []
+		Temperature      = []
+		Pressure         = []    
+		Volume           = []
+		for line in lines[index: -1]:
+			linex = line.split()
+			
+			if len(linex) == 7:
+				tipo = linex[0].split(".")
+				lengh = len(tipo)
+				if lengh == 2:
+					try:
+						Time.append(float(linex[0]))
+						Total_energy.append(float(linex[1]))
+						Kinetic_Energy.append(float(linex[2]))
+						Potential_Energy.append(float(linex[3]))
+						Temperature.append(float(linex[4]))
+						Pressure.append(float(linex[5]))
+						Volume  .append(float(linex[6]))
+						
+					except:
+						pass
+
+
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Leapfrog Verlet Integrator'
+		parameters['X'     ] = Time
+		parameters['Y'     ] = Total_energy
+		parameters['xlabel'] = 'Time'
+		parameters['ylabel'] = 'Total_energy'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+
+
+
+	'''
+	----------------------------------------------------------------------------------------------------
+								 Langevin Velocity Verlet Integrator Results
+	----------------------------------------------------------------------------------------------------
+			Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
+	----------------------------------------------------------------------------------------------------
+			  0.00000000       2019.32202144       2394.56813435       -375.24611290        300.00000000
+	'''
+	if '                             Langevin Velocity Verlet Integrator Results\n' in lines:
+		index = lines.index('                             Langevin Velocity Verlet Integrator Results\n')
+		print lines[index]
+		print index
+		Time             = []
+		Total_energy     = []
+		Kinetic_Energy   = []
+		Potential_Energy = []
+		Temperature      = []
+		Pressure         = []    
+		Volume           = []
+		for line in lines[index: -1]:
+			linex = line.split()
+			
+			if len(linex) == 5:
+				tipo = linex[0].split(".")
+				lengh = len(tipo)
+				if lengh == 2:
+					try:
+						Time.append(float(linex[0]))
+						Total_energy.append(float(linex[1]))
+						Kinetic_Energy.append(float(linex[2]))
+						Potential_Energy.append(float(linex[3]))
+						Temperature.append(float(linex[4]))
+						#Pressure.append(float(linex[5]))
+						#Volume  .append(float(linex[6]))
+						
+					except:
+						pass
+
+
+		parameters['type'  ] = 'line'
+		parameters['title' ] = 'Langevin Velocity Verlet Integrator'
+		parameters['X'     ] = Time
+		parameters['Y'     ] = Total_energy
+		parameters['xlabel'] = 'Time'
+		parameters['ylabel'] = 'Total_energy'
+		pprint(parameters)
+		return parameters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def main():  
+    for log_file in logList:
+        parameters = ParseProcessLogFile (log_file)
+    #pprint (parameters)
     return 0
 
 if __name__ == '__main__':
