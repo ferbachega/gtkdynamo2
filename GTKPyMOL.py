@@ -101,7 +101,7 @@ else:
 GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
-print GTKDYNAMO_GUI
+#print GTKDYNAMO_GUI
 
 
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
@@ -262,7 +262,7 @@ def reshape(glarea, event):
 
 
 def init(glarea):
-    print 'init'
+    #print 'init'
     # Get surface and context
     glcontext = glarea.get_gl_context()
     gldrawable = glarea.get_gl_drawable()
@@ -360,7 +360,7 @@ def mousepress(button, event):
     
     x, y, width, height = glarea.get_allocation()
 
-    print event.button
+    #print event.button
     
     if event.button == 3:
         global clicado
@@ -560,7 +560,7 @@ class gtkdynamo_main():
 		print self.project.settings['fix_table']
 
 	def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem, click=None):
-		print "aqui"
+		#print "aqui"
 		table = PymolGetTable('sele')
 		'''
 												  d i a l o g
@@ -600,7 +600,7 @@ class gtkdynamo_main():
 
 	def on_GLAreaMenu_PutLalbel_itemActive(self, menuitem, click=None):
 		""" Function doc """
-		print 'teste'
+		#print 'teste'
 		
 		
 		string = ""
@@ -642,7 +642,7 @@ class gtkdynamo_main():
 		self.TrajectoryDialog.dialog.hide()
 
 	def on_MainMenu_View_menuitemShowValences_activate(self, button):
-		print """ Function doc """
+		#print """ Function doc """
 		if self.builder.get_object('ShowValences').get_active() == True:
 			#cmd.set('valence', 0.1)
 			cmd.do('set valence, 0.1')
@@ -663,7 +663,7 @@ class gtkdynamo_main():
 		
 		
 		WorkSpace = self.GTKDynamoConfig['WorkSpace']
-		print WorkSpace, text
+		#print WorkSpace, text
 		
 		path      = os.path.join(WorkSpace, text)
 		self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
@@ -690,7 +690,7 @@ class gtkdynamo_main():
 
 		FileChooser = FileChooserWindow()
 		FileName = FileChooser.GetFileName(self.builder)
-		print FileName
+		#print FileName
 		try:
 			_FileType = GetFileType(FileName)
 
@@ -1417,11 +1417,11 @@ class gtkdynamo_main():
 			atoms  = model.atoms
 
 			for i in atoms:
-				print i 
+				#print i 
 				name  = i.name
 				print name
 			
-			print 'depois'
+			#print 'depois'
 
 			
 		except:
@@ -1441,7 +1441,7 @@ class gtkdynamo_main():
 			DynamicList.append(atom4[0])
 		except:
 			pass
-		print 'Index:', DynamicList  # remover este print no futuro
+		#print 'Index:', DynamicList  # remover este print no futuro
 		self.project.settings['dynamic_list'] = DynamicList
 		self.project.set_qc_DynamicBondsList()
 
