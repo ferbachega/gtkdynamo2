@@ -33,6 +33,7 @@ class pDynamoProject():
                        'coordinates'     : None,
                                         
                        'nbModel_type'    : 'NBModelABFS',
+                       #'nbModel_type'    : 'NBModelFull',
                                         
                        #'nbModel'         : "NBModelABFS()",
                        #'ABFS_options'    : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
@@ -74,7 +75,7 @@ class pDynamoProject():
                        'pDynamo_system'  : None,   #  - pymol pse file
                        'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
-        self.nbModel         = 'NBModelFull()'
+        self.nbModel         = 'NBModelABFS()'
         self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
         self.parameters      = None
         self.system          = None          
@@ -111,15 +112,41 @@ class pDynamoProject():
         self.settings['potencial']   = "MM"
 
     def set_CHARMM_MM(self, charmm_params, charmm_topologies, dualLog=None):
+        #coords     =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.chm'
 
-        parameters = CHARMMParameterFiles_ToParameters(
-            [(charmm_params)],  dualLog)
-        self.system = CHARMMPSFFile_ToSystem(os.path.join(
-            charmm_topologies), isXPLOR=True, log=dualLog, parameters=parameters)
+        #print charmm_params
+        #print charmm_topologies
+		
+        parameters  = CHARMMParameterFiles_ToParameters([charmm_params])
+        self.system = CHARMMPSFFile_ToSystem(charmm_topologies, isXPLOR=True, parameters=parameters)
+        #self.system.coordinates3 = CHARMMCRDFile_ToCoordinates3 ( coords )
+
+        #system.coordinates3 = CHARMMCRDFile_ToCoordinates3 ( coords )
+        #coords     = '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.chm'
+
+        #self.system.coordinates3 = CHARMMCRDFile_ToCoordinates3 ( coords )
+        #Pickle('old.pkl', self.system)
+        
+        
         self.settings['force_field'] = "CHARMM"
         self.settings['parameters']  = charmm_params
         self.settings['topology']    = charmm_topologies
         self.settings['potencial']   = "MM"
+
+
+        #coords     =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.chm'
+        #topology   =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.psfx'
+        #parameters =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/par_all27_prot_na.prm'
+        
+        #parameters          = CHARMMParameterFiles_ToParameters ([charmm_params])
+        #system              = CHARMMPSFFile_ToSystem ( charmm_topologies, isXPLOR = True, parameters = parameters )
+        #system.coordinates3 = CHARMMCRDFile_ToCoordinates3 ( coords )
+        #system.DefineNBModel ( NBModelFull ( ) )
+        #system.DefineNBModel ( NBModelABFS ( ) )
+        #system.Energy()
+        #Pickle('new.pkl', system)
+        #system.Summary()
+        #self.system = system
 
     def set_GROMACS_MM(self, gromacs_params, gromacs_coords, dualLog=None):
 
@@ -339,7 +366,7 @@ class pDynamoProject():
                        'pymol_session' : None,   #    - pdynamo pkl/yaml file
                        'pDynamo_system': None    #    - pymol pse file
                        } 
-        self.nbModel         = 'NBModelFull()'
+        self.nbModel         = 'NBModelABFS()'
         self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
         self.parameters      = None
         self.system          = None          
@@ -372,14 +399,14 @@ class pDynamoProject():
 			self.set_nbModel_to_system()
 
 		elif FileType == "CHARMM":
-			charmm_params = filesin['charmm_params']
+			charmm_params     = filesin['charmm_params']
 			charmm_topologies = filesin['charmm_topologies']
-			charmm_coords = filesin['charmm_coords']
+			charmm_coords     = filesin['charmm_coords']
 			
 			self.set_CHARMM_MM(charmm_params, charmm_topologies, self.dualLog)
-			filetype = self.load_coordinate_file_to_system(
-				charmm_coords, self.dualLog)
+			filetype = self.load_coordinate_file_to_system(charmm_coords, self.dualLog)
 			self.set_nbModel_to_system()
+
 
 		elif FileType == "GROMACS":
 			gromacs_params = filesin['gromacs_params']
@@ -956,18 +983,15 @@ class pDynamoProject():
         # print type_
 
         if type_ == "xyz":
-            self.system.coordinates3 = XYZFile_ToCoordinates3(
-                os.path.join(filename),  dualLog)
+            self.system.coordinates3 = XYZFile_ToCoordinates3(filename)
 
         # When the coordinate file is a PDB
         elif type_ == "pdb":
-            # Uses the gtkdin_PDBFile_ToCoordinates3 functions - converts a PDB
-            # to XYZ
-            filename = gtkdin_PDBFile_ToCoordinates3(filename)
-            # imports the xyz file
-            self.system.coordinates3 = XYZFile_ToCoordinates3(
-                os.path.join(filename),  dualLog)
-            os.remove("tmp_out.xyz")
+            self.system.coordinates3 =  PDBFile_ToCoordinates3(filename, dualLog)
+            # imports the x   PDBFile_ToCoordinates3
+            #self.system.coordinates3 = XYZFile_ToCoordinates3(
+            #    os.path.join(filename),  dualLog)
+            #os.remove("tmp_out.xyz")
 
         elif type_ == "xpk":
             try:

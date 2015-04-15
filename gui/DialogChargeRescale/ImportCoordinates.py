@@ -51,7 +51,7 @@ class ImportCoordinatesDialog():
 		self.project = self.GTKDynamoSession.project
 		filename     = self.builder.get_object("filechooserbutton_import_coord_from_file").get_filename()
 		self.project.load_coordinate_file_to_system(filename, dualLog=None)
-		self.project.From_PDYNAMO_to_GTKDYNAMO(type_='Coord', log =  logFile)
+		self.project.From_PDYNAMO_to_GTKDYNAMO(type_='Coord', log =  None)
 
 		#self.project.ExportStateToFile(self, filename, type_)
 

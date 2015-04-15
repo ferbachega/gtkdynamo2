@@ -141,8 +141,6 @@ class NewProjectDialog():
         
         
         filesin = {}
-
-
         
         try:
             import shutil
