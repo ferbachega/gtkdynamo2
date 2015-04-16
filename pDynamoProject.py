@@ -672,7 +672,7 @@ class pDynamoProject():
     
     
     
-    def SystemCheck(self, status = True, PyMOL = True ):
+    def SystemCheck(self, status = True, PyMOL = True, _color = True ):
         if self.system == None:
             print "System empty"
             StatusText =''
@@ -721,8 +721,11 @@ class pDynamoProject():
             PyMOL_Obj      = self.settings['PyMOL_Obj']
             #cmd.util.cbap(PyMOL_Obj)
             #cmd.color('slate',PyMOL_Obj)
-            cmd.color('gray10',PyMOL_Obj)
-            cmd.util.cnc(PyMOL_Obj)
+            if _color:
+                cmd.color('gray10',PyMOL_Obj)
+                cmd.util.cnc(PyMOL_Obj)
+            else:
+                pass
             
             if self.settings['QC'] == True:
                 if self.settings['qc_table'] != []:
