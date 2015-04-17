@@ -64,7 +64,7 @@ class UmbrellaSamplingWindow():
 		mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante_type').get_active_text()
 		print "\n\n"
 		print mode 
-		self.project.ActiveModeCheck()
+		self.GTKDynamoSession.project.ActiveModeCheck()
 		#-------------------------------------------------------------------------------------------------#
 		#                                       simple-distance                                           #
 		#-------------------------------------------------------------------------------------------------#
@@ -131,7 +131,7 @@ class UmbrellaSamplingWindow():
 
 
 		#-----------------------------------------------------------------------------------------------#
-		data_path     = self.project.settings['data_path']                                              #
+		data_path     = self.GTKDynamoSession.project.settings['data_path']                                              #
 		traj          = self.builder.get_object('umbrella_entry_TRAJECTORY').get_text()                 #
 		if not os.path.exists (os.path.join(data_path, traj)): os.mkdir (os.path.join(data_path, traj)) #
 		outpath = os.path.join(data_path, traj)                                                         #
@@ -227,10 +227,10 @@ class UmbrellaSamplingWindow():
 			                         REACTION_COORD1         ,
 			                         MINIMIZATION_PARAMETERS ,
 			                         MDYNAMICS_PARAMETERS    ,
-			                         self.project
+			                         self.GTKDynamoSession.project
 			                         )
 
-		self.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
+		self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
 		self.Visible  =  False
 		self.window.destroy()
 	

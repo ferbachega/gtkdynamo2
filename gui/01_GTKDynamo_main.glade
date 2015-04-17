@@ -274,9 +274,7 @@
                 <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Clean the FIX selection</property>
                 <property name="use_underline">True</property>
-                <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
-                <signal name="activate" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
-                <signal name="button-release-event" handler="CleanFixTable" swapped="no"/>
+                <signal name="button-release-event" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
               </object>
             </child>
             <child>

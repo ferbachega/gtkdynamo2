@@ -65,7 +65,7 @@ class ScanWindow2D():
         mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante_type').get_active_text()
         print "\n\n"
         print mode 
-        self.project.ActiveModeCheck()
+        self.GTKDynamoSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -146,7 +146,7 @@ class ScanWindow2D():
         mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante2_type').get_active_text()
         print "\n\n"
         print mode 
-        self.project.ActiveModeCheck()
+        self.GTKDynamoSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -216,7 +216,7 @@ class ScanWindow2D():
 
 
         #-----------------------------------------------------------------------------------------------#
-        data_path     = self.project.settings['data_path']                                              #
+        data_path     = self.GTKDynamoSession.project.settings['data_path']                                              #
         traj          = self.builder.get_object('SCAN_entry_trajectory_name').get_text()                #
         if not os.path.exists (os.path.join(data_path, traj)): os.mkdir (os.path.join(data_path, traj)) #
         outpath = os.path.join(data_path, traj)                                                         #
@@ -237,10 +237,10 @@ class ScanWindow2D():
                                      REACTION_COORD1 ,
                                      REACTION_COORD2 ,
                                      PARAMETERS      ,
-                                     self.project
+                                     self.GTKDynamoSession.project
                                      )
                 
-        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
+        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
         self.Visible  =  False
         self.window.destroy()
         #return x, y, 

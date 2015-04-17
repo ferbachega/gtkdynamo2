@@ -60,7 +60,7 @@ class ScanWindow():
         rms_grad      = float(self.builder.get_object("ScanDialog_SCAN_mim_param_entry_rmsd_grad1").get_text())    #
         mim_method	  = self.builder.get_object      ('ScanDialog_combobox_optimization_method').get_active_text() #
         log_freq      = None                                                                                       #
-        data_path     = self.project.settings['data_path']                                                         #
+        data_path     = self.GTKDynamoSession.project.settings['data_path']                                        #
         #----------------------------------------------------------------------------------------------------------#
 
 
@@ -77,7 +77,7 @@ class ScanWindow():
         print "\n\n"
         print mode 
 
-        self.project.ActiveModeCheck()
+        self.GTKDynamoSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -102,7 +102,7 @@ class ScanWindow():
                           'rms_grad'     : rms_grad,                                                      #
                           'mim_method'   : mim_method,                                                    #
                           'data_path'    : data_path  }                                                   #
-            x, y, logFile = ScanSimpleDistance(parameters, self.project)                                   #
+            x, y, logFile = ScanSimpleDistance(parameters, self.GTKDynamoSession.project)                 #
         #-------------------------------------------------------------------------------------------------#
 
 
@@ -149,9 +149,9 @@ class ScanWindow():
                           'data_path'    : data_path  }                                                   #
                                                                                                           #
                                                                                                           #
-            x, y, logFile = ScanMultipleDistances(parameters, self.project)                                      #
+            x, y, logFile = ScanMultipleDistances(parameters, self.GTKDynamoSession.project)              #
         #-------------------------------------------------------------------------------------------------#
-        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
+        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
         
         
         self.Visible  =  False

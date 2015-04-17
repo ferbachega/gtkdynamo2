@@ -1681,7 +1681,7 @@ class gtkdynamo_main():
         self.NonBondDialog               = NonBondDialog(self)                                            #
                                                                                                           #
         self.ScanWindow = ScanWindow(self)                                                                #
-                                                                                                          #                                                                                                          #
+                                                                                                          #                                                                                                  
         self.TrajectoryDialog = TrajectoryDialog(self)                                                    #
                                                                                                           #
         self.WorkSpaceDialog = WorkSpaceDialog(self)                                                      #

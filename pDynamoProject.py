@@ -23,9 +23,6 @@ import json
 class pDynamoProject():
 
     def __init__(self, data_path=None, PyMOL=False, name='untitled', builder=None, window_control=None):
-
-
-        
         self.settings = {
                        'force_field'     : None,
                        'parameters'      : None,
