@@ -22,7 +22,7 @@ import json
 
 class pDynamoProject():
 
-    def __init__(self, data_path=None, PyMOL=False, name='untitled', builder=None, window_control=None):
+    def __init__(self, data_path=None, PyMOL=False, name='untitled', builder=None, window_control=None, cmd = None):
         self.settings = {
                        'force_field'     : None,
                        'parameters'      : None,
@@ -82,7 +82,7 @@ class pDynamoProject():
         self.window_control  = window_control
         self.ActiveMode      = False 
         self.pdbInfo         = {} # usado no pDynamoSelections
-        
+        self.cmd             = cmd
         ''' 
                    BondTable  
         
@@ -545,7 +545,7 @@ class pDynamoProject():
 
                
         self.settings['PyMOL_Obj']
-        atoms = cmd.get_model(self.settings['PyMOL_Obj'])
+        atoms = self.cmd.get_model(self.settings['PyMOL_Obj'])
         n = 0
         for at in atoms.atom:
             index  = str(at.index)

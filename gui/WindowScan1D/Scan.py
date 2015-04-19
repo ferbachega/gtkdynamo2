@@ -294,7 +294,7 @@ class ScanWindow():
             self.builder.get_object('ScanDialog_scan_checkbutton_mass_weight').set_sensitive(True)
 
     
-    def OpenWindow (self):
+    def OpenWindow (self, text):
         """ Function doc """
         if self.Visible  ==  False:
             self.project          = self.GTKDynamoSession.project
@@ -306,6 +306,9 @@ class ScanWindow():
             self.window = self.builder.get_object('ScanWindow')
             self.sigma_pk1_pk3 = None
             self.sigma_pk3_pk1 = None
+            self.builder.get_object("ScanDialog_SCAN_entry_trajectory_name").set_text(text)
+            
+            
             '''
             --------------------------------------------------
             -                                                -

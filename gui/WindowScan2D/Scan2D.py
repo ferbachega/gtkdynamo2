@@ -543,7 +543,7 @@ class ScanWindow2D():
                 self.builder.get_object('entry_coord2_ATOM3_name' ).set_sensitive(True)
                 self.builder.get_object('checkbutton_mass_weight2').set_sensitive(True)
     
-    def OpenWindow (self):
+    def OpenWindow (self, text):
         """ Function doc """
         if self.Visible  ==  False:
             self.builder = gtk.Builder()
@@ -554,6 +554,9 @@ class ScanWindow2D():
             self.window = self.builder.get_object('ScanWindow')
             self.sigma_pk1_pk3 = None
             self.sigma_pk3_pk1 = None
+            self.builder.get_object("SCAN_entry_trajectory_name").set_text(text)
+            
+            
             '''
             --------------------------------------------------
             -                                                -
