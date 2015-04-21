@@ -76,7 +76,7 @@ class ImportCoordinatesDialog():
 		self.builder.connect_signals(self)
 		self.dialog = self.builder.get_object('ExportCoordinates')
 
-		combolist = ["xyz","pdb","mol2","pkl","yaml","mol","cif","psf","crd"]
+		combolist = ["xyz","pdb","pkl","yaml"]#,"mol","cif","psf","crd","mol2"]
 
 
 

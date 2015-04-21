@@ -236,7 +236,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Import as QC Atoms</property>
+                <property name="label" translatable="yes">Set as QC Atoms</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
@@ -248,7 +248,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Import as Fix Atoms</property>
+                <property name="label" translatable="yes">Set as Fix Atoms</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
@@ -282,7 +282,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Prune Atoms</property>
+                <property name="label" translatable="yes">Prune to selection</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
                 <signal name="activate" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
@@ -645,6 +645,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">ShowCell_pb.png</property>
+  </object>
+  <object class="GtkImage" id="image61">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-cut</property>
   </object>
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>
@@ -1391,6 +1396,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Cell</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_toolbar_showCell_toggled" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1402,7 +1408,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">_Selections</property>
+                <property name="label" translatable="yes">_Selection</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu14">
@@ -1415,6 +1421,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Set as QC Atoms</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1424,15 +1431,18 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Set as Fixed Atoms</property>
                         <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="menuitem45">
+                      <object class="GtkImageMenuItem" id="menuitem45">
+                        <property name="label" translatable="yes">Prune to selection</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Prune Atoms</property>
-                        <property name="use_underline">True</property>
+                        <property name="image">image61</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1934,21 +1944,6 @@
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image20</property>
                 <signal name="clicked" handler="on_ToolBar_toolbutton_ClearSystemInMemory_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="toolbutton7">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton7</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">document-save</property>
-                <signal name="clicked" handler="testGTKMatplotLib" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

@@ -82,7 +82,6 @@ class pDynamoProject():
         self.window_control  = window_control
         self.ActiveMode      = False 
         self.pdbInfo         = {} # usado no pDynamoSelections
-        self.cmd             = cmd
         ''' 
                    BondTable  
         
@@ -545,7 +544,7 @@ class pDynamoProject():
 
                
         self.settings['PyMOL_Obj']
-        atoms = self.cmd.get_model(self.settings['PyMOL_Obj'])
+        atoms = cmd.get_model(self.settings['PyMOL_Obj'])
         n = 0
         for at in atoms.atom:
             index  = str(at.index)

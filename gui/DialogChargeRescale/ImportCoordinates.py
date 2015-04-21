@@ -127,7 +127,7 @@ class ExportCoordinatesDialog():
 		self.builder.connect_signals(self)
 		self.dialog = self.builder.get_object('ExportCoordinates')
 
-		combolist = ["xyz","pdb","mol2","pkl","yaml","mol","cif","psf","crd"]
+		combolist = ["xyz","pdb","pkl","yaml"]#,"mol","cif","psf","crd","mol2"]
 		combobox = 'combobox_file_type'
 		
 		
@@ -155,8 +155,8 @@ class ExportCoordinatesDialog():
 		self.window_control = WindowControl(self.builder)
 		
 		#----------------- Setup ComboBoxes -------------------------#
-		combolist = ["xyz","pdb","mol2","pkl","yaml","mol","cif","psf","crd"]
-		combobox = 'combobox_file_type'
+		#combolist = ["xyz","pdb","pkl","yaml","mol","cif","psf","crd","mol2"]
+		#combobox = 'combobox_file_type'
 		self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
 		#------------------------------------------------------------#
 
