@@ -668,7 +668,8 @@ class pDynamoProject():
     
     
     
-    def SystemCheck(self, status = True, PyMOL = True, _color = True ):
+    def SystemCheck(self, status = True, PyMOL = True, _color = True, _cell = True, treeview_selections = True): #(self, status = True, PyMOL = True, _color = True ):
+        pass
         if self.system == None:
             print "System empty"
             StatusText =''
@@ -717,103 +718,134 @@ class pDynamoProject():
             PyMOL_Obj      = self.settings['PyMOL_Obj']
             #cmd.util.cbap(PyMOL_Obj)
             #cmd.color('slate',PyMOL_Obj)
+            
+            print 'PyMOL_Obj', PyMOL_Obj, self.settings['PyMOL_Obj']
+            
             if _color:
                 cmd.color('gray10',PyMOL_Obj)
                 cmd.util.cnc(PyMOL_Obj)
+                print '_color', _color
             else:
                 pass
             
             if self.settings['QC'] == True:
                 if self.settings['qc_table'] != []:
+                    print '1', 'QC', self.settings['QC']
                     #print PyMOL_Obj
                     cmd.hide('stick',  PyMOL_Obj)
                     cmd.hide("sphere", PyMOL_Obj)
                     try:
                         cmd.delete("QC_atoms")
+                        print '1.1'
                     except:
+                        print '1.2'
                         pass
                     
+                    print '2'
                     PymolPutTable(self.settings['qc_table'], "QC_atoms")
                     command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
                     cmd.do(command)
-
+                    
+                    print '3'
+                    print command
+                    
                     cmd.show("stick",  "QC_atoms")
                     cmd.show("sphere", "QC_atoms")
+                    
+                    print '4'
                 
                 if self.settings['qc_table'] == []:
-                    self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                    try:
-                        cmd.show("stick",  PyMOL_Obj)
-                        cmd.show("sphere" ,PyMOL_Obj)
-                    except:
-                        a = None	
+                    
+                    print '5'
+                    
+                    self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+                    print '5.1',PyMOL_Obj, 'settings[qc_table]', self.settings['qc_table']
+                    cmd.do('show stick, '+ PyMOL_Obj)
+                    cmd.do('show sphere, '+ PyMOL_Obj)
+                    #cmd.show("stick",  PyMOL_Obj)
+                    #cmd.show("sphere" ,PyMOL_Obj)
+                    
+                    print '5.1'
+
+            
             else:
                 pass
             
             if self.settings['fix_table'] != []:
                 #PyMOL_Obj = self.job_history[self.step][0] #= [type_, pymol_id, "potencial", "1192.0987"]
-                
+                print '7'
                 try:
                     cmd.delete("FIX_atoms")
                 except:
                     pass
-                    
+                print '8'
+            
                 PymolPutTable(self.settings['fix_table'], "FIX_atoms")
                 command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
                 cmd.do(command)
                 command2 = 'color grey80, FIX_atoms'
                 cmd.do(command2)
+                print '9'
             
             try:
+                print '10'
                 #cmd.do('disable sele')
                 cmd.disable("sele")
+                print '11'
+            
             except:
                 pass
             try:
                 #cmd.do('disable FIX_atoms')
+                print '12'
+            
                 cmd.disable("FIX_atoms")
-
+                print '13'
+            
             except:
                 pass
             try:
-                #cmd.do('disable QC_atoms')
+                print '14'
+                cmd.do('disable QC_atoms')
                 cmd.disable("QC_atoms")
+                print '15'
+            
             except:
                 pass
+            print '16'
             
+        if treeview_selections == True:
             pymol_objects2 = cmd.get_names('selections')
             liststore      = self.builder.get_object('liststore1')
             self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
-            
+            #print '17'
 
-            #-----------------------------------------------#
-            #                   DrawCell                    #
-            #-----------------------------------------------#
-
-            if self.ShowCell == True:
-                cell = self.importCellParameters()
-                DrawCell(cell)
-                #print cell
-                try:
-                    cmd.enable('box_1')
-                except:
-                    pass
-            else:
-                try:
-                    cmd.disable('box_1')
-                except:
-                    pass
-            #-----------------------------------------------#
-
-
+        
+        #-----------------------------------------------#
+        #                   DrawCell                    #
+        #-----------------------------------------------#
     
+        if self.ShowCell == True:
+            cell = self.importCellParameters()
+            DrawCell(cell)
+            #print cell
+            try:
+                cmd.enable('box_1')
+            except:
+                pass
         else:
-            pass
+            try:
+                cmd.disable('box_1')
+            except:
+                pass
+        #-----------------------------------------------#
+
         
         if status == True:
-			SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
-			return SummaryFile 
-        
+            SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
+            print 'final'
+            return SummaryFile 
+
         
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 

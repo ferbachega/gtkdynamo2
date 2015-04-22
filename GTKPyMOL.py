@@ -354,7 +354,8 @@ def mousepress(button, event):
         pointery = int(mousepress.y)
         calc_y = height - pointery
         pymol.button(button, 0, pointerx, calc_y, 0)
-    
+        gtkdynamo.project.SystemCheck(status = False, PyMOL = False, _color = False, _cell = False, treeview_selections = True)
+        
     if gtkdynamo.builder.get_object('toolbutton6_measure').get_active():
         Distances = DistancesFromPKSelection()
         Angles    = AnglesFromPKSelection()
@@ -645,7 +646,7 @@ class MainToolBar(object):
 			self.project.ShowCell = False
 			# print '# If control reaches here, the toggle button is up'
 			#self.builder.get_object('notebook3').hide()
-		self.project.SystemCheck(_color = False)
+		self.project.SystemCheck(status = True, PyMOL = False, _color = False, _cell = True, treeview_selections = True)
 
 	def on_ToolBar_buttonSaveProject_clicked(self, button):
 		""" Function doc """
@@ -1237,15 +1238,39 @@ class TreeviewSelections(object):
 
 	'''   
 	def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
-		""" Function doc """
-		selection     = tree.get_selection()
-		model         = tree.get_model()
-		(model, iter) = selection.get_selected()
-		pymol_object = model.get_value(iter, 0)  
-
-		string2 = 'select sele, '+ pymol_object
-		cmd.do(string2)
-		cmd.enable('sele')
+		if event.button == 3:
+			#print "Mostrar menu de contexto botao3"
+			selection     = tree.get_selection()
+			model         = tree.get_model()
+			(model, iter) = selection.get_selected()
+			if iter != None:
+				#self.selectedID  = str(model.get_value(iter, 0))  # @+
+				self.selectedObj = str(model.get_value(iter, 0))
+				self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
+				
+				widget = self.builder.get_object('treeview_menu')
+				widget.popup(None, None, None, event.button, event.time)
+		
+		if event.button == 2:
+			selection     = tree.get_selection()
+			model         = tree.get_model()
+			(model, iter) = selection.get_selected()
+			pymol_object = model.get_value(iter, 0) 
+			
+			string2 = 'select sele, '+ pymol_object
+			cmd.do(string2)
+			cmd.center('sele')
+		
+		
+		if event.button == 1:
+			selection     = tree.get_selection()
+			model         = tree.get_model()
+			(model, iter) = selection.get_selected()
+			pymol_object = model.get_value(iter, 0) 
+			
+			string2 = 'select sele, '+ pymol_object
+			cmd.do(string2)
+			cmd.enable('sele')
 
 	def on_treeview2_select_cursor_parent (self, tree, path, column):
 		""" Function doc """
@@ -1467,7 +1492,7 @@ class gtkdynamo_main(MainMenu,
 	
 	def PyMOL_initialize (self):
 		""" Function doc """
-		cmd.reinitialize()
+		cmd.delete('all')
 		#-------------------- config PyMOL ---------------------#
 		#                                                       #
 		pymol.cmd.set("internal_gui", 0)                        #
