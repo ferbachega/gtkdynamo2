@@ -221,7 +221,7 @@ class pDynamoProject():
             self.settings['QC']        = True
         
         
-        self.SystemCheck()
+        #self.SystemCheck(status = True, PyMOL = True, _color = True, _cell = True, treeview_selections = True)
         #self.set_qc_DynamicBondsList()
 
     def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
@@ -247,7 +247,7 @@ class pDynamoProject():
             self.system.DefineQCModel ( qcModel )
             self.settings['potencial'] = "QC"
             self.settings['QC']      = True
-        self.SystemCheck()
+        self.SystemCheck(status = True, PyMOL = True, _color = True, _cell = True, treeview_selections = True)
 
     def set_qc_parameters_ORCA(self, qc_method, charge, multiplicity, qc_table, orca_string, ORCA_pal, ORCA_command, pDynamo_scratch):
         """
@@ -661,13 +661,6 @@ class pDynamoProject():
 
 
 
-
-
-        
-    
-    
-    
-    
     def SystemCheck(self, status = True, PyMOL = True, _color = True ):
         if self.system == None:
             print "System empty"
@@ -814,7 +807,158 @@ class pDynamoProject():
 			SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
 			return SummaryFile 
         
-        
+  
+        #if self.system == None:
+        #    print "System empty"
+        #    StatusText =''
+        #    self.window_control.STATUSBAR_SET_TEXT(StatusText)
+        #    return 0
+        #
+        #if status == True:
+        #    """ Function doc """
+        #    SummaryFile             = "Summary"+'_Step'+str(self.settings['step'])+".log"
+        #    self.system.Summary(log = DualTextLog(self.settings['data_path'], SummaryFile))
+        #    self.parameters         = ParseSummaryLogFile(os.path.join(self.settings['data_path'], SummaryFile))
+        #    
+        #    #-------------------------------------#
+        #    #              STATUSBAR              #
+        #    #-------------------------------------#
+        #    StatusText = ''
+        #    if self.parameters is not None:
+        #        StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
+        #        #print self.parameters['Number of Atoms']
+        #        StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
+        #        #print self.parameters['Energy Model']
+        #        
+        #        
+        #        #StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
+        #        StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
+        #        
+        #        #print self.parameters['Number of QC Atoms']
+        #        
+        #        #StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
+        #        StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
+        #        
+        #        #print 'Number of Fixed Atoms: ', self.parameters['Number of Fixed Atoms']
+        #        StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
+        #        StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
+        #        #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
+        #        
+        #        StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
+        #        #pprint (self.parameters['Crystal Class'])
+        #    self.window_control.STATUSBAR_SET_TEXT(StatusText) 
+        #    #pprint(self.parameters)      
+        #else:
+        #    pass
+        #
+        #
+        #if PyMOL == True:
+        #    PyMOL_Obj      = self.settings['PyMOL_Obj']
+        #    #cmd.util.cbap(PyMOL_Obj)
+        #    #cmd.color('slate',PyMOL_Obj)
+        #    if _color:
+        #        cmd.color('gray10',PyMOL_Obj)
+        #        cmd.util.cnc(PyMOL_Obj)
+        #    else:
+        #        pass
+        #    
+        #    if self.settings['QC'] == True:
+        #        if self.settings['qc_table'] != []:
+        #            #print PyMOL_Obj
+        #            cmd.hide('stick',  PyMOL_Obj)
+        #            cmd.hide("sphere", PyMOL_Obj)
+        #            try:
+        #                cmd.delete("QC_atoms")
+        #            except:
+        #                pass
+        #            
+        #            PymolPutTable(self.settings['qc_table'], "QC_atoms")
+        #            command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
+        #            cmd.do(command)
+        #
+        #            cmd.show("stick",  "QC_atoms")
+        #            cmd.show("sphere", "QC_atoms")
+        #        
+        #        if self.settings['qc_table'] == []:
+        #            self.settings['qc_table']  = (self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+        #            try:
+        #                cmd.show("stick",  PyMOL_Obj)
+        #                cmd.show("sphere" ,PyMOL_Obj)
+        #            except:
+        #                a = None	
+        #    else:
+        #        pass
+        #    
+        #    if self.settings['fix_table'] != []:
+        #        #PyMOL_Obj = self.job_history[self.step][0] #= [type_, pymol_id, "potencial", "1192.0987"]
+        #        
+        #        try:
+        #            cmd.delete("FIX_atoms")
+        #        except:
+        #            pass
+        #            
+        #        PymolPutTable(self.settings['fix_table'], "FIX_atoms")
+        #        command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
+        #        cmd.do(command)
+        #        command2 = 'color grey80, FIX_atoms'
+        #        cmd.do(command2)
+        #    
+        #    try:
+        #        #cmd.do('disable sele')
+        #        cmd.disable("sele")
+        #    except:
+        #        pass
+        #    try:
+        #        #cmd.do('disable FIX_atoms')
+        #        cmd.disable("FIX_atoms")
+        #
+        #    except:
+        #        pass
+        #    try:
+        #        #cmd.do('disable QC_atoms')
+        #        cmd.disable("QC_atoms")
+        #    except:
+        #        pass
+        #    
+        #if treeview_selections == True:
+        #    pymol_objects2 = cmd.get_names('selections')
+        #    liststore      = self.builder.get_object('liststore1')
+        #    self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
+        #    
+        #
+        #    
+        #    
+        #    #-----------------------------------------------#
+        #    #                   DrawCell                    #
+        #    #-----------------------------------------------#
+        #
+        #    
+        #if _cell == True:
+        #    if self.ShowCell == True:
+        #        cell = self.importCellParameters()
+        #        DrawCell(cell)
+        #        #print cell
+        #        try:
+        #            cmd.enable('box_1')
+        #        except:
+        #            pass
+        #    else:
+        #        try:
+        #            cmd.disable('box_1')
+        #        except:
+        #            pass
+        #    #-----------------------------------------------#
+        #
+        #
+        #
+        #else:
+        #    pass
+        #
+        #if status == True:
+		#	SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
+		#	return SummaryFile 
+        #
+        #
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
@@ -831,7 +975,7 @@ class pDynamoProject():
         #print 'step depois',self.settings['step']
 
         if self.PyMOL == True:
-            self.SystemCheck(True, False)
+            self.SystemCheck(status = True, PyMOL = True, _color = True )
             #      pDyanmo  -- >  PyMOL
             pymol_id = ExportFramesToPymol(self, type_)
             self.settings['PyMOL_Obj'] = pymol_id

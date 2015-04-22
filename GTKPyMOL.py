@@ -344,7 +344,6 @@ def mousepress(button, event):
         pymol.button(button, 0, pointerx , calc_y, 0)
 
 
-
         
     if event.button != 3:
         x, y, width, height = glarea.get_allocation()
@@ -354,12 +353,13 @@ def mousepress(button, event):
         pointery = int(mousepress.y)
         calc_y = height - pointery
         pymol.button(button, 0, pointerx, calc_y, 0)
-    
+        #gtkdynamo.project.SystemCheck( status = False, PyMOL = False, _color = False, _cell = False, treeview_selections = True)
+
     if gtkdynamo.builder.get_object('toolbutton6_measure').get_active():
         Distances = DistancesFromPKSelection()
         Angles    = AnglesFromPKSelection()
         Dihedral  = DihedralFromPKSelection()
-        gtkdynamo.MeasureToolPutValores(Distances, Angles, Dihedral)
+        
         
         
 def mouserelease(button, event):
@@ -1047,205 +1047,328 @@ class GLMenu(object):
        
         cmd.label('sele', string)
 
+    def on_gl_show_hide_items_activate (self, item, event):
+
+        """ gl menu items """ 
+
+        if item == self.builder.get_object('gl_menuitem_show_lines'):
+            cmd.show ('lines', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_show_sticks'):
+            cmd.show ('sticks', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_show_ribbon'):
+            cmd.show ('ribbon', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_show_cartoon'):
+            cmd.show ('cartoon', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_show_mesh'):
+            cmd.show ('mesh', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_show_surface'):
+            cmd.show ('surface', 'sele')
+            
+        if item == self.builder.get_object('gl_menuitem_hide_lines'):
+            cmd.hide ('lines', 'sele')
+            #cmd.util.cnc(PyMOL_Obj)
+
+        if item == self.builder.get_object('gl_menuitem_hide_sticks'):
+            cmd.hide ('sticks', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_hide_ribbon'):
+            cmd.hide ('ribbon', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_hide_cartoon'):
+            cmd.hide ('cartoon', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_hide_mesh'):
+            cmd.hide ('mesh', 'sele')
+
+        if item == self.builder.get_object('gl_menuitem_hide_surface'):
+            cmd.hide ('surface', 'sele')
+
+        
+        #                 Colors
+        if item == self.builder.get_object('gl_menuitem_color_black'):
+            cmd.color('grey10','sele')
+            cmd.util.cnc('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_green'):
+            cmd.util.cbag('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_cyan'):
+            cmd.util.cbac('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_magenta'):
+            cmd.util.cbam('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_yellow'):
+            cmd.util.cbay('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_salmon'):
+            cmd.util.cbas('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_white'):
+            cmd.util.cbaw('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_slate'):
+            cmd.util.cbab('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_orange'):
+            cmd.util.cbao('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_purple'):
+            cmd.util.cbap('sele')
+        
+        if item == self.builder.get_object('gl_menuitem_color_pink'):
+            cmd.util.cbak('sele')
+
+
 class TreeviewHistory(object):
-	""" Class doc """
+    """ Class doc """
 
-	def __init__ (self):
-		""" Class initialiser """
-		pass
+    def __init__ (self):
+        """ Class initialiser """
+        pass
 
-	def handle_history_click(self, tree, event):
-		if event.button == 3:
-			print "Mostrar menu de contexto botao3"
-	   
-		if event.button == 1:
-			print "Mostrar menu de contexto botao1"
-
-	
-	def on_treeview2_show_logFile (self, item):
-		""" Function doc """
-		#pprint(self.project.settings['job_history'][self.selectedID]['log'])
-		filein = self.project.settings['job_history'][self.selectedID]['log']
-		print    self.project.settings['job_history'][self.selectedID]['log']
-		editor = TextEditor.GTKDynamoTextEditor(filein)
-		#editor.load_file(filein)
-
-	def on_menuitem_PlotLogFile_activate(self, item):
-		""" Function doc """
-		filein = self.project.settings['job_history'][self.selectedID]['log']
-		print    self.project.settings['job_history'][self.selectedID]['log']
-		parameters = ParseProcessLogFile(filein)
-		
-		#xlabel = 'Frames'
-		#ylabel = 'Energy (KJ)' 
-		#title  = os.path.split(filein)[-1]
-		#print  X, Y
-		#
-		#parameters = {
-		#             'title' : title ,
-		#             'X'     : X     ,
-		#             'Y'     : Y     ,
-		#             'xlabel': xlabel,
-		#             'ylabel': ylabel,
-		#             }
-		
-		PlotGTKWindow(parameters)
-
-	def on_show_items_activate (self, item, event):
-		""" Function doc """ 
-		PyMOL_Obj = self.selectedObj
-
-		if item == self.builder.get_object('menuitem_show_lines'):
-			cmd.show ('lines', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_show_sticks'):
-			cmd.show ('sticks', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_show_ribbon'):
-			cmd.show ('ribbon', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_show_cartoon'):
-			cmd.show ('cartoon', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_show_mesh'):
-			cmd.show ('mesh', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_show_surface'):
-			cmd.show ('surface', PyMOL_Obj)
-
-	def on_hide_items_activate (self, item, event):
-		""" Function doc """ 
-		PyMOL_Obj = self.selectedObj
-
-		if item == self.builder.get_object('menuitem_hide_lines'):
-			cmd.hide ('lines', PyMOL_Obj)
-			cmd.util.cnc(PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_hide_sticks'):
-			cmd.hide ('sticks', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_hide_ribbon'):
-			cmd.hide ('cartoon', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_hide_cartoon'):
-			cmd.hide ('cartoon', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_hide_mesh'):
-			cmd.hide ('mesh', PyMOL_Obj)
-
-		if item == self.builder.get_object('menuitem_hide_surface'):
-			cmd.hide ('surface', PyMOL_Obj)
-		#if item == self.builder.get_object('menuitem_white'):
-		#	cmd.util.cbaw(PyMOL_Obj)
-		#
-		#if item == self.builder.get_object('menuitem_slate'):
-		#	cmd.util.cbab(PyMOL_Obj)
-		#
-		#if item == self.builder.get_object('menuitem_orange'):
-		#	cmd.util.cbao(PyMOL_Obj)
-		#
-		#if item == self.builder.get_object('menuitem_purple'):
-		#	cmd.util.cbap(PyMOL_Obj)
-		#
-		#if item == self.builder.get_object('menuitem_pink'):
-		#	cmd.util.cbak(PyMOL_Obj)
+    def handle_history_click(self, tree, event):
+        if event.button == 3:
+            print "Mostrar menu de contexto botao3"
+       
+        if event.button == 1:
+            print "Mostrar menu de contexto botao1"
 
 
-	def on_color_items_activate (self, item, event):
-		""" Function doc """
-		#print 'view log'
-		#pprint(self.project.settings['job_history'][self.selectedID])
-		
-		PyMOL_Obj = self.selectedObj
-		
-		if item == self.builder.get_object('menuitem_black'):
-			cmd.color('grey10',PyMOL_Obj)
-			cmd.util.cnc(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_green'):
-			cmd.util.cbag(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_cyan'):
-			cmd.util.cbac(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_magenta'):
-			cmd.util.cbam(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_yellow'):
-			cmd.util.cbay(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_salmon'):
-			cmd.util.cbas(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_white'):
-			cmd.util.cbaw(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_slate'):
-			cmd.util.cbab(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_orange'):
-			cmd.util.cbao(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_purple'):
-			cmd.util.cbap(PyMOL_Obj)
-		
-		if item == self.builder.get_object('menuitem_pink'):
-			cmd.util.cbak(PyMOL_Obj)
+    def on_treeview2_show_logFile (self, item):
+        """ Function doc """
+        #pprint(self.project.settings['job_history'][self.selectedID]['log'])
+        filein = self.project.settings['job_history'][self.selectedID]['log']
+        print    self.project.settings['job_history'][self.selectedID]['log']
+        editor = TextEditor.GTKDynamoTextEditor(filein)
+        #editor.load_file(filein)
+
+    def on_menuitem_PlotLogFile_activate(self, item):
+        """ Function doc """
+        filein = self.project.settings['job_history'][self.selectedID]['log']
+        print    self.project.settings['job_history'][self.selectedID]['log']
+        parameters = ParseProcessLogFile(filein)
+        
+        #xlabel = 'Frames'
+        #ylabel = 'Energy (KJ)' 
+        #title  = os.path.split(filein)[-1]
+        #print  X, Y
+        #
+        #parameters = {
+        #             'title' : title ,
+        #             'X'     : X     ,
+        #             'Y'     : Y     ,
+        #             'xlabel': xlabel,
+        #             'ylabel': ylabel,
+        #             }
+        
+        PlotGTKWindow(parameters)
+
+    def on_show_items_activate (self, item, event):
+        """ Function doc """ 
+        PyMOL_Obj = self.selectedObj
 
 
-	def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
-		if event.button == 3:
-			#print "Mostrar menu de contexto botao3"
-			selection     = tree.get_selection()
-			model         = tree.get_model()
-			(model, iter) = selection.get_selected()
-			if iter != None:
-				self.selectedID  = str(model.get_value(iter, 1))  # @+
-				self.selectedObj = str(model.get_value(iter, 2))
-				self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
-				
-				widget = self.builder.get_object('treeview_menu')
-				widget.popup(None, None, None, event.button, event.time)
-			
-		if event.button == 1:
-			#print "Mostrar menu de contexto botao1"
-			selection     = tree.get_selection()
-			model         = tree.get_model()
-			(model, iter) = selection.get_selected()
-			
-			if iter != None:
-				#print model, iter
-				pymol_object  = model.get_value(iter, 2)  # @+
-				true_or_false = model.get_value(iter, 0)
-				#print pymol_object
-				if true_or_false == False:
-					cmd.enable(pymol_object)
-					true_or_false = True
-					model.set(iter, 0, true_or_false)
-					# print true_or_false
-				
-				else:
-					cmd.disable(pymol_object)
-					true_or_false = False
-					model.set(iter, 0, true_or_false)
+        if item == self.builder.get_object('menuitem_mainchain_lines'):
+            #cmd.select('sidechains', 'name  n+ca+co+o'  and PyMOL_Obj)
+            cmd.do('select sele, name  n+ca+co+o and ' + PyMOL_Obj)
+            cmd.show ('lines', 'sele')
+
+        if item == self.builder.get_object('menuitem_mainchain_sticks'):
+            cmd.do('select sele, name  n+ca+co+o and ' + PyMOL_Obj)
+            cmd.show ('sticks', 'sele')
+
+        if item == self.builder.get_object('menuitem_sidechain_lines'):
+            cmd.do('select sele, name  n+ca+co+o and ' + PyMOL_Obj)
+            cmd.do('select sele, ! sele')
+            cmd.hide ('sticks', 'sele')
+
+        if item == self.builder.get_object('menuitem_sidechain_sticks'):
+            cmd.do('select sele, name  n+ca+co+o and ' + PyMOL_Obj)
+            cmd.do('select sele, ! sele')
+            cmd.hide ('sticks', 'sele')
+
+
+        if item == self.builder.get_object('menuitem_show_lines'):
+            cmd.show ('lines', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_show_sticks'):
+            cmd.show ('sticks', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_show_ribbon'):
+            cmd.show ('ribbon', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_show_cartoon'):
+            cmd.show ('cartoon', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_show_mesh'):
+            cmd.show ('mesh', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_show_surface'):
+            cmd.show ('surface', PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_center'):
+            cmd.center (PyMOL_Obj)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    def on_hide_items_activate (self, item, event):
+        """ Function doc """ 
+        PyMOL_Obj = self.selectedObj
+
+        if item == self.builder.get_object('menuitem_hide_lines'):
+            cmd.hide ('lines', PyMOL_Obj)
+            cmd.util.cnc(PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_hide_sticks'):
+            cmd.hide ('sticks', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_hide_ribbon'):
+            cmd.hide ('ribbon', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_hide_cartoon'):
+            cmd.hide ('cartoon', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_hide_mesh'):
+            cmd.hide ('mesh', PyMOL_Obj)
+
+        if item == self.builder.get_object('menuitem_hide_surface'):
+            cmd.hide ('surface', PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_hide_everything'):
+            print 'aqui'
+            cmd.hide ('everything',PyMOL_Obj)# cmd.hide('everything','1zid')
+
+
+    def on_color_items_activate (self, item, event):
+        """ Function doc """
+        #print 'view log'
+        #pprint(self.project.settings['job_history'][self.selectedID])
+        
+        PyMOL_Obj = self.selectedObj
+        
+        if item == self.builder.get_object('menuitem_black'):
+            cmd.color('grey10',PyMOL_Obj)
+            cmd.util.cnc(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_green'):
+            cmd.util.cbag(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_cyan'):
+            cmd.util.cbac(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_magenta'):
+            cmd.util.cbam(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_yellow'):
+            cmd.util.cbay(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_salmon'):
+            cmd.util.cbas(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_white'):
+            cmd.util.cbaw(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_slate'):
+            cmd.util.cbab(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_orange'):
+            cmd.util.cbao(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_purple'):
+            cmd.util.cbap(PyMOL_Obj)
+        
+        if item == self.builder.get_object('menuitem_pink'):
+            cmd.util.cbak(PyMOL_Obj)
+
+
+    def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
+        if event.button == 3:
+            #print "Mostrar menu de contexto botao3"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            if iter != None:
+                self.selectedID  = str(model.get_value(iter, 1))  # @+
+                self.selectedObj = str(model.get_value(iter, 2))
+                self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
+                
+                widget = self.builder.get_object('treeview_menu')
+                widget.popup(None, None, None, event.button, event.time)
+            
+            
+        if event.button == 1:
+            #print "Mostrar menu de contexto botao1"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            
+            if iter != None:
+                #print model, iter
+                pymol_object  = model.get_value(iter, 2)  # @+
+                true_or_false = model.get_value(iter, 0)
+                #print pymol_object
+                if true_or_false == False:
+                    cmd.enable(pymol_object)
+                    true_or_false = True
+                    model.set(iter, 0, true_or_false)
+                    # print true_or_false
+                
+                else:
+                    cmd.disable(pymol_object)
+                    true_or_false = False
+                    model.set(iter, 0, true_or_false)
 
 class TreeviewSelections(object):
-	'''                                            
-	#      ---------------------------------  
-	#           PyMOL TREEVIEW  methods    
-	#      ---------------------------------
+    '''                                            
+    #      ---------------------------------  
+    #           PyMOL TREEVIEW  methods    
+    #      ---------------------------------
 
-	'''   
-	def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
-		""" Function doc """
-		selection     = tree.get_selection()
-		model         = tree.get_model()
-		(model, iter) = selection.get_selected()
-		pymol_object = model.get_value(iter, 0)  
-
-		string2 = 'select sele, '+ pymol_object
-		cmd.do(string2)
-		cmd.enable('sele')
+    '''   
+    def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
+        if event.button == 3:
+            #print "Mostrar menu de contexto botao3"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            if iter != None:
+                #self.selectedID  = str(model.get_value(iter, 0))  # @+
+                self.selectedObj = str(model.get_value(iter, 0))
+                self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
+                
+                widget = self.builder.get_object('treeview_menu')
+                widget.popup(None, None, None, event.button, event.time)
+        
+        if event.button == 2:
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            pymol_object = model.get_value(iter, 0) 
+            cmd.center(pymol_object)
+        
+        if event.button == 1:
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            pymol_object = model.get_value(iter, 0)  
+            
+            string2 = 'select sele, '+ pymol_object
+            cmd.do(string2)
+            cmd.enable('sele')
 
 	def on_treeview2_select_cursor_parent (self, tree, path, column):
 		""" Function doc """
