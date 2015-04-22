@@ -1048,6 +1048,65 @@ class GLMenu(object):
        
         cmd.label('sele', string)
 
+    def on_gl_show_hide_items_activate (self, item, event):
+        
+        print """ gl menu items """
+        if item == self.builder.get_object('gl_menuitem_show_lines'):
+            cmd.show ('lines', 'sele')
+        if item == self.builder.get_object('gl_menuitem_show_sticks'):
+            cmd.show ('sticks', 'sele')
+        if item == self.builder.get_object('gl_menuitem_show_ribbon'):
+            cmd.show ('ribbon', 'sele')
+        if item == self.builder.get_object('gl_menuitem_show_cartoon'):
+            cmd.show ('cartoon', 'sele')
+        if item == self.builder.get_object('gl_menuitem_show_mesh'):
+            cmd.show ('mesh', 'sele')
+        if item == self.builder.get_object('gl_menuitem_show_surface'):
+            cmd.show ('surface', 'sele')
+        if item == self.builder.get_object('gl_menuitem_hide_lines'):
+            cmd.hide ('lines', 'sele')
+            #cmd.util.cnc(PyMOL_Obj)
+        if item == self.builder.get_object('gl_menuitem_hide_sticks'):
+            cmd.hide ('sticks', 'sele')
+        if item == self.builder.get_object('gl_menuitem_hide_ribbon'):
+            cmd.hide ('ribbon', 'sele')
+        if item == self.builder.get_object('gl_menuitem_hide_cartoon'):
+            cmd.hide ('cartoon', 'sele')
+        if item == self.builder.get_object('gl_menuitem_hide_mesh'):
+            cmd.hide ('mesh', 'sele')
+        if item == self.builder.get_object('gl_menuitem_hide_surface'):
+            cmd.hide ('surface', 'sele')
+        
+        
+        # Colors
+        if item == self.builder.get_object('gl_menuitem_color_black'):
+            cmd.color('grey10','sele')
+            cmd.util.cnc('sele')
+        if item == self.builder.get_object('gl_menuitem_color_green'):
+            cmd.util.cbag('sele')
+        if item == self.builder.get_object('gl_menuitem_color_cyan'):
+            cmd.util.cbac('sele')
+        if item == self.builder.get_object('gl_menuitem_color_magenta'):
+            cmd.util.cbam('sele')
+        if item == self.builder.get_object('gl_menuitem_color_yellow'):
+            cmd.util.cbay('sele')
+        if item == self.builder.get_object('gl_menuitem_color_salmon'):
+            cmd.util.cbas('sele')
+        if item == self.builder.get_object('gl_menuitem_color_white'):
+            cmd.util.cbaw('sele')
+        if item == self.builder.get_object('gl_menuitem_color_slate'):
+            cmd.util.cbab('sele')
+        if item == self.builder.get_object('gl_menuitem_color_orange'):
+            cmd.util.cbao('sele')
+        if item == self.builder.get_object('gl_menuitem_color_purple'):
+            cmd.util.cbap('sele')
+        if item == self.builder.get_object('gl_menuitem_color_pink'):
+            cmd.util.cbak('sele')
+
+
+
+
+
 class TreeviewHistory(object):
 	""" Class doc """
 
