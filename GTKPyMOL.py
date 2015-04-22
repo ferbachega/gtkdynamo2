@@ -331,6 +331,9 @@ def mousepress(button, event):
     
     if event.button == 3:
         global clicado
+        
+
+
         clicado = True
         x, y, width, height = glarea.get_allocation()
         #print x, y, width, height
@@ -1554,6 +1557,9 @@ class gtkdynamo_main(MainMenu,
 		cmd.delete('all')
 		#-------------------- config PyMOL ---------------------#
 		#                                                       #
+                                                                #
+		cmd.button("double_left","None","None")                 #
+		cmd.button("single_right","None","None")                #
 		pymol.cmd.set("internal_gui", 0)                        #
 		pymol.cmd.set("internal_gui_mode", 0)                   #
 		pymol.cmd.set("internal_feedback", 0)                   #
