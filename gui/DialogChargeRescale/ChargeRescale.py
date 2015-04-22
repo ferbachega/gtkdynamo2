@@ -34,11 +34,11 @@ class ChargeRescaleDialog():
         selection       = self.builder.get_object    ('entry_pymol_selection').get_text()
         total_charge    = int(self.builder.get_object('entry_charge').get_text())
         print 'selection:', selection, '\ntotal charge:',total_charge
-        
-        try:
-            rescale_charges(self.project, selection, total_charge)
-        except:
-            print 'Charge rescaling error!'
+        rescale_charges(self.project, selection, total_charge)
+        #try:
+        #    rescale_charges(self.project, selection, total_charge)
+        #except:
+        #    print 'Charge rescaling error!'
         
         
         

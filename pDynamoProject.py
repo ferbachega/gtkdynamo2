@@ -100,8 +100,10 @@ class pDynamoProject():
         
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
-        self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
-            amber_coords, dualLog)
+        #self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
+        #    amber_coords, dualLog)
+        self.load_coordinate_file_to_system(amber_coords, dualLog=None)
+        
         self.settings['force_field'] = "AMBER"
         self.settings['parameters']  = amber_params
         self.settings['coordinates'] = amber_coords
@@ -814,11 +816,12 @@ class pDynamoProject():
                 pass
             print '16'
             
-        if treeview_selections == True:
+        if treeview_selections:
             pymol_objects2 = cmd.get_names('selections')
+            
             liststore      = self.builder.get_object('liststore1')
             self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
-            #print '17'
+            print '17'
 
         
         #-----------------------------------------------#
@@ -1044,6 +1047,10 @@ class pDynamoProject():
                 os.path.join(filename),  dualLog)
 
         elif type_ == "crd":
+            self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
+                os.path.join(filename),  dualLog)
+        
+        elif type_ == "inpcrd":
             self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
                 os.path.join(filename),  dualLog)
 
