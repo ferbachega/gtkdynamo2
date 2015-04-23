@@ -7,7 +7,7 @@ text1 = """
 #
 #   
 #
-#                         ---- GTKDynamo 2.0 ----
+#                         ---- GTKDynamo 2.0 - EasyHybrid ----
 #                           
 #       
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
@@ -26,19 +26,19 @@ text1 = """
 #
 #   
 #   GTKDynamo team:
-#   - Jose Fernando R Bachega   < Univesity of Sao Paulo - SP, Brazil                              >
-#   - Troy Wymore               < Pittsburgh Super Computer Center, Pittsburgh PA - USA            >
-#   - Martin Field              < Institut de Biologie Structurale, Grenoble, France               >        
-#   - Osmar Norbeto de souza    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#   - Luis Fernando S M Timmers < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#   - Walter R Paixao-Cortes    < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
-#   - Michele Silva             < Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >     
-#                               
-#   Special thanks to:          
-#   - Fernando V Maluf          < Univesity of Sao Paulo - SP, Brazil                              >
-#   - Lucas Assirati            < Univesity of Sao Paulo - SP, Brazil                              >
-#   - Leonardo R Bachega        < University of Purdue - West Lafayette, IN - USA                  >
-#   - Richard Garratt           < Univesity of Sao Paulo - SP, Brazil                              >
+#   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil                            
+#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA           
+#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France                      
+#   - Luis Fernando S M Timmers - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Michele Silva             - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#    
+#   Special thanks to:       
+#   - Osmar Norbeto de souza    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Fernando V Maluf          - Univesity of Sao Paulo - SP, Brazil                             
+#   - Lucas Assirati            - Univesity of Sao Paulo - SP, Brazil                             
+#   - Leonardo R Bachega        - University of Purdue - West Lafayette, IN - USA                 
+#   - Richard Garratt           - Univesity of Sao Paulo - SP, Brazil                             
+#   - Walter R Paixao-Cortes    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #
 #
 #   Cite this work as:
@@ -128,6 +128,8 @@ from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelect
                                                                                              #
                                                                                              #
 from gui.DialogLoadTrajectory.Trajectory                    import *                         #
+from gui.DialogAbout.About                                  import AboutDialog               #
+
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
@@ -545,7 +547,7 @@ class MainMenu (object):
 
     def on_menuitem_quit_activate (self, menuitem):
         """ Function doc """
-        print '''\n\nThanks for use GTKDynamo - EasyHybrid\n\n'''
+        print '''\n\nThanks for use GTKDynamo 2.0 - EasyHybrid\n\n'''
         gtk.main_quit()
         cmd.quit()
 
@@ -599,6 +601,15 @@ class MainMenu (object):
         self.NonBondDialog.dialog.run()
         self.NonBondDialog.dialog.hide()
 
+
+    def on_MainMenu_About_activate(self, button):
+        """ Function doc """
+        self.AboutDialog.dialog.run()
+        self.AboutDialog.dialog.hide()
+		
+		
+		
+		
 class MainToolBar(object):
 	""" Class doc """
 
@@ -1744,6 +1755,8 @@ class gtkdynamo_main(MainMenu,
 		self.DialogImportCoordinates = ImportCoordinatesDialog(self)                            #
 		                                                                                        #
 		self.DialogExportCoordinates = ExportCoordinatesDialog(self)                            #
+		
+		self.AboutDialog             = AboutDialog(self)
 		#---------------------------------------------------------------------------------------#
 		self.graph = None
 
