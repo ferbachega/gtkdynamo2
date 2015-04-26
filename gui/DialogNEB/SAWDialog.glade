@@ -2,10 +2,10 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkDialog" id="07_window_NEB">
+  <object class="GtkDialog" id="SAWDialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Nudge Elastic Band</property>
+    <property name="title" translatable="yes"> Self-Avoiding Walk </property>
     <property name="icon">.icon_scan_24x24.png</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -19,7 +19,7 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="07_window_CANCEL">
+              <object class="GtkButton" id="SAWDialog_CANCEL">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -37,15 +37,15 @@
               <placeholder/>
             </child>
             <child>
-              <object class="GtkButton" id="07_window_RUN_NEB">
-                <property name="label" translatable="yes">Run NEB</property>
+              <object class="GtkButton" id="SAWDialog_RUN_SAW">
+                <property name="label" translatable="yes">Run SAW</property>
                 <property name="width_request">105</property>
                 <property name="height_request">39</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_07_window_RUN_NEB_clicked" swapped="no"/>
+                <signal name="clicked" handler="RunSAW" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -62,7 +62,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkAlignment" id="07_window_alignment10">
+          <object class="GtkAlignment" id="SAWDialog_alignment10">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="top_padding">8</property>
@@ -83,13 +83,15 @@
           <object class="GtkVBox" id="vbox8">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="spacing">10</property>
             <child>
-              <object class="GtkFrame" id="07_window_frame1">
+              <object class="GtkFrame" id="SAWDialog_frame1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label_xalign">0.5</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="07_window_alignment1">
+                  <object class="GtkAlignment" id="SAWDialog_alignment1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="top_padding">10</property>
@@ -105,7 +107,7 @@
                         <property name="column_spacing">15</property>
                         <property name="row_spacing">2</property>
                         <child>
-                          <object class="GtkLabel" id="07_window_label30">
+                          <object class="GtkLabel" id="SAWDialog_label30">
                             <property name="width_request">148</property>
                             <property name="height_request">30</property>
                             <property name="visible">True</property>
@@ -115,7 +117,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="07_window_label34">
+                          <object class="GtkLabel" id="SAWDialog_label34">
                             <property name="width_request">139</property>
                             <property name="height_request">30</property>
                             <property name="visible">True</property>
@@ -129,13 +131,13 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="07_window_label38">
+                          <object class="GtkLabel" id="SAWDialog_label38">
                             <property name="width_request">158</property>
                             <property name="height_request">30</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">1</property>
-                            <property name="label" translatable="yes">rms Gradient Tolerance:</property>
+                            <property name="label" translatable="yes">Gamma:</property>
                           </object>
                           <packing>
                             <property name="top_attach">2</property>
@@ -143,7 +145,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="07_window_NEB_traj_label">
+                          <object class="GtkLabel" id="SAWDialog_SAW_traj_label">
                             <property name="width_request">134</property>
                             <property name="height_request">32</property>
                             <property name="visible">True</property>
@@ -157,7 +159,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="07_window_NEB_number_of_structures">
+                          <object class="GtkEntry" id="SAWDialog_SAW_number_of_structures">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
@@ -174,11 +176,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="07_window_NEB_maximum_interations">
+                          <object class="GtkEntry" id="SAWDialog_SAW_maximum_interations">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
-                            <property name="text" translatable="yes">5000</property>
+                            <property name="text" translatable="yes">200</property>
                             <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
@@ -193,11 +195,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="07_window_NEB_grad_tol">
+                          <object class="GtkEntry" id="SAWDialog_SAW_grad_tol">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
-                            <property name="text" translatable="yes">0.02</property>
+                            <property name="text" translatable="yes">1000</property>
                             <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
@@ -212,11 +214,11 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="07_window_NEB__pd_traj_out">
+                          <object class="GtkEntry" id="SAWDialog_SAW__pd_traj_out">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">•</property>
-                            <property name="text" translatable="yes">NEB_reac_pd_path.trj</property>
+                            <property name="text" translatable="yes">SAW_ReactioanPath.trj</property>
                             <property name="invisible_char_set">True</property>
                             <property name="primary_icon_activatable">False</property>
                             <property name="secondary_icon_activatable">False</property>
@@ -235,10 +237,10 @@
                   </object>
                 </child>
                 <child type="label">
-                  <object class="GtkLabel" id="07_window_label4">
+                  <object class="GtkLabel" id="SAWDialog_label4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;NEB Parameters&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;SAW Parameters&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>
@@ -250,12 +252,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFrame" id="07_window_frame3">
+              <object class="GtkFrame" id="SAWDialog_frame3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label_xalign">0.5</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="07_window_alignment3">
+                  <object class="GtkAlignment" id="SAWDialog_alignment3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="top_padding">10</property>
@@ -271,14 +274,14 @@
                         <property name="column_spacing">2</property>
                         <property name="row_spacing">10</property>
                         <child>
-                          <object class="GtkCheckButton" id="07_window_checkbutton_REACTANTS">
+                          <object class="GtkCheckButton" id="SAWDialog_checkbutton_REACTANTS">
                             <property name="label" translatable="yes">Import from file</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_07_window_checkbutton_REACTANTS_toggled" swapped="no"/>
+                            <signal name="toggled" handler="checkbutton_change" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">1</property>
@@ -286,7 +289,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="07_window_label_REACTANTS">
+                          <object class="GtkLabel" id="SAWDialog_label_REACTANTS">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="xalign">0</property>
@@ -299,11 +302,11 @@
                             <property name="can_focus">False</property>
                             <property name="homogeneous">True</property>
                             <child>
-                              <object class="GtkEntry" id="07_window_entry_REACTANTS">
+                              <object class="GtkEntry" id="SAWDialog_entry_REACTANTS">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
-                                <property name="text" translatable="yes">obj01</property>
+                                <property name="text" translatable="yes">Step1</property>
                                 <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
@@ -317,7 +320,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkFileChooserButton" id="07_window_filechooserbutton_REACTANTS">
+                              <object class="GtkFileChooserButton" id="SAWDialog_filechooserbutton_REACTANTS">
                                 <property name="width_request">160</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -342,7 +345,7 @@
                   </object>
                 </child>
                 <child type="label">
-                  <object class="GtkLabel" id="07_window_label9">
+                  <object class="GtkLabel" id="SAWDialog_label9">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">&lt;b&gt;Reactants&lt;/b&gt;</property>
@@ -357,12 +360,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFrame" id="07_window_frame5">
+              <object class="GtkFrame" id="SAWDialog_frame5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label_xalign">0.5</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="07_window_alignment4">
+                  <object class="GtkAlignment" id="SAWDialog_alignment4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="top_padding">10</property>
@@ -378,14 +382,14 @@
                         <property name="column_spacing">2</property>
                         <property name="row_spacing">10</property>
                         <child>
-                          <object class="GtkCheckButton" id="07_window_checkbutton_PRODUCTS">
+                          <object class="GtkCheckButton" id="SAWDialog_checkbutton_PRODUCTS">
                             <property name="label" translatable="yes">Import from file</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
                             <property name="use_action_appearance">False</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_07_window_checkbutton_PRODUCTS_toggled" swapped="no"/>
+                            <signal name="toggled" handler="checkbutton_change" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">1</property>
@@ -405,11 +409,11 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkEntry" id="07_window_entry_PRODUCTS">
+                              <object class="GtkEntry" id="SAWDialog_entry_PRODUCTS">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">●</property>
-                                <property name="text" translatable="yes">obj02</property>
+                                <property name="text" translatable="yes">Step2</property>
                                 <property name="invisible_char_set">True</property>
                                 <property name="primary_icon_activatable">False</property>
                                 <property name="secondary_icon_activatable">False</property>
@@ -423,7 +427,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkFileChooserButton" id="07_window_filechooserbutton_PRODUCTS">
+                              <object class="GtkFileChooserButton" id="SAWDialog_filechooserbutton_PRODUCTS">
                                 <property name="width_request">160</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -448,7 +452,7 @@
                   </object>
                 </child>
                 <child type="label">
-                  <object class="GtkLabel" id="07_window_label10">
+                  <object class="GtkLabel" id="SAWDialog_label10">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">&lt;b&gt;Products&lt;/b&gt;</property>
@@ -475,8 +479,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">07_window_CANCEL</action-widget>
-      <action-widget response="0">07_window_RUN_NEB</action-widget>
+      <action-widget response="0">SAWDialog_CANCEL</action-widget>
+      <action-widget response="0">SAWDialog_RUN_SAW</action-widget>
     </action-widgets>
   </object>
 </interface>

@@ -2026,12 +2026,13 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="menuitem26SAW1">
+                              <object class="GtkMenuItem" id="menuitem_SAW">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">SAW</property>
                                 <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_menuitem_SAW_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2041,6 +2042,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">NEB</property>
                                 <property name="use_underline">True</property>
+                                <signal name="activate" handler="on_menuitem_NEB_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>

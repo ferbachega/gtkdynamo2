@@ -129,11 +129,14 @@ from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelect
                                                                                              #
 from gui.DialogLoadTrajectory.Trajectory                    import *                         #
 from gui.DialogAbout.About                                  import AboutDialog               #
+from gui.DialogNEB.NEBandSAW                                import NEBDialog
+from gui.DialogNEB.NEBandSAW                                import SAWDialog
+
 
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
-                                                                                             #
+
 import TextEditor.TextEditorWindow as TextEditor                                             #
                                                                                              #
 from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
@@ -141,9 +144,9 @@ from   MatplotGTK.MatplotGTK          import PlotGTKWindow                      
 
 
 # pDynamo
-from pDynamoProject  import *
-from WindowControl   import *
-
+from pDynamoProject    import *
+from WindowControl     import *
+from PyMOLScripts.Axes import *
 
 
 
@@ -472,7 +475,6 @@ class MainMenu (object):
         #self.builder = GUI.builder
         self.GUI = GUI
     
-
     def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
         """ Function doc """
         self.TrajectoryDialog.builder.get_object('filechooserbutton1').set_filename(self.project.settings['data_path'])
@@ -594,6 +596,13 @@ class MainMenu (object):
             self.UmbrellaSamplingWindow.OpenWindow(text)
 
 
+    def on_menuitem_SAW_activate(self, menuItem):
+        self.SAWDialog.dialog.run()
+        self.SAWDialog.dialog.hide()
+
+    def on_menuitem_NEB_activate(self, menuItem):
+        self.NEBDialog.dialog.run()
+        self.NEBDialog.dialog.hide()
 
 
     def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
@@ -714,7 +723,7 @@ class MainToolBar(object):
 		filein = self.project.SystemCheck(_color = False)
 		#filein = self.project.settings['job_history'][self.selectedID]['log']
 		editor = TextEditor.GTKDynamoTextEditor(filein)
-
+        
 	def on_ToolBar_buttonSinglePoint_clicked(self, button):
 		""" Function doc """
 		energy = self.project.ComputeEnergy()
@@ -1564,231 +1573,235 @@ class gtkdynamo_main(MainMenu,
                      GTKDynamoConfig):
 
 
-	def PyMOL_change_selection_mode (self):
-		""" Function doc """
-		if self.builder.get_object('togglebutton1').get_active():
-			# print '# If control reaches here, the toggle button is down'
-			self.builder.get_object('togglebutton1').set_label('Editing')
-			self.builder.get_object('label_viewing').set_label('Picking')
-			self.builder.get_object('combobox1').set_sensitive(False)
-			cmd.edit_mode(1)
-			self.project.settings['edit_mode_button'] = True
+    def PyMOL_change_selection_mode (self):
+        """ Function doc """
+        if self.builder.get_object('togglebutton1').get_active():
+            # print '# If control reaches here, the toggle button is down'
+            self.builder.get_object('togglebutton1').set_label('Editing')
+            self.builder.get_object('label_viewing').set_label('Picking')
+            self.builder.get_object('combobox1').set_sensitive(False)
+            cmd.edit_mode(1)
+            self.project.settings['edit_mode_button'] = True
 
-		else:
-			# print '# If control reaches here, the toggle button is up'
-			self.builder.get_object('togglebutton1').set_label('Viewing')
-			self.builder.get_object('label_viewing').set_label('Selecting')
-			self.builder.get_object('combobox1').set_sensitive(True)
-			cmd.edit_mode(0)
-			self.project.settings['edit_mode_button'] = False
-	
-	def PyMOL_initialize (self):
-		""" Function doc """
-		cmd.delete('all')
-		#-------------------- config PyMOL ---------------------#
-		#                                                       #
+        else:
+            # print '# If control reaches here, the toggle button is up'
+            self.builder.get_object('togglebutton1').set_label('Viewing')
+            self.builder.get_object('label_viewing').set_label('Selecting')
+            self.builder.get_object('combobox1').set_sensitive(True)
+            cmd.edit_mode(0)
+            self.project.settings['edit_mode_button'] = False
+
+    def PyMOL_initialize (self):
+        """ Function doc """
+        cmd.delete('all')
+        #-------------------- config PyMOL ---------------------#
+        #                                                       #
                                                                 #
-		cmd.button("double_left","None","None")                 #
-		cmd.button("single_right","None","None")                #
-		pymol.cmd.set("internal_gui", 0)                        #
-		pymol.cmd.set("internal_gui_mode", 0)                   #
-		pymol.cmd.set("internal_feedback", 0)                   #
-		pymol.cmd.set("internal_gui_width", 220)                #
-		pymol.cmd.set("cartoon_fancy_helices", 'on')            # 
-		sphere_scale = 0.25                                     #
-		stick_radius = 0.15                                     #
-		label_distance_digits = 4                               #
-		mesh_width = 0.3                                        #
-		cmd.set('sphere_scale', sphere_scale)                   #
-		cmd.set('stick_radius', stick_radius)                   #
-		cmd.set('label_distance_digits', label_distance_digits) #
-		cmd.set('mesh_width', mesh_width)                       #
-		cmd.set("retain_order")         # keep atom ordering    #
-		cmd.bg_color("grey")            # background color      #
-		cmd.do("set field_of_view, 70")                         #
-		cmd.do("set ray_shadows,off")                           #
-		cmd.do('set cartoon_highlight_color, 24')               #
-		cmd.set('label_size', 20.00)                            #
-		cmd.set('label_color', 'white')                         #
-		cmd.set('auto_zoom', 1)                                 #
-		#-------------------------------------------------------#
-		
+        cmd.button("double_left","None","None")                 #
+        cmd.button("single_right","None","None")                #
+        pymol.cmd.set("internal_gui", 0)                        #
+        pymol.cmd.set("internal_gui_mode", 0)                   #
+        pymol.cmd.set("internal_feedback", 0)                   #
+        pymol.cmd.set("internal_gui_width", 220)                #
+        pymol.cmd.set("cartoon_fancy_helices", 'on')            # 
+        sphere_scale = 0.25                                     #
+        stick_radius = 0.15                                     #
+        label_distance_digits = 4                               #
+        mesh_width = 0.3                                        #
+        cmd.set('sphere_scale', sphere_scale)                   #
+        cmd.set('stick_radius', stick_radius)                   #
+        cmd.set('label_distance_digits', label_distance_digits) #
+        cmd.set('mesh_width', mesh_width)                       #
+        cmd.set("retain_order")         # keep atom ordering    #
+        cmd.bg_color("grey")            # background color      #
+        cmd.do("set field_of_view, 70")                         #
+        cmd.do("set ray_shadows,off")                           #
+        cmd.do('set cartoon_highlight_color, 24')               #
+        cmd.set('label_size', 20.00)                            #
+        cmd.set('label_color', 'white')                         #
+        cmd.set('auto_zoom', 1)                                 #
+        #cmd.extend('axes', axes)
+        #axes()
+        #-------------------------------------------------------#
+        
 
-	def on_button_ImportPKSelectionToDynamicList_activate (self, button):
-		""" Function doc """
-		
-		
-		text = ''
-		atoms = []
-		#print 'aqui'
-		DynamicList = []
-		try:
-			atom1 = PymolGetTable('pk1')
-			DynamicList.append(atom1[0])
-			model = cmd.get_model('pk1') 
-			atoms  = model.atoms
+    def on_button_ImportPKSelectionToDynamicList_activate (self, button):
+        """ Function doc """
+        
+        
+        text = ''
+        atoms = []
+        #print 'aqui'
+        DynamicList = []
+        try:
+            atom1 = PymolGetTable('pk1')
+            DynamicList.append(atom1[0])
+            model = cmd.get_model('pk1') 
+            atoms  = model.atoms
 
-			for i in atoms:
-				#print i 
-				name  = i.name
-				print name
-			
-			#print 'depois'
+            for i in atoms:
+                #print i 
+                name  = i.name
+                print name
+            
+            #print 'depois'
 
-			
-		except:
-			pass
-		try:
-			atom2 = PymolGetTable('pk2')
-			DynamicList.append(atom2[0])
-		except:
-			pass
-		try:
-			atom3 = PymolGetTable('pk3')
-			DynamicList.append(atom3[0])
-		except:
-			pass
-		try:
-			atom4 = PymolGetTable('pk4')
-			DynamicList.append(atom4[0])
-		except:
-			pass
-		#print 'Index:', DynamicList  # remover este print no futuro
-		self.project.settings['dynamic_list'] = DynamicList
-		self.project.set_qc_DynamicBondsList()
-
-
-
-	def __init__(self):
-
-		print '           Intializing EasyHybrid GTKDynamo2 GUI object          '
-		self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
-		self.HOME           = os.environ.get('HOME')
-		self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-		self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
-		
-
-		#---------------------------------- GTKDYNAMO ------------------------------------#
-		                                                                                  #
-		self.builder = gtk.Builder()                                                      #
-		self.builder.add_from_file(                                                       #
-	 		os.path.join(self.GTKDYNAMO_GUI, "MainGUI.glade"))                            #
-		self.builder.add_from_file(                                                       #
-			os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))              #
-		self.win = self.builder.get_object("win")                                         #
-		self.win.show()                                                                   #
-		self.builder.connect_signals(self)                                                #
-		self.selectedID = None                                                            #
-		self.MeasureToolVisible = False                                                   #
-		self.builder.get_object('notebook3').hide()                                       #
-																						  #
-		#---------------------------------------------------------------------------------#
-		
-		self.GTKDynamoConfig = {                              
-							   'HideWorkSpaceDialog': False,  
-							   'WorkSpace'          : self.HOME,  
-							   'History'            : {}   }                              
-
-		self.Load_GTKDYNAMO_ConfigFile()
-		self.changed = False
-		
-		
-		
-		#-------------------- config GLarea --------------------#
-		container = self.builder.get_object("container")        #
-		pymol.start()                                           #
-		cmd = pymol.cmd                                         #
-		container.pack_end(glarea)                              #
-		glarea.show()                                           #
-		#-------------------------------------------------------
-
-			  #------------------------------------------------#
-			  #-               PyMOL_initialize                #
-			  #------------------------------------------------#
-		#------------------------------------------------------------#
-		self.PyMOL_initialize()                                      #
-		print text1                                                  #
-		#------------------------------------------------------------#
-		
-
-		
-			  #------------------------------------------------#
-			  #-                 WindowControl                 #
-			  #------------------------------------------------#
-		#------------------------------------------------------------#
-		self.window_control = WindowControl(self.builder)            #
-		scale = self.builder.get_object("trajectory_hscale")         #
-		scale.set_range(1, 100)                                      #
-		scale.set_increments(1, 10)                                  #
-		scale.set_digits(0)                                          #
-		#------------------------------------------------------------#
-
-		#--------------------- Setup ComboBoxes ---------------------#
-		#                                                            #
-		combobox = 'combobox1'                                       #
-		combolist = ["Atom", "Residue", "Chain", "Molecule"]         #
-		self.window_control.SETUP_COMBOBOXES(combobox, combolist, 1) #
-		#------------------------------------------------------------#
-
-
-		
-		#--------------------------------------------------GTKDynamo project---------------------------------------------------------#
-		self.project = pDynamoProject(                                                                                               #
-			data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)                                       #
-		self.project.PyMOL = True                                                                                                    #
-		#----------------------------------------------------------------------------------------------------------------------------#
-
-	   
-		self.project.data_path = GTKDYNAMO_TMP
-
-
-		#------------------------------ GTKDynamo Dialogs --------------------------------------#
-		#                                                                                       #
-		'''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
-		# que o usuario farah nas 'entries' '''                                                 #
-		#                                                                                       #
-		self._02MinimizationWindow       = MinimizationWindow(self)                             #
-																								#
-		self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                        #
-																								#
-		self._NewProjectDialog           = NewProjectDialog(self)                               #
-																								#
-		self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                    #
-																								#
-		self.NonBondDialog               = NonBondDialog(self)                                  #
-																								#
-		self.ScanWindow                  = ScanWindow(self)                                     #
-																								#
-		self.ScanWindow2D = ScanWindow2D(self)                                                  #                    
-																								#
-		self.TrajectoryDialog = TrajectoryDialog(self)                                          #
-																								#
-		self.WorkSpaceDialog = WorkSpaceDialog(self)                                            #
-																								#
-		self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
-																								#
-		self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
-																								#
-		self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                              #
-		                                                                                        #
-		self.DialogImportCoordinates = ImportCoordinatesDialog(self)                            #
-		                                                                                        #
-		self.DialogExportCoordinates = ExportCoordinatesDialog(self)                            #
-		
-		self.AboutDialog             = AboutDialog(self)
-		#---------------------------------------------------------------------------------------#
-		self.graph = None
-
-
-		
-		if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
-			self.WorkSpaceDialog.dialog.run()
-			self.WorkSpaceDialog.dialog.hide()
+            
+        except:
+            pass
+        try:
+            atom2 = PymolGetTable('pk2')
+            DynamicList.append(atom2[0])
+        except:
+            pass
+        try:
+            atom3 = PymolGetTable('pk3')
+            DynamicList.append(atom3[0])
+        except:
+            pass
+        try:
+            atom4 = PymolGetTable('pk4')
+            DynamicList.append(atom4[0])
+        except:
+            pass
+        #print 'Index:', DynamicList  # remover este print no futuro
+        self.project.settings['dynamic_list'] = DynamicList
+        self.project.set_qc_DynamicBondsList()
 
 
 
-	def run(self):
-		gtk.main()
+    def __init__(self):
+            
+        print '           Intializing EasyHybrid GTKDynamo2 GUI object          '
+        self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
+        self.HOME           = os.environ.get('HOME')
+        self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+        self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
+        
+
+        #---------------------------------- GTKDYNAMO ------------------------------------#
+                                                                                          #
+        self.builder = gtk.Builder()                                                      #
+        self.builder.add_from_file(                                                       #
+            os.path.join(self.GTKDYNAMO_GUI, "MainGUI.glade"))                            #
+        self.builder.add_from_file(                                                       #
+            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))              #
+        self.win = self.builder.get_object("win")                                         #
+        self.win.show()                                                                   #
+        self.builder.connect_signals(self)                                                #
+        self.selectedID = None                                                            #
+        self.MeasureToolVisible = False                                                   #
+        self.builder.get_object('notebook3').hide()                                       #
+                                                                                          #
+        #---------------------------------------------------------------------------------#
+        
+        self.GTKDynamoConfig = {                              
+                               'HideWorkSpaceDialog': False,  
+                               'WorkSpace'          : self.HOME,  
+                               'History'            : {}   }                              
+
+        self.Load_GTKDYNAMO_ConfigFile()
+        self.changed = False
+        
+        
+        
+        #-------------------- config GLarea --------------------#
+        container = self.builder.get_object("container")        #
+        pymol.start()                                           #
+        cmd = pymol.cmd                                         #
+        container.pack_end(glarea)                              #
+        glarea.show()                                           #
+        #-------------------------------------------------------
+
+              #------------------------------------------------#
+              #-               PyMOL_initialize                #
+              #------------------------------------------------#
+        #------------------------------------------------------------#
+        self.PyMOL_initialize()                                      #
+        print text1                                                  #
+        #------------------------------------------------------------#
+        
+
+        
+              #------------------------------------------------#
+              #-                 WindowControl                 #
+              #------------------------------------------------#
+        #------------------------------------------------------------#
+        self.window_control = WindowControl(self.builder)            #
+        scale = self.builder.get_object("trajectory_hscale")         #
+        scale.set_range(1, 100)                                      #
+        scale.set_increments(1, 10)                                  #
+        scale.set_digits(0)                                          #
+        #------------------------------------------------------------#
+
+        #--------------------- Setup ComboBoxes ---------------------#
+        #                                                            #
+        combobox = 'combobox1'                                       #
+        combolist = ["Atom", "Residue", "Chain", "Molecule"]         #
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 1) #
+        #------------------------------------------------------------#
+
+
+        
+        #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
+        self.project = pDynamoProject(                                                                                               #
+            data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)                                       #
+        self.project.PyMOL = True                                                                                                    #
+        #----------------------------------------------------------------------------------------------------------------------------#
+
+       
+        self.project.data_path = GTKDYNAMO_TMP
+
+
+        #------------------------------ GTKDynamo Dialogs --------------------------------------#
+        #                                                                                       #
+        '''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
+        # que o usuario farah nas 'entries' '''                                                 #
+        #                                                                                       #
+        self._02MinimizationWindow       = MinimizationWindow(self)                             #
+                                                                                                #
+        self.MolecularDynamicsWindow     = MolecularDynamicsWindow(self)                        #
+                                                                                                #
+        self._NewProjectDialog           = NewProjectDialog(self)                               #
+                                                                                                #
+        self.QuantumChemistrySetupDialog = QuantumChemistrySetupDialog(self)                    #
+                                                                                                #
+        self.NonBondDialog               = NonBondDialog(self)                                  #
+                                                                                                #
+        self.ScanWindow                  = ScanWindow(self)                                     #
+                                                                                                #
+        self.ScanWindow2D = ScanWindow2D(self)                                                  #                    
+                                                                                                #
+        self.TrajectoryDialog = TrajectoryDialog(self)                                          #
+                                                                                                #
+        self.WorkSpaceDialog = WorkSpaceDialog(self)                                            #
+                                                                                                #
+        self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
+                                                                                                #
+        self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
+                                                                                                #
+        self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                              #
+                                                                                                #
+        self.DialogImportCoordinates = ImportCoordinatesDialog(self)                            #
+                                                                                                #
+        self.DialogExportCoordinates = ExportCoordinatesDialog(self)                            #
+        
+        self.AboutDialog             = AboutDialog(self)
+        self.SAWDialog               = SAWDialog(self)
+        self.NEBDialog               = NEBDialog(self)
+        #---------------------------------------------------------------------------------------#
+        self.graph = None
+
+
+        
+        if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
+            self.WorkSpaceDialog.dialog.run()
+            self.WorkSpaceDialog.dialog.hide()
+
+
+
+    def run(self):
+        gtk.main()
 
 
 print "Creating object"
