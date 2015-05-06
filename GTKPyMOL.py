@@ -312,6 +312,7 @@ def slabchange(button, event):
     pymol.cmd.clip('slab', slab)
     #cmd.zoom(buffer = Buffer)
     return step
+    #pymol.do(color(str(int(slab))))
     pymol.button(button, 0, x, y, 0)
     pymol.idle()
 
@@ -1530,37 +1531,36 @@ class TrajectoryTool(object):
 			self.MeasureToolPutValores(Distances, Angles, Dihedral)
 
 class GTKDynamoConfig(object):
-	""" Class doc """
-	
-	def __init__ (self):
-		""" Class initialiser """
-		pass
+    """ Class doc """
+    def __init__ (self):
+        """ Class initialiser """
+        pass
 
-	def Save_GTKDYNAMO_ConfigFile (self, filename = None):
-		""" Function doc """
-		path = os.path.join(self.HOME,'.config')
-		if not os.path.exists (path): 
-			os.mkdir (path)
+    def Save_GTKDYNAMO_ConfigFile (self, filename = None):
+        """ Function doc """
+        path = os.path.join(self.HOME,'.config')
+        if not os.path.exists (path): 
+            os.mkdir (path)
 
-		path = os.path.join(path, 'GTKDynamo')
-		if not os.path.exists (path): 
-			os.mkdir (path)
-		
-		filename = os.path.join(path,'gtkdynamo.config')
-		json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
-		
+        path = os.path.join(path, 'GTKDynamo')
+        if not os.path.exists (path): 
+            os.mkdir (path)
+        
+        filename = os.path.join(path,'gtkdynamo.config')
+        json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
+        
 
-	def Load_GTKDYNAMO_ConfigFile (self, filename = None):
-		""" Function doc """
-		#.config
-		path = os.path.join(self.HOME,'.config', 'GTKDynamo', 'gtkdynamo.config')
-		
-		try:
-			self.GTKDynamoConfig = json.load(open(path)) 
-		except:
-			print 'error: GTKDynamo config file not found'
-			print 'open WorkSpace Dialog'
-		
+    def Load_GTKDYNAMO_ConfigFile (self, filename = None):
+        """ Function doc """
+        #.config
+        path = os.path.join(self.HOME,'.config', 'GTKDynamo', 'gtkdynamo.config')
+        
+        try:
+            self.GTKDynamoConfig = json.load(open(path)) 
+        except:
+            print 'error: GTKDynamo config file not found'
+            print 'open WorkSpace Dialog'
+    
 
 
 class gtkdynamo_main(MainMenu, 

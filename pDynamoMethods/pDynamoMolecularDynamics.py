@@ -94,42 +94,78 @@ def RunMolecularDynamics( system, data_path, parameters):
     #normalDeviateGenerator = NormalDeviateGenerator.WithRandomNumberGenerator ( RandomNumberGenerator.WithSeed ( 175189 ) )
     
     if method == "Velocity Verlet Dynamics":
-        VelocityVerletDynamics_SystemGeometry(system,
-                            trajectories              =[ ( trajectory, trajectory_freq) ],
-                            #rng                      =   rng,
-                            log                       =   log, 
-                            #normalDeviateGenerator   =   normalDeviateGenerator ,  # soh vale para a versao 1.8
-                            logFrequency              =   log_freq,
-                            steps                     =   nsteps,
-                            timeStep                  =   timestep,
-                            temperatureScaleFrequency =   temp_scale_freq,
-                            temperatureScaleOption    =   "constant",
-                            temperatureStart          =   temperature )
+        if trajectories == None:
+            VelocityVerletDynamics_SystemGeometry(system,
+                                #rng                      =   rng,
+                                log                       =   log, 
+                                #normalDeviateGenerator   =   normalDeviateGenerator ,  # soh vale para a versao 1.8
+                                logFrequency              =   log_freq,
+                                steps                     =   nsteps,
+                                timeStep                  =   timestep,
+                                temperatureScaleFrequency =   temp_scale_freq,
+                                temperatureScaleOption    =   "constant",
+                                temperatureStart          =   temperature )
+        else:
+            VelocityVerletDynamics_SystemGeometry(system,
+                                trajectories              =[ ( trajectory, trajectory_freq) ],
+                                #rng                      =   rng,
+                                log                       =   log, 
+                                #normalDeviateGenerator   =   normalDeviateGenerator ,  # soh vale para a versao 1.8
+                                logFrequency              =   log_freq,
+                                steps                     =   nsteps,
+                                timeStep                  =   timestep,
+                                temperatureScaleFrequency =   temp_scale_freq,
+                                temperatureScaleOption    =   "constant",
+                                temperatureStart          =   temperature )
+    
     
     elif method == "Leap Frog Dynamics":
-        LeapFrogDynamics_SystemGeometry(system,
-                            trajectories        =[ ( trajectory, trajectory_freq) ],
-                            log                 = log,
-                            logFrequency        = log_freq,
-                            #rng                = rng, 
-                            pressure            = 1.0,
-                            pressureCoupling    = 2000.0,
-                            steps               = nsteps,
-                            timeStep            = timestep,
-                            temperature         = temperature, 
-                            temperatureCoupling = 0.1 
-                            )
+        if trajectories == None:
+            LeapFrogDynamics_SystemGeometry(system,
+                                log                 = log,
+                                logFrequency        = log_freq,
+                                #rng                = rng, 
+                                pressure            = 1.0,
+                                pressureCoupling    = 2000.0,
+                                steps               = nsteps,
+                                timeStep            = timestep,
+                                temperature         = temperature, 
+                                temperatureCoupling = 0.1 
+                                )
+        else:
+            LeapFrogDynamics_SystemGeometry(system,
+                                trajectories        =[ ( trajectory, trajectory_freq) ],
+                                log                 = log,
+                                logFrequency        = log_freq,
+                                #rng                = rng, 
+                                pressure            = 1.0,
+                                pressureCoupling    = 2000.0,
+                                steps               = nsteps,
+                                timeStep            = timestep,
+                                temperature         = temperature, 
+                                temperatureCoupling = 0.1 
+                                )
     
     elif method == "Langevin Dynamics":
-        LangevinDynamics_SystemGeometry(system, 
-                            trajectories        =[ ( trajectory, trajectory_freq) ],
-                            collisionFrequency  = coll_freq, 
-                            log                 = log, 
-                            logFrequency        = log_freq, 
-                            steps               = nsteps, 
-                            temperature         = temperature, 
-                            #rng                = rng, 
-                            timeStep            = timestep )
+        if trajectories == None:
+            LangevinDynamics_SystemGeometry(system, 
+                                collisionFrequency  = coll_freq, 
+                                log                 = log, 
+                                logFrequency        = log_freq, 
+                                steps               = nsteps, 
+                                temperature         = temperature, 
+                                #rng                = rng, 
+                                timeStep            = timestep )
+        else:
+            LangevinDynamics_SystemGeometry(system, 
+                                trajectories        =[ ( trajectory, trajectory_freq) ],
+                                collisionFrequency  = coll_freq, 
+                                log                 = log, 
+                                logFrequency        = log_freq, 
+                                steps               = nsteps, 
+                                temperature         = temperature, 
+                                #rng                = rng, 
+                                timeStep            = timestep )
     else:
         print "Select a method"
     

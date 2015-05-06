@@ -141,35 +141,57 @@ def  pDynamoMinimization(  system = None                ,
     #----------------------------------------------#
     if method == 'Conjugate Gradient':
         try:
-            ConjugateGradientMinimize_SystemGeometry(system,
-                                                     log=log,
-                                                     logFrequency=logFrequency,
-                                                     trajectories=trajectories,
-                                                     maximumIterations=maximumIterations,
-                                                     rmsGradientTolerance=rmsGradientTolerance)
+            if trajectories == None:
+                ConjugateGradientMinimize_SystemGeometry(system                                     ,
+                                                         log                  = log                 ,
+                                                         logFrequency         = logFrequency        ,
+                                                         maximumIterations    = maximumIterations   ,
+                                                         rmsGradientTolerance = rmsGradientTolerance)
+            else:                                                               
+                ConjugateGradientMinimize_SystemGeometry(system                                     ,                
+                                                         log                  = log                 ,
+                                                         logFrequency         = logFrequency        ,
+                                                         trajectories         = trajectories        ,
+                                                         maximumIterations    = maximumIterations   ,
+                                                         rmsGradientTolerance = rmsGradientTolerance)
+            
         except:
             print 'Conjugate Gradient has failed'
 
     if method == 'Steepest Descent':
         # self.SteepestDescent(self.parameters)
         try:
-            SteepestDescentMinimize_SystemGeometry(system,
-                                                   log=log,
-                                                   logFrequency=logFrequency,
-                                                   trajectories=trajectories,
-                                                   maximumIterations=maximumIterations,
-                                                   rmsGradientTolerance=rmsGradientTolerance)
+            if trajectories == None:
+                SteepestDescentMinimize_SystemGeometry(system,
+                                                       log                  = log,
+                                                       logFrequency         = logFrequency,
+                                                       maximumIterations    = maximumIterations,
+                                                       rmsGradientTolerance = rmsGradientTolerance)
+            else:                                                             
+                SteepestDescentMinimize_SystemGeometry(system,                
+                                                       log                  = log,
+                                                       logFrequency         = logFrequency,
+                                                       trajectories         = trajectories,
+                                                       maximumIterations    = maximumIterations,
+                                                       rmsGradientTolerance = rmsGradientTolerance)
         except:
             print 'Steepest Descent has failed'
 
     if method == 'LBFGS':
         try:
-            LBFGSMinimize_SystemGeometry(system,
-                                         log=log,
-                                         logFrequency=logFrequency,
-                                         trajectories=trajectories,
-                                         maximumIterations=maximumIterations,
-                                         rmsGradientTolerance=rmsGradientTolerance)
+            if trajectories == None:
+                LBFGSMinimize_SystemGeometry(system,
+                                             log                  = log,
+                                             logFrequency         = logFrequency,
+                                             maximumIterations    = maximumIterations,
+                                             rmsGradientTolerance = rmsGradientTolerance)
+            else:                                                   
+                LBFGSMinimize_SystemGeometry(system,                
+                                             log                  = log,
+                                             logFrequency         = logFrequency,
+                                             trajectories         = trajectories,
+                                             maximumIterations    = maximumIterations,
+                                             rmsGradientTolerance = rmsGradientTolerance)
         except:
             print 'LBFGS has failed (LBFGS is only available in pDynamo ver 1.8.2 or newer).'
 

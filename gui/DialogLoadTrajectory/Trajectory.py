@@ -53,11 +53,11 @@ class TrajectoryDialog():
         stride           = int(self.builder.get_object('TrajectoryDialog_stride').get_text())
         #traj_name        = self.builder.get_object('filechooserbutton1').get_text()
         #traj_name2       = self.builder.get_object('filechooserbutton2').get_text()
-        new_pymol_object = self.builder.get_object('entry1').get_text()
-        mode             = self.builder.get_object('combobox1').get_active_text()
+        new_pymol_object  = self.builder.get_object('entry1').get_text()
+        _type             = self.builder.get_object('combobox1').get_active_text()
         
         """ Function doc """
-        if mode == 'folder - pDynamo':
+        if _type == 'folder - pDynamo':
             traj_name        = self.builder.get_object('filechooserbutton1').get_filename()
 
         else:
@@ -68,16 +68,16 @@ class TrajectoryDialog():
               stride           ,
               traj_name        ,  
               new_pymol_object ,
-              mode)            
+              _type)            
         
-        frames = self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object)
+        frames = self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object, _type)
         self.GTKDynamoSession.builder.get_object('trajectory_max_entrey').set_text(str(frames))
         self.GTKDynamoSession.on_TrajectoryTool_HSCALE_update()
         
     def on_combobox1_changed(self, button):
-        mode        = self.builder.get_object('combobox1').get_active_text()
+        _type        = self.builder.get_object('combobox1').get_active_text()
         """ Function doc """
-        if mode == 'folder - pDynamo':
+        if _type == 'folder - pDynamo':
             self.builder.get_object('filechooserbutton2').hide()
             self.builder.get_object('filechooserbutton1').show()
         else:

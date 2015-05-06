@@ -1064,15 +1064,32 @@ class pDynamoProject():
 
         return type_
 
-    def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object):
+    def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object, _type):
         cmd.disable('all')
+
+        
 
         i = 0 
         i = i + first
         outPath = ( traj_name )
         print first, last, stride
 
-        trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
+        print 'Energy before'
+        self.system.Energy()
+        
+        if _type == "folder - pDynamo": #, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS'
+            print "folder - pDynamo"
+            trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
+        
+        if _type == "trj - AMBER":
+            print "trj - AMBER"
+            trajectory = AmberTrajectoryFileReader (traj_name, self.system)
+
+
+        print 'Energy after'
+        self.system.Energy()
+
+        
         i = 0
         a = 0
         i = i + first
