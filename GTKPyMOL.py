@@ -1201,6 +1201,59 @@ class TreeviewHistory(object):
             cmd.center(PyMOL_Obj)
 
 
+    def on_menuitem_set_as_active_activate (self, item):#, event):
+        """ Function doc """
+        #label     = self.builder.get_object('TreeViewObjLabel').get_text()
+        actualObj = self.project.settings['PyMOL_Obj']
+        label     = 'test'
+        PyMOL_Obj = self.selectedObj
+        data_path = self.project.data_path
+        file_out  = 'exportXYZ.xyz'
+        state     = -1
+        
+        '''
+                                                  d i a l o g
+                                         #  -  I M P O R T A N T  -  #                                   
+                            #---------------------------------------------------------#                  
+                            #                                                         #                  
+                            #        Message Dialog  -  when 2 buttons will be showed #                  
+                            #  1 -create the warning message                          #                  
+                            #  2 -hide the actual dialog - optional                   #                  
+                            #  3 -show the message dialog                             #                  
+                            #  4 -hide the message dialog                             #                  
+                            #  5 -check the returned valor by the message dialog      #                  
+                            #  6 -do something                                        #                  
+                            #  7 -restore the actual dialog - optional                #                  
+                            #---------------------------------------------------------#                  
+        '''
+                                                                                              
+        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Set object: " +PyMOL_Obj +" as active?")  
+        dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                          
+        a = dialog.run()  # possible "a" valors                                                           
+        # 4 step          # -8  -  yes                                                                    
+        dialog.hide()     # -9  -  no                                                                     
+                          # -4  -  close                                                                  
+                          # -5  -  OK                                                                     
+                          # -6  -  Cancel                                                                 
+                                                                                                          
+        # 5 step                                                                                          
+        if a == -8:                                                                                       
+            # 6 step 
+            filename = PyMOL_export_XYZ_to_file(PyMOL_Obj, label, data_path, file_out, state)
+            self.project.load_coordinate_file_to_system(filename)
+            self.project.settings['PyMOL_Obj'] = PyMOL_Obj
+            self.project.SystemCheck(status = True, PyMOL = True, _color = False, _cell = True, treeview_selections = True)
+            
+            #liststore = self.builder.get_object('liststore2')
+            #self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , PyMOL_Obj)
+            #print filename                                                                
+        else:                                                                                             
+            return 0 
+        
+        
+        
+
 
     def on_hide_items_activate (self, item, event):
         """ Function doc """ 

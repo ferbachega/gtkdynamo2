@@ -1069,6 +1069,23 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="menuitem_set_as_active">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
+        <property name="label" translatable="yes">set as active</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_menuitem_set_as_active_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem14">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="menuitem_center">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
