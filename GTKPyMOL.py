@@ -728,6 +728,7 @@ class MainToolBar(object):
 	def on_ToolBar_buttonSinglePoint_clicked(self, button):
 		""" Function doc """
 		energy = self.project.ComputeEnergy()
+        #colocar um check system aqui 
 		self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")   
 		dialog = self.builder.get_object('EnergyMessageDialog')
 		dialog.run()                                                                
@@ -1145,7 +1146,6 @@ class TreeviewHistory(object):
         if event.button == 1:
             print "Mostrar menu de contexto botao1"
 
-
     def on_treeview2_show_logFile (self, item):
         """ Function doc """
         #pprint(self.project.settings['job_history'][self.selectedID]['log'])
@@ -1153,7 +1153,6 @@ class TreeviewHistory(object):
         print    self.project.settings['job_history'][self.selectedID]['log']
         editor = TextEditor.GTKDynamoTextEditor(filein)
         #editor.load_file(filein)
-
     def on_menuitem_PlotLogFile_activate(self, item):
         """ Function doc """
         filein = self.project.settings['job_history'][self.selectedID]['log']
@@ -1199,7 +1198,6 @@ class TreeviewHistory(object):
 
         if item == self.builder.get_object('menuitem_center'):
             cmd.center(PyMOL_Obj)
-
 
     def on_menuitem_set_as_active_activate (self, item):#, event):
         """ Function doc """
@@ -1251,10 +1249,6 @@ class TreeviewHistory(object):
         else:                                                                                             
             return 0 
         
-        
-        
-
-
     def on_hide_items_activate (self, item, event):
         """ Function doc """ 
         PyMOL_Obj = self.selectedObj
@@ -1279,21 +1273,6 @@ class TreeviewHistory(object):
 
         if item == self.builder.get_object('menuitem_hide_surface'):
             cmd.hide ('surface', PyMOL_Obj)
-        #if item == self.builder.get_object('menuitem_white'):
-        #	cmd.util.cbaw(PyMOL_Obj)
-        #
-        #if item == self.builder.get_object('menuitem_slate'):
-        #	cmd.util.cbab(PyMOL_Obj)
-        #
-        #if item == self.builder.get_object('menuitem_orange'):
-        #	cmd.util.cbao(PyMOL_Obj)
-        #
-        #if item == self.builder.get_object('menuitem_purple'):
-        #	cmd.util.cbap(PyMOL_Obj)
-        #
-        #if item == self.builder.get_object('menuitem_pink'):
-        #	cmd.util.cbak(PyMOL_Obj)
-
 
     def on_color_items_activate (self, item, event):
         """ Function doc """
@@ -1335,7 +1314,6 @@ class TreeviewHistory(object):
         
         if item == self.builder.get_object('menuitem_pink'):
             cmd.util.cbak(PyMOL_Obj)
-
 
     def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
         if event.button == 3:
@@ -1453,21 +1431,6 @@ class TreeviewSelections(object):
 		Sets the toggled state on the toggle button to true or false.
 		"""
 		print cell, path
-		#model[path][1] = not model[path][1]
-		#print "Toggle '%s' to: %s" % (model[path][0], model[path][1],)
-		#return
-
-	#def on_treeview2_select_cursor_row2 (self, tree, path, column):
-	#   """ Function doc """
-	#   print "Mostrar menu de contexto botao1"
-	#   selection     = tree.get_selection()
-	#   model         = tree.get_model()
-	#   (model, iter) = selection.get_selected()
-	#   pymol_object  = model.get_value(iter, 2)  # @+
-	#   true_or_false = model.get_value(iter, 0)
-	#   
-	#   print pymol_object, true_or_false
-
 
 	def  on_treeview2_select_cursor_parent(self, tree, path, column):
 		""" Function doc """

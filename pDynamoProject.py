@@ -131,21 +131,6 @@ class pDynamoProject():
         self.settings['topology']    = charmm_topologies
         self.settings['potencial']   = "MM"
 
-
-        #coords     =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.chm'
-        #topology   =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/ava.psfx'
-        #parameters =  '/home/fernando/programs/pDynamo-1.9.0/pBabel-1.9.0/data/charmm/par_all27_prot_na.prm'
-        
-        #parameters          = CHARMMParameterFiles_ToParameters ([charmm_params])
-        #system              = CHARMMPSFFile_ToSystem ( charmm_topologies, isXPLOR = True, parameters = parameters )
-        #system.coordinates3 = CHARMMCRDFile_ToCoordinates3 ( coords )
-        #system.DefineNBModel ( NBModelFull ( ) )
-        #system.DefineNBModel ( NBModelABFS ( ) )
-        #system.Energy()
-        #Pickle('new.pkl', system)
-        #system.Summary()
-        #self.system = system
-
     def set_GROMACS_MM(self, gromacs_params, gromacs_coords, dualLog=None):
 
         parameters = GromacsParameters_ToParameters(
@@ -197,10 +182,7 @@ class pDynamoProject():
         self.settings['potencial']   = "MM"
         self.settings['parameters']  = opls_params
         self.settings['coordinates'] = opls_coords
-        #return self.system
 
-    
-    
     def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
         qc_table = self.settings['qc_table']                                                     
         nbModel  = self.nbModel
@@ -224,7 +206,6 @@ class pDynamoProject():
         
         
         self.SystemCheck()
-        #self.set_qc_DynamicBondsList()
 
     def set_qc_parameters_DFT (self, qc_method, charge, multiplicity, density_tol, Maximum_SCF, densityBasis, functional, orbitalBasis):
         nbModel   = self.nbModel
@@ -251,40 +232,70 @@ class pDynamoProject():
             self.settings['QC']      = True
         self.SystemCheck()
 
-    def set_qc_parameters_ORCA(self, qc_method, charge, multiplicity, qc_table, orca_string, ORCA_pal, ORCA_command, pDynamo_scratch):
+    def set_qc_parameters_ORCA(self,
+                              charge = 0   , 
+                        multiplicity = 1   , 
+                            qc_table = []  , 
+                         ORCA_String = ''  , 
+                                 PAL = 1   ): 
+                    #    ORCA_command = None, 
+                    # pDynamo_scratch = None):
+        
         """
         #scratch='/home/ramon/scratch'
         #command='/home/ramon/progs/orca_3_0_0_linux_x86-64/orca'
+              qc_method = 
+                 charge = 
+           multiplicity = 
+               qc_table = 
+            ORCA_String = 
+               ORCA_pal = 
+           ORCA_command = 
+        pDynamo_scratch = 
+        
         """
-
+        
+        ORCAPATH     = os.environ.get('ORCA')                
+        print ORCAPATH
+        ORCA_command = os.path.join(ORCAPATH, 'orca')
+        pDynamo_scratch = self.settings['data_path']
+        
+        
+        
+        
         nbModel     = NBModelABFS( )
-        PAL         = " PAL"+str(ORCA_pal)
+        qc_table  = self.settings['qc_table']
+        pal         = " PAL"+str(PAL)
        
         print "number of processor = ", PAL
         
-        if ORCA_pal == 1:
-            qcModel = QCModelORCA (orca_string, scratch = pDynamo_scratch, command =  ORCA_command)
+        if int(PAL) == 1:
+            qcModel = QCModelORCA (ORCA_String, scratch = pDynamo_scratch, command =  ORCA_command)
 
         else:
-            orca_string = orca_string + PAL
-            qcModel = QCModelORCA (orca_string, scratch = pDynamo_scratch, command =  ORCA_command)
+            ORCA_String = ORCA_String + pal
+            qcModel = QCModelORCA (ORCA_String, scratch = pDynamo_scratch, command =  ORCA_command)
 
         if len(qc_table) != 0:
             Qgroup  = Selection (qc_table)
-            self.system.DefineQCModel ( qcModel,  dualLog, qcSelection = Qgroup)
+            self.system.DefineQCModel ( qcModel,  qcSelection = Qgroup)
             nbModel = NBModelORCA ( )
             self.system.DefineNBModel ( nbModel )
-            self.system.Summary ( dualLog )
+            self.system.Summary ( )
             
             self.settings['potencial'] = "QC"
             self.settings['QC']  	 = True
         else:
             self.system.DefineQCModel ( qcModel )
-            self.system.Summary (dualLog )
+            self.system.Summary ()
 
             self.settings['potencial'] = "QC"
-            self.settings['QC']      = False	
+            self.settings['QC']      = True	
+
         self.system.electronicState           = ElectronicState  ( charge = charge, multiplicity = multiplicity )
+        
+        #print '\n\n\n passei aqui \n\n\n'
+        self.SystemCheck()
 
     def set_qc_DynamicBondsList(self):
         pass
@@ -310,11 +321,7 @@ class pDynamoProject():
                     #PyMOL_BondTable[i+1,j+1] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
                     #print i+1, element1, j+1,element2, "BOND: ", Rcov, Distance_i_j, Bond_Unbond
                     self.BondTable[i+1,j+1] = [Rcov, Bond_Unbond]
-        
-        #print self.BondTable
-
-
-    
+          
     def DeleteActualProject (self):
         """ Function doc """
         
@@ -507,9 +514,6 @@ class pDynamoProject():
 		else:
 			print "file type not supported"
 
-
-    
-    
     def importCellParameters (self):
         """ Function doc """
         try:
@@ -539,7 +543,6 @@ class pDynamoProject():
         #except:
         #    cell = None
         return cell
-    
     
     def importPDBInformantion(self):
         """ Function doc """
@@ -589,89 +592,15 @@ class pDynamoProject():
             self.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
             n = n + 1
     
-        #cmd.delete(self.settings['PyMOL_Obj'])
-        #cmd.load_model(atoms, self.settings['PyMOL_Obj'])
-        #cmd.update(self.settings['PyMOL_Obj'], "_tmp")
-        #cmd.delete("_tmp")
-    
-        #print self.pdbInfo
-
-        
-        #PDBFile_FromSystem (self.settings['data_path'] + "/my_system_full.pdb", self.system)
-        #AMBER_READ  = open (self.settings['data_path'] + "/my_system_full.pdb", "r")
-        #
-        #for line in AMBER_READ:						
-        #    line2 = line.split()				
-        #    line1 = line[0:6]					
-        #    if line1 == "ATOM  " or line1 == "HETATM" :	
-        #        index   = line[6:11]	
-        #        A_name  = line[11:16]	
-        #        resn    = line[16:20] 	
-        #        chain   = line[20:22]	
-        #        resi    = line[22:26]	
-        #        gap     = line[26:30]	
-        #        x       = line[30:38]	
-        #        y       = line[38:46]	
-        #        z       = line[46:54]	
-        #                                
-        #        b       = line[54:60]	
-        #        oc      = line[60:66]	
-        #        gap2    = line[66:76]	
-        #        atom    = line[76:78] 	
-        #        
-        #        index2  = index.split()
-        #        index2  = int(index2[0])			
-        #
-        #                
-        #        A_name2 = A_name.split()		
-        #        A_name2 = A_name2[0]				
-        #
-        #
-        #        resn2 = resn.split()
-        #        resn2 = resn2[0]
-        #
-        #        
-        #        #chain2 = chain.split()
-        #        #chain2 = chain2[0]
-        #
-        #        
-        #        resi2 = resi.split()
-        #        resi2 = int(resi2[0])			
-        #
-        #        
-        #        atom2 = atom.split()
-        #        atom2 = atom2[0]			
-        #        if chain   == "  ":
-        #            chain2 = 'A' 
-        #        else:
-        #            chain2 = chain.split()
-        #            chain2 = chain2[0]
-        #            
-        #        lista  = ( index2, A_name2, resn2, chain2, resi2, atom2 )
-        #        
-        #        self.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
-        #        #for i in self.pdbInfo:
-        #        #    print i, self.pdbInfo[i]
-        
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    
-    
-    
-    def SystemCheck(self, status = True, PyMOL = True, _color = True, _cell = True, treeview_selections = True): #(self, status = True, PyMOL = True, _color = True ):
+    def SystemCheck(self, status = True, 
+                           PyMOL = True, 
+                          _color = True, 
+                           _cell = True, 
+             treeview_selections = True,
+                     ORCA_backup = True 
+                    ): 
         pass
+        
         if self.system == None:
             #print "System empty"
             StatusText =''
@@ -711,7 +640,6 @@ class pDynamoProject():
                 StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
                 #p#print (self.parameters['Crystal Class'])
             self.window_control.STATUSBAR_SET_TEXT(StatusText) 
-            #p#print(self.parameters)      
         else:
             pass
 
@@ -814,15 +742,12 @@ class pDynamoProject():
             
             except:
                 pass
-            #print '16'
             
         if treeview_selections:
             pymol_objects2 = cmd.get_names('selections')
             
             liststore      = self.builder.get_object('liststore1')
             self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
-            #print '17'
-
         
         #-----------------------------------------------#
         #                   DrawCell                    #
@@ -849,6 +774,39 @@ class pDynamoProject():
             print 'final'
             return SummaryFile 
 
+        
+        if ORCA_backup == True:
+            ORCADIR = os.path.join(self.settings['data_path'], 'ORCAFILES')
+            if not os.path.isdir(ORCADIR):                             
+                os.mkdir(ORCADIR)                                      
+                print "creating: ", ORCADIR                            
+            
+            
+            
+            try:
+                SCRATCH = self.settings['data_path']
+
+
+                #-----------------------------------------------------------------------------------#
+                localtime = time.asctime(time.localtime(time.time()))                               #
+                localtime = localtime.split()                                                       #
+                #  0     1    2       3         4                                                   #
+                #[Sun] [Sep] [28] [02:32:04] [2014]                                                 #
+                LogFile = 'Energy_'+localtime[1]+'_'+localtime[2]+'_'+localtime[3]+'_'+localtime[4] #
+                #-----------------------------------------------------------------------------------#
+
+
+                os.rename(SCRATCH + "/job.out",    ORCADIR+'/'+LogFile+".out" )
+                os.rename(SCRATCH + "/job.gbw",    ORCADIR+'/'+LogFile+".gbw" )
+                print   "Saving orca output log:", ORCADIR+'/'+LogFile+".out"
+                print   "Saving orca output gbw:", ORCADIR+'/'+LogFile+".gbw"
+
+            except:
+                a = None
+                
+        
+        
+        
         
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
@@ -1336,24 +1294,6 @@ class pDynamoProject():
         #---------------------------------------------------#
 
         return True
-    
-    #def Scan1D (self, parameters):
-    #    """ Function doc """
-    #    print parameters
-    #
-    #    self.ActiveModeCheck()
-    #
-    #    #pDynamoMinimization(self.system, method, parameters, self.data_path)
-    #    RunScan( self.system, self.settings['data_path'], parameters)
-    #    
-    #    
-    #    #------------------  increment step  ---------------#
-    #    #                                                   #
-    #    self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn')         #
-    #    #                                                   #
-    #    #---------------------------------------------------#
-    #
-    #    return True   
     
     def ActiveModeCheck(self):
         """ Function doc """

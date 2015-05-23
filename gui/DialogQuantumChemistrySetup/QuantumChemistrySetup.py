@@ -237,13 +237,12 @@ class QuantumChemistrySetupDialog():
             
             PAL              = self.builder.get_object('SpinButton1_ORCA_pal').get_value_as_int()
             ORCA_String      = self.builder.get_object('ORCA_entry_keywords').get_text()
-            print ORCA_method , ORCA_SCF  , ORCA_basis , ORCA_POLARIZATION, ORCA_DIFFUSE    , PAL,  ORCA_String
-
-
-        #print charge, multiplicity 
-        #nbModel         = self.project.settings['nbModel']
-        orca_string     = self.builder.get_object('ORCA_entry_keywords').get_text()
-        #self.project.settings['qc_method']     = qc_method
+            
+            self.project.set_qc_parameters_ORCA(charge = charge       , 
+                                          multiplicity = multiplicity , 
+                                              qc_table = qc_table     , 
+                                           ORCA_String = ORCA_String  ,        
+                                                   PAL = PAL          )        
         self.project.settings['charge']        = charge
         self.project.settings['multiplicity']  = multiplicity	
 
