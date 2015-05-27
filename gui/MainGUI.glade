@@ -1645,6 +1645,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="image">image36</property>
                         <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_ToolBar_buttonSaveProject_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1655,6 +1656,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="image">image37</property>
                         <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_ToolBar_buttonSave_As_Project_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1834,6 +1836,22 @@
                         <signal name="activate" handler="on_MainMenu_Edit_menuitemNonBondingModels_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem25">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Preferences</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -1859,15 +1877,6 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="menuitem25">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Set Background Color</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkCheckMenuItem" id="ShowValences">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1885,6 +1894,34 @@
                         <property name="label" translatable="yes">Cell</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_toolbar_showCell_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem28">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="menuitem29">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Job history</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowJobHistory_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckMenuItem" id="PyMOL_command_line_check">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">PyMOL command line</property>
+                        <property name="use_underline">True</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_MainMenu_View_menuitem_PYMOL_command_line" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -2259,6 +2296,7 @@
               <object class="GtkToggleToolButton" id="toolbar_showCell">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Show cell</property>
                 <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">toolbutton8</property>
                 <property name="use_underline">True</property>

@@ -483,6 +483,16 @@ class MainMenu (object):
         self.TrajectoryDialog.dialog.run()
         self.TrajectoryDialog.dialog.hide()
 
+    
+    def on_MainMenu_View_menuitemShowJobHistory_activate(self, button):
+        #print """ Function doc """
+        if self.builder.get_object('menuitem29').get_active() == True:
+            #cmd.set('valence', 0.1)
+            self.builder.get_object('notebook2').show()
+        else:
+            #cmd.set('valence', 0.0)
+            self.builder.get_object('notebook2').hide()
+    
     def on_MainMenu_View_menuitemShowValences_activate(self, button):
         #print """ Function doc """
         if self.builder.get_object('ShowValences').get_active() == True:
@@ -492,6 +502,18 @@ class MainMenu (object):
             #cmd.set('valence', 0.0)
             cmd.do('set valence, 0.0')
 
+    def on_MainMenu_View_menuitem_PYMOL_command_line(self, button):
+        """ Function doc """
+        #print """ Function doc """
+        if self.builder.get_object('PyMOL_command_line_check').get_active() == True:
+            #cmd.set('valence', 0.1)
+            self.builder.get_object('alignment5').show()
+        else:
+            #cmd.set('valence', 0.0)
+            self.builder.get_object('alignment5').hide()
+            
+            
+            
     def on_MainMenu_File_NewProject_activate(self, button):
         """ Function doc """
         localtime = time.asctime(time.localtime(time.time()))
@@ -1690,6 +1712,11 @@ class gtkdynamo_main(MainMenu,
             
         print '           Intializing EasyHybrid GTKDynamo2 GUI object          '
         self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
+        try:
+            self.ORCA           = os.environ.get('ORCA')
+        except:
+            self.ORCA           = None
+            pass
         self.HOME           = os.environ.get('HOME')
         self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
         self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
@@ -1711,13 +1738,22 @@ class gtkdynamo_main(MainMenu,
                                                                                           #
         #---------------------------------------------------------------------------------#
         
+        
+        
         self.GTKDynamoConfig = {                              
-                               'HideWorkSpaceDialog': False,  
+                               'HideWorkSpaceDialog': False    ,  
                                'WorkSpace'          : self.HOME,  
-                               'History'            : {}   }                              
+                               'ORCAPATH'           : self.ORCA,
+                               'History'            : {}       }                              
 
         self.Load_GTKDYNAMO_ConfigFile()
         self.changed = False
+        
+        try:
+            a = self.GTKDynamoConfig['ORCAPATH']
+        except:
+            self.GTKDynamoConfig['ORCAPATH'] = self.ORCA
+        
         
         
         
@@ -1814,7 +1850,14 @@ class gtkdynamo_main(MainMenu,
             self.WorkSpaceDialog.dialog.run()
             self.WorkSpaceDialog.dialog.hide()
 
+        
+        
+        # hide widgets - not ethe final version
+        self.builder.get_object('toolbutton7_print_tudo').hide()
+        self.builder.get_object('hbox4').hide()
 
+        
+        
 
     def run(self):
         gtk.main()

@@ -230,6 +230,8 @@ class QuantumChemistrySetupDialog():
             ORCA_basis        = self.builder.get_object('combobox3_ORCA_basis'       ).get_active_text()
             ORCA_POLARIZATION = self.builder.get_object('combobox2_ORCA_POLARIZATION').get_active_text()
             ORCA_DIFFUSE      = self.builder.get_object('combobox2_ORCA_DIFFUSE'     ).get_active_text()
+            ORCA_PATH         = self.builder.get_object('ORCA_entry_command'         ).get_text()
+            
             if self.builder.get_object('ORCA_radiobutton_restrict'):
                 print 'radiobutton_restrict = True'
             else:
@@ -238,11 +240,15 @@ class QuantumChemistrySetupDialog():
             PAL              = self.builder.get_object('SpinButton1_ORCA_pal').get_value_as_int()
             ORCA_String      = self.builder.get_object('ORCA_entry_keywords').get_text()
             
+            
+            
             self.project.set_qc_parameters_ORCA(charge = charge       , 
                                           multiplicity = multiplicity , 
                                               qc_table = qc_table     , 
                                            ORCA_String = ORCA_String  ,        
-                                                   PAL = PAL          )        
+                                                   PAL = PAL          ,
+                                             ORCA_PATH = ORCA_PATH)        
+        
         self.project.settings['charge']        = charge
         self.project.settings['multiplicity']  = multiplicity	
 
@@ -276,6 +282,11 @@ class QuantumChemistrySetupDialog():
             self.builder.get_object('06_window_label75_ORCA1').set_sensitive(False)
     
 	
+    def save_ORCAPATH(self, widget):
+        """ Function doc """
+        self.GTKDynamoSession.GTKDynamoConfig['ORCAPATH'] = self.builder.get_object('ORCA_entry_command').get_text()
+        self.GTKDynamoSession.Save_GTKDYNAMO_ConfigFile()
+    
     def ORCA_check_parameters(self, widget):
         """ Function doc """
         orca_method = self.builder.get_object('combobox1_ORCA_method'      ).get_active_text()
@@ -325,9 +336,16 @@ class QuantumChemistrySetupDialog():
             self.GTKDynamoSession = GTKDynamoSession
             self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
             self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
-        #self.project = project
-        #self.window_control = window_control
-        #self.main_builder = main_builder
+            
+            
+            #      - - - importing ORCA PATH from GTKDynamoConfig file. - - -        
+            #-----------------------------------------------------------------------#
+            try:                                                                    #
+                ORCA                  = GTKDynamoSession.GTKDynamoConfig['ORCAPATH']#
+            except:                                                                 #
+                ORCA = 'teste'                                                      #
+            #-----------------------------------------------------------------------#
+
 
         self.builder.add_from_file(
             os.path.join(self.GTKDYNAMO_GUI, 'DialogQuantumChemistrySetup',  'QuantumChemistrySetupDialog.glade'))
@@ -342,7 +360,7 @@ class QuantumChemistrySetupDialog():
         #self.builder.get_object('06_window_alignment3_ORCA1').hide()
         self.builder.get_object('06_window_alignment3_ORCA').hide()
         self.builder.get_object('06_window_alignment3_ORCA2').hide()
-        
+        self.builder.get_object('ORCA_entry_command').set_text(ORCA)
         
         '''
 		--------------------------------------------------

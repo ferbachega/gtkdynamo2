@@ -20,6 +20,9 @@ import time
 import json
 
 
+
+
+
 class pDynamoProject():
 
     def __init__(self, data_path=None, PyMOL=False, name='untitled', builder=None, window_control=None, cmd = None):
@@ -237,8 +240,8 @@ class pDynamoProject():
                         multiplicity = 1   , 
                             qc_table = []  , 
                          ORCA_String = ''  , 
-                                 PAL = 1   ): 
-                    #    ORCA_command = None, 
+                                 PAL = 1   , 
+                         ORCA_PATH   = None): 
                     # pDynamo_scratch = None):
         
         """
@@ -254,14 +257,16 @@ class pDynamoProject():
         pDynamo_scratch = 
         
         """
+        if ORCA_PATH == None:
+            print 'ORCA_PATH = None'
+            #ORCA_PATH     = os.environ.get('ORCA')                
+            #ORCA_command = os.path.join(ORCA_PATH, 'orca')
+            ORCA_command = None
         
-        ORCAPATH     = os.environ.get('ORCA')                
-        print ORCAPATH
-        ORCA_command = os.path.join(ORCAPATH, 'orca')
-        pDynamo_scratch = self.settings['data_path']
-        
-        
-        
+        else:
+            ORCA_command = os.path.join(ORCA_PATH, 'orca')
+
+        print '\n\n\n', ORCA_command, '\n\n\n'
         
         nbModel     = NBModelABFS( )
         qc_table  = self.settings['qc_table']
@@ -270,11 +275,11 @@ class pDynamoProject():
         print "number of processor = ", PAL
         
         if int(PAL) == 1:
-            qcModel = QCModelORCA (ORCA_String, scratch = pDynamo_scratch, command =  ORCA_command)
+            qcModel = QCModelORCA (ORCA_String,command =  ORCA_command) #scratch = pDynamo_scratch, command =  ORCA_command)
 
         else:
             ORCA_String = ORCA_String + pal
-            qcModel = QCModelORCA (ORCA_String, scratch = pDynamo_scratch, command =  ORCA_command)
+            qcModel = QCModelORCA (ORCA_String,command =  ORCA_command) #scratch = pDynamo_scratch, command =  ORCA_command)
 
         if len(qc_table) != 0:
             Qgroup  = Selection (qc_table)
@@ -776,38 +781,9 @@ class pDynamoProject():
 
         
         if ORCA_backup == True:
-            ORCADIR = os.path.join(self.settings['data_path'], 'ORCAFILES')
-            if not os.path.isdir(ORCADIR):                             
-                os.mkdir(ORCADIR)                                      
-                print "creating: ", ORCADIR                            
+            self.back_orca_output()
             
             
-            
-            try:
-                SCRATCH = self.settings['data_path']
-
-
-                #-----------------------------------------------------------------------------------#
-                localtime = time.asctime(time.localtime(time.time()))                               #
-                localtime = localtime.split()                                                       #
-                #  0     1    2       3         4                                                   #
-                #[Sun] [Sep] [28] [02:32:04] [2014]                                                 #
-                LogFile = 'Energy_'+localtime[1]+'_'+localtime[2]+'_'+localtime[3]+'_'+localtime[4] #
-                #-----------------------------------------------------------------------------------#
-
-
-                os.rename(SCRATCH + "/job.out",    ORCADIR+'/'+LogFile+".out" )
-                os.rename(SCRATCH + "/job.gbw",    ORCADIR+'/'+LogFile+".gbw" )
-                print   "Saving orca output log:", ORCADIR+'/'+LogFile+".out"
-                print   "Saving orca output gbw:", ORCADIR+'/'+LogFile+".gbw"
-
-            except:
-                a = None
-                
-        
-        
-        
-        
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
@@ -1184,9 +1160,6 @@ class pDynamoProject():
         self.clean_fix_table()
         self.importPDBInformantion()
         
-
-        
-        
     def put_fix_table(self, fix_table):
         self.system.DefineFixedAtoms(Selection(fix_table))
         
@@ -1256,6 +1229,13 @@ class pDynamoProject():
     def ComputeEnergy(self):  # Compute Energy
         self.ActiveModeCheck()
         energy = pDynamoEnergy(self.system, self.settings['data_path'])
+        self.SystemCheck( status = False, 
+                           PyMOL = False, 
+                          _color = False, 
+                           _cell = False, 
+             treeview_selections = False,
+                     ORCA_backup = True 
+                    )
         return energy
         
     def Minimization(self, method='Conjugate Gradient', parameters=None):
@@ -1316,6 +1296,50 @@ class pDynamoProject():
         else:
             print "Using GTKDynamo in passive mode"
 
+
+
+    def back_orca_output(self):
+        #try:
+                             # ORCA OUTPUT FOLDER
+        #-------------------------------------------------------------------#
+        ORCADIR = os.path.join(self.settings['data_path'], 'ORCAFILES')     #
+        if not os.path.isdir(ORCADIR):                                      #
+            os.mkdir(ORCADIR)                                               #
+            print "creating: ", ORCADIR                                     #
+        #-------------------------------------------------------------------#
+                        # Local time  -  LogFileName 
+        #----------------------------------------------------------------------------------------
+        localtime = time.asctime(time.localtime(time.time()))                                    
+        localtime = localtime.split()                                                            
+        #  0     1    2       3         4                                                        
+        #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
+        string = '_'+localtime[1]+'_'+localtime[2]+'_'+localtime[3]+'_'+localtime[4]     #
+        #----------------------------------------------------------------------------------------
+        
+        SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
+        
+        try:
+            os.rename(SCRATCH + "/job.out", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".out" )
+            print   "Saving orca output: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".out"
+        except:
+            pass
+        
+        try:
+            os.rename(SCRATCH + "/job.log", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".log" )
+            print   "Saving orca output: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".log"
+        except:
+            pass
+        
+        try:
+            os.rename(SCRATCH + "/job.gbw", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".gbw" )
+            print   "Saving orca GBW file: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".gbw"
+        except:
+            pass 
+        
+        
+
+        #except:
+        #    pass
 
 
 def main():

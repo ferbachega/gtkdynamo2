@@ -428,6 +428,53 @@ if _pDynamo == False:
 
 
 
+       #-----------------------------------#
+       #                                   #
+       #              O R C A              #
+       #                                   #
+       #-----------------------------------#
+
+#------------------------------------------------------------------------------------------#
+print "\nInstalling ORCA\n"
+print '''ORCA is a general purpose ab initio and DFT quantum chemistry program 
+that can be used in conjunction with pDynamo either as a stand-alone QC model 
+or as part of a hybrid potential. An example of ORCA's use is provided in the 
+release in the file, tutorials/orca/ORCAExample.py (pDynamo folder).ORCA is a 
+separate program that is obtained and installed independently of pDynamo. 
+Full details are given on the ORCA web site: 
+
+https://orcaforum.cec.mpg.de
+
+Once installed, ORCA should be ready to use with pDynamo as long as the 
+directory where the ORCA executables have been put is defined as part of the 
+user's PATH variable. 
+'''                                                                
+
+answer = ["Y", "y", "Yes", "yes", "YES", "yEs", "yeS", ""]	                           
+s = raw_input('\nWould like put ORCA (for ab initio calculations) in or .bashrc file:(Y/n):')                            
+
+
+if s in answer:                                                                        
+    home = raw_input('\nSpecify your ORCA home:')                            
+
+    text  =  "\nexport ORCA='"+home+"'"
+    text  += "\nPATH=$ORCA:$PATH\n"
+
+    
+    arq  = open(os.path.join(HOME +"/.bashrc"), "a")                                   
+    arq.writelines(text)                                                               
+    arq.close()                                                                        
+    print "The .bashrc file has been modified"                                         
+    print "obs:if you are using CSH please do it manually"                             
+                                                                                       
+else:                                                                                  
+    print "\n\nPlease add to the .bashrc the following lines:"                         
+    print text                                                                         
+    print "\n\nobs:if you are using CSH please do it manually"		                   
+#------------------------------------------------------------------------------------------#
+
+
+
 
 
 
