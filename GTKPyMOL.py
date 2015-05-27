@@ -488,10 +488,10 @@ class MainMenu (object):
         #print """ Function doc """
         if self.builder.get_object('menuitem29').get_active() == True:
             #cmd.set('valence', 0.1)
-            self.builder.get_object('notebook2').show()
+            self.builder.get_object('vpaned4').show()
         else:
             #cmd.set('valence', 0.0)
-            self.builder.get_object('notebook2').hide()
+            self.builder.get_object('vpaned4').hide()
     
     def on_MainMenu_View_menuitemShowValences_activate(self, button):
         #print """ Function doc """
@@ -512,8 +512,20 @@ class MainMenu (object):
             #cmd.set('valence', 0.0)
             self.builder.get_object('alignment5').hide()
             
+    def on_MainMenu_View_toolbutton_trajectory_tool_clicked (self, button):
+        """ Function doc """
+        if self.builder.get_object('toolbutton_trajectory_tool').get_active() == True:
+            #cmd.set('valence', 0.1)
+            self.builder.get_object('handlebox1').show()
+        else:
+            #cmd.set('valence', 0.0)
+            self.builder.get_object('handlebox1').hide()  
+               
             
-            
+    
+    
+    
+    
     def on_MainMenu_File_NewProject_activate(self, button):
         """ Function doc """
         localtime = time.asctime(time.localtime(time.time()))
@@ -1854,7 +1866,7 @@ class gtkdynamo_main(MainMenu,
         
         # hide widgets - not ethe final version
         self.builder.get_object('toolbutton7_print_tudo').hide()
-        self.builder.get_object('hbox4').hide()
+        #self.builder.get_object('hbox4').hide()
 
         
         
