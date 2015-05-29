@@ -451,12 +451,12 @@ user's PATH variable.
 '''                                                                
 
 answer = ["Y", "y", "Yes", "yes", "YES", "yEs", "yeS", ""]	                           
-s = raw_input('\nWould like put ORCA (for ab initio calculations) in or .bashrc file:(Y/n):')                            
+s = raw_input('\nWould you like to put ORCA (for ab initio calculations) in your .bashrc file:(Y/n):')                            
 
 
 if s in answer:                                                                        
     home = raw_input('\nSpecify your ORCA home:')                            
-
+    text  =  "\n#ORCA - ab initio calculations"
     text  =  "\nexport ORCA='"+home+"'"
     text  += "\nPATH=$ORCA:$PATH\n"
 

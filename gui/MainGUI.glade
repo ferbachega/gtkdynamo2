@@ -2295,6 +2295,7 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">True</property>
               </packing>
             </child>
             <child>
@@ -2620,6 +2621,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
@@ -2633,6 +2635,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
@@ -2643,22 +2646,26 @@
                     <property name="label" translatable="yes">toolbutton17</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-media-stop</property>
+                    <signal name="clicked" handler="on_toolbutton_mstop_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="toolbutton15">
+                  <object class="GtkToolButton" id="toolbutton_mplay">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton15</property>
                     <property name="use_underline">True</property>
                     <property name="stock_id">gtk-media-play</property>
+                    <signal name="clicked" handler="on_toolbutton_mplay_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
@@ -2672,6 +2679,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>
@@ -2685,6 +2693,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
                   </packing>
                 </child>
                 <child>

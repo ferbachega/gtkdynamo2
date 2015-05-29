@@ -129,14 +129,14 @@ from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelect
                                                                                              #
 from gui.DialogLoadTrajectory.Trajectory                    import *                         #
 from gui.DialogAbout.About                                  import AboutDialog               #
-from gui.DialogNEB.NEBandSAW                                import NEBDialog
-from gui.DialogNEB.NEBandSAW                                import SAWDialog
-
-
+from gui.DialogNEB.NEBandSAW                                import NEBDialog                 #
+from gui.DialogNEB.NEBandSAW                                import SAWDialog                 #
+                                                                                             #
+                                                                                             #
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
-
+                                                                                             #
 import TextEditor.TextEditorWindow as TextEditor                                             #
                                                                                              #
 from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
@@ -560,27 +560,28 @@ class MainMenu (object):
         self.DialogExportCoordinates.dialog.hide()
 
     def on_MainMenu_File_OpenFileChooserWindow_clicked(self, button):
-		""" Function doc """
+        """ Function doc """
 
-		FileChooser = FileChooserWindow()
-		FileName = FileChooser.GetFileName(self.builder)
-		print FileName
+        FileChooser = FileChooserWindow()
+        FileName = FileChooser.GetFileName(self.builder)
+
+        print FileName
 
 
-		if FileName == None:
-			pass
-		
-		else:
-			_FileType = GetFileType(FileName)
-			self.PyMOL_initialize()
-			if _FileType in ['pkl', 'yaml']:
-				self.project.load_coordinate_file_as_new_system(FileName)
-				self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+        if FileName == None:
+            pass
 
-			if _FileType in ['gtkdyn']:
-				self.project.load_GTKDYNAMO_project(FileName)
-			
-		self.PyMOL_change_selection_mode()
+        else:
+            _FileType = GetFileType(FileName)
+            self.PyMOL_initialize()
+            if _FileType in ['pkl', 'yaml']:
+                self.project.load_coordinate_file_as_new_system(FileName)
+                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
+            if _FileType in ['gtkdyn']:
+                self.project.load_GTKDYNAMO_project(FileName)
+            
+        self.PyMOL_change_selection_mode()
 
     def on_menuitem_quit_activate (self, menuitem):
         """ Function doc """
@@ -655,297 +656,306 @@ class MainMenu (object):
 		
 		
 class MainToolBar(object):
-	""" Class doc """
+    """ Class doc """
 
-	def __init__ (self, GUI):
-		""" Class initialiser """
-		#self.builder = GUI.builder
-		#print 'MainMenu'
-		#self.builder = GUI.builder
-		self.GUI = GUI
+    def __init__ (self, GUI):
+        """ Class initialiser """
+        #self.builder = GUI.builder
+        #print 'MainMenu'
+        #self.builder = GUI.builder
+        self.GUI = GUI
 
-	def on_toolbutton7_print_tudo_clicked (self, button):
-		""" Function doc """
-		pprint(self.project.settings)
-		cell = self.project.importCellParameters()
-		print cell
-		#self.project.Save_Project_To_File()
-	def on_ToolBar_buttonSave_As_Project_clicked(self, button):
-		_01_window_main = self.builder.get_object("win")
-		data_path       = self.project.settings['data_path']
+    def on_toolbutton_mplay_clicked (self, button):
+        """ Function doc """
+        cmd.mplay()
 
-		filename = None
-
-		chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
-										gtk.FILE_CHOOSER_ACTION_SAVE         ,
-									   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
-										gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+    def on_toolbutton_mstop_clicked (self, button):
+        """ Function doc """
+        cmd.mstop()
 
 
+    def on_toolbutton7_print_tudo_clicked (self, button):
+        """ Function doc """
+        pprint(self.project.settings)
+        cell = self.project.importCellParameters()
+        print cell
+        #self.project.Save_Project_To_File()
+    def on_ToolBar_buttonSave_As_Project_clicked(self, button):
+        _01_window_main = self.builder.get_object("win")
+        data_path       = self.project.settings['data_path']
+
+        filename = None
+
+        chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
+                                        gtk.FILE_CHOOSER_ACTION_SAVE         ,
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                        gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
 
-		chooser.set_current_folder(data_path)
-		response = chooser.run()
-		if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
-		chooser.destroy()
 
-		#return filename	        
-				
 
-		self.project.Save_Project_To_File (filename, 'pkl')
+        chooser.set_current_folder(data_path)
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
+        chooser.destroy()
 
-	def on_toolbar_showCell_toggled (self, button):
-		""" Function doc """
-		
-		if button.get_active():
-			self.project.ShowCell = True
-		
-		else:
-			self.project.ShowCell = False
-			# print '# If control reaches here, the toggle button is up'
-			#self.builder.get_object('notebook3').hide()
-		self.project.SystemCheck(status = True, PyMOL = False, _color = False, _cell = True, treeview_selections = True)
+        #return filename	        
+                
 
-	def on_ToolBar_buttonSaveProject_clicked(self, button):
-		""" Function doc """
-		_01_window_main = self.builder.get_object("win")
-		data_path       = self.project.settings['data_path']
-		
-		filename = None
-		
-		
-		if 'filename' in self.project.settings:
-			pass
-		else:
-			self.project.settings['filename'] = None
-		
-		
-		if self.project.settings['filename'] == None:
-			chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
-											gtk.FILE_CHOOSER_ACTION_SAVE         ,
-										   (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
-											gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-			chooser.set_current_folder(data_path)
-			response = chooser.run()
-			if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
-			chooser.destroy()
+        self.project.Save_Project_To_File (filename, 'pkl')
 
-			self.project.Save_Project_To_File (filename, 'pkl')
-		else:
-			filename = self.project.settings['filename']
-			self.project.Save_Project_To_File (filename, 'pkl')
-
-	def on_ToolBar_buttonMeasure_toggled (self, button):
-		""" Function doc """
-		if button.get_active():
-			# print '# If control reaches here, the toggle button is down'
-			self.builder.get_object('notebook3').show()
-			self.builder.get_object('togglebutton1').set_active (1)
-		else:
-			# print '# If control reaches here, the toggle button is up'
-			self.builder.get_object('notebook3').hide()
-			
-	def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
-		""" Function doc """
-		if self.project.system == None:
-			print 'system empty'
-		else:
-			if self.pDynamoSelectionWindow.Visible == False:
-				self.pDynamoSelectionWindow.OpenWindow()  
-
-	def on_ToolBar_buttonCheckSystem_clicked(self, button):
-		""" Function doc """
-		filein = self.project.SystemCheck(_color = False)
-		#filein = self.project.settings['job_history'][self.selectedID]['log']
-		editor = TextEditor.GTKDynamoTextEditor(filein)
+    def on_toolbar_showCell_toggled (self, button):
+        """ Function doc """
         
-	def on_ToolBar_buttonSinglePoint_clicked(self, button):
-		""" Function doc """
-		energy = self.project.ComputeEnergy()
+        if button.get_active():
+            self.project.ShowCell = True
+        
+        else:
+            self.project.ShowCell = False
+            # print '# If control reaches here, the toggle button is up'
+            #self.builder.get_object('notebook3').hide()
+        self.project.SystemCheck(status = True, PyMOL = False, _color = False, _cell = True, treeview_selections = True)
+
+    def on_ToolBar_buttonSaveProject_clicked(self, button):
+        """ Function doc """
+        _01_window_main = self.builder.get_object("win")
+        data_path       = self.project.settings['data_path']
+        
+        filename = None
+        
+        
+        if 'filename' in self.project.settings:
+            pass
+        else:
+            self.project.settings['filename'] = None
+        
+        
+        if self.project.settings['filename'] == None:
+            chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
+                                            gtk.FILE_CHOOSER_ACTION_SAVE         ,
+                                           (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                            gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+            chooser.set_current_folder(data_path)
+            response = chooser.run()
+            if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
+            chooser.destroy()
+
+            self.project.Save_Project_To_File (filename, 'pkl')
+        else:
+            filename = self.project.settings['filename']
+            self.project.Save_Project_To_File (filename, 'pkl')
+
+    def on_ToolBar_buttonMeasure_toggled (self, button):
+        """ Function doc """
+        if button.get_active():
+            # print '# If control reaches here, the toggle button is down'
+            self.builder.get_object('notebook3').show()
+            self.builder.get_object('togglebutton1').set_active (1)
+        else:
+            # print '# If control reaches here, the toggle button is up'
+            self.builder.get_object('notebook3').hide()
+            
+    def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
+        """ Function doc """
+        if self.project.system == None:
+            print 'system empty'
+        else:
+            if self.pDynamoSelectionWindow.Visible == False:
+                self.pDynamoSelectionWindow.OpenWindow()  
+
+    def on_ToolBar_buttonCheckSystem_clicked(self, button):
+        """ Function doc """
+        filein = self.project.SystemCheck(_color = False)
+        #filein = self.project.settings['job_history'][self.selectedID]['log']
+        editor = TextEditor.GTKDynamoTextEditor(filein)
+        
+    def on_ToolBar_buttonSinglePoint_clicked(self, button):
+        """ Function doc """
+        energy = self.project.ComputeEnergy()
         #colocar um check system aqui 
-		self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")   
-		dialog = self.builder.get_object('EnergyMessageDialog')
-		dialog.run()                                                                
-		dialog.hide()
-				
-	def on_ToolBar_buttonQuantumChemistrySetup_clicked(self, button):
-		""" Function doc """
-		self.QuantumChemistrySetupDialog.dialog.run()
-		self.QuantumChemistrySetupDialog.dialog.hide()
+        self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")   
+        dialog = self.builder.get_object('EnergyMessageDialog')
+        dialog.run()                                                                
+        dialog.hide()
+                
+    def on_ToolBar_buttonQuantumChemistrySetup_clicked(self, button):
+        """ Function doc """
+        self.QuantumChemistrySetupDialog.dialog.run()
+        self.QuantumChemistrySetupDialog.dialog.hide()
 
-	def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
-		""" Function doc """
-		print self.project.settings['step']
-		text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
-		self._02MinimizationWindow.builder.get_object(
-			"02_window_entry_traj_name").set_text(text)
-		self._02MinimizationWindow.dialog.run()
-		self._02MinimizationWindow.dialog.hide()
+    def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
+        """ Function doc """
+        print self.project.settings['step']
+        text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
+        self._02MinimizationWindow.builder.get_object(
+            "02_window_entry_traj_name").set_text(text)
+        self._02MinimizationWindow.dialog.run()
+        self._02MinimizationWindow.dialog.hide()
 
-	def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
-		""" Function doc """
-		print self.project.settings['step']
-		text = str(self.project.settings['step'] + 1) + '_step_MolecularDynamics'
-		self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
-		self.MolecularDynamicsWindow.dialog.run()
-		self.MolecularDynamicsWindow.dialog.hide()
-		
-	def on_ToolBar_togglebbuttonChangeSelectionMode_toggled(self, button):
-		#if self.builder.get_object('togglebutton1').get_active():
-		#	# print '# If control reaches here, the toggle button is down'
-		#	self.builder.get_object('togglebutton1').set_label('Editing')
-		#	self.builder.get_object('label_viewing').set_label('Picking')
-		#	self.builder.get_object('combobox1').set_sensitive(False)
-		#	cmd.edit_mode(1)
-		#	self.project.settings['edit_mode_button'] = True
-		#
-		#else:
-		#	# print '# If control reaches here, the toggle button is up'
-		#
-		#	self.builder.get_object('togglebutton1').set_label('Viewing')
-		#	self.builder.get_object('label_viewing').set_label('Selecting')
-		#	self.builder.get_object('combobox1').set_sensitive(True)
-		#	cmd.edit_mode(0)
-		#	self.project.settings['edit_mode_button'] = False
-		#
-		self.PyMOL_change_selection_mode()
+    def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
+        """ Function doc """
+        print self.project.settings['step']
+        text = str(self.project.settings['step'] + 1) + '_step_MolecularDynamics'
+        self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
+        self.MolecularDynamicsWindow.dialog.run()
+        self.MolecularDynamicsWindow.dialog.hide()
+        
+    def on_ToolBar_togglebbuttonChangeSelectionMode_toggled(self, button):
+        #if self.builder.get_object('togglebutton1').get_active():
+        #	# print '# If control reaches here, the toggle button is down'
+        #	self.builder.get_object('togglebutton1').set_label('Editing')
+        #	self.builder.get_object('label_viewing').set_label('Picking')
+        #	self.builder.get_object('combobox1').set_sensitive(False)
+        #	cmd.edit_mode(1)
+        #	self.project.settings['edit_mode_button'] = True
+        #
+        #else:
+        #	# print '# If control reaches here, the toggle button is up'
+        #
+        #	self.builder.get_object('togglebutton1').set_label('Viewing')
+        #	self.builder.get_object('label_viewing').set_label('Selecting')
+        #	self.builder.get_object('combobox1').set_sensitive(True)
+        #	cmd.edit_mode(0)
+        #	self.project.settings['edit_mode_button'] = False
+        #
+        self.PyMOL_change_selection_mode()
         
         
         
-	def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
-		""" Function doc """
-		mode = self.builder.get_object('combobox1').get_active_text()
-		if mode == "Atom":
-			cmd.set("mouse_selection_mode", 0)
-		if mode == "Residue":
-			cmd.set("mouse_selection_mode", 1)
-		if mode == "Chain":
-			cmd.set("mouse_selection_mode", 2)
-		if mode == "Molecule":
-			cmd.set("mouse_selection_mode", 5)
+    def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
+        """ Function doc """
+        mode = self.builder.get_object('combobox1').get_active_text()
+        if mode == "Atom":
+            cmd.set("mouse_selection_mode", 0)
+        if mode == "Residue":
+            cmd.set("mouse_selection_mode", 1)
+        if mode == "Chain":
+            cmd.set("mouse_selection_mode", 2)
+        if mode == "Molecule":
+            cmd.set("mouse_selection_mode", 5)
 
-	def on_ToolBar_toolbutton_ClearSystemInMemory_clicked (self, button):
-		""" Function doc """
-		if self.project.system != None:
-			'''
-													  d i a l o g
-											 #  -  I M P O R T A N T  -  #                                   
-								#---------------------------------------------------------#                  
-								#                                                         #                  
-								#        Message Dialog  -  when 2 buttons will be showed #                  
-								#  1 -create the warning message                          #                  
-								#  2 -hide the actual dialog - optional                   #                  
-								#  3 -show the message dialog                             #                  
-								#  4 -hide the message dialog                             #                  
-								#  5 -check the returned valor by the message dialog      #                  
-								#  6 -do something                                        #                  
-								#  7 -restore the actual dialog - optional                #                  
-								#---------------------------------------------------------#                  
-			'''
-																								  
-			self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: there is a system loaded in memory. Are you sure that you want to delete it?")  
-			dialog = self.builder.get_object('MessageDialogQuestion')                                         
-																											  
-			a = dialog.run()  # possible "a" valors                                                           
-			# 4 step          # -8  -  yes                                                                    
-			dialog.hide()     # -9  -  no                                                                     
-							  # -4  -  close                                                                  
-							  # -5  -  OK                                                                     
-							  # -6  -  Cancel                                                                 
-																											  
-			# 5 step                                                                                          
-			if a == -8:                                                                                       
-				# 6 step 
-				#--------------------------------------------------GTKDynamo project---------------------------------------------------------#
-				self.project = None
-				self.project = pDynamoProject(data_path  =GTKDYNAMO_TMP, 
-											  builder=self.builder, 
-											  window_control=self.window_control)                                   
+    def on_ToolBar_toolbutton_ClearSystemInMemory_clicked (self, button):
+        """ Function doc """
+        if self.project.system != None:
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #                                   
+                                #---------------------------------------------------------#                  
+                                #                                                         #                  
+                                #        Message Dialog  -  when 2 buttons will be showed #                  
+                                #  1 -create the warning message                          #                  
+                                #  2 -hide the actual dialog - optional                   #                  
+                                #  3 -show the message dialog                             #                  
+                                #  4 -hide the message dialog                             #                  
+                                #  5 -check the returned valor by the message dialog      #                  
+                                #  6 -do something                                        #                  
+                                #  7 -restore the actual dialog - optional                #                  
+                                #---------------------------------------------------------#                  
+            '''
+                                                                                                  
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: there is a system loaded in memory. Are you sure that you want to delete it?")  
+            dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                              
+            a = dialog.run()  # possible "a" valors                                                           
+            # 4 step          # -8  -  yes                                                                    
+            dialog.hide()     # -9  -  no                                                                     
+                              # -4  -  close                                                                  
+                              # -5  -  OK                                                                     
+                              # -6  -  Cancel                                                                 
+                                                                                                              
+            # 5 step                                                                                          
+            if a == -8:                                                                                       
+                # 6 step 
+                #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
+                self.project = None
+                self.project = pDynamoProject(data_path  =GTKDYNAMO_TMP, 
+                                              builder=self.builder, 
+                                              window_control=self.window_control)                                   
 
-				self.project.PyMOL = True                                                                                                    #
-				#----------------------------------------------------------------------------------------------------------------------------#  
+                self.project.PyMOL = True                                                                                                    #
+                #----------------------------------------------------------------------------------------------------------------------------#  
 
-				cmd.delete('all')
-				pymol_objects  = cmd.get_names()
-				liststore = self.builder.get_object('liststore2')
-				self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
-				
-				
-				self.project.SystemCheck()
-				self.PyMOL_initialize()
-				#cmd.delete('all')                                                                                  
-			else:                                                                                             
-				return 0 
+                cmd.delete('all')
+                pymol_objects  = cmd.get_names()
+                liststore = self.builder.get_object('liststore2')
+                self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
+                
+                
+                self.project.SystemCheck()
+                self.PyMOL_initialize()
+                #cmd.delete('all')                                                                                  
+            else:                                                                                             
+                return 0 
 
-	def MeasureToolPutValores(self, distances = None, angles = None, dihedral = None):
-		if distances != None:
-			if distances['pk1pk2'] != None:
-				self.builder.get_object('pk1pk2').set_sensitive(True)
-				self.builder.get_object('pk1pk2').set_text(distances['pk1pk2'])
-			else:
-				self.builder.get_object('pk1pk2').set_sensitive(False)
-				self.builder.get_object('pk1pk2').set_text('')
-				
-				
-			if distances['pk1pk3'] != None:
-				self.builder.get_object('pk1pk3').set_sensitive(True)
-				self.builder.get_object('pk1pk3').set_text(distances['pk1pk3'])
-			else:
-				self.builder.get_object('pk1pk3').set_sensitive(False)
-				self.builder.get_object('pk1pk3').set_text('')
-				
-				
-			if distances['pk1pk4'] != None:
-				self.builder.get_object('pk1pk4').set_sensitive(True)
-				self.builder.get_object('pk1pk4').set_text(distances['pk1pk4'])
-			else:
-				self.builder.get_object('pk1pk4').set_sensitive(False)
-				self.builder.get_object('pk1pk4').set_text('')
-				
-				
-			if distances['pk2pk3'] != None:
-				self.builder.get_object('pk2pk3').set_sensitive(True)
-				self.builder.get_object('pk2pk3').set_text(distances['pk2pk3'])
-			else:
-				self.builder.get_object('pk2pk3').set_sensitive(False)
-				self.builder.get_object('pk2pk3').set_text('')
+    def MeasureToolPutValores(self, distances = None, angles = None, dihedral = None):
+        if distances != None:
+            if distances['pk1pk2'] != None:
+                self.builder.get_object('pk1pk2').set_sensitive(True)
+                self.builder.get_object('pk1pk2').set_text(distances['pk1pk2'])
+            else:
+                self.builder.get_object('pk1pk2').set_sensitive(False)
+                self.builder.get_object('pk1pk2').set_text('')
+                
+                
+            if distances['pk1pk3'] != None:
+                self.builder.get_object('pk1pk3').set_sensitive(True)
+                self.builder.get_object('pk1pk3').set_text(distances['pk1pk3'])
+            else:
+                self.builder.get_object('pk1pk3').set_sensitive(False)
+                self.builder.get_object('pk1pk3').set_text('')
+                
+                
+            if distances['pk1pk4'] != None:
+                self.builder.get_object('pk1pk4').set_sensitive(True)
+                self.builder.get_object('pk1pk4').set_text(distances['pk1pk4'])
+            else:
+                self.builder.get_object('pk1pk4').set_sensitive(False)
+                self.builder.get_object('pk1pk4').set_text('')
+                
+                
+            if distances['pk2pk3'] != None:
+                self.builder.get_object('pk2pk3').set_sensitive(True)
+                self.builder.get_object('pk2pk3').set_text(distances['pk2pk3'])
+            else:
+                self.builder.get_object('pk2pk3').set_sensitive(False)
+                self.builder.get_object('pk2pk3').set_text('')
 
-			if distances['pk2pk4'] != None:
-				self.builder.get_object('pk2pk4').set_sensitive(True)
-				self.builder.get_object('pk2pk4').set_text(distances['pk2pk4'])
-			else:
-				self.builder.get_object('pk2pk4').set_sensitive(False)
-				self.builder.get_object('pk2pk4').set_text('')
-				 
-			if distances['pk3pk4'] != None:
-				self.builder.get_object('pk3pk4').set_sensitive(True)
-				self.builder.get_object('pk3pk4').set_text(distances['pk3pk4'])
-			else:
-				self.builder.get_object('pk3pk4').set_sensitive(False)   
-				self.builder.get_object('pk3pk4').set_text('')
+            if distances['pk2pk4'] != None:
+                self.builder.get_object('pk2pk4').set_sensitive(True)
+                self.builder.get_object('pk2pk4').set_text(distances['pk2pk4'])
+            else:
+                self.builder.get_object('pk2pk4').set_sensitive(False)
+                self.builder.get_object('pk2pk4').set_text('')
+                 
+            if distances['pk3pk4'] != None:
+                self.builder.get_object('pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk3pk4').set_text(distances['pk3pk4'])
+            else:
+                self.builder.get_object('pk3pk4').set_sensitive(False)   
+                self.builder.get_object('pk3pk4').set_text('')
 
-		if  angles != None:
-			if angles['pk1pk2pk3'] != None:
-				self.builder.get_object('pk1pk2pk3').set_sensitive(True)
-				self.builder.get_object('pk1pk2pk3').set_text(angles['pk1pk2pk3'])
-			else:
-				self.builder.get_object('pk1pk2pk3').set_sensitive(False)
-				self.builder.get_object('pk1pk2pk3').set_text('')
+        if  angles != None:
+            if angles['pk1pk2pk3'] != None:
+                self.builder.get_object('pk1pk2pk3').set_sensitive(True)
+                self.builder.get_object('pk1pk2pk3').set_text(angles['pk1pk2pk3'])
+            else:
+                self.builder.get_object('pk1pk2pk3').set_sensitive(False)
+                self.builder.get_object('pk1pk2pk3').set_text('')
 
 
-			if angles['pk2pk3pk4'] != None:
-				self.builder.get_object('pk2pk3pk4').set_sensitive(True)
-				self.builder.get_object('pk2pk3pk4').set_text(angles['pk2pk3pk4'])
-			else:
-				self.builder.get_object('pk2pk3pk4').set_sensitive(False) 
-				self.builder.get_object('pk2pk3pk4').set_text('')
-		#print dihedral
-		if  dihedral != None:
-			if dihedral['pk1pk2pk3pk4'] != None:
-				self.builder.get_object('pk1pk2pk3pk4').set_sensitive(True)
-				self.builder.get_object('pk1pk2pk3pk4').set_text(dihedral['pk1pk2pk3pk4'])
-			else:
-				self.builder.get_object('pk1pk2pk3pk4').set_sensitive(False)
+            if angles['pk2pk3pk4'] != None:
+                self.builder.get_object('pk2pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk2pk3pk4').set_text(angles['pk2pk3pk4'])
+            else:
+                self.builder.get_object('pk2pk3pk4').set_sensitive(False) 
+                self.builder.get_object('pk2pk3pk4').set_text('')
+        #print dihedral
+        if  dihedral != None:
+            if dihedral['pk1pk2pk3pk4'] != None:
+                self.builder.get_object('pk1pk2pk3pk4').set_sensitive(True)
+                self.builder.get_object('pk1pk2pk3pk4').set_text(dihedral['pk1pk2pk3pk4'])
+            else:
+                self.builder.get_object('pk1pk2pk3pk4').set_sensitive(False)
 
 class GLMenu(object):
     """
