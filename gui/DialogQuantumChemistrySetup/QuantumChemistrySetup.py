@@ -343,7 +343,7 @@ class QuantumChemistrySetupDialog():
             try:                                                                    #
                 ORCA                  = GTKDynamoSession.GTKDynamoConfig['ORCAPATH']#
             except:                                                                 #
-                ORCA = 'teste'                                                      #
+                ORCA = ''                                                           #
             #-----------------------------------------------------------------------#
 
 
@@ -360,6 +360,10 @@ class QuantumChemistrySetupDialog():
         #self.builder.get_object('06_window_alignment3_ORCA1').hide()
         self.builder.get_object('06_window_alignment3_ORCA').hide()
         self.builder.get_object('06_window_alignment3_ORCA2').hide()
+        
+        if ORCA == None:
+			ORCA = ''
+        
         self.builder.get_object('ORCA_entry_command').set_text(ORCA)
         
         '''

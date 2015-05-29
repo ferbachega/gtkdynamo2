@@ -1727,7 +1727,7 @@ class gtkdynamo_main(MainMenu,
         try:
             self.ORCA           = os.environ.get('ORCA')
         except:
-            self.ORCA           = None
+            self.ORCA           = ''
             pass
         self.HOME           = os.environ.get('HOME')
         self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
