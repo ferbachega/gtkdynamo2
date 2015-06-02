@@ -170,8 +170,6 @@ Menu =  True
 
 
 
-
-
 def draw(glarea, event):
     # Get surface and context
     glcontext = glarea.get_gl_context()
@@ -203,37 +201,8 @@ def draw(glarea, event):
 
 # Resizing function
 def reshape(glarea, event):
-
-    reshape = event
-    reshape_x = reshape.width
-    reshape_y = reshape.height
-    pymol.reshape(reshape_x, reshape_y, 0)
+    pymol.reshape(event.width, event.height, True)
     pymol.idle()
-    # pymol.draw()
-
-    # Get surface and context
-    glcontext = glarea.get_gl_context()
-    gldrawable = glarea.get_gl_drawable()
-
-    # Start opengl context
-    if not gldrawable.gl_begin(glcontext):
-        return
-
-    # Get widget dimensions
-    x, y, width, height = glarea.get_allocation()
-
-    pymol.reshape(width, height, True)
-
-    # Reset rabbyt viewport
-    #rabbyt.set_viewport((width, height))
-    # rabbyt.set_default_attribs()
-
-    # End opengl context
-    pymol.draw()
-    gldrawable.swap_buffers()
-    gldrawable.gl_end()
-    #
-
     return True
 
 # Initialization function
@@ -1680,6 +1649,7 @@ class gtkdynamo_main(MainMenu,
         cmd.set('label_size', 20.00)                            #
         cmd.set('label_color', 'white')                         #
         cmd.set('auto_zoom', 1)                                 #
+        pymol.cmd.set("seq_view", 'on')                         #
         #cmd.extend('axes', axes)
         #axes()
         #-------------------------------------------------------#
@@ -1889,7 +1859,7 @@ print "Creating object"
 # Create our glarea widget
 glarea = gtk.gtkgl.DrawingArea(glconfig)
 #glarea.set_size_request(400, 400)
-glarea.connect_after('realize', init)
+#glarea.connect_after('realize', init)
 glarea.connect('configure_event', reshape)
 glarea.connect('expose_event', draw)
 glarea.connect('map_event', map)
