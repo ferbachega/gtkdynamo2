@@ -1755,6 +1755,8 @@ class gtkdynamo_main(MainMenu,
         cmd = pymol.cmd                                         #
         container.pack_end(glarea)                              #
         glarea.show()                                           #
+        # Remove pymol's scary messages
+        pymol.button(0, 1, 0, 0, 0)
         #-------------------------------------------------------
 
               #------------------------------------------------#
