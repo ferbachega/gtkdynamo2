@@ -1649,7 +1649,9 @@ class gtkdynamo_main(MainMenu,
         cmd.set('label_size', 20.00)                            #
         cmd.set('label_color', 'white')                         #
         cmd.set('auto_zoom', 1)                                 #
-        pymol.cmd.set("seq_view", 'on')                         #
+        pymol.cmd.set('seq_view', 'on')                         #
+        pymol.cmd.set('seq_view_color', 'white')                #
+        pymol.cmd.set('seq_view_location', 1)                   #
         #cmd.extend('axes', axes)
         #axes()
         #-------------------------------------------------------#
