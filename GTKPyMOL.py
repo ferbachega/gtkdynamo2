@@ -171,6 +171,10 @@ Menu =  True
 
 
 def draw(glarea, event):
+    x, y, width, height = glarea.get_allocation()
+    # Required for correct sizing of child elements
+    glViewport(0, 0, width, height)
+
     # Get surface and context
     glcontext = glarea.get_gl_context()
     gldrawable = glarea.get_gl_drawable()
@@ -207,8 +211,6 @@ def reshape(glarea, event):
 
 # Initialization function
 def init(glarea):
-    #print 'init'
-    # Get surface and context
     glcontext = glarea.get_gl_context()
     gldrawable = glarea.get_gl_drawable()
 
@@ -216,22 +218,8 @@ def init(glarea):
     if not gldrawable.gl_begin(glcontext):
         return
 
-    # Get widget dimensions
-    x, y, width, height = glarea.get_allocation()
-
-    # Reset rabbyt viewport
-    #rabbyt.set_viewport((width, height))
-    # rabbyt.set_default_attribs()
-
-    # Get sprite variable
-    global sprite
-
-    # Load sprite
-    #sprite = rabbyt.Sprite('sprite.png')
-
     # End opengl context
     gldrawable.gl_end()
-
     return True
 
 # Idle function
@@ -1651,7 +1639,6 @@ class gtkdynamo_main(MainMenu,
         cmd.set('auto_zoom', 1)                                 #
         pymol.cmd.set('seq_view', 'on')                         #
         pymol.cmd.set('seq_view_color', 'white')                #
-        pymol.cmd.set('seq_view_location', 1)                   #
         #cmd.extend('axes', axes)
         #axes()
         #-------------------------------------------------------#
@@ -1757,8 +1744,8 @@ class gtkdynamo_main(MainMenu,
         cmd = pymol.cmd                                         #
         container.pack_end(glarea)                              #
         glarea.show()                                           #
-        # Remove pymol's scary messages
-        pymol.button(0, 1, 0, 0, 0)
+        # Remove pymol's scary messages                         #
+        pymol.button(0, 1, 0, 0, 0)                             #
         #-------------------------------------------------------
 
               #------------------------------------------------#
@@ -1863,7 +1850,7 @@ print "Creating object"
 # Create our glarea widget
 glarea = gtk.gtkgl.DrawingArea(glconfig)
 #glarea.set_size_request(400, 400)
-#glarea.connect_after('realize', init)
+glarea.connect_after('realize', init)
 glarea.connect('configure_event', reshape)
 glarea.connect('expose_event', draw)
 glarea.connect('map_event', map)
