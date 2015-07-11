@@ -449,7 +449,6 @@ class pDynamoProject():
         self.system.label = name
         self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
 
-
     def Save_Project_To_File (self, filename = 'actual_state', type_ = 'pkl'):
 		""" Function doc """
 		path     = filename.split('/')
@@ -485,11 +484,7 @@ class pDynamoProject():
 		cmd.save                     (filename+'.pse', 'pse')             # pse  file
 		print 'exporting file: ', filename+'.pse'
 		self.SystemCheck(status = True, PyMOL = False)
-        
-        
-        
-        
-    
+           
     def export_state_to_file (self, filename, type_):
 
 		filename = AddFileTypeSuffix(filename, type_)     # from PyMOLScripts
@@ -692,6 +687,7 @@ class pDynamoProject():
                     
                     #print '3'
                     #print command
+                    #print self.GTKDynamoConfig
                     
                     if self.GTKDynamoConfig['QC']['dots']:
                         cmd.show("dots",  "QC_atoms")
@@ -704,7 +700,7 @@ class pDynamoProject():
                     
                     if self.GTKDynamoConfig['QC']['sticks']:
                         cmd.show("sticks",  "QC_atoms")
-                    
+
                     #print '4'
                 
                 if self.settings['qc_table'] == []:
@@ -729,8 +725,6 @@ class pDynamoProject():
                     
                     if self.GTKDynamoConfig['QC']['sticks']:
                         cmd.show("sticks",  "QC_atoms")
-                    
-                    
                     
             else:
                 pass

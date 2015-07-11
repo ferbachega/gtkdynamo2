@@ -403,7 +403,6 @@ class MainToolBar(object):
         """ Function doc """
         cmd.mstop()
 
-
     def on_toolbutton7_print_tudo_clicked (self, button):
         """ Function doc """
         pprint(self.project.settings)
@@ -434,6 +433,15 @@ class MainToolBar(object):
 
         self.project.Save_Project_To_File (filename, 'pkl')
 
+    def on_toolbutton_sequence_toggled (self, button):
+        """ Function doc """
+        if self.builder.get_object('toolbutton_sequence').get_active() == True:
+                print '"seq_view", 1'
+                pymol.cmd.set("seq_view", 1)
+        else:
+                print '"seq_view", 0'
+                pymol.cmd.set("seq_view", 0) 		
+ 
     def on_toolbar_showCell_toggled (self, button):
         """ Function doc """
         
@@ -479,14 +487,13 @@ class MainToolBar(object):
         """ Function doc """
         if button.get_active():
             ## print '# If control reaches here, the toggle button is down'
-            #self.builder.get_object('notebook3').show()
-            #self.builder.get_object('togglebutton1').set_active (1)
-            pymol.cmd.set("internal_gui", 1)
+            self.builder.get_object('notebook3').show()
+            self.builder.get_object('togglebutton1').set_active (1)
+            #pymol.cmd.set("internal_gui", 1)
         else:
             # print '# If control reaches here, the toggle button is up'
-            #self.builder.get_object('notebook3').hide()
-            pymol.cmd.set("internal_gui", 0)
-            
+            self.builder.get_object('notebook3').hide()
+            #pymol.cmd.set("internal_gui", 0)       
     def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
         """ Function doc """
         if self.project.system == None:
@@ -552,8 +559,6 @@ class MainToolBar(object):
         #
         self.PyMOL_change_selection_mode()
         
-        
-        
     def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
@@ -600,9 +605,10 @@ class MainToolBar(object):
                 # 6 step 
                 #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
                 self.project = None
-                self.project = pDynamoProject(data_path  =GTKDYNAMO_TMP, 
-                                              builder=self.builder, 
-                                              window_control=self.window_control)                                   
+                self.project = pDynamoProject(data_path       = GTKDYNAMO_TMP      , 
+                                              builder         = self.builder       , 
+                                              window_control  = self.window_control,
+                                              GTKDynamoConfig = self.GTKDynamoConfig )                                   
 
                 self.project.PyMOL = True                                                                                                    #
                 #----------------------------------------------------------------------------------------------------------------------------#  
@@ -1628,7 +1634,7 @@ class gtkdynamo_main(threading.Thread,
         
         
         # hide widgets - not ethe final version
-        self.builder.get_object('toolbutton7_print_tudo').hide()
+        #self.builder.get_object('toolbutton7_print_tudo').hide()
         #self.builder.get_object('hbox4').hide()
         #cmd.button("double_left","None","None")                 #
         #cmd.button("single_right","None","None")                #
