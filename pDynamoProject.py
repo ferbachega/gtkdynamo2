@@ -664,17 +664,18 @@ class pDynamoProject():
             
             #print 'PyMOL_Obj', PyMOL_Obj, self.settings['PyMOL_Obj']
             
-            if _color:
-                cmd.color('gray10',PyMOL_Obj)
-                cmd.util.cnc(PyMOL_Obj)
-                #print '_color', _color
-            else:
-                pass
-            
             if self.settings['QC'] == True:
                 if self.settings['qc_table'] != []:
                     #print '1', 'QC', self.settings['QC']
                     ##print PyMOL_Obj
+                    #"dots": false, 
+                    #"spheres": true,
+                    #"lines": false, 
+                    #"sticks": true
+                    
+
+                        
+                        
                     cmd.hide('stick',  PyMOL_Obj)
                     cmd.hide("sphere", PyMOL_Obj)
                     try:
@@ -692,8 +693,17 @@ class pDynamoProject():
                     #print '3'
                     #print command
                     
-                    cmd.show("stick",  "QC_atoms")
-                    cmd.show("sphere", "QC_atoms")
+                    if self.GTKDynamoConfig['QC']['dots']:
+                        cmd.show("dots",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['spheres']:
+                        cmd.show("spheres",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['lines']:
+                        cmd.show("lines",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['sticks']:
+                        cmd.show("sticks",  "QC_atoms")
                     
                     #print '4'
                 
@@ -703,14 +713,25 @@ class pDynamoProject():
                     
                     self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
                     #print '5.1',PyMOL_Obj, 'settings[qc_table]', self.settings['qc_table']
-                    cmd.do('show stick, '+ PyMOL_Obj)
-                    cmd.do('show sphere, '+ PyMOL_Obj)
+                    #cmd.do('show stick, '+ PyMOL_Obj)
+                    #cmd.do('show sphere, '+ PyMOL_Obj)
                     #cmd.show("stick",  PyMOL_Obj)
                     #cmd.show("sphere" ,PyMOL_Obj)
                     
-                    #print '5.1'
-
-            
+                    if self.GTKDynamoConfig['QC']['dots']:
+                        cmd.show("dots",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['spheres']:
+                        cmd.show("spheres",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['lines']:
+                        cmd.show("lines",  "QC_atoms")
+                    
+                    if self.GTKDynamoConfig['QC']['sticks']:
+                        cmd.show("sticks",  "QC_atoms")
+                    
+                    
+                    
             else:
                 pass
             
@@ -726,9 +747,18 @@ class pDynamoProject():
                 PymolPutTable(self.settings['fix_table'], "FIX_atoms")
                 command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
                 cmd.do(command)
-                command2 = 'color grey80, FIX_atoms'
-                cmd.do(command2)
-                #print '9'
+
+                if self.GTKDynamoConfig['FIX']['dots']:
+                    cmd.show("dots",  "FIX_atoms")
+                
+                if self.GTKDynamoConfig['FIX']['spheres']:
+                    cmd.show("spheres",  "FIX_atoms")
+                
+                if self.GTKDynamoConfig['FIX']['lines']:
+                    cmd.show("lines",  "FIX_atoms")
+                
+                if self.GTKDynamoConfig['FIX']['sticks']:
+                    cmd.show("sticks",  "FIX_atoms")
             
             try:
                 #print '10'
@@ -749,13 +779,35 @@ class pDynamoProject():
                 pass
             try:
                 #print '14'
-                cmd.do('disable QC_atoms')
+                #cmd.do('disable QC_atoms')
                 cmd.disable("QC_atoms")
                 #print '15'
             
             except:
                 pass
             
+            
+            if _color:
+                try:
+                    cmd.color(self.GTKDynamoConfig['color'],PyMOL_Obj)
+                    cmd.util.cnc(PyMOL_Obj)
+                except:
+                    pass
+                
+                try:
+                    cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
+                except:
+                    pass
+                
+                try:
+                    cmd.bg_color(self.GTKDynamoConfig['bg_color'])
+                except:
+                    pass
+                #print '_color', _color
+            else:
+                pass 
+        
+        
         if treeview_selections:
             pymol_objects2 = cmd.get_names('selections')
             

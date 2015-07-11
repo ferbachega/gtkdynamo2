@@ -141,7 +141,7 @@ from gui.WindowScan1D.Scan                                  import *            
 from gui.WindowScan2D.Scan2D                                import *                         #
                                                                                              #
 from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelectionWindow    #
-                                                                                             #
+from gui.DialogPreferences.Preferences                      import *         #
                                                                                              #
 from gui.DialogLoadTrajectory.Trajectory                    import *                         #
 from gui.DialogAbout.About                                  import AboutDialog               #
@@ -152,7 +152,7 @@ from gui.DialogNEB.NEBandSAW                                import SAWDialog    
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
-
+#/home/fernando/Documents/gtkdynamo2/gui/DialogPreferences/Preferences.py
 #from gui.MainMenu           import  MainMenu                                                                        
 #from gui.MainToolBar        import  MainToolBar 
 #from gui.GLMenu             import  GLMenu
@@ -174,188 +174,216 @@ from WindowControl     import *
 
 
 class MainMenu (object):
-    """ Class doc """
-    def __init__ (self, GUI=None):
-        #self.builder = GUI.builder
-        #print 'MainMenu'
-        #self.builder = GUI.builder
-        self.GUI = GUI
-    
-    def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
-        """ Function doc """
-        self.TrajectoryDialog.builder.get_object('filechooserbutton1').set_filename(self.project.settings['data_path'])
-        self.TrajectoryDialog.builder.get_object('filechooserbutton2').set_filename(self.project.settings['data_path'])
-        self.TrajectoryDialog.dialog.run()
-        self.TrajectoryDialog.dialog.hide()
+        """ Class doc """
+        def __init__ (self, GUI=None):
+                #self.builder = GUI.builder
+                #print 'MainMenu'
+                #self.builder = GUI.builder
+                self.GUI = GUI
 
-    
-    def on_MainMenu_View_menuitemShowJobHistory_activate(self, button):
-        #print """ Function doc """
-        if self.builder.get_object('menuitem29').get_active() == True:
-            #cmd.set('valence', 0.1)
-            self.builder.get_object('vpaned4').show()
-        else:
-            #cmd.set('valence', 0.0)
-            self.builder.get_object('vpaned4').hide()
-    
-    def on_MainMenu_View_menuitemShowValences_activate(self, button):
-        #print """ Function doc """
-        if self.builder.get_object('ShowValences').get_active() == True:
-            #cmd.set('valence', 0.1)
-            cmd.do('set valence, 0.1')
-        else:
-            #cmd.set('valence', 0.0)
-            cmd.do('set valence, 0.0')
+        def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
+                """ Function doc """
+                self.TrajectoryDialog.builder.get_object('filechooserbutton1').set_filename(self.project.settings['data_path'])
+                self.TrajectoryDialog.builder.get_object('filechooserbutton2').set_filename(self.project.settings['data_path'])
+                self.TrajectoryDialog.dialog.run()
+                self.TrajectoryDialog.dialog.hide()
 
-    def on_MainMenu_View_menuitem_PYMOL_command_line(self, button):
-        """ Function doc """
-        #print """ Function doc """
-        if self.builder.get_object('PyMOL_command_line_check').get_active() == True:
-            #cmd.set('valence', 0.1)
-            self.builder.get_object('alignment5').show()
-        else:
-            #cmd.set('valence', 0.0)
-            self.builder.get_object('alignment5').hide()
-            
-    def on_MainMenu_View_toolbutton_trajectory_tool_clicked (self, button):
-        """ Function doc """
-        if self.builder.get_object('toolbutton_trajectory_tool').get_active() == True:
-            #cmd.set('valence', 0.1)
-            self.builder.get_object('handlebox1').show()
-        else:
-            #cmd.set('valence', 0.0)
-            self.builder.get_object('handlebox1').hide()  
-               
-            
-    
-    
-    
-    
-    def on_MainMenu_File_NewProject_activate(self, button):
-        """ Function doc """
-        localtime = time.asctime(time.localtime(time.time()))
-        #print "Local current time :", localtime
-        localtime = localtime.split()        
-        #  0     1    2       3         4
-        #[Sun] [Sep] [28] [02:32:04] [2014]
-        text = 'NewProjec_' + localtime[1] + \
-            '_' + localtime[2] + '_' + localtime[4]
-        self._NewProjectDialog.builder.get_object("new_project_entry").set_text(text)
+
+        def on_MainMenu_View_menuitemShowJobHistory_activate(self, button):
+                #print """ Function doc """
+                if self.builder.get_object('menuitem29').get_active() == True:
+                        #cmd.set('valence', 0.1)
+                        #self.builder.get_object('vpaned4').show()
+                        cmd.set("seq_view", 1)
+                else:
+                        #cmd.set('valence', 0.0)
+                        #self.builder.get_object('vpaned4').hide()
+                        cmd.set("seq_view", 0)
+
+        def on_menuitem_internal_GUI_toggled (self, button):
+                """ Function doc """
+                if self.builder.get_object('menuitem_internal_GUI').get_active() == True:
+                        #cmd.set('valence', 0.1)
+                        cmd.set("internal_gui", 1)
+                else:
+                        #cmd.set('valence', 0.0)
+                        cmd.set("internal_gui", 0)
+
+        def on_MainMenu_View_menuitemShowValences_activate(self, button):
+                #print """ Function doc """
+                if self.builder.get_object('ShowValences').get_active() == True:
+                        #cmd.set('valence', 0.1)
+                        cmd.do('set valence, 0.1')
+                else:
+                        #cmd.set('valence', 0.0)
+                        cmd.do('set valence, 0.0')
+
+        def on_menuitem_Sequence_toggled (self, button):
+                """ Function doc """
+                if self.builder.get_object('menuitem_Sequence').get_active() == True:
+                        print '"seq_view", 1'
+                        pymol.cmd.set("seq_view", 1)
+                else:
+                        print '"seq_view", 0'
+                        pymol.cmd.set("seq_view", 0) 		
+
+        
+        def on_menuitem_preferences_activate (self, button):
+                """ Function doc """
+                self.PreferencesDialog.dialog.run()
+                self.PreferencesDialog.dialog.hide()
+
         
         
-        WorkSpace = self.GTKDynamoConfig['WorkSpace']
-        #print WorkSpace, text
-        
-        path      = os.path.join(WorkSpace, text)
-        self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
-
-        self._NewProjectDialog.dialog.run()
-        self._NewProjectDialog.dialog.hide()
-
-    def on_menuitem_ImportCoordenates_activate (self, menuitem):
-        """ Function doc """
-        #self.DialogImportCoordinates.builder.get_object('entry_file_name').set_text('teste')
-        self.DialogImportCoordinates.dialog.run()
-        self.DialogImportCoordinates.dialog.hide()
-
-    def on_menuitem_ExportCoordinates_activate (self, menuitem):
-        """ Function doc """
-        self.DialogExportCoordinates.builder.get_object('entry_file_name').set_text('teste')
-        self.DialogExportCoordinates.dialog.run()
-        self.DialogExportCoordinates.dialog.hide()
-
-    def on_MainMenu_File_OpenFileChooserWindow_clicked(self, button):
-        """ Function doc """
-
-        FileChooser = FileChooserWindow()
-        FileName = FileChooser.GetFileName(self.builder)
-
-        print FileName
+        def on_MainMenu_View_menuitem_PYMOL_command_line(self, button):
+                """ Function doc """
+                #print """ Function doc """
+                if self.builder.get_object('PyMOL_command_line_check').get_active() == True:
+                        #cmd.set('valence', 0.1)
+                        pymol.cmd.set("internal_feedback", 1) 
+                else:
+                        #cmd.set('valence', 0.0)
+                        pymol.cmd.set("internal_feedback", 0) 
+                        
+        def on_MainMenu_View_toolbutton_trajectory_tool_clicked (self, button):
+                """ Function doc """
+                if self.builder.get_object('toolbutton_trajectory_tool').get_active() == True:
+                        #cmd.set('valence', 0.1)
+                        self.builder.get_object('handlebox1').show()
+                else:
+                        #cmd.set('valence', 0.0)
+                        self.builder.get_object('handlebox1').hide()  
+                           
+                        
 
 
-        if FileName == None:
-            pass
-
-        else:
-            _FileType = GetFileType(FileName)
-            self.PyMOL_initialize()
-            if _FileType in ['pkl', 'yaml']:
-                self.project.load_coordinate_file_as_new_system(FileName)
-                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
-
-            if _FileType in ['gtkdyn']:
-                self.project.load_GTKDYNAMO_project(FileName)
-            
-        self.PyMOL_change_selection_mode()
-
-    def on_menuitem_quit_activate (self, menuitem):
-        """ Function doc """
-        print '''\n\nThanks for use GTKDynamo 2.0 - EasyHybrid\n\n'''
-        gtk.main_quit()
-        cmd.quit()
-
-    def on_imagemenuitem9_activate (self, menuitem):
-        """ Function doc """
-        self.ChargeRescaleDialog.dialog.run()
-        self.ChargeRescaleDialog.dialog.hide()
 
 
-    #def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
-    #    """ Function ChargeRescaleDialogdoc """
-    #    self.ScanDialog.dialog.run()
-    #    self.ScanDialog.dialog.hide()  
+        def on_MainMenu_File_NewProject_activate(self, button):
+                """ Function doc """
+                localtime = time.asctime(time.localtime(time.time()))
+                #print "Local current time :", localtime
+                localtime = localtime.split()        
+                #  0     1    2       3         4
+                #[Sun] [Sep] [28] [02:32:04] [2014]
+                text = 'NewProjec_' + localtime[1] + \
+                        '_' + localtime[2] + '_' + localtime[4]
+                self._NewProjectDialog.builder.get_object("new_project_entry").set_text(text)
+                
+                
+                WorkSpace = self.GTKDynamoConfig['WorkSpace']
+                #print WorkSpace, text
+                
+                path      = os.path.join(WorkSpace, text)
+                self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
 
-    def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuitem):
-		""" Function doc """
-		if self.ScanWindow.Visible == False:
-			#print self.project.settings['step']
-			text = str(self.project.settings['step'] + 1) + '_step_Scan'
-			#print text			
-			self.ScanWindow.OpenWindow(text)
-        
-        
-        #try:
-        #    _FileType = GetFileType(FileName)
-        #
-        #    if _FileType in ['pkl', 'yaml']:
-        #        self.project.load_coordinate_file_as_new_system(FileName)
-        #        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
-        #except:
-        #    pass
+                self._NewProjectDialog.dialog.run()
+                self._NewProjectDialog.dialog.hide()
 
+        def on_menuitem_ImportCoordenates_activate (self, menuitem):
+                """ Function doc """
+                #self.DialogImportCoordinates.builder.get_object('entry_file_name').set_text('teste')
+                self.DialogImportCoordinates.dialog.run()
+                self.DialogImportCoordinates.dialog.hide()
 
-    def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
-		if self.ScanWindow2D.Visible == False:
-			#print self.project.settings['step']
-			text = str(self.project.settings['step'] + 1) + '_step_Scan2D'
-			#print text	
-			self.ScanWindow2D.OpenWindow(text)
+        def on_menuitem_ExportCoordinates_activate (self, menuitem):
+                """ Function doc """
+                self.DialogExportCoordinates.builder.get_object('entry_file_name').set_text('teste')
+                self.DialogExportCoordinates.dialog.run()
+                self.DialogExportCoordinates.dialog.hide()
 
-    def on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate(self, menuItem):
-        if self.UmbrellaSamplingWindow.Visible == False:
-            text = str(self.project.settings['step'] + 1) + '_step_UmbrellaSampling'
-            self.UmbrellaSamplingWindow.OpenWindow(text)
+        def on_MainMenu_File_OpenFileChooserWindow_clicked(self, button):
+                """ Function doc """
 
+                FileChooser = FileChooserWindow()
+                FileName = FileChooser.GetFileName(self.builder)
 
-    def on_menuitem_SAW_activate(self, menuItem):
-        self.SAWDialog.dialog.run()
-        self.SAWDialog.dialog.hide()
-
-    def on_menuitem_NEB_activate(self, menuItem):
-        self.NEBDialog.dialog.run()
-        self.NEBDialog.dialog.hide()
+                print FileName
 
 
-    def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
-        """ Function doc """
-        self.NonBondDialog.dialog.run()
-        self.NonBondDialog.dialog.hide()
+                if FileName == None:
+                        pass
+
+                else:
+                        _FileType = GetFileType(FileName)
+                        self.PyMOL_initialize()
+                        if _FileType in ['pkl', 'yaml']:
+                                self.project.load_coordinate_file_as_new_system(FileName)
+                                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
+                        if _FileType in ['gtkdyn']:
+                                self.project.load_GTKDYNAMO_project(FileName)
+                        
+                self.PyMOL_change_selection_mode()
+
+        def on_menuitem_quit_activate (self, menuitem):
+                """ Function doc """
+                print '''\n\nThanks for use GTKDynamo 2.0 - EasyHybrid\n\n'''
+                gtk.main_quit()
+                cmd.quit()
+
+        def on_imagemenuitem9_activate (self, menuitem):
+                """ Function doc """
+                self.ChargeRescaleDialog.dialog.run()
+                self.ChargeRescaleDialog.dialog.hide()
 
 
-    def on_MainMenu_About_activate(self, button):
-        """ Function doc """
-        self.AboutDialog.dialog.run()
-        self.AboutDialog.dialog.hide()
+        #def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
+        #    """ Function ChargeRescaleDialogdoc """
+        #    self.ScanDialog.dialog.run()
+        #    self.ScanDialog.dialog.hide()  
+
+        def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuitem):
+                """ Function doc """
+                if self.ScanWindow.Visible == False:
+                        #print self.project.settings['step']
+                        text = str(self.project.settings['step'] + 1) + '_step_Scan'
+                        #print text			
+                        self.ScanWindow.OpenWindow(text)
+                
+                
+                #try:
+                #    _FileType = GetFileType(FileName)
+                #
+                #    if _FileType in ['pkl', 'yaml']:
+                #        self.project.load_coordinate_file_as_new_system(FileName)
+                #        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+                #except:
+                #    pass
+
+
+        def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
+                if self.ScanWindow2D.Visible == False:
+                        #print self.project.settings['step']
+                        text = str(self.project.settings['step'] + 1) + '_step_Scan2D'
+                        #print text	
+                        self.ScanWindow2D.OpenWindow(text)
+
+        def on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate(self, menuItem):
+                if self.UmbrellaSamplingWindow.Visible == False:
+                        text = str(self.project.settings['step'] + 1) + '_step_UmbrellaSampling'
+                        self.UmbrellaSamplingWindow.OpenWindow(text)
+
+
+        def on_menuitem_SAW_activate(self, menuItem):
+                self.SAWDialog.dialog.run()
+                self.SAWDialog.dialog.hide()
+
+        def on_menuitem_NEB_activate(self, menuItem):
+                self.NEBDialog.dialog.run()
+                self.NEBDialog.dialog.hide()
+
+
+        def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
+                """ Function doc """
+                self.NonBondDialog.dialog.run()
+                self.NonBondDialog.dialog.hide()
+
+
+        def on_MainMenu_About_activate(self, button):
+                """ Function doc """
+                self.AboutDialog.dialog.run()
+                self.AboutDialog.dialog.hide()
 	
 class MainToolBar(object):
     """ Class doc """
@@ -1058,6 +1086,13 @@ class TreeviewHistory(object):
         
         if item == self.builder.get_object('menuitem_pink'):
             cmd.util.cbak(PyMOL_Obj)
+        
+        if self.project.settings['fix_table'] != []:
+            #PymolPutTable(self.project.settings['fix_table'], "FIX_atoms")
+            cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
+
+
+
 
     def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
         if event.button == 3:
@@ -1373,8 +1408,16 @@ class gtkdynamo_main(threading.Thread,
         cmd.set('label_distance_digits', label_distance_digits) #
         cmd.set('mesh_width', mesh_width)                       #
         cmd.set("retain_order")         # keep atom ordering    #
-        cmd.bg_color("grey")            # background color      #
-        cmd.do("set field_of_view, 70")                         #
+        
+        
+        #BG color
+        try:
+            cmd.bg_color(self.GTKDynamoConfig['bg_color'])
+        except:
+            cmd.bg_color('black')
+        
+        
+        #cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
         cmd.do('set cartoon_highlight_color, 24')               #
         cmd.set('label_size', 20.00)                            #
@@ -1466,6 +1509,9 @@ class gtkdynamo_main(threading.Thread,
                                'HideWorkSpaceDialog': False    ,  
                                'WorkSpace'          : self.HOME,  
                                'ORCAPATH'           : self.ORCA,
+                               'bg_color'           : 'white'  ,
+                               'fixed'              : 'grey80' ,
+                               'color'              : 'black'  ,
                                'History'            : {}       }                              
 
         self.Load_GTKDYNAMO_ConfigFile()
@@ -1558,6 +1604,8 @@ class gtkdynamo_main(threading.Thread,
         self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
                                                                                                 #
         self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
+        
+        self.PreferencesDialog   = PreferencesDialog(self)
                                                                                                 #
         self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                              #
                                                                                                 #

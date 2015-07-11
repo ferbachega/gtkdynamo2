@@ -469,7 +469,7 @@ if s in answer:
                                                                                        
 else:                                                                                  
     print "\n\nPlease add to the .bashrc the following lines:"                         
-    print text                                                                         
+    #print text                                                                         
     print "\n\nobs:if you are using CSH please do it manually"		                   
 #------------------------------------------------------------------------------------------#
 
