@@ -84,12 +84,28 @@ import os
 
 
 
-# Imports
-from OpenGL.GL import *
-from OpenGL.GLU import *
+## Imports
+#from OpenGL.GL import *
+#from OpenGL.GLU import *
 
 
+import datetime
+import time
+import pygtk
+pygtk.require('2.0')
 
+import gtk
+import gobject
+import sys
+
+import os
+import json
+from  pprint import pprint
+
+import pango
+import pymol
+from pymol import *
+from pymol.cgo import *
 
 
 
@@ -136,7 +152,16 @@ from gui.DialogNEB.NEBandSAW                                import SAWDialog    
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
-                                                                                             #
+
+#from gui.MainMenu           import  MainMenu                                                                        
+#from gui.MainToolBar        import  MainToolBar 
+#from gui.GLMenu             import  GLMenu
+#from gui.TreeviewHistory    import  TreeviewHistory
+#from gui.TreeviewSelections import  TreeviewSelections
+#from gui.PyMOLCommandLine   import  PyMOLCommandLine
+#from gui.TrajectoryTool     import  TrajectoryTool
+
+
 import TextEditor.TextEditorWindow as TextEditor                                             #
                                                                                              #
 from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
@@ -146,283 +171,6 @@ from   MatplotGTK.MatplotGTK          import PlotGTKWindow                      
 # pDynamo
 from pDynamoProject    import *
 from WindowControl     import *
-from PyMOLScripts.Axes import *
-
-
-
-
-global slab
-slab    = 50
-zoom    = 1.0
-angle   = 0.0
-sprite  = None
-zfactor = 0.005
-global clicado, ZeroX, ZeroY, Buffer, Zero_ViewBuffer, Menu
-clicado = False
-ZeroX   = 0
-ZeroY   = 0
-Buffer  = 0
-Zero_pointerx = 0
-Zero_pointery = 0
-Zero_ViewBuffer = None
-
-Menu =  True
-
-
-
-def draw(glarea, event):
-    x, y, width, height = glarea.get_allocation()
-    # Required for correct sizing of child elements
-    glViewport(0, 0, width, height)
-
-    # Get surface and context
-    glcontext = glarea.get_gl_context()
-    gldrawable = glarea.get_gl_drawable()
-
-    # Start opengl context
-    if not gldrawable.gl_begin(glcontext):
-        return
-
-    # Actual drawing
-    global sprite, angle, zoom
-
-    # Clear screen
-    #rabbyt.clear((0.0, 0.0, 0.0))
-
-    # Render sprite
-    if sprite is not None:
-        sprite.rot = angle
-        sprite.scale = zoom
-        sprite.render()
-
-    # Flush screen
-    gldrawable.swap_buffers()
-    pymol.draw()
-    # End opengl context
-    gldrawable.gl_end()
-
-    return True
-
-# Resizing function
-def reshape(glarea, event):
-    pymol.reshape(event.width, event.height, True)
-    pymol.idle()
-    return True
-
-# Initialization function
-def init(glarea):
-    glcontext = glarea.get_gl_context()
-    gldrawable = glarea.get_gl_drawable()
-
-    # Start opengl context
-    if not gldrawable.gl_begin(glcontext):
-        return
-
-    # End opengl context
-    gldrawable.gl_end()
-    return True
-
-# Idle function
-def idle(glarea):
-    # Get vars
-    global angle, zoom, zfactor
-
-    # Update angle
-    angle += 1.0
-    if angle > 359:
-        angle = 0.0
-
-    # Update zoom
-    if zoom > 10 or zoom < 1:
-        zfactor = -zfactor
-        zoom += zfactor
-
-    # Needed for synchronous updates
-    glarea.window.invalidate_rect(glarea.allocation, False)
-    glarea.window.process_updates(False)
-
-    return True
-
-# Map events function
-def map(glarea, event):
-    # print 'map'
-    # Add idle event
-    gobject.idle_add(idle, glarea)
-    return True
-
-
-def slabchange(button, event):
-    global slab
-    x, y, width, height = glarea.get_allocation()
-    if event.direction == gtk.gdk.SCROLL_UP:
-        step = 1.5
-        slab = slab + step
-        slab = slab + step
-        # if  slab >=100:
-        #   slab = 100
-    else:
-        step = -1.5
-
-        slab = slab + step
-        if slab <= -5:
-            slab = -5
-    pymol.cmd.clip('slab', slab)
-    #cmd.zoom(buffer = Buffer)
-    return step
-    #pymol.do(color(str(int(slab))))
-    pymol.button(button, 0, x, y, 0)
-    pymol.idle()
-
-
-def show_context_menu(widget, event):
-    x, y, state = event.window.get_pointer()
-    if clicado:
-        if event.button == 3:
-            widget.popup(None, None, None, event.button, event.time)
-    
-
-def mousepress(button, event):
-    global ZeroX, ZeroY
-    
-    ZeroX, ZeroY, state = event.window.get_pointer()
-    
-    #print ZeroX, ZeroY
-    
-    x, y, width, height = glarea.get_allocation()
-
-    #print event.button
-    
-    if event.button == 3:
-        global clicado
-        
-
-
-        clicado = True
-        x, y, width, height = glarea.get_allocation()
-        #print x, y, width, height
-        mousepress = event
-        button = mousepress.button - 1
-        pointerx = int(mousepress.x)
-        pointery = int(mousepress.y)
-        calc_y = height - pointery
-        #print pointerx,pointery,calc_y
-        #cmd.zoom(buffer=calc_y)
-        pymol.button(button, 0, pointerx , calc_y, 0)
-
-
-
-        
-    if event.button != 3:
-        x, y, width, height = glarea.get_allocation()
-        mousepress = event
-        button = mousepress.button - 1
-        pointerx = int(mousepress.x)
-        pointery = int(mousepress.y)
-        calc_y = height - pointery
-        pymol.button(button, 0, pointerx, calc_y, 0)
-        gtkdynamo.project.SystemCheck(status = False, PyMOL = False, _color = False, _cell = False, treeview_selections = True)
-        
-    if gtkdynamo.builder.get_object('toolbutton6_measure').get_active():
-        Distances = DistancesFromPKSelection()
-        Angles    = AnglesFromPKSelection()
-        Dihedral  = DihedralFromPKSelection()
-        gtkdynamo.MeasureToolPutValores(Distances, Angles, Dihedral)
-        
-        
-def mouserelease(button, event):
-    x, y, width, height = glarea.get_allocation()
-    mouserelease = event
-    button = mouserelease.button - 1
-    pointerx = int(mouserelease.x)
-    pointery = int(mouserelease.y)
-    calc_y = height - pointery
-    
-    if event.button != 3:
-        pymol.button(button, 1, pointerx, calc_y, 0)
-    
-    if event.button == 3:
-        #clicado = False
-        pymol.button(button, 1, pointerx, calc_y, 0)
-
-
-def mousemove(button, event):
-    global clicado, Buffer,Zero_pointerx, Zero_pointery, Zero_ViewBuffer, Menu
-    x, y, width, height = glarea.get_allocation()
-    clicado = False
-    mousemove = event
-    pointerx = int(mousemove.x)
-    pointery = int(mousemove.y)
-
-    calc_y2  = (float(Zero_pointery - pointery))/10.0
-    calc_y   = height - pointery
-    
-    #if clicado:
-    #    global ZeroY
-    #    print 'a'
-    #    print clicado
-    #    print Menu
-    #    Buffer = (calc_y2)
-    #    _view   = cmd.get_view()
-    #    
-    #    print _view
-    #    if Zero_ViewBuffer == None:
-    #       Zero_ViewBuffer = _view[11]
-    #    
-    #    _view11 = Zero_ViewBuffer - Buffer
-    #    _view15 = _view[15]       - Buffer
-    #    _view16 = _view[16]       + Buffer
-    #    
-    #    _view2 = (_view[0], _view[1], _view[2],
-    #             _view[3], _view[4], _view[5],
-    #             _view[6], _view[7], _view[8],
-    #             _view[9], _view[10],_view11,
-    #             _view[12],_view[13],_view[14],
-    #             _view15,  _view16,  _view[17])
-    #    
-    #    print Buffer, _view11, _view15,_view16
-    #    cmd.set_view(_view2)
-    #    Zero_pointerx   = pointerx
-    #    Zero_pointery   = pointery
-    #    Zero_ViewBuffer = _view11
-    #    pymol.drag(pointerx, calc_y, 0)
-    #    pymol.idle()
-    #else:
-    pymol.drag(pointerx, calc_y, 0)
-    pymol.idle()
-
-
-def my_menu_func(menu):
-    print "Menu clicado"
-
-
-def context_menu():
-    builder = gtkdynamo.builder
-    menu = builder.get_object('GLArea_menu')
-    #menu = gtk.Menu()
-    #menu_item = gtk.MenuItem("Sweet menu")
-    #menu_item.connect(
-    #    'activate', gtkdynamo.on_MainMenu_File_NewProject_activate)
-    #menu.append(menu_item)
-   #menu_item.show()
-   #menu_item = gtk.MenuItem("Salty menu")
-   #menu.append(menu_item)
-   #menu_item.show()
-    return menu
-
-
-# Create opengl configuration
-try:
-    # Try creating rgb, double buffering and depth test modes for opengl
-    glconfig = gtk.gdkgl.Config(mode=(gtk.gdkgl.MODE_RGB |
-                                      gtk.gdkgl.MODE_DOUBLE |
-                                      gtk.gdkgl.MODE_DEPTH))
-except:
-    # Failed, so quit
-    sys.exit(0)
-
-
-
-
 
 
 class MainMenu (object):
@@ -608,10 +356,7 @@ class MainMenu (object):
         """ Function doc """
         self.AboutDialog.dialog.run()
         self.AboutDialog.dialog.hide()
-		
-		
-		
-		
+	
 class MainToolBar(object):
     """ Class doc """
 
@@ -705,12 +450,14 @@ class MainToolBar(object):
     def on_ToolBar_buttonMeasure_toggled (self, button):
         """ Function doc """
         if button.get_active():
-            # print '# If control reaches here, the toggle button is down'
-            self.builder.get_object('notebook3').show()
-            self.builder.get_object('togglebutton1').set_active (1)
+            ## print '# If control reaches here, the toggle button is down'
+            #self.builder.get_object('notebook3').show()
+            #self.builder.get_object('togglebutton1').set_active (1)
+            pymol.cmd.set("internal_gui", 1)
         else:
             # print '# If control reaches here, the toggle button is up'
-            self.builder.get_object('notebook3').hide()
+            #self.builder.get_object('notebook3').hide()
+            pymol.cmd.set("internal_gui", 0)
             
     def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
         """ Function doc """
@@ -1129,10 +876,6 @@ class GLMenu(object):
         if item == self.builder.get_object('gl_menuitem_color_pink'):
             cmd.util.cbak('sele')
 
-
-
-
-
 class TreeviewHistory(object):
     """ Class doc """
 
@@ -1547,6 +1290,7 @@ class TrajectoryTool(object):
 			Dihedral   = DihedralFromPKSelection(selections)
 			self.MeasureToolPutValores(Distances, Angles, Dihedral)
 
+
 class GTKDynamoConfig(object):
     """ Class doc """
     def __init__ (self):
@@ -1578,9 +1322,8 @@ class GTKDynamoConfig(object):
             print 'error: GTKDynamo config file not found'
             print 'open WorkSpace Dialog'
     
-
-
-class gtkdynamo_main(MainMenu, 
+class gtkdynamo_main(threading.Thread,
+                     MainMenu, 
 					 MainToolBar, 
                      GLMenu, 
                      TreeviewHistory, 
@@ -1614,12 +1357,12 @@ class gtkdynamo_main(MainMenu,
         #-------------------- config PyMOL ---------------------#
         #                                                       #
                                                                 #
-        cmd.button("double_left","None","None")                 #
-        cmd.button("single_right","None","None")                #
+        #cmd.button("double_left","None","None")                 #
+        #cmd.button("single_right","None","None")                #
         pymol.cmd.set("internal_gui", 0)                        #
-        pymol.cmd.set("internal_gui_mode", 0)                   #
-        pymol.cmd.set("internal_feedback", 0)                   #
-        pymol.cmd.set("internal_gui_width", 220)                #
+        #pymol.cmd.set("internal_gui_mode", 1)                   #
+        #pymol.cmd.set("internal_feedback", 0)                   #
+        #pymol.cmd.set("internal_gui_width", 220)                #
         pymol.cmd.set("cartoon_fancy_helices", 'on')            # 
         sphere_scale = 0.25                                     #
         stick_radius = 0.15                                     #
@@ -1637,8 +1380,6 @@ class gtkdynamo_main(MainMenu,
         cmd.set('label_size', 20.00)                            #
         cmd.set('label_color', 'white')                         #
         cmd.set('auto_zoom', 1)                                 #
-        pymol.cmd.set('seq_view', 'on')                         #
-        pymol.cmd.set('seq_view_color', 'white')                #
         #cmd.extend('axes', axes)
         #axes()
         #-------------------------------------------------------#
@@ -1739,21 +1480,21 @@ class gtkdynamo_main(MainMenu,
         
         
         #-------------------- config GLarea --------------------#
-        container = self.builder.get_object("container")        #
-        pymol.start()                                           #
-        cmd = pymol.cmd                                         #
-        container.pack_end(glarea)                              #
-        glarea.show()                                           #
+        #container = self.builder.get_object("container")        #
+        #pymol.start()                                           #
+        #cmd = pymol.cmd                                         #
+        #container.pack_end(glarea)                              #
+        #glarea.show()                                           #
         # Remove pymol's scary messages                         #
-        pymol.button(0, 1, 0, 0, 0)                             #
+        #pymol.button(0, 1, 0, 0, 0)                             #
         #-------------------------------------------------------
 
               #------------------------------------------------#
               #-               PyMOL_initialize                #
               #------------------------------------------------#
         #------------------------------------------------------------#
-        self.PyMOL_initialize()                                      #
-        print text1                                                  #
+        #self.PyMOL_initialize()                                      #
+        #print text1                                                  #
         #------------------------------------------------------------#
         
 
@@ -1780,7 +1521,10 @@ class gtkdynamo_main(MainMenu,
         
         #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
         self.project = pDynamoProject(                                                                                               #
-            data_path=GTKDYNAMO_TMP, builder=self.builder, window_control=self.window_control)                                       #
+                                      data_path       = GTKDYNAMO_TMP,                                                               #
+                                      builder         = self.builder,                                                                #
+                                      GTKDynamoConfig = self.GTKDynamoConfig,                                                        #
+                                      window_control  = self.window_control)                                                         #
         self.project.PyMOL = True                                                                                                    #
         #----------------------------------------------------------------------------------------------------------------------------#
 
@@ -1838,7 +1582,8 @@ class gtkdynamo_main(MainMenu,
         # hide widgets - not ethe final version
         self.builder.get_object('toolbutton7_print_tudo').hide()
         #self.builder.get_object('hbox4').hide()
-
+        #cmd.button("double_left","None","None")                 #
+        #cmd.button("single_right","None","None")                #
         
         
 
@@ -1846,37 +1591,68 @@ class gtkdynamo_main(MainMenu,
         gtk.main()
 
 
+
+
+
+import pymol
+#threading.Thread.__init__(self)                        #
+#threading.Thread.__init__(self)                        #
+                                                        #
+pymol.finish_launching()                                #
+        #cmd.button("double_left","None","None")        #
+
+##cmd.button("single_right","None","None")               #
+#pymol.cmd.set("internal_gui", 0)                        #
+##pymol.cmd.set("internal_gui_mode", 1)                  #
+##pymol.cmd.set("internal_feedback", 0)                  #
+##pymol.cmd.set("internal_gui_width", 220)               #
+#pymol.cmd.set("cartoon_fancy_helices", 'on')            #
+#sphere_scale = 0.25                                     #
+#stick_radius = 0.15                                     #
+#label_distance_digits = 4                               #
+#mesh_width = 0.3                                        #
+#cmd.set('sphere_scale', sphere_scale)                   #
+#cmd.set('stick_radius', stick_radius)                   #
+#cmd.set('label_distance_digits', label_distance_digits) #
+#cmd.set('mesh_width', mesh_width)                       #
+#cmd.set("retain_order")         # keep atom ordering    #
+#cmd.bg_color("grey")            # background color      #
+#cmd.do("set field_of_view, 70")                         #
+#cmd.do("set ray_shadows,off")                           #
+#cmd.do('set cartoon_highlight_color, 24')               #
+#cmd.set('label_size', 20.00)                            #
+#cmd.set('label_color', 'white')                         #
+#cmd.set('auto_zoom', 1)                                 #
+##cmd.extend('axes', axes)                               #
+##axes()                                                 #
+##-------------------------------------------------------#
+
+
+
+
+gtk.gdk.threads_init()
+
+from pymol import *
 print "Creating object"
-# Create our glarea widget
-glarea = gtk.gtkgl.DrawingArea(glconfig)
-#glarea.set_size_request(400, 400)
-glarea.connect_after('realize', init)
-glarea.connect('configure_event', reshape)
-glarea.connect('expose_event', draw)
-glarea.connect('map_event', map)
-glarea.set_events(glarea.get_events() | gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK |
-                  gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.KEY_PRESS_MASK)
-
-
-                                                      
-glarea.connect("button_press_event"  , mousepress)      
-glarea.connect("button_release_event", mouserelease)  
-glarea.connect("motion_notify_event" , mousemove)      
-#glarea.connect("button_press_event",   _mouseButton)
-#glarea.connect("button_release_event", _mouseButton)
-#glarea.connect("motion_notify_event",  _mouseButton)
-glarea.connect("scroll_event", slabchange)
-glarea.set_can_focus(True)
-
-import pymol2
-pymol = pymol2.PyMOL(glarea)
 gtkdynamo = gtkdynamo_main()
-#glarea.connect_object("button_press_event", show_context_menu, context_menu())
-glarea.connect_object("button_release_event", show_context_menu, context_menu())
-
-import sys
-if len(sys.argv) > 1:
-    gtkdynamo.project.load_coordinate_file_as_new_system(sys.argv[1])
-    gtkdynamo.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
-
+gtkdynamo.PyMOL_initialize()
 gtkdynamo.run()
+
+#
+#gtkdynamo = gtkdynamo_main()
+#pymol.finish_launching()    
+#gtk.gdk.threads_init()
+##PyMOL_GUIConfig()
+
+#masters = MastersMain()
+#masters.run()
+#fecha o gateway quando for sair do programa
+#p.terminate()
+#return 0
+
+#import sys
+#if len(sys.argv) > 1:
+#    gtkdynamo.project.load_coordinate_file_as_new_system(sys.argv[1])
+#    gtkdynamo.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
+#gtkdynamo.run()
