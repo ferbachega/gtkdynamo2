@@ -2489,6 +2489,7 @@
                 <property name="label" translatable="yes">Cell</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image70</property>
+                <signal name="toggled" handler="on_toolbar_showCell_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

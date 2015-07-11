@@ -1634,7 +1634,7 @@ class gtkdynamo_main(threading.Thread,
         
         
         # hide widgets - not ethe final version
-        #self.builder.get_object('toolbutton7_print_tudo').hide()
+        self.builder.get_object('toolbutton7_print_tudo').hide()
         #self.builder.get_object('hbox4').hide()
         #cmd.button("double_left","None","None")                 #
         #cmd.button("single_right","None","None")                #
