@@ -69,8 +69,8 @@ import datetime
 import time
 import pygtk
 pygtk.require('2.0')
-import gtk
-import gtk.gtkgl
+#import gtk
+#import gtk.gtkgl
 from pprint import pprint
 
 
@@ -88,19 +88,6 @@ import os
 #from OpenGL.GL import *
 #from OpenGL.GLU import *
 
-
-import datetime
-import time
-import pygtk
-pygtk.require('2.0')
-
-import gtk
-import gobject
-import sys
-
-import os
-import json
-from  pprint import pprint
 
 import pango
 import pymol
@@ -221,10 +208,10 @@ class MainMenu (object):
         def on_menuitem_Sequence_toggled (self, button):
                 """ Function doc """
                 if self.builder.get_object('menuitem_Sequence').get_active() == True:
-                        print '"seq_view", 1'
+                        #print '"seq_view", 1'
                         pymol.cmd.set("seq_view", 1)
                 else:
-                        print '"seq_view", 0'
+                        #print '"seq_view", 0'
                         pymol.cmd.set("seq_view", 0) 		
 
         
@@ -298,7 +285,7 @@ class MainMenu (object):
                 FileChooser = FileChooserWindow()
                 FileName = FileChooser.GetFileName(self.builder)
 
-                print FileName
+                #print FileName
 
 
                 if FileName == None:
@@ -318,7 +305,7 @@ class MainMenu (object):
 
         def on_menuitem_quit_activate (self, menuitem):
                 """ Function doc """
-                print '''\n\nThanks for use GTKDynamo 2.0 - EasyHybrid\n\n'''
+                print '''\n\nThanks for use EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
 
@@ -436,10 +423,10 @@ class MainToolBar(object):
     def on_toolbutton_sequence_toggled (self, button):
         """ Function doc """
         if self.builder.get_object('toolbutton_sequence').get_active() == True:
-                print '"seq_view", 1'
+                #print '"seq_view", 1'
                 pymol.cmd.set("seq_view", 1)
         else:
-                print '"seq_view", 0'
+                #print '"seq_view", 0'
                 pymol.cmd.set("seq_view", 0) 		
  
     def on_toolbar_showCell_toggled (self, button):
@@ -524,7 +511,7 @@ class MainToolBar(object):
 
     def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
         """ Function doc """
-        print self.project.settings['step']
+        #print self.project.settings['step']
         text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
         self._02MinimizationWindow.builder.get_object(
             "02_window_entry_traj_name").set_text(text)
@@ -533,7 +520,7 @@ class MainToolBar(object):
 
     def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
         """ Function doc """
-        print self.project.settings['step']
+        #print self.project.settings['step']
         text = str(self.project.settings['step'] + 1) + '_step_MolecularDynamics'
         self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
         self.MolecularDynamicsWindow.dialog.run()
@@ -771,21 +758,21 @@ class GLMenu(object):
 
 
 
-
+        print 'QC table:'
         print self.project.settings['qc_table']
 
     def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem, click = None):    
         self.project.clean_qc_table()
-        print self.project.settings['qc_table']
+        #print self.project.settings['qc_table']
 
     def on_GLAreaMenu_itemActive_SetFixTable(self, menuitem, click=None):
         table = PymolGetTable('sele')
         self.project.put_fix_table(table)
-        print self.project.settings['fix_table']
+        #print self.project.settings['fix_table']
 
     def on_GLAreaMenu_itemActive_CleanFixTable(self, menuitem, click=None):
         self.project.clean_fix_table()
-        print self.project.settings['fix_table']
+        #print self.project.settings['fix_table']
 
     def on_GLAreaMenu_itemActive_SetPruneTable(self, menuitem, click=None):
         #print "aqui"
@@ -820,7 +807,7 @@ class GLMenu(object):
         if a == -8:                                                                                       
             # 6 step 
             self.project.put_prune_table(table)
-            print self.project.settings['prune_table']                                                                                     
+            #print self.project.settings['prune_table']                                                                                     
             #self.QuantumChemistrySetupDialog.dialog.run()
             #self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
         else:                                                                                             
@@ -857,7 +844,7 @@ class GLMenu(object):
 
     def on_gl_show_hide_items_activate (self, item, event):
         
-        print """ gl menu items """
+        #print """ gl menu items """
         if item == self.builder.get_object('gl_menuitem_show_lines'):
             cmd.show ('lines', 'sele')
         if item == self.builder.get_object('gl_menuitem_show_sticks'):
@@ -917,24 +904,24 @@ class TreeviewHistory(object):
         """ Class initialiser """
         pass
 
-    def handle_history_click(self, tree, event):
-        if event.button == 3:
-            print "Mostrar menu de contexto botao3"
-       
-        if event.button == 1:
-            print "Mostrar menu de contexto botao1"
+    #def handle_history_click(self, tree, event):
+    #    if event.button == 3:
+    #        print "Mostrar menu de contexto botao3"
+    #   
+    #    if event.button == 1:
+    #        print "Mostrar menu de contexto botao1"
 
     def on_treeview2_show_logFile (self, item):
         """ Function doc """
         #pprint(self.project.settings['job_history'][self.selectedID]['log'])
         filein = self.project.settings['job_history'][self.selectedID]['log']
-        print    self.project.settings['job_history'][self.selectedID]['log']
+        #print   self.project.settings['job_history'][self.selectedID]['log']
         editor = TextEditor.GTKDynamoTextEditor(filein)
         #editor.load_file(filein)
     def on_menuitem_PlotLogFile_activate(self, item):
         """ Function doc """
         filein = self.project.settings['job_history'][self.selectedID]['log']
-        print    self.project.settings['job_history'][self.selectedID]['log']
+        #print    self.project.settings['job_history'][self.selectedID]['log']
         parameters = ParseProcessLogFile(filein)
         
         #xlabel = 'Frames'
@@ -1259,9 +1246,7 @@ class PyMOLCommandLine(object):
 	#      ---------------------------------  
 	#           PyMOL COMMAND LINE    
 	#      ---------------------------------
-
 	'''
-
 	def on_PyMOLCommandLine_entry1_activate(self, button):
 		""" Function doc """
 		command = self.builder.get_object('entry1').get_text()
@@ -1361,7 +1346,7 @@ class GTKDynamoConfig(object):
             self.GTKDynamoConfig = json.load(open(path)) 
         except:
             print 'error: GTKDynamo config file not found'
-            print 'open WorkSpace Dialog'
+            print 'opening WorkSpace Dialog'
     
 class gtkdynamo_main(threading.Thread,
                      MainMenu, 
@@ -1451,7 +1436,7 @@ class gtkdynamo_main(threading.Thread,
             for i in atoms:
                 #print i 
                 name  = i.name
-                print name
+                #print name
             
             #print 'depois'
 
@@ -1481,7 +1466,7 @@ class gtkdynamo_main(threading.Thread,
 
     def __init__(self):
             
-        print '           Intializing EasyHybrid GTKDynamo2 GUI object          '
+        print '           Intializing EasyHybrid - GTKDynamo GUI object          '
         self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
         try:
             self.ORCA           = os.environ.get('ORCA')

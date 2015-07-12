@@ -21,92 +21,13 @@ import json
 
 
 
-
-
-class pDynamoProject():
-
-    def __init__(self, 
-                data_path       = None, 
-                PyMOL           = False, 
-                name            = 'untitled', 
-                builder         = None, 
-                window_control  = None, 
-                cmd             = None, 
-                GTKDynamoConfig = None ):
-        
-        self.GTKDynamoConfig = GTKDynamoConfig
-        self.settings = {
-                       'projectID'       : None,
-                       'force_field'     : None,
-                       'parameters'      : None,
-                       'topology'        : None,
-                       'coordinates'     : None,
-                                        
-                       'nbModel_type'    : 'NBModelABFS',
-                       'types_allowed'   : {'pdb': True, 'xyz': False, 'mol2': False},
-                                        
-                       'prune_table'     : [],
-                       'fix_table'       : [],
-                       'qc_table'        : [],
-                                        
-                       'QC'              : False,
-                       'potencial'       : None,
-                       'qc_method'       : None,
-                                        
-                       'data_path'       : data_path,   # estah sendo usado 
-                       'step'            : 0,
-                       'last_step'       : None,
-                                        
-                                        
-                                        
-                       'job_history'     :{
-                                          # actual style
-                                          #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
-                                          
-                                          # new propose
-                                          #'1': {                                                      
-                                          #      'object'    : 'Step1'           ,
-                                          #      'type'      : 'new/min/dyn/prn' ,
-                                          #      'parameters': parameters        ,       -  extracted from the log -  checksystem
-                                          #      'potencial' : "AMBER/AM1/ABFS"  ,
-                                          #      'CQatoms'   : '43'              ,
-                                          #      'color'     : 'black'
-                                          #     }
-                                          },
-                       
-                       'edit_mode_button': False,
-                       'PyMOL_Obj'       : None,
-                       'pymol_session'   : None,   #  - pdynamo pkl/yaml file
-                       'filename'        : None,
-                       'pDynamo_system'  : None,   #  - pymol pse file
-                       'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
-                       } 
-        self.nbModel         = 'NBModelABFS()'
-        self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
-        self.parameters      = None
-        self.system          = None          
-        self.PyMOL           = PyMOL         
-        self.dualLog         = None          
-        self.builder         = builder       
-        self.window_control  = window_control
-        self.ActiveMode      = False 
-        self.pdbInfo         = {} # usado no pDynamoSelections
-        ''' 
-                   BondTable  
-        
-        
-        
-                          A1   A2      Bond   Active
-                                     
-        BondTable      = {(1,  2)  :   [1.1,   True]}
-        
-        BondTable[1,2] = [atomic_dic["C"][2] + atomic_dic["H"][2], True]
-        
-        
-        '''
-        self.BondTable = {}
-        self.ShowCell  = False
-        
+class NewProject(object):
+    """ Class doc """
+    
+    def __init__ (self):
+        """ Class initialiser """
+        pass
+    
     def set_AMBER_MM(self, amber_params, amber_coords, dualLog=None):
         self.system = AmberTopologyFile_ToSystem(amber_params, dualLog)
         #self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
@@ -191,6 +112,568 @@ class pDynamoProject():
         self.settings['potencial']   = "MM"
         self.settings['parameters']  = opls_params
         self.settings['coordinates'] = opls_coords
+
+    def Create_New_Project(self, name = "UNK",  # str
+                           data_path  = None,  # str
+                           FileType   = None,  # str
+                           filesin    = None,  # dictionary
+                           BufferText = None):  # buffertext
+        """ Function doc """
+
+        self.name = name
+
+        if data_path is not None:
+            self.settings['data_path'] = data_path
+
+        FileType = FileType
+        filesin = filesin
+
+        if FileType == "AMBER":
+            amber_params = filesin['amber_params']
+            amber_coords = filesin['amber_coords']
+            self.set_AMBER_MM(amber_params, amber_coords, self.dualLog)
+            self.set_nbModel_to_system()
+
+        elif FileType == "CHARMM":
+            charmm_params     = filesin['charmm_params']
+            charmm_topologies = filesin['charmm_topologies']
+            charmm_coords     = filesin['charmm_coords']
+            
+            self.set_CHARMM_MM(charmm_params, charmm_topologies, self.dualLog)
+            filetype = self.load_coordinate_file_to_system(charmm_coords, self.dualLog)
+            self.set_nbModel_to_system()
+
+        elif FileType == "GROMACS":
+            gromacs_params = filesin['gromacs_params']
+            gromacs_coords = filesin['gromacs_coords']
+
+            self.set_GROMACS_MM(gromacs_params, gromacs_coords, self.dualLog)
+            self.set_nbModel_to_system()
+
+        elif FileType == "OPLS":
+            opls_params = filesin['opls_params']
+            opls_coords = filesin['opls_coords']
+            self.set_OPLS_MM(opls_params, opls_coords, self.dualLog)
+            self.set_nbModel_to_system()
+
+        elif FileType == "pDynamo files(*.pkl,*.yaml)":
+            NewSystem = filesin["pDynamoFile"]					#
+            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+
+        elif FileType == "Other(*.pdb,*.xyz,*.mol2...)":
+            NewSystem = filesin["coordinates"]					#
+            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
+
+
+        #print BufferText
+        self.system.label = name
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+
+    def DeleteActualProject (self):
+        """ Function doc """
+        pass
+        '''
+        self.settings = {
+                       'add_info'     : None,
+                       'force_field'  : None,
+                       'parameters'   : None,
+                       'topology'     : None,
+                       'coordinates'  : None,
+                       
+                       'nbModel_type' : 'NBModelABFS',
+                       #'nbModel'      : "NBModelABFS()",
+                       'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
+                       'types_allowed': {'pdb': True, 'xyz': False, 'mol2': False},
+        
+                       'prune_table'  : [],
+                       'fix_table'    : [],
+                       'qc_table'     : [],
+                       
+                       'QC'           : False,
+                       'potencial'    : None,
+                       'qc_method'    : None,
+                       
+                       'data_path'    : None,   # estah sendo usado 
+                       'step'         : 0,
+                       'last_step'    : None,
+                      
+                       
+                       
+                       'job_history'  :{
+                                       # actual style
+                                       #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
+                                       
+                                       # new propose
+                                       #'1': {                                                      
+                                       #      'object'    : 'Step1'           ,
+                                       #      'type'      : 'new/min/dyn/prn' ,
+                                       #      'parameters': parameters        ,       -  extracted from the log -  checksystem
+                                       #      'potencial' : "AMBER/AM1/ABFS"  ,
+                                       #      'CQatoms'   : '43'              ,
+                                       #      'color'     : 'black'
+                                       #     }
+                                       },
+                       
+                       'PyMOL_Obj'     : None,
+                       'filename'      : None,   # ex.  /home/fernando/pDynamoWorkSpace/Enolase_Dec_11_2014/projectBaseName
+                       'pymol_session' : None,   #    - pdynamo pkl/yaml file
+                       'pDynamo_system': None    #    - pymol pse file
+                       } 
+        self.nbModel         = 'NBModelABFS()'
+        self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
+        self.parameters      = None
+        self.system          = None          
+        #self.PyMOL           = PyMOL         
+        self.dualLog         = None          
+        #self.builder         = builder       
+        #self.window_control  = window_control
+        #self.ActiveMode      = False 
+        self.pdbInfo         = {}
+        '''
+
+class LoadAndSaveFiles(object):
+    """ Class doc """
+    
+    def __init__ (self):
+        """ Class initialiser """
+        pass
+    
+    def Save_Project_To_File (self, filename = 'actual_state', type_ = 'pkl'):
+		""" Function doc """
+		path     = filename.split('/')
+
+		FileName = path.pop()
+		self.system.label = FileName
+
+		new_data_path = '/'
+		for i in path:
+			new_data_path = os.path.join(new_data_path,i)
+
+
+
+		self.settings['pDynamo_system' ] = FileName + '.pkl'
+		self.settings['pymol_session']   = FileName + '.pse'
+		self.settings['filename']        = filename
+
+		settings2 = self.settings
+		#settings2['prune_table'] = []
+		#settings2['fix_table'  ] = []  
+		#settings2['qc_table'   ] = []  
+		settings2['data_path'  ] = new_data_path
+
+		FOLDER  = self.settings['data_path']
+
+		print 'New data path:  ',new_data_path
+		json.dump(settings2,     open(filename+'.gtkdyn', 'w'), indent=2) # json file
+		print 'exporting file: ', filename+'.gtkdyn'
+
+		self.export_state_to_file    (filename, type_)                    # pkl  file
+		print 'exporting file: ', filename+'.pkl'
+
+		cmd.save                     (filename+'.pse', 'pse')             # pse  file
+		print 'exporting file: ', filename+'.pse'
+		self.SystemCheck(status = True, PyMOL = False)
+
+    def load_coordinate_file_as_new_system(self, filename, dualLog=None):
+        self.settings['prune_table']= []
+        self.settings['fix_table']  = []
+        self.settings['qc_table']   = []
+        self.settings['QC']         = False
+        type_ = GetFileType(filename)
+        
+        if type_ == "xyz":
+            self.system = XYZFile_ToSystem(filename,  dualLog)
+        
+        elif type_ == "pdb":
+            self.system = PDBFile_ToSystem(filename,  log=dualLog)
+
+        elif type_ == "cif":
+            self.system = mmCIFFile_ToSystem(filename,  dualLog)
+
+        elif type_ == "mop":
+            self.system = MopacInputFile_ToSystem(filename,  dualLog)
+
+        elif type_ == "mol":
+            self.system = MOLFile_ToSystem(filename, log=dualLog)
+
+        # --- pkl ---
+
+        elif type_ == "pkl":
+            self.system = Unpickle(filename)
+            try:
+                self.settings[
+                    'fix_table'] = list(self.system.hardConstraints.fixedAtoms)
+                # print 'fix_table = :',self.settings['fix_table']
+            except:
+                a = None
+
+            try:
+                qc_table = list(
+                    self.system.energyModel.qcAtoms.QCAtomSelection())
+                boundaryAtoms = list(
+                    self.system.energyModel.qcAtoms.BoundaryAtomSelection())
+
+                self.settings['boundaryAtoms'] = boundaryAtoms
+                # print 'qc_table : '  , qc_table
+                print 'boundaryAtoms', (boundaryAtoms)
+
+                qc = []
+                for l in qc_table:
+                    if l in boundaryAtoms:
+                        print l
+                    else:
+                        qc.append(l)
+
+                self.settings['qc_table'] = qc
+                self.settings['QC']       = True
+                #print 'qc_table : ', self.settings['qc_table']
+
+            except:
+                print "System has no QC atoms"
+            
+       
+        # --- yaml ---
+
+        elif type_ == "yaml":
+            self.system = YAMLUnpickle(filename)
+
+            try:
+                self.settings['fix_table'] = list(
+                    self.system.hardConstraints.fixedAtoms)
+                #print 'fix_table = :', self.settings['fix_table']
+            except:
+                a = None
+
+            try:
+                qc_table = list(
+                    self.system.energyModel.qcAtoms.QCAtomSelection())
+                boundaryAtoms = list(
+                    self.system.energyModel.qcAtoms.BoundaryAtomSelection())
+
+                self.settings['boundaryAtoms'] = boundaryAtoms
+                # print 'qc_table : '  , qc_table
+                print 'boundaryAtoms', (boundaryAtoms)
+
+                qc = []
+                for l in qc_table:
+                    if l in boundaryAtoms:
+                        print l
+                    else:
+                        qc.append(l)
+
+                self.settings['qc_table'] = qc
+                self.settings['QC']     = True
+                #print 'qc_table : ', self.settings['qc_table']
+            except:
+                print "System has no QC atoms"
+
+        else:
+            return "ops!"
+        try:
+            self.system.Summary(dualLog)
+        except:
+            print "system empty"
+
+        return type_
+
+    def load_coordinate_file_to_system(self, filename, dualLog=None):
+        type_ = GetFileType(filename)
+        # print type_
+
+        if type_ == "xyz":
+            self.system.coordinates3 = XYZFile_ToCoordinates3(filename)
+
+        # When the coordinate file is a PDB
+        elif type_ == "pdb":
+            self.system.coordinates3 =  PDBFile_ToCoordinates3(filename, dualLog)
+        
+        elif type_ == "xpk":
+            try:
+                self.system.coordinates3 = Unpickle(filename)
+            except:
+                self.system.coordinates3 = XMLUnpickle(filename)
+
+        elif type_ == "pkl":
+            try:
+                self.system.coordinates3 = Unpickle(filename)
+            except:
+                self.system.coordinates3 = XMLUnpickle(filename)
+
+        elif type_ == "yaml":
+            self.system.coordinates3 = YAMLUnpickle(filename)
+
+        elif type_ == "chm":
+            self.system.coordinates3 = CHARMMCRDFile_ToCoordinates3(
+                os.path.join(filename),  dualLog)
+
+        elif type_ == "crd":
+            self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
+                os.path.join(filename),  dualLog)
+        
+        elif type_ == "inpcrd":
+            self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
+                os.path.join(filename),  dualLog)
+
+        elif type_ == "mol":
+            self.system.coordinates3 = MOLFile_ToCoordinates3(
+                os.path.join(filename),  log=dualLog)
+        else:
+            return "ops!"
+
+        #self.system.Summary(  dualLog )
+
+        return type_
+
+    def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object, _type):
+        cmd.disable('all')
+
+        
+
+        i = 0 
+        i = i + first
+        outPath = ( traj_name )
+        self.system.Energy()
+        
+        if _type == "folder - pDynamo": #, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS'
+            print "folder - pDynamo"
+            trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
+        
+        if _type == "trj - AMBER":
+            print "trj - AMBER"
+            trajectory = AmberTrajectoryFileReader (traj_name, self.system)
+
+
+        #print 'Energy after'
+        self.system.Energy()
+
+        
+        i = 0
+        a = 0
+        i = i + first
+        export_type = 'pdb'
+
+        while trajectory.RestoreOwnerData ( ):
+            if export_type == 'pdb':
+                if a == i:
+                    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
+                    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+                    i = i + stride
+                    print "loading file: ",i
+                if a == last:
+                    break
+                a=a+1
+            else:
+                if a == i:
+                    XYZFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".xyz" ), self.system)
+                    cmd.load( os.path.join ( outPath, new_pymol_object +".xyz"))
+                    i = i + stride
+                    print "loading file: ",i
+                if a == last:
+                    break
+                a=a+1	
+        type_ = 'trj'
+        
+        put_new_obj_in_treeview = False
+        
+        self.settings['PyMOL_Obj'] = new_pymol_object
+        
+        for i in self.settings['job_history']:
+            if self.settings['PyMOL_Obj'] in self.settings['job_history'][i]:
+                put_new_obj_in_treeview = True
+
+        
+        if put_new_obj_in_treeview == False:
+            self.IncrementStep()
+            self.settings['job_history'][str(self.settings['step'])] = {
+                                                                   'object'    : new_pymol_object                     ,
+                                                                   'type'      : type_                                , 
+                                                                   'parameters': self.parameters                      , 
+                                                                   'potencial' : self.parameters['Energy Model']      , 
+                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'], 
+                                                                   'color'     : 'black'
+                                                                   }
+            
+                                                                                #[ new_pymol_object,  
+                                                                                #type_ , 
+                                                                                #self.parameters['Energy Model'], 
+                                                                                #self.parameters['Number of QC Atoms']]  # it is only a test 
+            pymol_objects  = cmd.get_names()
+            liststore = self.builder.get_object('liststore2')
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'], self.settings['PyMOL_Obj'])
+            self.SystemCheck()
+        
+        return a
+        
+    def load_GTKDYNAMO_project(self, filename):
+        """ Function doc """
+        #print self.settings
+        #print filename
+        
+        
+        path     = filename.split('/')
+        FileName = path.pop()
+        new_data_path = '/'
+        for i in path:
+            new_data_path = os.path.join(new_data_path,i)
+        #print new_data_path
+        
+
+        
+        
+        self.settings              = json.load(open(filename)) 
+        self.settings['data_path'] = new_data_path
+
+        self.load_coordinate_file_as_new_system(os.path.join(new_data_path,self.settings['pDynamo_system']))
+        cmd.load (  os.path.join( new_data_path, self.settings['pymol_session'])   )
+        
+        pymol_objects  = cmd.get_names()
+        liststore      = self.builder.get_object('liststore2')
+        
+        #print pymol_objects
+        #print self.settings['job_history']
+        pymol_id =  self.settings['PyMOL_Obj']
+        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , self.settings['PyMOL_Obj'])
+        self.SystemCheck()
+ 
+    def ExportStateToFile(self, filename, type_):  # disabled
+        #self.ActiveModeCheck()
+        filename = AddFileTypeSuffix(filename, type_)
+
+        if type_ == "xyz":
+            XYZFile_FromSystem(filename, self.system)
+
+        elif type_ == "pdb":
+            PDBFile_FromSystem(filename, self.system)
+
+        elif type_ == "mol2":
+            MOL2File_FromSystem(filename, self.system)
+
+        elif type_ == "pkl":
+            try:
+                XMLPickle(filename, self.system)
+
+            except:
+                Pickle(filename, self.system)
+
+        elif type_ == "yaml":
+            YAMLPickle(filename, self.system)
+
+        elif type_ == "mol":
+            MOLFile_FromSystem(filename, self.system)
+
+        elif filetype == "cif":
+            mmCIFFile_FromSystem(filename, self.system)
+
+        elif type_ == "psf":
+            CHARMMPSFFile_FromSystem(filename, self.system)
+
+        elif type_ == "crd":
+            AmberCrdFile_FromSystem(filename, self.system)
+
+        else:
+            print "file type not supported"
+
+        return filename, type_
+
+    def export_state_to_file (self, filename, type_):
+
+		filename = AddFileTypeSuffix(filename, type_)     # from PyMOLScripts
+
+		if type_   == "xyz":
+			XYZFile_FromSystem ( filename, self.system )
+		
+		elif type_ == "pdb":
+			PDBFile_FromSystem ( filename, self.system )
+
+		elif type_ == "mol2":
+			MOL2File_FromSystem ( filename, self.system )
+		
+		elif type_ == "pkl":
+			try:
+				XMLPickle ( filename, self.system )
+			except:
+				Pickle ( filename, self.system )
+
+		elif type_ == "yaml":
+			YAMLPickle ( filename, self.system )
+		
+		elif type_ == "mol":
+			MOLFile_FromSystem ( filename, self.system )
+
+		elif filetype == "cif":
+			mmCIFFile_FromSystem ( filename, self.system )
+
+		elif type_ == "psf":
+			CHARMMPSFFile_FromSystem( filename, self.system )
+
+		elif  type_ == "crd":
+			AmberCrdFile_FromSystem( filename, self.system )
+
+		else:
+			print "file type not supported"
+
+class pDynamoSimulations(object):
+    """ Class doc """
+    
+    def __init__ (self):
+        """ Class initialiser """
+        pass
+    
+    def ComputeEnergy(self):  # Compute Energy
+        self.ActiveModeCheck()
+        energy = pDynamoEnergy(self.system, self.settings['data_path'])
+        self.SystemCheck( status = False, 
+                           PyMOL = False, 
+                          _color = False, 
+                           _cell = False, 
+             treeview_selections = False,
+                     ORCA_backup = True 
+                    )
+        return energy
+        
+    def Minimization(self, method='Conjugate Gradient', parameters=None):
+        """ Function doc """
+
+        self.ActiveModeCheck()
+        #                               Minimization                                       #
+        #    required: (system = None, _type_ = 'ConjugateGradient', parameters = None)    #
+        # _type_  : 'ConjugateGradient' 'SteepestDescent' 'LBFGS'
+        # #
+
+        logFile = pDynamoMinimization(self.system, method, parameters, self.settings['data_path'])
+
+        #------------------  increment step  ---------------#
+        #
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='min', log = logFile )
+        #
+        #---------------------------------------------------#
+
+        return True
+
+    def MolecularDynamics(self, parameters):
+        """ Function doc """
+        #print parameters
+
+        self.ActiveModeCheck()
+
+        #pDynamoMinimization(self.system, method, parameters, self.data_path)
+        logFile = RunMolecularDynamics( self.system, self.settings['data_path'], parameters)
+        
+        
+        #------------------  increment step  ---------------#
+        #
+        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn', log = logFile)
+        #
+        #---------------------------------------------------#
+
+        return True
+    
+class QuantumChemistrySetup(object):
+    """ Class doc """
+    
+    def __init__ (self):
+        """ Class initialiser """
+        pass
 
     def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
         qc_table = self.settings['qc_table']                                                     
@@ -332,196 +815,118 @@ class pDynamoProject():
                     #PyMOL_BondTable[i+1,j+1] = [atomic_dic[element1][2] + atomic_dic[element2][2], True]
                     #print i+1, element1, j+1,element2, "BOND: ", Rcov, Distance_i_j, Bond_Unbond
                     self.BondTable[i+1,j+1] = [Rcov, Bond_Unbond]
-          
-    def DeleteActualProject (self):
-        """ Function doc """
-        
-        self.settings = {
-                       'add_info'     : None,
-                       'force_field'  : None,
-                       'parameters'   : None,
-                       'topology'     : None,
-                       'coordinates'  : None,
-                       
-                       'nbModel_type' : 'NBModelABFS',
-                       #'nbModel'      : "NBModelABFS()",
-                       'ABFS_options' : {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5},
-                       'types_allowed': {'pdb': True, 'xyz': False, 'mol2': False},
+     
+    def put_qc_table(self, qc_table):
+        self.settings['qc_table'] = qc_table
+   
+    def clean_qc_table(self):
+        self.system.DefineQCModel (None)
+        self.settings['qc_table'] = []
+        self.SystemCheck()
 
-                       'prune_table'  : [],
-                       'fix_table'    : [],
-                       'qc_table'     : [],
+class FixedTableSetup(object):
+    """ Class doc """
+    
+    def __init__ (self):
+        """ Class initialiser """
+        pass
+    
+    def put_fix_table(self, fix_table):
+        self.system.DefineFixedAtoms(Selection(fix_table))
+        
+        self.settings['fix_table'] = fix_table
+        
+        self.SystemCheck()
+
+    def clean_fix_table(self):
+        self.system.DefineFixedAtoms(None)
+        self.settings['fix_table'] = []
+        self.SystemCheck()
+
+class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumChemistrySetup,FixedTableSetup):
+
+    def __init__(self, 
+                data_path       = None, 
+                PyMOL           = False, 
+                name            = 'untitled', 
+                builder         = None, 
+                window_control  = None, 
+                cmd             = None, 
+                GTKDynamoConfig = None ):
+        
+        self.GTKDynamoConfig = GTKDynamoConfig
+        self.settings = {
+                       'projectID'       : None,
+                       'force_field'     : None,
+                       'parameters'      : None,
+                       'topology'        : None,
+                       'coordinates'     : None,
+                                        
+                       'nbModel_type'    : 'NBModelABFS',
+                       'types_allowed'   : {'pdb': True, 'xyz': False, 'mol2': False},
+                                        
+                       'prune_table'     : [],
+                       'fix_table'       : [],
+                       'qc_table'        : [],
+                                        
+                       'QC'              : False,
+                       'potencial'       : None,
+                       'qc_method'       : None,
+                                        
+                       'data_path'       : data_path,   # estah sendo usado 
+                       'step'            : 0,
+                       'last_step'       : None,
+                                        
+                                        
+                                        
+                       'job_history'     :{
+                                          # actual style
+                                          #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
+                                          
+                                          # new propose
+                                          #'1': {                                                      
+                                          #      'object'    : 'Step1'           ,
+                                          #      'type'      : 'new/min/dyn/prn' ,
+                                          #      'parameters': parameters        ,       -  extracted from the log -  checksystem
+                                          #      'potencial' : "AMBER/AM1/ABFS"  ,
+                                          #      'CQatoms'   : '43'              ,
+                                          #      'color'     : 'black'
+                                          #     }
+                                          },
                        
-                       'QC'           : False,
-                       'potencial'    : None,
-                       'qc_method'    : None,
-                       
-                       'data_path'    : None,   # estah sendo usado 
-                       'step'         : 0,
-                       'last_step'    : None,
-                      
-                       
-                       
-                       'job_history'  :{
-                                       # actual style
-                                       #'1': ['Step_1', 'new', '"AMBER/AM1/ABFS"', '43', 'black']  
-                                       
-                                       # new propose
-                                       #'1': {                                                      
-                                       #      'object'    : 'Step1'           ,
-                                       #      'type'      : 'new/min/dyn/prn' ,
-                                       #      'parameters': parameters        ,       -  extracted from the log -  checksystem
-                                       #      'potencial' : "AMBER/AM1/ABFS"  ,
-                                       #      'CQatoms'   : '43'              ,
-                                       #      'color'     : 'black'
-                                       #     }
-                                       },
-                       
-                       'PyMOL_Obj'     : None,
-                       'filename'      : None,   # ex.  /home/fernando/pDynamoWorkSpace/Enolase_Dec_11_2014/projectBaseName
-                       'pymol_session' : None,   #    - pdynamo pkl/yaml file
-                       'pDynamo_system': None    #    - pymol pse file
+                       'edit_mode_button': False,
+                       'PyMOL_Obj'       : None,
+                       'pymol_session'   : None,   #  - pdynamo pkl/yaml file
+                       'filename'        : None,
+                       'pDynamo_system'  : None,   #  - pymol pse file
+                       'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
         self.nbModel         = 'NBModelABFS()'
         self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
         self.parameters      = None
         self.system          = None          
-        #self.PyMOL           = PyMOL         
+        self.PyMOL           = PyMOL         
         self.dualLog         = None          
-        #self.builder         = builder       
-        #self.window_control  = window_control
-        #self.ActiveMode      = False 
-        self.pdbInfo         = {}
+        self.builder         = builder       
+        self.window_control  = window_control
+        self.ActiveMode      = False 
+        self.pdbInfo         = {} # usado no pDynamoSelections
+        ''' 
+                   BondTable  
         
-    def Create_New_Project(self, name = "UNK",  # str
-                           data_path  = None,  # str
-                           FileType   = None,  # str
-                           filesin    = None,  # dictionary
-                           BufferText = None):  # buffertext
-        """ Function doc """
-
-        self.name = name
-
-        if data_path is not None:
-            self.settings['data_path'] = data_path
-
-        FileType = FileType
-        filesin = filesin
-
-        if FileType == "AMBER":
-            amber_params = filesin['amber_params']
-            amber_coords = filesin['amber_coords']
-            self.set_AMBER_MM(amber_params, amber_coords, self.dualLog)
-            self.set_nbModel_to_system()
-
-        elif FileType == "CHARMM":
-            charmm_params     = filesin['charmm_params']
-            charmm_topologies = filesin['charmm_topologies']
-            charmm_coords     = filesin['charmm_coords']
-            
-            self.set_CHARMM_MM(charmm_params, charmm_topologies, self.dualLog)
-            filetype = self.load_coordinate_file_to_system(charmm_coords, self.dualLog)
-            self.set_nbModel_to_system()
-
-        elif FileType == "GROMACS":
-            gromacs_params = filesin['gromacs_params']
-            gromacs_coords = filesin['gromacs_coords']
-
-            self.set_GROMACS_MM(gromacs_params, gromacs_coords, self.dualLog)
-            self.set_nbModel_to_system()
-
-        elif FileType == "OPLS":
-            opls_params = filesin['opls_params']
-            opls_coords = filesin['opls_coords']
-            self.set_OPLS_MM(opls_params, opls_coords, self.dualLog)
-            self.set_nbModel_to_system()
-
-        elif FileType == "pDynamo files(*.pkl,*.yaml)":
-            NewSystem = filesin["pDynamoFile"]					#
-            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
-
-        elif FileType == "Other(*.pdb,*.xyz,*.mol2...)":
-            NewSystem = filesin["coordinates"]					#
-            self.load_coordinate_file_as_new_system(NewSystem, self.dualLog)
-
-
-        #print BufferText
-        self.system.label = name
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
-
-    def Save_Project_To_File (self, filename = 'actual_state', type_ = 'pkl'):
-		""" Function doc """
-		path     = filename.split('/')
-
-		FileName = path.pop()
-		self.system.label = FileName
-
-		new_data_path = '/'
-		for i in path:
-			new_data_path = os.path.join(new_data_path,i)
-
-
-
-		self.settings['pDynamo_system' ] = FileName + '.pkl'
-		self.settings['pymol_session']   = FileName + '.pse'
-		self.settings['filename']        = filename
-
-		settings2 = self.settings
-		#settings2['prune_table'] = []
-		#settings2['fix_table'  ] = []  
-		#settings2['qc_table'   ] = []  
-		settings2['data_path'  ] = new_data_path
-
-		FOLDER  = self.settings['data_path']
-
-		print 'New data path:  ',new_data_path
-		json.dump(settings2,     open(filename+'.gtkdyn', 'w'), indent=2) # json file
-		print 'exporting file: ', filename+'.gtkdyn'
-
-		self.export_state_to_file    (filename, type_)                    # pkl  file
-		print 'exporting file: ', filename+'.pkl'
-
-		cmd.save                     (filename+'.pse', 'pse')             # pse  file
-		print 'exporting file: ', filename+'.pse'
-		self.SystemCheck(status = True, PyMOL = False)
-           
-    def export_state_to_file (self, filename, type_):
-
-		filename = AddFileTypeSuffix(filename, type_)     # from PyMOLScripts
-
-		if type_   == "xyz":
-			XYZFile_FromSystem ( filename, self.system )
-		
-		elif type_ == "pdb":
-			PDBFile_FromSystem ( filename, self.system )
-
-		elif type_ == "mol2":
-			MOL2File_FromSystem ( filename, self.system )
-		
-		elif type_ == "pkl":
-			try:
-				XMLPickle ( filename, self.system )
-			except:
-				Pickle ( filename, self.system )
-
-		elif type_ == "yaml":
-			YAMLPickle ( filename, self.system )
-		
-		elif type_ == "mol":
-			MOLFile_FromSystem ( filename, self.system )
-
-		elif filetype == "cif":
-			mmCIFFile_FromSystem ( filename, self.system )
-
-		elif type_ == "psf":
-			CHARMMPSFFile_FromSystem( filename, self.system )
-
-		elif  type_ == "crd":
-			AmberCrdFile_FromSystem( filename, self.system )
-
-		else:
-			print "file type not supported"
-
+        
+        
+                          A1   A2      Bond   Active
+                                     
+        BondTable      = {(1,  2)  :   [1.1,   True]}
+        
+        BondTable[1,2] = [atomic_dic["C"][2] + atomic_dic["H"][2], True]
+        
+        
+        '''
+        self.BondTable = {}
+        self.ShowCell  = False
+        
     def importCellParameters (self):
         """ Function doc """
         try:
@@ -653,41 +1058,25 @@ class pDynamoProject():
 
         
         if PyMOL == True:
+            # this is the PyMOL_Obj in memory
             PyMOL_Obj      = self.settings['PyMOL_Obj']
-            #cmd.util.cbap(PyMOL_Obj)
-            #cmd.color('slate',PyMOL_Obj)
-            
-            #print 'PyMOL_Obj', PyMOL_Obj, self.settings['PyMOL_Obj']
-            
-            if self.settings['QC'] == True:
-                if self.settings['qc_table'] != []:
-                    #print '1', 'QC', self.settings['QC']
-                    ##print PyMOL_Obj
-                    #"dots": false, 
-                    #"spheres": true,
-                    #"lines": false, 
-                    #"sticks": true
-                    
 
-                        
-                        
+            # self.settings['QC'] indicates that a QC system exist 
+            if self.settings['QC'] == True:
+
+                if self.settings['qc_table'] != []:
                     cmd.hide('stick',  PyMOL_Obj)
                     cmd.hide("sphere", PyMOL_Obj)
+                    
                     try:
                         cmd.delete("QC_atoms")
-                        #print '1.1'
                     except:
-                        #print '1.2'
                         pass
                     
-                    #print '2'
                     PymolPutTable(self.settings['qc_table'], "QC_atoms")
                     command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
                     cmd.do(command)
                     
-                    #print '3'
-                    #print command
-                    #print self.GTKDynamoConfig
                     
                     if self.GTKDynamoConfig['QC']['dots']:
                         cmd.show("dots",  "QC_atoms")
@@ -701,18 +1090,9 @@ class pDynamoProject():
                     if self.GTKDynamoConfig['QC']['sticks']:
                         cmd.show("sticks",  "QC_atoms")
 
-                    #print '4'
-                
                 if self.settings['qc_table'] == []:
                     
-                    #print '5'
-                    
                     self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                    #print '5.1',PyMOL_Obj, 'settings[qc_table]', self.settings['qc_table']
-                    #cmd.do('show stick, '+ PyMOL_Obj)
-                    #cmd.do('show sphere, '+ PyMOL_Obj)
-                    #cmd.show("stick",  PyMOL_Obj)
-                    #cmd.show("sphere" ,PyMOL_Obj)
                     
                     if self.GTKDynamoConfig['QC']['dots']:
                         cmd.show("dots",  "QC_atoms")
@@ -731,7 +1111,6 @@ class pDynamoProject():
             
             if self.settings['fix_table'] != []:
                 #PyMOL_Obj = self.job_history[self.step][0] #= [type_, pymol_id, "potencial", "1192.0987"]
-                #print '7'
                 try:
                     cmd.delete("FIX_atoms")
                 except:
@@ -754,32 +1133,25 @@ class pDynamoProject():
                 if self.GTKDynamoConfig['FIX']['sticks']:
                     cmd.show("sticks",  "FIX_atoms")
             
-            try:
-                #print '10'
-                #cmd.do('disable sele')
-                cmd.disable("sele")
-                #print '11'
             
-            except:
-                pass
-            try:
-                #cmd.do('disable FIX_atoms')
-                #print '12'
-            
-                cmd.disable("FIX_atoms")
-                #print '13'
-            
-            except:
-                pass
-            try:
-                #print '14'
-                #cmd.do('disable QC_atoms')
-                cmd.disable("QC_atoms")
-                #print '15'
-            
-            except:
-                pass
-            
+            # disable selections
+            #--------------------------------#
+            try:                             #
+                cmd.disable("sele")          #
+            except:                          #
+                pass                         #
+                                             #
+            try:                             #
+                cmd.disable("FIX_atoms")     #
+            except:                          #
+                pass                         #
+                                             #
+            try:                             #
+                cmd.disable("QC_atoms")      #
+            except:                          #
+                pass                         #
+            #--------------------------------#
+
             
             if _color:
                 try:
@@ -797,7 +1169,6 @@ class pDynamoProject():
                     cmd.bg_color(self.GTKDynamoConfig['bg_color'])
                 except:
                     pass
-                #print '_color', _color
             else:
                 pass 
         
@@ -830,23 +1201,21 @@ class pDynamoProject():
         
         if status == True:
             SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
-            print 'final'
+            #print 'final'
             return SummaryFile 
 
         
         if ORCA_backup == True:
             self.back_orca_output()
             
-            
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
                                 From_PDYNAMO_to_GTKDYNAMO
-
-            esse metodo eh responsavel por:
-                contar o passo
-                exportar o frame atual para o pymol
-                exportar as informacoes relevantes para as treeviews
-                e adicionar informacoes ao history  via IncrementStep()
+            this method is to responsible for :
+                Counting the Step
+                Export Current Frame to PyMOL
+                Export the relevant Info to the treeviews
+           
         """
         
         #print 'step antes',self.settings['step']
@@ -854,7 +1223,26 @@ class pDynamoProject():
         #print 'step depois',self.settings['step']
 
         if self.PyMOL == True:
-            self.SystemCheck(True, False)
+            self.SystemCheck(status = True , 
+                              PyMOL = False, 
+                             _color = False , 
+                              _cell = False , 
+                treeview_selections = False ,
+                        ORCA_backup = False )
+            
+            
+            
+            '''  SystemCheck default
+            SystemCheck(self, status = True, 
+                           PyMOL = True, 
+                          _color = True, 
+                           _cell = True, 
+             treeview_selections = True,
+                     ORCA_backup = True 
+                    ) 
+            '''
+            
+            
             #      pDyanmo  -- >  PyMOL
             pymol_id = ExportFramesToPymol(self, type_)
             self.settings['PyMOL_Obj'] = pymol_id
@@ -885,7 +1273,6 @@ class pDynamoProject():
             
             pymol_objects  = cmd.get_names()
             liststore = self.builder.get_object('liststore2')
-            
             self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , pymol_id)
             
             #-------------------------------------#
@@ -893,282 +1280,8 @@ class pDynamoProject():
             #-------------------------------------#           
             self.SystemCheck()
         else:
-            print 'PyMOL ==',  self.PyMOL
+            pass
 
-    def load_coordinate_file_as_new_system(self, filename, dualLog=None):
-        self.settings['prune_table']= []
-        self.settings['fix_table']  = []
-        self.settings['qc_table']   = []
-        self.settings['QC']         = False
-        type_ = GetFileType(filename)
-        #print filename
-        #print type_
-        if type_ == "xyz":
-            self.system = XYZFile_ToSystem(filename,  dualLog)
-
-        # Quando o arquivo de coordenadas eh um PDB
-        elif type_ == "pdb":
-            # importa o arquivo xyz gerado pela funcao anterior
-            self.system = PDBFile_ToSystem(filename,  log=dualLog)
-
-        elif type_ == "cif":
-            self.system = mmCIFFile_ToSystem(filename,  dualLog)
-
-        elif type_ == "mop":
-            self.system = MopacInputFile_ToSystem(filename,  dualLog)
-
-        elif type_ == "mol":
-            self.system = MOLFile_ToSystem(filename, log=dualLog)
-
-        # --- pkl ---
-
-        elif type_ == "pkl":
-            self.system = Unpickle(filename)
-            try:
-                self.settings[
-                    'fix_table'] = list(self.system.hardConstraints.fixedAtoms)
-                # print 'fix_table = :',self.settings['fix_table']
-            except:
-                a = None
-
-            try:
-                qc_table = list(
-                    self.system.energyModel.qcAtoms.QCAtomSelection())
-                boundaryAtoms = list(
-                    self.system.energyModel.qcAtoms.BoundaryAtomSelection())
-
-                self.settings['boundaryAtoms'] = boundaryAtoms
-                # print 'qc_table : '  , qc_table
-                print 'boundaryAtoms', (boundaryAtoms)
-
-                qc = []
-                for l in qc_table:
-                    if l in boundaryAtoms:
-                        print l
-                    else:
-                        qc.append(l)
-
-                self.settings['qc_table'] = qc
-                self.settings['QC']       = True
-                #print 'qc_table : ', self.settings['qc_table']
-
-            except:
-                print "System has no QC atoms"
-            
-       
-        # --- yaml ---
-
-        elif type_ == "yaml":
-            self.system = YAMLUnpickle(filename)
-
-            try:
-                self.settings['fix_table'] = list(
-                    self.system.hardConstraints.fixedAtoms)
-                #print 'fix_table = :', self.settings['fix_table']
-            except:
-                a = None
-
-            try:
-                qc_table = list(
-                    self.system.energyModel.qcAtoms.QCAtomSelection())
-                boundaryAtoms = list(
-                    self.system.energyModel.qcAtoms.BoundaryAtomSelection())
-
-                self.settings['boundaryAtoms'] = boundaryAtoms
-                # print 'qc_table : '  , qc_table
-                print 'boundaryAtoms', (boundaryAtoms)
-
-                qc = []
-                for l in qc_table:
-                    if l in boundaryAtoms:
-                        print l
-                    else:
-                        qc.append(l)
-
-                self.settings['qc_table'] = qc
-                self.settings['QC']     = True
-                #print 'qc_table : ', self.settings['qc_table']
-            except:
-                print "System has no QC atoms"
-
-        else:
-            return "ops!"
-        try:
-            self.system.Summary(dualLog)
-        except:
-            print "system empty"
-
-        return type_
-
-    def load_coordinate_file_to_system(self, filename, dualLog=None):
-        type_ = GetFileType(filename)
-        # print type_
-
-        if type_ == "xyz":
-            self.system.coordinates3 = XYZFile_ToCoordinates3(filename)
-
-        # When the coordinate file is a PDB
-        elif type_ == "pdb":
-            self.system.coordinates3 =  PDBFile_ToCoordinates3(filename, dualLog)
-            # imports the x   PDBFile_ToCoordinates3
-            #self.system.coordinates3 = XYZFile_ToCoordinates3(
-            #    os.path.join(filename),  dualLog)
-            #os.remove("tmp_out.xyz")
-
-        elif type_ == "xpk":
-            try:
-                self.system.coordinates3 = Unpickle(filename)
-            except:
-                self.system.coordinates3 = XMLUnpickle(filename)
-
-        elif type_ == "pkl":
-            try:
-                self.system.coordinates3 = Unpickle(filename)
-            except:
-                self.system.coordinates3 = XMLUnpickle(filename)
-
-        elif type_ == "yaml":
-            self.system.coordinates3 = YAMLUnpickle(filename)
-
-        elif type_ == "chm":
-            self.system.coordinates3 = CHARMMCRDFile_ToCoordinates3(
-                os.path.join(filename),  dualLog)
-
-        elif type_ == "crd":
-            self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
-                os.path.join(filename),  dualLog)
-        
-        elif type_ == "inpcrd":
-            self.system.coordinates3 = AmberCrdFile_ToCoordinates3(
-                os.path.join(filename),  dualLog)
-
-        elif type_ == "mol":
-            self.system.coordinates3 = MOLFile_ToCoordinates3(
-                os.path.join(filename),  log=dualLog)
-        else:
-            return "ops!"
-
-        #self.system.Summary(  dualLog )
-
-        return type_
-
-    def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object, _type):
-        cmd.disable('all')
-
-        
-
-        i = 0 
-        i = i + first
-        outPath = ( traj_name )
-        print first, last, stride
-
-        print 'Energy before'
-        self.system.Energy()
-        
-        if _type == "folder - pDynamo": #, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS'
-            print "folder - pDynamo"
-            trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
-        
-        if _type == "trj - AMBER":
-            print "trj - AMBER"
-            trajectory = AmberTrajectoryFileReader (traj_name, self.system)
-
-
-        print 'Energy after'
-        self.system.Energy()
-
-        
-        i = 0
-        a = 0
-        i = i + first
-        export_type = 'pdb'
-
-        while trajectory.RestoreOwnerData ( ):
-            if export_type == 'pdb':
-                if a == i:
-                    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
-                    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
-                    i = i + stride
-                    print "loading file: ",i
-                if a == last:
-                    break
-                a=a+1
-            else:
-                if a == i:
-                    XYZFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".xyz" ), self.system)
-                    cmd.load( os.path.join ( outPath, new_pymol_object +".xyz"))
-                    i = i + stride
-                    print "loading file: ",i
-                if a == last:
-                    break
-                a=a+1	
-        type_ = 'trj'
-        
-        put_new_obj_in_treeview = False
-        
-        self.settings['PyMOL_Obj'] = new_pymol_object
-        
-        for i in self.settings['job_history']:
-            if self.settings['PyMOL_Obj'] in self.settings['job_history'][i]:
-                put_new_obj_in_treeview = True
-
-        
-        if put_new_obj_in_treeview == False:
-            self.IncrementStep()
-            self.settings['job_history'][str(self.settings['step'])] = {
-                                                                   'object'    : new_pymol_object                     ,
-                                                                   'type'      : type_                                , 
-                                                                   'parameters': self.parameters                      , 
-                                                                   'potencial' : self.parameters['Energy Model']      , 
-                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'], 
-                                                                   'color'     : 'black'
-                                                                   }
-            
-                                                                                #[ new_pymol_object,  
-                                                                                #type_ , 
-                                                                                #self.parameters['Energy Model'], 
-                                                                                #self.parameters['Number of QC Atoms']]  # it is only a test 
-            pymol_objects  = cmd.get_names()
-            liststore = self.builder.get_object('liststore2')
-            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'], self.settings['PyMOL_Obj'])
-            self.SystemCheck()
-        
-        return a
-        
-    def load_GTKDYNAMO_project(self, filename):
-        """ Function doc """
-        #print self.settings
-        #print filename
-        
-        
-        path     = filename.split('/')
-        FileName = path.pop()
-        new_data_path = '/'
-        for i in path:
-            new_data_path = os.path.join(new_data_path,i)
-        #print new_data_path
-        
-
-        
-        
-        self.settings              = json.load(open(filename)) 
-        self.settings['data_path'] = new_data_path
-        
-        #print os.path.join( new_data_path, self.settings['pymol_session'])
-        #print os.path.join(new_data_path,self.settings['pDynamo_system'])
-
-        self.load_coordinate_file_as_new_system(os.path.join(new_data_path,self.settings['pDynamo_system']))
-        cmd.load (  os.path.join( new_data_path, self.settings['pymol_session'])   )
-        
-        pymol_objects  = cmd.get_names()
-        liststore      = self.builder.get_object('liststore2')
-        
-        #print pymol_objects
-        #print self.settings['job_history']
-        pymol_id =  self.settings['PyMOL_Obj']
-        self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , self.settings['PyMOL_Obj'])
-        self.SystemCheck()
-        
     def set_nbModel_to_system(self):
         #ABFS_options = self.settings['ABFS_options']
         nbModel = self.settings['nbModel_type']
@@ -1195,7 +1308,7 @@ class pDynamoProject():
 
     def put_prune_table(self, prune_table):
         #self.settings['prune_table']=[]
-        print 'prune'
+        #print 'prune'
         
         self.settings['fix_table']  = []
         self.settings['qc_table']   = []
@@ -1210,130 +1323,21 @@ class pDynamoProject():
             pass
         
         self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
-        print 'pruned'        
+        #print 'pruned'        
         self.clean_fix_table()
         self.importPDBInformantion()
         
-    def put_fix_table(self, fix_table):
-        self.system.DefineFixedAtoms(Selection(fix_table))
-        
-        self.settings['fix_table'] = fix_table
-        
-        self.SystemCheck()
-
-    def clean_fix_table(self):
-        self.system.DefineFixedAtoms(None)
-        self.settings['fix_table'] = []
-        self.SystemCheck()
-
-    def put_qc_table(self, qc_table):
-        self.settings['qc_table'] = qc_table
-        #self.settings['QC'] = 'yes'
-    def clean_qc_table(self):
-        self.system.DefineQCModel (None)
-        self.settings['qc_table'] = []
-        self.SystemCheck()
-
     def IncrementStep(self):
         # {1:[process, pymol_id, potencial, energy]}
         #self.step = self.step + 1
         self.settings['step']      = self.settings['step'] + 1
         self.settings['last_step'] = self.settings['step']
 
-    def ExportStateToFile(self, filename, type_):
-        #self.ActiveModeCheck()
-        filename = AddFileTypeSuffix(filename, type_)
-
-        if type_ == "xyz":
-            XYZFile_FromSystem(filename, self.system)
-
-        elif type_ == "pdb":
-            PDBFile_FromSystem(filename, self.system)
-
-        elif type_ == "mol2":
-            MOL2File_FromSystem(filename, self.system)
-
-        elif type_ == "pkl":
-            try:
-                XMLPickle(filename, self.system)
-
-            except:
-                Pickle(filename, self.system)
-
-        elif type_ == "yaml":
-            YAMLPickle(filename, self.system)
-
-        elif type_ == "mol":
-            MOLFile_FromSystem(filename, self.system)
-
-        elif filetype == "cif":
-            mmCIFFile_FromSystem(filename, self.system)
-
-        elif type_ == "psf":
-            CHARMMPSFFile_FromSystem(filename, self.system)
-
-        elif type_ == "crd":
-            AmberCrdFile_FromSystem(filename, self.system)
-
-        else:
-            print "file type not supported"
-
-        return filename, type_
-
-    def ComputeEnergy(self):  # Compute Energy
-        self.ActiveModeCheck()
-        energy = pDynamoEnergy(self.system, self.settings['data_path'])
-        self.SystemCheck( status = False, 
-                           PyMOL = False, 
-                          _color = False, 
-                           _cell = False, 
-             treeview_selections = False,
-                     ORCA_backup = True 
-                    )
-        return energy
-        
-    def Minimization(self, method='Conjugate Gradient', parameters=None):
-        """ Function doc """
-
-        self.ActiveModeCheck()
-        #                               Minimization                                       #
-        #    required: (system = None, _type_ = 'ConjugateGradient', parameters = None)    #
-        # _type_  : 'ConjugateGradient' 'SteepestDescent' 'LBFGS'
-        # #
-
-        logFile = pDynamoMinimization(self.system, method, parameters, self.settings['data_path'])
-
-        #------------------  increment step  ---------------#
-        #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='min', log = logFile )
-        #
-        #---------------------------------------------------#
-
-        return True
-
-    def MolecularDynamics(self, parameters):
-        """ Function doc """
-        #print parameters
-
-        self.ActiveModeCheck()
-
-        #pDynamoMinimization(self.system, method, parameters, self.data_path)
-        logFile = RunMolecularDynamics( self.system, self.settings['data_path'], parameters)
-        
-        
-        #------------------  increment step  ---------------#
-        #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn', log = logFile)
-        #
-        #---------------------------------------------------#
-
-        return True
-    
     def ActiveModeCheck(self):
         """ Function doc """
         #return 0
         if self.ActiveMode:
-            print "\n\n                  Using GTKDynamo in active mode \n\n"
+            print "\n\n                  Using active mode \n\n"
             
             data_path  	 = self.settings['data_path']
             pymol_object = self.settings['PyMOL_Obj']
@@ -1348,9 +1352,7 @@ class pDynamoProject():
             #print filename
             self.load_coordinate_file_to_system  ( filename , self.dualLog)	
         else:
-            print "Using GTKDynamo in passive mode"
-
-
+            print "Using passive mode"
 
     def back_orca_output(self):
         #try:
@@ -1391,10 +1393,6 @@ class pDynamoProject():
             pass 
         
         
-
-        #except:
-        #    pass
-
 
 def main():
     teste = pDynamoProject()

@@ -790,7 +790,7 @@
   <object class="GtkImage" id="image33">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">QCSetup2.png</property>
+    <property name="pixbuf">QCSetup3.png</property>
   </object>
   <object class="GtkImage" id="image34">
     <property name="visible">True</property>
@@ -1632,7 +1632,7 @@
   </object>
   <object class="GtkWindow" id="win">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">GTKDynamo 2.0</property>
+    <property name="title" translatable="yes">EasyHybrid</property>
     <property name="window_position">mouse</property>
     <property name="default_width">1000</property>
     <property name="default_height">800</property>
@@ -2124,36 +2124,6 @@
                         <property name="can_focus">False</property>
                         <property name="image">image51</property>
                         <property name="use_stock">False</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="menuitem9">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">_Settings</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menu5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkMenuItem" id="menuitem10">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">menuitem10</property>
-                        <property name="use_underline">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkMenuItem" id="menuitem21">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">menuitem21</property>
-                        <property name="use_underline">True</property>
                       </object>
                     </child>
                   </object>
@@ -2780,6 +2750,7 @@
             </child>
             <child>
               <object class="GtkNotebook" id="notebook3">
+                <property name="width_request">300</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <child>
@@ -2823,7 +2794,7 @@
                                         <property name="row_spacing">3</property>
                                         <child>
                                           <object class="GtkEntry" id="pk1pk2">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -2919,7 +2890,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk1pk3">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -2940,7 +2911,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk1pk4">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -2961,7 +2932,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk2pk3">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -2982,7 +2953,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk2pk4">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -3003,7 +2974,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk3pk4">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -3065,7 +3036,7 @@
                                         <property name="row_spacing">3</property>
                                         <child>
                                           <object class="GtkEntry" id="pk1pk2pk3">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -3104,7 +3075,7 @@
                                         </child>
                                         <child>
                                           <object class="GtkEntry" id="pk2pk3pk4">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -3165,7 +3136,7 @@
                                         <property name="row_spacing">3</property>
                                         <child>
                                           <object class="GtkEntry" id="pk1pk2pk3pk4">
-                                            <property name="width_request">150</property>
+                                            <property name="width_request">100</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">•</property>
@@ -3309,8 +3280,8 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="resize">False</property>
-                        <property name="shrink">True</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">False</property>
                       </packing>
                     </child>
                     <child>

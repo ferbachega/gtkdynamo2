@@ -184,7 +184,7 @@ class NewProjectDialog():
 
         self.project          = self.GTKDynamoSession.project
        
-        self.project.DeleteActualProject()
+        #self.project.DeleteActualProject()
         self.project.Create_New_Project(
             name, data_path, FileType, filesin, BufferText)
         
