@@ -216,36 +216,33 @@ class SAWDialog():
             file_out                = "products_SAW.xyz"	
             products_file           =PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, -1)
 
-        print reactants_file
-        print products_file
+        #print reactants_file
+        #print products_file
        
+
+        plot_flag = False
+  
+        
+        parameters = {
+                     'reactants_file'           : reactants_file                 , 
+                     'products_file'            : products_file                  , 
+                     'data_path'                : data_path                      , 
+                     'SAW_number_of_structures' : int(SAW_number_of_structures)  , 
+                     'SAW_maximum_interations'  : int(SAW_maximum_interations )  , 
+                     'SAW_grad_tol'             : float(SAW_grad_tol      )      , 
+                     'trajectory_name'          : trajectory_name                ,
+                     'plot_flag'                : plot_flag
+                     }
+        
+        
        
-        #trajectory           = self.builder.get_object("02_window_entry_traj_name").get_text()
-        #maximumIterations    = int(self.builder.get_object("02_window_entry_max_int").get_text())
-        #logFrequency         = int(self.builder.get_object("02_window_entry_log_freq").get_text())
-        #trajectory_freq      = int(self.builder.get_object("02_window_entry_traj_freq").get_text())
-        #rmsGradientTolerance = float(self.builder.get_object("02_window_entry_rmsGRAD").get_text())
-        #method               = self.builder.get_object("02_window_combobox_minimization_method").get_active_text()
-        #AmberTrajectoryFlag  = self.builder.get_object("02_window_AMBER_trajectory_checkbox").get_active()
-        #TrajectoryFlag       = self.builder.get_object("02_window_Output_trajectory_checkbox").get_active()
-
-        #parameters = {'trajectory'          : trajectory,
-        #              'maximumIterations'   : maximumIterations,
-        #              'logFrequency'        : logFrequency,
-        #              'trajectory_freq'     : trajectory_freq,
-        #              'rmsGradientTolerance': rmsGradientTolerance,
-        #              'method'              : method,
-        #              'AmberTrajectoryFlag' : AmberTrajectoryFlag,
-        #              'TrajectoryFlag'      : TrajectoryFlag}
+        logFile = pDynamoSAW(project  = self.GTKDynamoSession.project, parameters = parameters )
+        #-------------------------------------------------------------------------------------------------#
+        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='saw', log =  logFile)
 
 
-        #if self.project.system is not None:
-        #   #------------------------------------------------------------------#
-        #   #                     Geometry optmization                         #
-        #   #                                                                  #
-        #   #    requires: method = 'Conjugate Gradient', parameters = None    #
-        #   # -----------------------------------------------------------------#
-        #   self.project.Minimization(method, parameters)
+
+
 
 
     
