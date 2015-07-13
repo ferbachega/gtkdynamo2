@@ -1032,26 +1032,12 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             StatusText = ''
             if self.parameters is not None:
                 StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
-                ##print self.parameters['Number of Atoms']
                 StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
-                ##print self.parameters['Energy Model']
-                
-                
-                #StatusText = StatusText + '  QC Atoms: ' + self.parameters['Number of QC Atoms']+ "   "
                 StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
-                
-                ##print self.parameters['Number of QC Atoms']
-                
-                #StatusText = StatusText + '  Fixed Atoms: ' + self.parameters['Number of Fixed Atoms']+ "   "
                 StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
-                
-                ##print 'Number of Fixed Atoms: ', self.parameters['Number of Fixed Atoms']
                 StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
-                #StatusText = StatusText + '  Connected: ' +self.PyMOL_Obj + "   "
-                
                 StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
-                #p#print (self.parameters['Crystal Class'])
             self.window_control.STATUSBAR_SET_TEXT(StatusText) 
         else:
             pass
@@ -1063,7 +1049,23 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
 
             # self.settings['QC'] indicates that a QC system exist 
             if self.settings['QC'] == True:
-
+                self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+                PymolPutTable(self.settings['qc_table'], "QC_atoms")
+                command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
+                cmd.do(command)
+                
+                if self.GTKDynamoConfig['QC']['dots']:
+                    cmd.show("dots",  "QC_atoms")
+                
+                if self.GTKDynamoConfig['QC']['spheres']:
+                    cmd.show("spheres",  "QC_atoms")
+                
+                if self.GTKDynamoConfig['QC']['lines']:
+                    cmd.show("lines",  "QC_atoms")
+                
+                if self.GTKDynamoConfig['QC']['sticks']:
+                    cmd.show("sticks",  "QC_atoms")
+                '''
                 if self.settings['qc_table'] != []:
                     cmd.hide('stick',  PyMOL_Obj)
                     cmd.hide("sphere", PyMOL_Obj)
@@ -1093,6 +1095,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 if self.settings['qc_table'] == []:
                     
                     self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+                    PymolPutTable(self.settings['qc_table'], "QC_atoms")
+                    command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
+                    cmd.do(command)
                     
                     if self.GTKDynamoConfig['QC']['dots']:
                         cmd.show("dots",  "QC_atoms")
@@ -1105,7 +1110,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                     
                     if self.GTKDynamoConfig['QC']['sticks']:
                         cmd.show("sticks",  "QC_atoms")
-                    
+                '''
             else:
                 pass
             

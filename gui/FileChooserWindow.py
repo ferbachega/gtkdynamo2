@@ -12,6 +12,36 @@ GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 class FileChooserWindow():
 
     """ Class doc """
+    def GetLogFileName(self, builder):
+        """ Function doc """
+        _01_window_main = builder.get_object("win")
+        filename = None
+        chooser = gtk.FileChooserDialog("Open File...", _01_window_main,
+                                        gtk.FILE_CHOOSER_ACTION_OPEN,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+
+        filter = gtk.FileFilter()  
+        filter.set_name("GTKDynamo logs - *.log")
+        #
+        filter.add_mime_type("GTKDynamo logs")
+        filter.add_pattern("*.log")
+        #
+        chooser.add_filter(filter)
+        filter = gtk.FileFilter()
+        filter.set_name("All files")
+        filter.add_pattern("*")
+        #
+        chooser.add_filter(filter)  
+        # chooser.set_current_folder(data_path)
+
+        response = chooser.run()
+        if response == gtk.RESPONSE_OK:
+            filename = chooser.get_filename()
+        chooser.destroy()
+
+        return filename
+
 
     def GetFileName(self, builder):
         """ Function doc """
@@ -22,7 +52,7 @@ class FileChooserWindow():
                                         (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                          gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
-        filter = gtk.FileFilter()  # adiciona o filtro de busca de arquivos
+        filter = gtk.FileFilter()  
         filter.set_name("GTKDynamo projects - *.gtkdyn")
         #
         filter.add_mime_type("GTKDynamo projects")
@@ -44,8 +74,7 @@ class FileChooserWindow():
         filter.set_name("All files")
         filter.add_pattern("*")
         #
-        chooser.add_filter(filter)  # termina  - filtro de arquivos.
-
+        chooser.add_filter(filter)  
         # chooser.set_current_folder(data_path)
 
         response = chooser.run()

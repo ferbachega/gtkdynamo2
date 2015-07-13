@@ -367,6 +367,32 @@ class MainMenu (object):
                 self.NonBondDialog.dialog.hide()
 
 
+        def on_menuitem24PlotLogGraph_activate (self, button):
+            """ Function doc """
+            
+            FileChooser = FileChooserWindow()
+            FileName = FileChooser.GetLogFileName(self.builder)
+            
+            parameters = ParseProcessLogFile(FileName)
+            PlotGTKWindow(parameters)
+                
+
+            #if FileName == None:
+            #        pass
+            #
+            #else:
+            #        _FileType = GetFileType(FileName)
+            #        self.PyMOL_initialize()
+            #        if _FileType in ['dat','log' , '*']:
+            #                self.project.load_coordinate_file_as_new_system(FileName)
+            #                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+            #
+            #        if _FileType in ['gtkdyn']:
+            #                self.project.load_GTKDYNAMO_project(FileName)
+            #        
+            #self.PyMOL_change_selection_mode()
+
+
         def on_MainMenu_About_activate(self, button):
                 """ Function doc """
                 self.AboutDialog.dialog.run()
