@@ -28,6 +28,7 @@ import gobject
 from pymol import cmd
 from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
+from pDynamoMethods.pDynamoSAWandNEB   import *
 
 
 #GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
@@ -73,24 +74,13 @@ class NEBDialog():
         NEB_number_of_structures      = int(self.builder.get_object('NEBDialog_NEB_number_of_structures').get_text())
         NEB_maximum_interations       = int(self.builder.get_object('NEBDialog_NEB_maximum_interations').get_text())
         NEB_grad_tol                  = float(self.builder.get_object('NEBDialog_NEB_grad_tol').get_text())
-        trajectory                    = self.builder.get_object('NEBDialog_NEB__pd_traj_out').get_text()
+        trajectory_name               = self.builder.get_object('trajectory_name').get_text()
         
-        parameters = { 'NEB_number_of_structures':   NEB_number_of_structures,
-                       'NEB_maximum_interations' :   NEB_maximum_interations ,
-                       'NEB_grad_tol'            :   NEB_grad_tol            ,
-                       'trajectory'              :   trajectory              }
-                          
-        for i in parameters:
-            print i, parameters[i]
-		
-
-        if self.project != None:
-            data_path = self.GTKDynamoSession.project.data_path
+        if self.GTKDynamoSession.project != None:
+            data_path = self.GTKDynamoSession.project.settings['data_path']
         else:
             data_path = "/home/teste"
 
-        
-                
         # reactants
         if self.builder.get_object('NEBDialog_checkbutton_REACTANTS').get_active():
             reactants_file          = self.builder.get_object('NEBDialog_filechooserbutton_REACTANTS').get_filename()
@@ -108,43 +98,37 @@ class NEBDialog():
             file_out                = "products_NEB.xyz"	
             products_file           =PyMOL_export_XYZ_to_file(pymol_object, label, data_path, file_out, -1)
 
-        print reactants_file
-        print products_file
+        #print reactants_file
+        #print products_file
+        plot_flag = False
+  
+        
+        parameters = {
+                     'reactants_file'           : reactants_file                 , 
+                     'products_file'            : products_file                  , 
+                     'data_path'                : data_path                      , 
+                     'NEB_number_of_structures' : int(NEB_number_of_structures)  , 
+                     'NEB_maximum_interations'  : int(NEB_maximum_interations )  , 
+                     'NEB_grad_tol'             : float(NEB_grad_tol      )      , 
+                     'trajectory_name'          : trajectory_name                ,
+                     'plot_flag'                : plot_flag
+                     }
+        
+        
        
+        logFile = pDynamoNEB(project  = self.GTKDynamoSession.project, parameters = parameters )
+        #-------------------------------------------------------------------------------------------------#
+        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='neb', log =  logFile)
+
+
        
-        #trajectory           = self.builder.get_object("02_window_entry_traj_name").get_text()
-        #maximumIterations    = int(self.builder.get_object("02_window_entry_max_int").get_text())
-        #logFrequency         = int(self.builder.get_object("02_window_entry_log_freq").get_text())
-        #trajectory_freq      = int(self.builder.get_object("02_window_entry_traj_freq").get_text())
-        #rmsGradientTolerance = float(self.builder.get_object("02_window_entry_rmsGRAD").get_text())
-        #method               = self.builder.get_object("02_window_combobox_minimization_method").get_active_text()
-        #AmberTrajectoryFlag  = self.builder.get_object("02_window_AMBER_trajectory_checkbox").get_active()
-        #TrajectoryFlag       = self.builder.get_object("02_window_Output_trajectory_checkbox").get_active()
-
-        #parameters = {'trajectory'          : trajectory,
-        #              'maximumIterations'   : maximumIterations,
-        #              'logFrequency'        : logFrequency,
-        #              'trajectory_freq'     : trajectory_freq,
-        #              'rmsGradientTolerance': rmsGradientTolerance,
-        #              'method'              : method,
-        #              'AmberTrajectoryFlag' : AmberTrajectoryFlag,
-        #              'TrajectoryFlag'      : TrajectoryFlag}
-
-
-        #if self.project.system is not None:
-        #   #------------------------------------------------------------------#
-        #   #                     Geometry optmization                         #
-        #   #                                                                  #
-        #   #    requires: method = 'Conjugate Gradient', parameters = None    #
-        #   # -----------------------------------------------------------------#
-        #   self.project.Minimization(method, parameters)
-
 
     
     def __init__(self, GTKDynamoSession):
         """ Class initialiser """
         #self.project = project
-        self.window_control = GTKDynamoSession.window_control
+        self.GTKDynamoSession = GTKDynamoSession
+        self.window_control   = GTKDynamoSession.window_control
         self.builder = gtk.Builder()
         self.main_builder = GTKDynamoSession.builder
 

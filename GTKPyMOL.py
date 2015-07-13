@@ -357,6 +357,16 @@ class MainMenu (object):
                 self.SAWDialog.dialog.hide()
 
         def on_menuitem_NEB_activate(self, menuItem):
+                '''
+                #print self.project.settings['step']
+                text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
+                self._02MinimizationWindow.builder.get_object(
+                    "02_window_entry_traj_name").set_text(text)
+                self._02MinimizationWindow.dialog.run()
+                self._02MinimizationWindow.dialog.hide()
+                '''
+                text = str(self.project.settings['step'] + 1) + '_NEB'
+                self.NEBDialog.builder.get_object("trajectory_name").set_text(text)
                 self.NEBDialog.dialog.run()
                 self.NEBDialog.dialog.hide()
 

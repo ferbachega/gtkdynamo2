@@ -42,14 +42,7 @@ logList = [
 
 
 
-parameters = {
-             'type'  : 'line'    ,   # line / matrix
-             'title' : ''        ,   #
-             'X'     : []        ,   # X 
-             'Y'     : []        ,   # Y 
-             'xlabel': 'x label' ,   # xlabel,
-             'ylabel': 'y label' ,   # ylabel,
-             }
+
              
 def ParseSummaryLogFile (log_file):
     """ Reads a Summary log - Status Bar"""
@@ -356,561 +349,588 @@ def ParseSummaryLogFile (log_file):
              
              
 def ParseProcessLogFile(log_file):
-	""" Function doc """
-	log = open( log_file , "r")
-	#print log
-	lines = log.readlines()
-	#print lines
-
-	interact = []
-	Function = []
-	RMS_Grad = []
-	Mac_Grad = []
-	RMS_disp = []
-	MAS_Disp = []
-
-
-
-	if '                              GTKDynamo SCAN2D\n' in lines:
-		index = lines.index('                              GTKDynamo SCAN2D\n')
-		print lines[index]
-		print index
-		i             =   0
-		j             =   0        
-		matrix_lines  = []
-		r1 = ''
-		r2 = ''
-		for line in lines[index: -1]:
-			if line == '----------------------- Coordinate 1 - Simple-Distance -------------------------\n':
-				index2 = lines.index('----------------------- Coordinate 1 - Simple-Distance -------------------------\n')
-				for atomLine in lines[index2+1 :index2+4]:
-					atom = atomLine.split()
-					if atom[0][0:4] == 'ATOM':
-						
-						if atom[0][-1] == '2':
-							r1 = r1 +atom[2] + '(' +atom[6] + ')'
-						else:
-							r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
-						print r1
-
-
-			if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
-				index2 = lines.index('--------------------- Coordinate 1 - Multiple-Distance -------------------------\n')
-				for atomLine in lines[index2+1 :index2+4]:
-					atom = atomLine.split()
-					if atom[0][0:4] == 'ATOM':
-						if atom[0][-1] == '*':
-							r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
-						else:
-							r1 = r1 +atom[2] + '(' +atom[6] + ')'
-						print r1
-
-			
-			
-			
-			
-			
-			if line == '----------------------- Coordinate 2 - Simple-Distance -------------------------\n':
-				index2 = lines.index('----------------------- Coordinate 2 - Simple-Distance -------------------------\n')
-				for atomLine in lines[index2+1 :index2+4]:
-					atom = atomLine.split()
-					if atom[0][0:4] == 'ATOM':
-						if atom[0][-1] == '2':
-							r2 = r2 +atom[2] + '(' +atom[6] + ')'
-						else:
-							r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
-						print r2
-			
-			if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
-				index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
-				for atomLine in lines[index2+1 :index2+4]:
-					atom = atomLine.split()
-					if atom[0][0:4] == 'ATOM':
-						if atom[0][-1] == '*':
-							r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
-						else:
-							r2 = r2 +atom[2] + '(' +atom[6] + ')'
-						print r2
-
-			
-			
-			
-			#print line
-			try:
-				linex = line.split()
-				if linex[0] == "MATRIX2":
-					#print linex
-					i = len(linex) - 1
-					j = j + 1
-					mline = []
-					
-					for item in linex[1:-1]:
-						#print item
-						mline.append(float(item))
-					#print mline
-					
-					matrix_lines.append(mline)
-					
-			except:
-				pass	
-		import numpy as np
-		X = np.array(matrix_lines)
-
-				
-		parameters['type'  ] = 'matrix'
-		parameters['title' ] = 'SCAN2D'
-		parameters['matrix'] =  X
-		parameters['xlabel'] = r1
-		parameters['ylabel'] = r2
-		print parameters
-		return parameters
-
-
-	
-	if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
-		index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
-		print lines[index]
-		print index
-		Frame      = []
-		PK1_PK2    = []
-		PK2_PK3    = []
-		Energy     = []
-
-		
-		for line in lines[index: -1]:
-			linex = line.split()
-			#print linex
-			
-			if len(linex) == 4:
-				print linex
-				
-				try:
-					Frame.append(float(linex[0]))
-					
-				
-					Energy.append(float(linex[-1]))
-				except:
-					a = None
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'SCAN Multiple-Distance'
-		parameters['X'     ] = Frame
-		parameters['Y'     ] = Energy
-		parameters['xlabel'] = 'Frames'
-		parameters['ylabel'] = 'Energy (KJ)'
-		print parameters
-		return parameters
-	
-	
-	
-	if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
-		index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
-		print lines[index]
-		print index
-		Frame      = []
-		PK1_PK2    = []
-		PK2_PK3    = []
-		Energy     = []
-
-		
-		for line in lines[index: -1]:
-			linex = line.split()
-			#print linex
-			
-			if len(linex) == 3:
-				print linex
-				
-				try:
-					Frame.append(float(linex[0]))
-					
-				
-					Energy.append(float(linex[-1]))
-				except:
-					a = None
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'SCAN Multiple-Distance'
-		parameters['X'     ] = Frame
-		parameters['Y'     ] = Energy
-		parameters['xlabel'] = 'Frames'
-		parameters['ylabel'] = 'Energy (KJ)'
-		print parameters
-		return parameters	
-
-
-
-	
-
-	
-	'''   
-	------------------------------------------------------------
-					   Potential of Mean Force
-	------------------------------------------------------------
-		ReactionCoord            PMF                 PDF
-	------------------------------------------------------------
-				 1.58169                   0              158.96
-				 1.58798        2.49434e+300                   0
-				 1.59428        2.49434e+300                   0
-	'''
-	if '    ReactionCoord            PMF                 PDF\n' in lines:
-		index = lines.index('    ReactionCoord            PMF                 PDF\n')
-		print lines[index]
-		print index
-		
-		
-		ReactionCoord = []
-		PDF           = []
-		PMF           = []
-		
-		for line in lines[index: -1]:
-			print line 
-			line2 = line.split()
-			if len(line2) == 3:
-				try:
-					ReactionCoord.append(float(line2[0]))
-					PDF.append(float(line2[2]))
-					PMF.append(float(line2[1]))
-				except:
-					pass
-		
-		
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Potential of mean force'
-		parameters['X'     ] = ReactionCoord
-		parameters['Y'     ] = PMF
-		parameters['xlabel'] = 'ReactionCoord'
-		parameters['ylabel'] = 'Energy (KJ)'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-
-
-	'''
-	------------------------------------- L-BFGS Minimizer Options -------------------------------------
-	History                          =             10  Log Frequency                    =              5
-	Maximum Iterations               =            200  Maximum Step                     =           0.01
-	RMS Gradient Tolerance           =            0.1
-	----------------------------------------------------------------------------------------------------
-
-	----------------------------------------------------------------------------------------------------------------
-	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
-	----------------------------------------------------------------------------------------------------------------
-		 0     I      -2861.47060058          0.16863474          2.57918121          0.00000000          0.00000000
-	----------------------------------------------------------------------------------------------------------------
-	'''
-
-
-	if '------------------------------------- L-BFGS Minimizer Options -------------------------------------\n' in lines:
-		index = lines.index('------------------------------------- L-BFGS Minimizer Options -------------------------------------\n')
-		print lines[index]
-		print index
-		interact = []
-		Function = []
-		RMS_Grad = []
-		Mac_Grad = []
-		RMS_disp = []
-		MAS_Disp = []
-		for line in lines[index: -1]:
-			line2 = line.split()
-			lengh = len(line2)
-			if lengh == 7:
-				try:
-					n = 0
-					interact.append(float(line2[0]))
-					Function.append(float(line2[2]))
-					RMS_Grad.append(float(line2[3]))
-					Mac_Grad.append(float(line2[4]))
-					RMS_disp.append(float(line2[5]))
-					MAS_Disp.append(float(line2[6]))
-				except:
-					pass
-		
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Energy minimization: L-BFGS'
-		parameters['X'     ] = interact
-		parameters['Y'     ] = Function
-		parameters['xlabel'] = 'Frames'
-		parameters['ylabel'] = 'Energy (KJ)'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-
-	'''
-	-------------------------------  Conjugate Gradient Minimizer Options ------------------------------
-	Beta Type                        =              1  Initial Step                     =            0.1
-	Line Searcher                    =           None  Log Frequency                    =              5
-	Maximum Iterations               =            200  Maximum Theta                    =          1e+10
-	Minimum Theta                    =          1e-10  RMS Gradient Tolerance           =            0.1
-	Steepest Descent Tolerance       =          0.001  Use Spectral Theta               =           True
-	----------------------------------------------------------------------------------------------------
-
-	----------------------------------------------------------------------------------------------------------------
-	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
-	----------------------------------------------------------------------------------------------------------------
-		 0     I      -1142.98230437        118.93269476       2669.91104143          0.00227862          0.05115256
-	'''
-
-	if '-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n' in lines:
-		index = lines.index('-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n')
-		print lines[index]
-		print index
-		interact = []
-		Function = []
-		RMS_Grad = []
-		Mac_Grad = []
-		RMS_disp = []
-		MAS_Disp = []
-		
-		for line in lines[index: -1]:
-			line2 = line.split()
-			lengh = len(line2)
-			if lengh == 7:
-				try:
-					n = 0
-					interact.append(float(line2[0]))
-					Function.append(float(line2[2]))
-					RMS_Grad.append(float(line2[3]))
-					Mac_Grad.append(float(line2[4]))
-					RMS_disp.append(float(line2[5]))
-					MAS_Disp.append(float(line2[6]))
-				except:
-					pass
-		
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
-		parameters['X'     ] = interact
-		parameters['Y'     ] = Function
-		parameters['xlabel'] = 'Frames'
-		parameters['ylabel'] = 'Energy (KJ)'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-
-
-
-
-	'''
-	-------------------------------- Steepest-Descent Minimizer Options --------------------------------
-	Log Frequency                    =              1  Maximum Iterations               =             10
-	Maximum Step Size                =              1  Minimum Step Size                =          1e-06
-	RMS Gradient Tolerance           =            0.1  Scale Down                       =            0.5
-	Scale Up                         =            1.2  Step Size                        =           0.01
-	----------------------------------------------------------------------------------------------------
-
-	----------------------------------------------------------------------------------------------------------------
-	  Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
-	----------------------------------------------------------------------------------------------------------------
-		 0     I      -2814.85409217          0.47710045         12.37630814          0.00000000          0.00000000
-	'''
-	if '-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n' in lines:
-		index = lines.index('-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n')
-		print lines[index]
-		print index
-		for line in lines[index: -1]:
-			line2 = line.split()
-			lengh = len(line2)
-			if lengh == 6:
-				try:
-					n = 0
-					interact.append(float(line2[0]))
-					Function.append(float(line2[1]))
-					RMS_Grad.append(float(line2[2]))
-					Mac_Grad.append(float(line2[3]))
-					RMS_disp.append(float(line2[4]))
-					MAS_Disp.append(float(line2[5]))
-
-				except:
-					pass
-
-			if lengh == 7:
-				try:
-					n = 0
-					interact.append(float(line2[0]))
-					Function.append(float(line2[2]))
-					RMS_Grad.append(float(line2[3]))
-					Mac_Grad.append(float(line2[4]))
-					RMS_disp.append(float(line2[5]))
-					MAS_Disp.append(float(line2[6]))
-
-				except:
-					pass
-
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Energy minimization: Steepest-Descent'
-		parameters['X'     ] = interact
-		parameters['Y'     ] = Function
-		parameters['xlabel'] = 'Frames'
-		parameters['ylabel'] = 'Energy (KJ)'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-			
-			
-			
-	'''
-	----------------------------------------------------------------------------------------------------
-								 Velocity Verlet Integrator Results
-	----------------------------------------------------------------------------------------------------
-		Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
-	----------------------------------------------------------------------------------------------------
-		  0.00000000       -423.80962900       2394.56813435      -2818.37776335        300.00000000
-	'''
-	if '                                 Velocity Verlet Integrator Results\n' in lines:
-		index = lines.index('                                 Velocity Verlet Integrator Results\n')
-		print lines[index]
-		print index
-		Time             = []
-		Total_energy     = []
-		Kinetic_Energy   = []
-		Potential_Energy = []
-		Temperature      = []
-		
-		for line in lines[index: -1]:
-			linex = line.split()
-			
-			if len(linex) == 5:
-				tipo = linex[0].split(".")
-				lengh = len(tipo)
-				if lengh == 2:
-					try:
-						Time.append(float(linex[0]))
-						Total_energy.append(float(linex[1]))
-						Kinetic_Energy.append(float(linex[2]))
-						Potential_Energy.append(float(linex[3]))
-						Temperature.append(float(linex[4]))
-					except:
-						pass
-
-
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Velocity Verlet Integrator'
-		parameters['X'     ] = Time
-		parameters['Y'     ] = Total_energy
-		parameters['xlabel'] = 'Time'
-		parameters['ylabel'] = 'Total_energy'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-	'''
-	--------------------------------------------------------------------------------------------------------------------------------------------
-														 Leapfrog Verlet Integrator Results
-	--------------------------------------------------------------------------------------------------------------------------------------------
-			Time            Total Energy       Kinetic Energy     Potential Energy       Temperature          Pressure             Volume
-	--------------------------------------------------------------------------------------------------------------------------------------------
-			  0.00000000       1920.46434760       2394.56813435       -474.10378674        300.00000000          0.00000000          0.00000000
-	'''
-	if '                                                     Leapfrog Verlet Integrator Results\n' in lines:
-		index = lines.index('                                                     Leapfrog Verlet Integrator Results\n')
-		print lines[index]
-		print index
-		Time             = []
-		Total_energy     = []
-		Kinetic_Energy   = []
-		Potential_Energy = []
-		Temperature      = []
-		Pressure         = []    
-		Volume           = []
-		for line in lines[index: -1]:
-			linex = line.split()
-			
-			if len(linex) == 7:
-				tipo = linex[0].split(".")
-				lengh = len(tipo)
-				if lengh == 2:
-					try:
-						Time.append(float(linex[0]))
-						Total_energy.append(float(linex[1]))
-						Kinetic_Energy.append(float(linex[2]))
-						Potential_Energy.append(float(linex[3]))
-						Temperature.append(float(linex[4]))
-						Pressure.append(float(linex[5]))
-						Volume  .append(float(linex[6]))
-						
-					except:
-						pass
-
-
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Leapfrog Verlet Integrator'
-		parameters['X'     ] = Time
-		parameters['Y'     ] = Total_energy
-		parameters['xlabel'] = 'Time'
-		parameters['ylabel'] = 'Total_energy'
-		pprint(parameters)
-		return parameters
-
-
-
-
-
-
-
-
-	'''
-	----------------------------------------------------------------------------------------------------
-								 Langevin Velocity Verlet Integrator Results
-	----------------------------------------------------------------------------------------------------
-			Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
-	----------------------------------------------------------------------------------------------------
-			  0.00000000       2019.32202144       2394.56813435       -375.24611290        300.00000000
-	'''
-	if '                             Langevin Velocity Verlet Integrator Results\n' in lines:
-		index = lines.index('                             Langevin Velocity Verlet Integrator Results\n')
-		print lines[index]
-		print index
-		Time             = []
-		Total_energy     = []
-		Kinetic_Energy   = []
-		Potential_Energy = []
-		Temperature      = []
-		Pressure         = []    
-		Volume           = []
-		for line in lines[index: -1]:
-			linex = line.split()
-			
-			if len(linex) == 5:
-				tipo = linex[0].split(".")
-				lengh = len(tipo)
-				if lengh == 2:
-					try:
-						Time.append(float(linex[0]))
-						Total_energy.append(float(linex[1]))
-						Kinetic_Energy.append(float(linex[2]))
-						Potential_Energy.append(float(linex[3]))
-						Temperature.append(float(linex[4]))
-						#Pressure.append(float(linex[5]))
-						#Volume  .append(float(linex[6]))
-						
-					except:
-						pass
-
-
-		parameters['type'  ] = 'line'
-		parameters['title' ] = 'Langevin Velocity Verlet Integrator'
-		parameters['X'     ] = Time
-		parameters['Y'     ] = Total_energy
-		parameters['xlabel'] = 'Time'
-		parameters['ylabel'] = 'Total_energy'
-		pprint(parameters)
-		return parameters
+    """ Function doc """
+    parameters = {
+                 'type'  : 'line'    ,   # line / matrix
+                 'title' : ''        ,   #
+                 'X'     : []        ,   # X 
+                 'Y'     : []        ,   # Y 
+                 'xlabel': 'x label' ,   # xlabel,
+                 'ylabel': 'y label' ,   # ylabel,
+                 }
+    
+    
+    log = open( log_file , "r")
+    #print log
+    lines = log.readlines()
+    #print lines
+
+    interact = []
+    Function = []
+    RMS_Grad = []
+    Mac_Grad = []
+    RMS_disp = []
+    MAS_Disp = []
+
+    if '       Chain-Of-States Optimizer Statistics\n' in lines:
+        
+        index = lines.index('       Chain-Of-States Optimizer Statistics\n')
+        
+        for line in lines[index:]:
+            line2 =  line.split()
+            if len(line2) == 9:
+                parameters['X'     ].append(line2[0])
+                parameters['Y'     ].append(line2[2])
+            
+            
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Chain-Of-States'
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        pprint(parameters)
+        return parameters
+        
+        
+    if '                              GTKDynamo SCAN2D\n' in lines:
+        index = lines.index('                              GTKDynamo SCAN2D\n')
+        print lines[index]
+        print index
+        i             =   0
+        j             =   0        
+        matrix_lines  = []
+        r1 = ''
+        r2 = ''
+        for line in lines[index: -1]:
+            if line == '----------------------- Coordinate 1 - Simple-Distance -------------------------\n':
+                index2 = lines.index('----------------------- Coordinate 1 - Simple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        
+                        if atom[0][-1] == '2':
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+                        else:
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
+                        print r1
+
+
+            if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
+                index2 = lines.index('--------------------- Coordinate 1 - Multiple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '*':
+                            r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        else:
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+                        print r1
+
+            
+            
+            
+            
+            
+            if line == '----------------------- Coordinate 2 - Simple-Distance -------------------------\n':
+                index2 = lines.index('----------------------- Coordinate 2 - Simple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '2':
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        else:
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
+                        print r2
+            
+            if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
+                index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '*':
+                            r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        else:
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        print r2
+
+            
+            
+            
+            #print line
+            try:
+                linex = line.split()
+                if linex[0] == "MATRIX2":
+                    #print linex
+                    i = len(linex) - 1
+                    j = j + 1
+                    mline = []
+                    
+                    for item in linex[1:-1]:
+                        #print item
+                        mline.append(float(item))
+                    #print mline
+                    
+                    matrix_lines.append(mline)
+                    
+            except:
+                pass	
+        import numpy as np
+        X = np.array(matrix_lines)
+
+                
+        parameters['type'  ] = 'matrix'
+        parameters['title' ] = 'SCAN2D'
+        parameters['matrix'] =  X
+        parameters['xlabel'] = r1
+        parameters['ylabel'] = r2
+        print parameters
+        return parameters
+
+
+
+    if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
+        index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
+        print lines[index]
+        print index
+        Frame      = []
+        PK1_PK2    = []
+        PK2_PK3    = []
+        Energy     = []
+
+        
+        for line in lines[index: -1]:
+            linex = line.split()
+            #print linex
+            
+            if len(linex) == 4:
+                print linex
+                
+                try:
+                    Frame.append(float(linex[0]))
+                    
+                
+                    Energy.append(float(linex[-1]))
+                except:
+                    a = None
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'SCAN Multiple-Distance'
+        parameters['X'     ] = Frame
+        parameters['Y'     ] = Energy
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        print parameters
+        return parameters
+
+
+
+    if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
+        index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
+        print lines[index]
+        print index
+        Frame      = []
+        PK1_PK2    = []
+        PK2_PK3    = []
+        Energy     = []
+
+        
+        for line in lines[index: -1]:
+            linex = line.split()
+            #print linex
+            
+            if len(linex) == 3:
+                print linex
+                
+                try:
+                    Frame.append(float(linex[0]))
+                    
+                
+                    Energy.append(float(linex[-1]))
+                except:
+                    a = None
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'SCAN Multiple-Distance'
+        parameters['X'     ] = Frame
+        parameters['Y'     ] = Energy
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        print parameters
+        return parameters	
+
+
+
+
+
+
+    '''   
+    ------------------------------------------------------------
+                       Potential of Mean Force
+    ------------------------------------------------------------
+        ReactionCoord            PMF                 PDF
+    ------------------------------------------------------------
+                 1.58169                   0              158.96
+                 1.58798        2.49434e+300                   0
+                 1.59428        2.49434e+300                   0
+    '''
+    if '    ReactionCoord            PMF                 PDF\n' in lines:
+        index = lines.index('    ReactionCoord            PMF                 PDF\n')
+        print lines[index]
+        print index
+        
+        
+        ReactionCoord = []
+        PDF           = []
+        PMF           = []
+        
+        for line in lines[index: -1]:
+            print line 
+            line2 = line.split()
+            if len(line2) == 3:
+                try:
+                    ReactionCoord.append(float(line2[0]))
+                    PDF.append(float(line2[2]))
+                    PMF.append(float(line2[1]))
+                except:
+                    pass
+        
+        
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Potential of mean force'
+        parameters['X'     ] = ReactionCoord
+        parameters['Y'     ] = PMF
+        parameters['xlabel'] = 'ReactionCoord'
+        parameters['ylabel'] = 'Energy (KJ)'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+
+
+    '''
+    ------------------------------------- L-BFGS Minimizer Options -------------------------------------
+    History                          =             10  Log Frequency                    =              5
+    Maximum Iterations               =            200  Maximum Step                     =           0.01
+    RMS Gradient Tolerance           =            0.1
+    ----------------------------------------------------------------------------------------------------
+
+    ----------------------------------------------------------------------------------------------------------------
+      Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+    ----------------------------------------------------------------------------------------------------------------
+         0     I      -2861.47060058          0.16863474          2.57918121          0.00000000          0.00000000
+    ----------------------------------------------------------------------------------------------------------------
+    '''
+
+
+    if '------------------------------------- L-BFGS Minimizer Options -------------------------------------\n' in lines:
+        index = lines.index('------------------------------------- L-BFGS Minimizer Options -------------------------------------\n')
+        print lines[index]
+        print index
+        interact = []
+        Function = []
+        RMS_Grad = []
+        Mac_Grad = []
+        RMS_disp = []
+        MAS_Disp = []
+        for line in lines[index: -1]:
+            line2 = line.split()
+            lengh = len(line2)
+            if lengh == 7:
+                try:
+                    n = 0
+                    interact.append(float(line2[0]))
+                    Function.append(float(line2[2]))
+                    RMS_Grad.append(float(line2[3]))
+                    Mac_Grad.append(float(line2[4]))
+                    RMS_disp.append(float(line2[5]))
+                    MAS_Disp.append(float(line2[6]))
+                except:
+                    pass
+        
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Energy minimization: L-BFGS'
+        parameters['X'     ] = interact
+        parameters['Y'     ] = Function
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+
+    '''
+    -------------------------------  Conjugate Gradient Minimizer Options ------------------------------
+    Beta Type                        =              1  Initial Step                     =            0.1
+    Line Searcher                    =           None  Log Frequency                    =              5
+    Maximum Iterations               =            200  Maximum Theta                    =          1e+10
+    Minimum Theta                    =          1e-10  RMS Gradient Tolerance           =            0.1
+    Steepest Descent Tolerance       =          0.001  Use Spectral Theta               =           True
+    ----------------------------------------------------------------------------------------------------
+
+    ----------------------------------------------------------------------------------------------------------------
+      Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+    ----------------------------------------------------------------------------------------------------------------
+         0     I      -1142.98230437        118.93269476       2669.91104143          0.00227862          0.05115256
+    '''
+
+    if '-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n' in lines:
+        index = lines.index('-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n')
+        print lines[index]
+        print index
+        interact = []
+        Function = []
+        RMS_Grad = []
+        Mac_Grad = []
+        RMS_disp = []
+        MAS_Disp = []
+        
+        for line in lines[index: -1]:
+            line2 = line.split()
+            lengh = len(line2)
+            if lengh == 7:
+                try:
+                    n = 0
+                    interact.append(float(line2[0]))
+                    Function.append(float(line2[2]))
+                    RMS_Grad.append(float(line2[3]))
+                    Mac_Grad.append(float(line2[4]))
+                    RMS_disp.append(float(line2[5]))
+                    MAS_Disp.append(float(line2[6]))
+                except:
+                    pass
+        
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
+        parameters['X'     ] = interact
+        parameters['Y'     ] = Function
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+
+
+
+
+    '''
+    -------------------------------- Steepest-Descent Minimizer Options --------------------------------
+    Log Frequency                    =              1  Maximum Iterations               =             10
+    Maximum Step Size                =              1  Minimum Step Size                =          1e-06
+    RMS Gradient Tolerance           =            0.1  Scale Down                       =            0.5
+    Scale Up                         =            1.2  Step Size                        =           0.01
+    ----------------------------------------------------------------------------------------------------
+
+    ----------------------------------------------------------------------------------------------------------------
+      Iteration       Function          RMS Gradient        Max. |Grad.|          RMS Disp.         Max. |Disp.|
+    ----------------------------------------------------------------------------------------------------------------
+         0     I      -2814.85409217          0.47710045         12.37630814          0.00000000          0.00000000
+    '''
+    if '-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n' in lines:
+        index = lines.index('-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n')
+        print lines[index]
+        print index
+        for line in lines[index: -1]:
+            line2 = line.split()
+            lengh = len(line2)
+            if lengh == 6:
+                try:
+                    n = 0
+                    interact.append(float(line2[0]))
+                    Function.append(float(line2[1]))
+                    RMS_Grad.append(float(line2[2]))
+                    Mac_Grad.append(float(line2[3]))
+                    RMS_disp.append(float(line2[4]))
+                    MAS_Disp.append(float(line2[5]))
+
+                except:
+                    pass
+
+            if lengh == 7:
+                try:
+                    n = 0
+                    interact.append(float(line2[0]))
+                    Function.append(float(line2[2]))
+                    RMS_Grad.append(float(line2[3]))
+                    Mac_Grad.append(float(line2[4]))
+                    RMS_disp.append(float(line2[5]))
+                    MAS_Disp.append(float(line2[6]))
+
+                except:
+                    pass
+
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Energy minimization: Steepest-Descent'
+        parameters['X'     ] = interact
+        parameters['Y'     ] = Function
+        parameters['xlabel'] = 'Frames'
+        parameters['ylabel'] = 'Energy (KJ)'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+            
+            
+            
+    '''
+    ----------------------------------------------------------------------------------------------------
+                                 Velocity Verlet Integrator Results
+    ----------------------------------------------------------------------------------------------------
+        Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
+    ----------------------------------------------------------------------------------------------------
+          0.00000000       -423.80962900       2394.56813435      -2818.37776335        300.00000000
+    '''
+    if '                                 Velocity Verlet Integrator Results\n' in lines:
+        index = lines.index('                                 Velocity Verlet Integrator Results\n')
+        print lines[index]
+        print index
+        Time             = []
+        Total_energy     = []
+        Kinetic_Energy   = []
+        Potential_Energy = []
+        Temperature      = []
+        
+        for line in lines[index: -1]:
+            linex = line.split()
+            
+            if len(linex) == 5:
+                tipo = linex[0].split(".")
+                lengh = len(tipo)
+                if lengh == 2:
+                    try:
+                        Time.append(float(linex[0]))
+                        Total_energy.append(float(linex[1]))
+                        Kinetic_Energy.append(float(linex[2]))
+                        Potential_Energy.append(float(linex[3]))
+                        Temperature.append(float(linex[4]))
+                    except:
+                        pass
+
+
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Velocity Verlet Integrator'
+        parameters['X'     ] = Time
+        parameters['Y'     ] = Total_energy
+        parameters['xlabel'] = 'Time'
+        parameters['ylabel'] = 'Total_energy'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+    '''
+    --------------------------------------------------------------------------------------------------------------------------------------------
+                                                         Leapfrog Verlet Integrator Results
+    --------------------------------------------------------------------------------------------------------------------------------------------
+            Time            Total Energy       Kinetic Energy     Potential Energy       Temperature          Pressure             Volume
+    --------------------------------------------------------------------------------------------------------------------------------------------
+              0.00000000       1920.46434760       2394.56813435       -474.10378674        300.00000000          0.00000000          0.00000000
+    '''
+    if '                                                     Leapfrog Verlet Integrator Results\n' in lines:
+        index = lines.index('                                                     Leapfrog Verlet Integrator Results\n')
+        print lines[index]
+        print index
+        Time             = []
+        Total_energy     = []
+        Kinetic_Energy   = []
+        Potential_Energy = []
+        Temperature      = []
+        Pressure         = []    
+        Volume           = []
+        for line in lines[index: -1]:
+            linex = line.split()
+            
+            if len(linex) == 7:
+                tipo = linex[0].split(".")
+                lengh = len(tipo)
+                if lengh == 2:
+                    try:
+                        Time.append(float(linex[0]))
+                        Total_energy.append(float(linex[1]))
+                        Kinetic_Energy.append(float(linex[2]))
+                        Potential_Energy.append(float(linex[3]))
+                        Temperature.append(float(linex[4]))
+                        Pressure.append(float(linex[5]))
+                        Volume  .append(float(linex[6]))
+                        
+                    except:
+                        pass
+
+
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Leapfrog Verlet Integrator'
+        parameters['X'     ] = Time
+        parameters['Y'     ] = Total_energy
+        parameters['xlabel'] = 'Time'
+        parameters['ylabel'] = 'Total_energy'
+        pprint(parameters)
+        return parameters
+
+
+
+
+
+
+
+
+    '''
+    ----------------------------------------------------------------------------------------------------
+                                 Langevin Velocity Verlet Integrator Results
+    ----------------------------------------------------------------------------------------------------
+            Time            Total Energy       Kinetic Energy     Potential Energy       Temperature
+    ----------------------------------------------------------------------------------------------------
+              0.00000000       2019.32202144       2394.56813435       -375.24611290        300.00000000
+    '''
+    if '                             Langevin Velocity Verlet Integrator Results\n' in lines:
+        index = lines.index('                             Langevin Velocity Verlet Integrator Results\n')
+        print lines[index]
+        print index
+        Time             = []
+        Total_energy     = []
+        Kinetic_Energy   = []
+        Potential_Energy = []
+        Temperature      = []
+        Pressure         = []    
+        Volume           = []
+        for line in lines[index: -1]:
+            linex = line.split()
+            
+            if len(linex) == 5:
+                tipo = linex[0].split(".")
+                lengh = len(tipo)
+                if lengh == 2:
+                    try:
+                        Time.append(float(linex[0]))
+                        Total_energy.append(float(linex[1]))
+                        Kinetic_Energy.append(float(linex[2]))
+                        Potential_Energy.append(float(linex[3]))
+                        Temperature.append(float(linex[4]))
+                        #Pressure.append(float(linex[5]))
+                        #Volume  .append(float(linex[6]))
+                        
+                    except:
+                        pass
+
+
+        parameters['type'  ] = 'line'
+        parameters['title' ] = 'Langevin Velocity Verlet Integrator'
+        parameters['X'     ] = Time
+        parameters['Y'     ] = Total_energy
+        parameters['xlabel'] = 'Time'
+        parameters['ylabel'] = 'Total_energy'
+        pprint(parameters)
+        return parameters
 
 
 
