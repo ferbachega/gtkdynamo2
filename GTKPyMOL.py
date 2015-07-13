@@ -168,7 +168,7 @@ class MainMenu (object):
                 #self.builder = GUI.builder
                 self.GUI = GUI
 
-        def on_MainMenu_File_Import_menuitemImportTrajectory_activate (self, menuitem):
+        def on_MainMenu_File_Import_ImportTrajectory_activate (self, menuitem):
                 """ Function doc """
                 self.TrajectoryDialog.builder.get_object('filechooserbutton1').set_filename(self.project.settings['data_path'])
                 self.TrajectoryDialog.builder.get_object('filechooserbutton2').set_filename(self.project.settings['data_path'])
@@ -176,7 +176,7 @@ class MainMenu (object):
                 self.TrajectoryDialog.dialog.hide()
 
 
-        def on_MainMenu_View_menuitemShowJobHistory_activate(self, button):
+        def on_MainMenu_View_ShowSequence_activate(self, button):
                 #print """ Function doc """
                 if self.builder.get_object('menuitem29').get_active() == True:
                         #cmd.set('valence', 0.1)
@@ -187,7 +187,7 @@ class MainMenu (object):
                         #self.builder.get_object('vpaned4').hide()
                         cmd.set("seq_view", 0)
 
-        def on_menuitem_internal_GUI_toggled (self, button):
+        def on_MainMenu_View_ShowPyMOLInternalGUI_activate (self, button):
                 """ Function doc """
                 if self.builder.get_object('menuitem_internal_GUI').get_active() == True:
                         #cmd.set('valence', 0.1)
@@ -196,33 +196,24 @@ class MainMenu (object):
                         #cmd.set('valence', 0.0)
                         cmd.set("internal_gui", 0)
 
-        def on_MainMenu_View_menuitemShowValences_activate(self, button):
+        def on_MainMenu_View_ShowValences_activate(self, button):
                 #print """ Function doc """
                 if self.builder.get_object('ShowValences').get_active() == True:
                         #cmd.set('valence', 0.1)
                         cmd.do('set valence, 0.1')
                 else:
                         #cmd.set('valence', 0.0)
-                        cmd.do('set valence, 0.0')
-
-        def on_menuitem_Sequence_toggled (self, button):
-                """ Function doc """
-                if self.builder.get_object('menuitem_Sequence').get_active() == True:
-                        #print '"seq_view", 1'
-                        pymol.cmd.set("seq_view", 1)
-                else:
-                        #print '"seq_view", 0'
-                        pymol.cmd.set("seq_view", 0) 		
+                        cmd.do('set valence, 0.0')		
 
         
-        def on_menuitem_preferences_activate (self, button):
+        def on_MainMenu_Edit_Preferences_activate (self, button):
                 """ Function doc """
                 self.PreferencesDialog.dialog.run()
                 self.PreferencesDialog.dialog.hide()
 
         
         
-        def on_MainMenu_View_menuitem_PYMOL_command_line(self, button):
+        def on_MainMenu_View_PYMOLCommand_line_activate(self, button):
                 """ Function doc """
                 #print """ Function doc """
                 if self.builder.get_object('PyMOL_command_line_check').get_active() == True:
@@ -232,7 +223,11 @@ class MainMenu (object):
                         #cmd.set('valence', 0.0)
                         pymol.cmd.set("internal_feedback", 0) 
                         
-        def on_MainMenu_View_toolbutton_trajectory_tool_clicked (self, button):
+        
+        
+        
+        
+        def on_MainMenu_View_ShowTrajectoryTool_clicked (self, button):
                 """ Function doc """
                 if self.builder.get_object('toolbutton_trajectory_tool').get_active() == True:
                         #cmd.set('valence', 0.1)
@@ -242,9 +237,6 @@ class MainMenu (object):
                         self.builder.get_object('handlebox1').hide()  
                            
                         
-
-
-
 
         def on_MainMenu_File_NewProject_activate(self, button):
                 """ Function doc """
@@ -267,13 +259,13 @@ class MainMenu (object):
                 self._NewProjectDialog.dialog.run()
                 self._NewProjectDialog.dialog.hide()
 
-        def on_menuitem_ImportCoordenates_activate (self, menuitem):
+        def on_MainMenu_Import_ImportCoordenates_activate (self, menuitem):
                 """ Function doc """
                 #self.DialogImportCoordinates.builder.get_object('entry_file_name').set_text('teste')
                 self.DialogImportCoordinates.dialog.run()
                 self.DialogImportCoordinates.dialog.hide()
 
-        def on_menuitem_ExportCoordinates_activate (self, menuitem):
+        def on_MainMenu_Export_ExportCoordenates_activate (self, menuitem):
                 """ Function doc """
                 self.DialogExportCoordinates.builder.get_object('entry_file_name').set_text('teste')
                 self.DialogExportCoordinates.dialog.run()
@@ -303,24 +295,24 @@ class MainMenu (object):
                         
                 self.PyMOL_change_selection_mode()
 
-        def on_menuitem_quit_activate (self, menuitem):
+        def on_MainMenu_File_Quit_activate (self, menuitem):
                 """ Function doc """
                 print '''\n\nThanks for use EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
 
-        def on_imagemenuitem9_activate (self, menuitem):
+        def on_MainMenu_Edit_ChargeRescale_activate (self, menuitem):
                 """ Function doc """
                 self.ChargeRescaleDialog.dialog.run()
                 self.ChargeRescaleDialog.dialog.hide()
 
 
-        #def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuItem):
+        #def on_MainMenu_Calculate_Scan1D_activate(self, menuItem):
         #    """ Function ChargeRescaleDialogdoc """
         #    self.ScanDialog.dialog.run()
         #    self.ScanDialog.dialog.hide()  
 
-        def on_MainMenu_Calculate_menuitemScan1D_activate(self, menuitem):
+        def on_MainMenu_Calculate_Scan1D_activate(self, menuitem):
                 """ Function doc """
                 if self.ScanWindow.Visible == False:
                         #print self.project.settings['step']
@@ -339,24 +331,24 @@ class MainMenu (object):
                 #    pass
 
 
-        def on_MainMenu_Calculate_menuitemScan2D_activate(self, menuItem):
+        def on_MainMenu_Calculate_Scan2D_activate(self, menuItem):
                 if self.ScanWindow2D.Visible == False:
                         #print self.project.settings['step']
                         text = str(self.project.settings['step'] + 1) + '_step_Scan2D'
                         #print text	
                         self.ScanWindow2D.OpenWindow(text)
 
-        def on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate(self, menuItem):
+        def on_MainMenu_Calculate_UmbrellaSampling_activate(self, menuItem):
                 if self.UmbrellaSamplingWindow.Visible == False:
                         text = str(self.project.settings['step'] + 1) + '_step_UmbrellaSampling'
                         self.UmbrellaSamplingWindow.OpenWindow(text)
 
 
-        def on_menuitem_SAW_activate(self, menuItem):
+        def on_MainMenu_Calculate_SAW_activate(self, menuItem):
                 self.SAWDialog.dialog.run()
                 self.SAWDialog.dialog.hide()
 
-        def on_menuitem_NEB_activate(self, menuItem):
+        def on_MainMenu_Calculate_NEB_activate(self, menuItem):
                 '''
                 #print self.project.settings['step']
                 text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
@@ -371,13 +363,13 @@ class MainMenu (object):
                 self.NEBDialog.dialog.hide()
 
 
-        def on_MainMenu_Edit_menuitemNonBondingModels_activate(self, button):
+        def on_MainMenu_Edit_NonBondingModels_activate(self, button):
                 """ Function doc """
                 self.NonBondDialog.dialog.run()
                 self.NonBondDialog.dialog.hide()
 
 
-        def on_menuitem24PlotLogGraph_activate (self, button):
+        def on_Analysis_PlotLogGraph_activate (self, button):
             """ Function doc """
             
             FileChooser = FileChooserWindow()
@@ -403,7 +395,7 @@ class MainMenu (object):
             #self.PyMOL_change_selection_mode()
 
 
-        def on_MainMenu_About_activate(self, button):
+        def on_MainMenu_Help_About_activate(self, button):
                 """ Function doc """
                 self.AboutDialog.dialog.run()
                 self.AboutDialog.dialog.hide()
@@ -525,13 +517,13 @@ class MainToolBar(object):
             if self.pDynamoSelectionWindow.Visible == False:
                 self.pDynamoSelectionWindow.OpenWindow()  
 
-    def on_ToolBar_buttonCheckSystem_clicked(self, button):
+    def on_ToolBar_CheckSystem_clicked(self, button):
         """ Function doc """
         filein = self.project.SystemCheck(_color = False)
         #filein = self.project.settings['job_history'][self.selectedID]['log']
         editor = TextEditor.GTKDynamoTextEditor(filein)
         
-    def on_ToolBar_buttonSinglePoint_clicked(self, button):
+    def on_ToolBar_SinglePoint_clicked(self, button):
         """ Function doc """
         energy = self.project.ComputeEnergy()
         #colocar um check system aqui 
@@ -540,12 +532,12 @@ class MainToolBar(object):
         dialog.run()                                                                
         dialog.hide()
                 
-    def on_ToolBar_buttonQuantumChemistrySetup_clicked(self, button):
+    def on_ToolBar_QuantumChemistrySetup_clicked(self, button):
         """ Function doc """
         self.QuantumChemistrySetupDialog.dialog.run()
         self.QuantumChemistrySetupDialog.dialog.hide()
 
-    def on_ToolBar_buttonOptmizationSetup_clicked(self, button):
+    def on_ToolBar_OptmizationSetup_clicked(self, button):
         """ Function doc """
         #print self.project.settings['step']
         text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
@@ -554,7 +546,7 @@ class MainToolBar(object):
         self._02MinimizationWindow.dialog.run()
         self._02MinimizationWindow.dialog.hide()
 
-    def on_ToolBar_buttonMolecularDynamicsSetup_clicked (self, button):
+    def on_ToolBar_MolecularDynamicsSetup_clicked (self, button):
         """ Function doc """
         #print self.project.settings['step']
         text = str(self.project.settings['step'] + 1) + '_step_MolecularDynamics'
@@ -562,7 +554,7 @@ class MainToolBar(object):
         self.MolecularDynamicsWindow.dialog.run()
         self.MolecularDynamicsWindow.dialog.hide()
         
-    def on_ToolBar_togglebbuttonChangeSelectionMode_toggled(self, button):
+    def on_ToolBar_ChangeSelectionMode_toggled(self, button):
         #if self.builder.get_object('togglebutton1').get_active():
         #	# print '# If control reaches here, the toggle button is down'
         #	self.builder.get_object('togglebutton1').set_label('Editing')
@@ -582,7 +574,7 @@ class MainToolBar(object):
         #
         self.PyMOL_change_selection_mode()
         
-    def on_ToolBar_comboboxChangeSelectionMode_changed(self, button):
+    def on_ToolBar_ChangeSelectionMode_changed(self, button):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
         if mode == "Atom":
@@ -594,7 +586,7 @@ class MainToolBar(object):
         if mode == "Molecule":
             cmd.set("mouse_selection_mode", 5)
 
-    def on_ToolBar_toolbutton_ClearSystemInMemory_clicked (self, button):
+    def on_ToolBar_ClearSystemInMemory_clicked (self, button):
         """ Function doc """
         if self.project.system != None:
             '''

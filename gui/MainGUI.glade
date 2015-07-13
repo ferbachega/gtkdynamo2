@@ -1637,7 +1637,7 @@
     <property name="default_width">1000</property>
     <property name="default_height">800</property>
     <property name="icon">.icon_logo_40x40.png</property>
-    <signal name="destroy" handler="on_menuitem_quit_activate" swapped="no"/>
+    <signal name="destroy" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -1720,7 +1720,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem_ImportCoordenates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Import_ImportCoordenates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1729,7 +1729,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Trajectory</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_File_Import_menuitemImportTrajectory_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_File_Import_ImportTrajectory_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1761,7 +1761,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem_ExportCoordinates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Export_ExportCoordenates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1797,7 +1797,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image43</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_menuitem_quit_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1847,7 +1847,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Charge rescale</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_imagemenuitem9_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Edit_ChargeRescale_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1856,7 +1856,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">NonBond Model</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_MainMenu_Edit_menuitemNonBondingModels_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Edit_NonBondingModels_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1871,7 +1871,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Preferences</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_menuitem_preferences_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Edit_Preferences_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -1894,7 +1894,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show Valences</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowValences_activate" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_ShowValences_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1918,7 +1918,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Show sequence</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_MainMenu_View_menuitemShowJobHistory_activate" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_ShowSequence_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1927,7 +1927,7 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">PyMOL internal GUI</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="on_menuitem_internal_GUI_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_ShowPyMOLInternalGUI_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -1937,7 +1937,7 @@
                         <property name="label" translatable="yes">PyMOL command line</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
-                        <signal name="toggled" handler="on_MainMenu_View_menuitem_PYMOL_command_line" swapped="no"/>
+                        <signal name="toggled" handler="on_MainMenu_View_PYMOLCommand_line_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -2012,7 +2012,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image46</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_ToolBar_buttonOptmizationSetup_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2022,7 +2022,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image47</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_ToolBar_buttonMolecularDynamicsSetup_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_ToolBar_MolecularDynamicsSetup_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2060,7 +2060,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scan</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemScan1D_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_Scan1D_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2069,7 +2069,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Scan 2D</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemScan2D_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_Scan2D_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2078,7 +2078,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">Umbrella Sampling</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Calculate_menuitemUmbrellaSamplingWindow_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_UmbrellaSampling_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2087,7 +2087,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">SAW</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem_SAW_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_SAW_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2096,7 +2096,7 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">NEB</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_menuitem_NEB_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Calculate_NEB_activate" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -2124,7 +2124,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image51</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_menuitem24PlotLogGraph_activate" swapped="no"/>
+                        <signal name="activate" handler="on_Analysis_PlotLogGraph_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -2148,7 +2148,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_MainMenu_About_activate" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Help_About_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -2274,7 +2274,7 @@
                 <property name="label" translatable="yes">Quantum Chemistry</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image33</property>
-                <signal name="clicked" handler="on_ToolBar_buttonQuantumChemistrySetup_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_QuantumChemistrySetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2299,7 +2299,7 @@
                 <property name="label" translatable="yes">check system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image15</property>
-                <signal name="clicked" handler="on_ToolBar_buttonCheckSystem_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_CheckSystem_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2314,7 +2314,7 @@
                 <property name="label" translatable="yes">compute energy (single point))</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image16</property>
-                <signal name="clicked" handler="on_ToolBar_buttonSinglePoint_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_SinglePoint_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2329,7 +2329,7 @@
                 <property name="label" translatable="yes">geometry optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
-                <signal name="clicked" handler="on_ToolBar_buttonOptmizationSetup_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2344,7 +2344,7 @@
                 <property name="label" translatable="yes">molecular dynamics</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image18</property>
-                <signal name="clicked" handler="on_ToolBar_buttonMolecularDynamicsSetup_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_MolecularDynamicsSetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2397,7 +2397,7 @@
                 <property name="label" translatable="yes">delete system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image20</property>
-                <signal name="clicked" handler="on_ToolBar_toolbutton_ClearSystemInMemory_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_ClearSystemInMemory_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2475,7 +2475,7 @@
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image72</property>
                 <property name="active">True</property>
-                <signal name="toggled" handler="on_MainMenu_View_toolbutton_trajectory_tool_clicked" swapped="no"/>
+                <signal name="toggled" handler="on_MainMenu_View_ShowTrajectoryTool_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -2512,7 +2512,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <signal name="toggled" handler="on_ToolBar_togglebbuttonChangeSelectionMode_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_ToolBar_ChangeSelectionMode_toggled" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -2540,7 +2540,7 @@
                       <object class="GtkComboBox" id="combobox1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <signal name="changed" handler="on_ToolBar_comboboxChangeSelectionMode_changed" swapped="no"/>
+                        <signal name="changed" handler="on_ToolBar_ChangeSelectionMode_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
