@@ -288,7 +288,7 @@ def umbrella_sampling(outpath                 ,
 			# . Equilibration.                                                                                                            #
 			LangevinDynamics_SystemGeometry (project.system,                                                                                 #
 							logFrequency              =   logFrequency,                                                                   #
-							log                       =   dualLog,                                                                        #
+							#log                       =   dualLog,                                                                        #
 							#rng                       =   rng,                                                                           #
 							steps                     =   steps,                                                                          #
 							timeStep                  =   0.001,                                                                          #
@@ -307,7 +307,7 @@ def umbrella_sampling(outpath                 ,
 			LangevinDynamics_SystemGeometry (project.system,                                                                                 #
 							trajectories              =[ ( trajectory, 1) ],                                                              #
 							logFrequency              =   logFrequency,                                                                   #
-							log                       =   dualLog,                                                                        #
+							#log                       =   dualLog,                                                                        #
 							#rng                       =   rng,                                                                           #
 							steps                     =   steps,                                                                          #
 							timeStep                  =   0.001,                                                                          #

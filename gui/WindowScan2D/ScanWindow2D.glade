@@ -950,7 +950,6 @@
                                               <object class="GtkEntry" id="entry_param_DMINIMUM2">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
-                                                <property name="editable">False</property>
                                                 <property name="invisible_char">●</property>
                                                 <property name="text" translatable="yes">-</property>
                                                 <property name="invisible_char_set">True</property>

@@ -998,7 +998,7 @@ class TreeviewHistory(object):
         actualObj = self.project.settings['PyMOL_Obj']
         label     = 'test'
         PyMOL_Obj = self.selectedObj
-        data_path = self.project.data_path
+        data_path = self.project.settings['data_path']
         file_out  = 'exportXYZ.xyz'
         state     = -1
         
@@ -1594,7 +1594,7 @@ class gtkdynamo_main(threading.Thread,
         #----------------------------------------------------------------------------------------------------------------------------#
 
        
-        self.project.data_path = GTKDYNAMO_TMP
+        self.project.settings['data_path'] = GTKDYNAMO_TMP
 
 
         #------------------------------ GTKDynamo Dialogs --------------------------------------#
