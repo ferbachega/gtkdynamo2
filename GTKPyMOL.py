@@ -120,8 +120,10 @@ from gui.FileChooserWindow                                  import *            
 from gui.DialogNewProject.NewProject                        import *                         #
 from gui.DialogQuantumChemistrySetup.QuantumChemistrySetup  import *                         #
                                                                                              #
-from gui.DialogChargeRescale.ImportCoordinates               import ImportCoordinatesDialog  #
-from gui.DialogChargeRescale.ImportCoordinates               import ExportCoordinatesDialog  #
+from gui.DialogChargeRescale.ImportCoordinates              import ImportCoordinatesDialog  #
+from gui.DialogChargeRescale.ImportCoordinates              import ExportCoordinatesDialog  #
+
+from gui.DialogAmber12ToAmber11.DialogAmber12ToAmber11      import DialogAmber12ToAmber11
                                                                                              #
 from gui.DialogNonBond.NonBond                              import *                         #
 from gui.WindowScan1D.Scan                                  import *                         #
@@ -393,6 +395,11 @@ class MainMenu (object):
             #                self.project.load_GTKDYNAMO_project(FileName)
             #        
             #self.PyMOL_change_selection_mode()
+
+        def on_Amber12ToAmber11_activate (self, button):
+            """ Function doc """
+            self.DialogAmber12ToAmber11.dialog.run()
+            self.DialogAmber12ToAmber11.dialog.hide()           
 
 
         def on_MainMenu_Help_About_activate(self, button):
@@ -1623,6 +1630,8 @@ class gtkdynamo_main(threading.Thread,
         self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
                                                                                                 #
         self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
+        
+        self.DialogAmber12ToAmber11 = DialogAmber12ToAmber11(self)
         
         self.PreferencesDialog   = PreferencesDialog(self)
                                                                                                 #

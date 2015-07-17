@@ -159,6 +159,7 @@
       <object class="GtkMenuItem" id="gl_menuitem_zoon">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">zoom</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_GLAreaMenu_itemActive_view" swapped="no"/>
@@ -168,6 +169,7 @@
       <object class="GtkMenuItem" id="gl_menuitem_orient">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">orient</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_GLAreaMenu_itemActive_view" swapped="no"/>
@@ -177,6 +179,7 @@
       <object class="GtkMenuItem" id="gl_menuitem_center">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">center</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_GLAreaMenu_itemActive_view" swapped="no"/>
@@ -186,6 +189,7 @@
       <object class="GtkMenuItem" id="gl_menuitem_reset">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">reset</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_GLAreaMenu_itemActive_view" swapped="no"/>
@@ -201,6 +205,7 @@
       <object class="GtkMenuItem" id="menuitem_selection">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">selection</property>
         <property name="use_underline">True</property>
         <child type="submenu">
@@ -211,6 +216,7 @@
               <object class="GtkMenuItem" id="gl_menuitem_labels">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">labels</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -221,6 +227,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_index">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">index</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -229,6 +236,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_atom_name">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">atom name</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -237,6 +245,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_residue_name">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">residue name</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -245,6 +254,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_residue_number">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">residue number</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -253,6 +263,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_partial_charge">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">partial charge</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -271,6 +282,7 @@
               <object class="GtkMenuItem" id="gl_menuitem_color">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">color</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -281,6 +293,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_black">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">black</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -290,6 +303,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_green">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">green</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -299,6 +313,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_cyan">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">cyan</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -308,6 +323,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_magenta">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">light magenta</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -317,6 +333,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_yellow">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">yellow</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -326,6 +343,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_salmon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">salmon</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -335,6 +353,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_white">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">white/grey</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -344,6 +363,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_slate">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">slate</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -353,6 +373,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_orange">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">bright orange</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -362,6 +383,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_purple">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">purple</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -371,6 +393,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_color_pink">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">pink</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -390,6 +413,7 @@
               <object class="GtkMenuItem" id="menuitem34">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">show</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -400,6 +424,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_lines">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -409,6 +434,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_sticks">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -418,6 +444,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_ribbon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">ribbon</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -427,6 +454,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_cartoon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">cartoon</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -436,6 +464,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_mesh">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">mesh</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -445,6 +474,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_show_surface">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">surface</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -458,6 +488,7 @@
               <object class="GtkMenuItem" id="gl_menuitem_hide">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">hide</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -468,6 +499,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_lines">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -477,6 +509,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_sticks">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -486,6 +519,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_ribbon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">ribbon</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -495,6 +529,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_cartoon">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">cartoon</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -504,6 +539,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_mesh">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">mesh</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -513,6 +549,7 @@
                       <object class="GtkMenuItem" id="gl_menuitem_hide_surface">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">surface</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_gl_show_hide_items_activate" swapped="no"/>
@@ -532,6 +569,7 @@
               <object class="GtkMenuItem" id="menuitem19">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Set as QC Atoms</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
@@ -543,6 +581,7 @@
               <object class="GtkMenuItem" id="menuitem22">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Set as Fix Atoms</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
@@ -560,6 +599,7 @@
               <object class="GtkMenuItem" id="menuitem17">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Clean the QC selection</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_CleanQCTable" swapped="no"/>
@@ -571,6 +611,7 @@
               <object class="GtkMenuItem" id="menuitem47">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Clean the FIX selection</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_GLAreaMenu_itemActive_CleanFixTable" swapped="no"/>
@@ -586,6 +627,7 @@
               <object class="GtkMenuItem" id="menuitem27">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Prune to selection</property>
                 <property name="use_underline">True</property>
                 <signal name="button-press-event" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
@@ -607,6 +649,7 @@
       <object class="GtkMenuItem" id="gl_menuitem_ray">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">Ray</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_GLAreaMenu_itemActive_view" swapped="no"/>
@@ -622,6 +665,7 @@
       <object class="GtkMenuItem" id="menuitem38">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">tools</property>
         <property name="use_underline">True</property>
       </object>
@@ -637,6 +681,7 @@
         <property name="label" translatable="yes">import</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image54</property>
         <property name="use_stock">False</property>
       </object>
@@ -646,6 +691,7 @@
         <property name="label" translatable="yes">export</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image53</property>
         <property name="use_stock">False</property>
       </object>
@@ -1089,6 +1135,7 @@
       <object class="GtkImageMenuItem" id="imagemenuitem11">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image34</property>
         <property name="use_stock">False</property>
       </object>
@@ -1097,6 +1144,7 @@
       <object class="GtkImageMenuItem" id="imagemenuitem12">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image38</property>
         <property name="use_stock">False</property>
       </object>
@@ -1105,6 +1153,7 @@
       <object class="GtkImageMenuItem" id="imagemenuitem13">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image39</property>
         <property name="use_stock">False</property>
       </object>
@@ -1113,6 +1162,7 @@
       <object class="GtkImageMenuItem" id="imagemenuitem14">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="image">image40</property>
         <property name="use_stock">False</property>
       </object>
@@ -1128,6 +1178,7 @@
         <property name="label">gtk-quit</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="use_underline">True</property>
         <property name="use_stock">True</property>
       </object>
@@ -1146,6 +1197,7 @@
       <object class="GtkMenuItem" id="TreeViewObjLabel">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">ObjLabel</property>
         <property name="use_underline">True</property>
       </object>
@@ -1160,6 +1212,7 @@
       <object class="GtkMenuItem" id="menuitem_set_as_active">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">set as active</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_menuitem_set_as_active_activate" swapped="no"/>
@@ -1175,6 +1228,7 @@
       <object class="GtkMenuItem" id="menuitem_center">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">Center</property>
         <property name="use_underline">True</property>
         <signal name="button-release-event" handler="on_show_items_activate" swapped="no"/>
@@ -1184,6 +1238,7 @@
       <object class="GtkMenuItem" id="menuitem48">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">show</property>
         <property name="use_underline">True</property>
         <child type="submenu">
@@ -1194,6 +1249,7 @@
               <object class="GtkMenuItem" id="menuitem_show_lines">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">lines</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1204,6 +1260,7 @@
               <object class="GtkMenuItem" id="menuitem_show_sticks">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">sticks</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1214,6 +1271,7 @@
               <object class="GtkMenuItem" id="menuitem_show_ribbon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">ribbon</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1224,6 +1282,7 @@
               <object class="GtkMenuItem" id="menuitem_show_cartoon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">cartoon</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1234,6 +1293,7 @@
               <object class="GtkMenuItem" id="menuitem_show_mesh">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">mesh</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1244,6 +1304,7 @@
               <object class="GtkMenuItem" id="menuitem_show_surface">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">surface</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_show_items_activate" swapped="no"/>
@@ -1260,6 +1321,7 @@
               <object class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">main chain</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1270,6 +1332,7 @@
                       <object class="GtkMenuItem" id="menuitem_mainchain_lines">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_show_items_activate" swapped="no"/>
@@ -1279,6 +1342,7 @@
                       <object class="GtkMenuItem" id="menuitem_mainchain_sticks">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_show_items_activate" swapped="no"/>
@@ -1292,6 +1356,7 @@
               <object class="GtkMenuItem" id="menuitem13">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">side chain</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1302,6 +1367,7 @@
                       <object class="GtkMenuItem" id="menuitem_sidechain_lines">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_show_items_activate" swapped="no"/>
@@ -1311,6 +1377,7 @@
                       <object class="GtkMenuItem" id="menuitem_sidechain_sticks">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                         <signal name="button-release-event" handler="on_show_items_activate" swapped="no"/>
@@ -1328,6 +1395,7 @@
       <object class="GtkMenuItem" id="menuitem49">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">hide</property>
         <property name="use_underline">True</property>
         <child type="submenu">
@@ -1338,6 +1406,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_everything">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">everything</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
@@ -1354,6 +1423,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_lines">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">lines</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1363,6 +1433,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_sticks">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">sticks</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1372,6 +1443,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_ribbon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">ribbon</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1381,6 +1453,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_cartoon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">cartoon</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1390,6 +1463,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_mesh">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">mesh</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1399,6 +1473,7 @@
               <object class="GtkMenuItem" id="menuitem_hide_surface">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">surface</property>
                 <signal name="activate" handler="on_hide_items_activate" swapped="no"/>
                 <signal name="button-release-event" handler="on_hide_items_activate" swapped="no"/>
@@ -1414,6 +1489,7 @@
               <object class="GtkMenuItem" id="menuitem57">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">main chain</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1424,6 +1500,7 @@
                       <object class="GtkMenuItem" id="menuitem59">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -1432,6 +1509,7 @@
                       <object class="GtkMenuItem" id="menuitem60">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -1444,6 +1522,7 @@
               <object class="GtkMenuItem" id="menuitem58">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">side chain</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1454,6 +1533,7 @@
                       <object class="GtkMenuItem" id="menuitem61">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">lines</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -1462,6 +1542,7 @@
                       <object class="GtkMenuItem" id="menuitem63">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">sticks</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -1478,6 +1559,7 @@
       <object class="GtkMenuItem" id="menuitem53">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">color</property>
         <property name="use_underline">True</property>
         <child type="submenu">
@@ -1488,6 +1570,7 @@
               <object class="GtkMenuItem" id="menuitem_black">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">black</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_color_items_activate" swapped="no"/>
@@ -1498,6 +1581,7 @@
               <object class="GtkMenuItem" id="menuitem_green">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">green</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_color_items_activate" swapped="no"/>
@@ -1508,6 +1592,7 @@
               <object class="GtkMenuItem" id="menuitem_cyan">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">cyan</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_color_items_activate" swapped="no"/>
@@ -1518,6 +1603,7 @@
               <object class="GtkMenuItem" id="menuitem_magenta">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">light magenta</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1527,6 +1613,7 @@
               <object class="GtkMenuItem" id="menuitem_yellow">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">yellow</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1536,6 +1623,7 @@
               <object class="GtkMenuItem" id="menuitem_salmon">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">salmon</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1545,6 +1633,7 @@
               <object class="GtkMenuItem" id="menuitem_white">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">white/grey</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1554,6 +1643,7 @@
               <object class="GtkMenuItem" id="menuitem_slate">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">slate</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1563,6 +1653,7 @@
               <object class="GtkMenuItem" id="menuitem_orange">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">bright orange</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1572,6 +1663,7 @@
               <object class="GtkMenuItem" id="menuitem_purple">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">purple</property>
                 <property name="use_underline">True</property>
                 <signal name="button-release-event" handler="on_color_items_activate" swapped="no"/>
@@ -1581,6 +1673,7 @@
               <object class="GtkMenuItem" id="menuitem_pink">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">pink</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_menuitem_pink_activate" swapped="no"/>
@@ -1601,6 +1694,7 @@
       <object class="GtkMenuItem" id="menuitem51">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">viewlog</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_treeview2_show_logFile" swapped="no"/>
@@ -1610,6 +1704,7 @@
       <object class="GtkMenuItem" id="menuitem55">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">plotlog</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_menuitem_PlotLogFile_activate" swapped="no"/>
@@ -1625,6 +1720,7 @@
       <object class="GtkMenuItem" id="menuitem54">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="use_action_appearance">False</property>
         <property name="label" translatable="yes">delete</property>
         <property name="use_underline">True</property>
       </object>
@@ -1650,6 +1746,7 @@
               <object class="GtkMenuItem" id="menuitem_ImportCoordinates">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_menuitem_ImportCoordinates_activate" swapped="no"/>
@@ -1662,6 +1759,7 @@
                         <property name="label" translatable="yes">New project</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image44</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_MainMenu_File_NewProject_activate" swapped="no"/>
@@ -1672,6 +1770,7 @@
                         <property name="label" translatable="yes">Open</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image35</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_MainMenu_File_OpenFileChooserWindow_clicked" swapped="no"/>
@@ -1682,6 +1781,7 @@
                         <property name="label" translatable="yes">Save</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image36</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_ToolBar_buttonSaveProject_clicked" swapped="no"/>
@@ -1692,6 +1792,7 @@
                         <property name="label" translatable="yes">Save as</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image37</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_ToolBar_buttonSave_As_Project_clicked" swapped="no"/>
@@ -1708,6 +1809,7 @@
                         <property name="label" translatable="yes">Import</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image41</property>
                         <property name="use_stock">False</property>
                         <child type="submenu">
@@ -1718,6 +1820,7 @@
                               <object class="GtkMenuItem" id="menuitem_ImportCoordenates">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Import_ImportCoordenates_activate" swapped="no"/>
@@ -1727,6 +1830,7 @@
                               <object class="GtkMenuItem" id="menuitem_import_trajectory">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Trajectory</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_File_Import_ImportTrajectory_activate" swapped="no"/>
@@ -1736,6 +1840,7 @@
                               <object class="GtkMenuItem" id="menuitem_Selection">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Selection</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -1749,6 +1854,7 @@
                         <property name="label" translatable="yes">Export</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image42</property>
                         <property name="use_stock">False</property>
                         <child type="submenu">
@@ -1759,6 +1865,7 @@
                               <object class="GtkMenuItem" id="menuitem_ExportCoordinates">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Export_ExportCoordenates_activate" swapped="no"/>
@@ -1768,6 +1875,7 @@
                               <object class="GtkMenuItem" id="menuitem18">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Image</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -1776,6 +1884,7 @@
                               <object class="GtkMenuItem" id="menuitem15">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Selection</property>
                                 <property name="use_underline">True</property>
                               </object>
@@ -1795,6 +1904,7 @@
                         <property name="label" translatable="yes">Quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image43</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
@@ -1808,6 +1918,7 @@
               <object class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1815,36 +1926,10 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem6">
-                        <property name="label">gtk-cut</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem7">
-                        <property name="label">gtk-copy</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="imagemenuitem8">
-                        <property name="label">gtk-paste</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkMenuItem" id="imagemenuitem9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Charge rescale</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_ChargeRescale_activate" swapped="no"/>
@@ -1854,6 +1939,7 @@
                       <object class="GtkMenuItem" id="menuitem46">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">NonBond Model</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_NonBondingModels_activate" swapped="no"/>
@@ -1869,6 +1955,7 @@
                       <object class="GtkMenuItem" id="menuitem_preferences">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Preferences</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_Preferences_activate" swapped="no"/>
@@ -1882,6 +1969,7 @@
               <object class="GtkMenuItem" id="menuitem3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1892,6 +1980,7 @@
                       <object class="GtkCheckMenuItem" id="ShowValences">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Show Valences</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_ShowValences_activate" swapped="no"/>
@@ -1901,6 +1990,7 @@
                       <object class="GtkMenuItem" id="menuitem26">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Cell</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_toolbar_showCell_toggled" swapped="no"/>
@@ -1916,6 +2006,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem29">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Show sequence</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_ShowSequence_activate" swapped="no"/>
@@ -1925,6 +2016,7 @@
                       <object class="GtkCheckMenuItem" id="menuitem_internal_GUI">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">PyMOL internal GUI</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_ShowPyMOLInternalGUI_activate" swapped="no"/>
@@ -1934,6 +2026,7 @@
                       <object class="GtkCheckMenuItem" id="PyMOL_command_line_check">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">PyMOL command line</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
@@ -1948,6 +2041,7 @@
               <object class="GtkMenuItem" id="menuitem16">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Selection</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -1958,6 +2052,7 @@
                       <object class="GtkMenuItem" id="menuitem43">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Set as QC Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
@@ -1967,6 +2062,7 @@
                       <object class="GtkMenuItem" id="menuitem44">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Set as Fixed Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
@@ -1977,6 +2073,7 @@
                         <property name="label" translatable="yes">Prune to selection</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image61</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
@@ -1990,6 +2087,7 @@
               <object class="GtkMenuItem" id="menuitem20">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Calculate</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -2001,6 +2099,7 @@
                         <property name="label" translatable="yes">Calculate Energy</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image45</property>
                         <property name="use_stock">False</property>
                       </object>
@@ -2010,6 +2109,7 @@
                         <property name="label" translatable="yes">Geometry Optmization</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image46</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
@@ -2020,6 +2120,7 @@
                         <property name="label" translatable="yes">Molecular Dynamics</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image47</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_ToolBar_MolecularDynamicsSetup_clicked" swapped="no"/>
@@ -2030,6 +2131,7 @@
                         <property name="label" translatable="yes">Normal Modes</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image48</property>
                         <property name="use_stock">False</property>
                       </object>
@@ -2039,6 +2141,7 @@
                         <property name="label" translatable="yes">Surfaces</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image49</property>
                         <property name="use_stock">False</property>
                       </object>
@@ -2048,6 +2151,7 @@
                         <property name="label" translatable="yes">Reaction Path</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image50</property>
                         <property name="use_stock">False</property>
                         <child type="submenu">
@@ -2058,6 +2162,7 @@
                               <object class="GtkMenuItem" id="menuitem22bScan1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Scan</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_Scan1D_activate" swapped="no"/>
@@ -2067,6 +2172,7 @@
                               <object class="GtkMenuItem" id="menuitem24Scan2D1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Scan 2D</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_Scan2D_activate" swapped="no"/>
@@ -2076,6 +2182,7 @@
                               <object class="GtkMenuItem" id="menuitem25UmbrellaSampling1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Umbrella Sampling</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_UmbrellaSampling_activate" swapped="no"/>
@@ -2085,6 +2192,7 @@
                               <object class="GtkMenuItem" id="menuitem_SAW">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">SAW</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_SAW_activate" swapped="no"/>
@@ -2094,6 +2202,7 @@
                               <object class="GtkMenuItem" id="menuitem_NEB">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">NEB</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_NEB_activate" swapped="no"/>
@@ -2111,6 +2220,7 @@
               <object class="GtkMenuItem" id="menuitem23">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Analysis</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -2122,6 +2232,7 @@
                         <property name="label" translatable="yes">Plot Log Graph</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="image">image51</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_Analysis_PlotLogGraph_activate" swapped="no"/>
@@ -2132,9 +2243,35 @@
               </object>
             </child>
             <child>
+              <object class="GtkMenuItem" id="menuitem9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Extensions</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="Amber12ToAmber11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Amber12 to amber11 topologies</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_Amber12ToAmber11_activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
@@ -2146,6 +2283,7 @@
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="on_MainMenu_Help_About_activate" swapped="no"/>
@@ -2171,6 +2309,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">new project</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">new project</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image1</property>
@@ -2186,6 +2325,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">open pDynamo/GTKDynamo project</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">open</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image2</property>
@@ -2201,6 +2341,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">save</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">save</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image3</property>
@@ -2216,6 +2357,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">save as</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">save as</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image14</property>
@@ -2241,6 +2383,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Measure Distances</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">toolbutton6</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image55</property>
@@ -2256,6 +2399,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">pDynamo Selections</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">toolbutton6</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image59</property>
@@ -2271,6 +2415,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Quantum Chemistry</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Quantum Chemistry</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image33</property>
@@ -2296,6 +2441,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">check system</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">check system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image15</property>
@@ -2311,6 +2457,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">single point</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">compute energy (single point))</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image16</property>
@@ -2326,6 +2473,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Geometry Optmization</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">geometry optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
@@ -2341,6 +2489,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">molecular dynamics</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">molecular dynamics</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image18</property>
@@ -2356,6 +2505,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">trajectory tool</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Trajectory tool</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image19</property>
@@ -2370,6 +2520,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Reaction Coordinate Scan</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">pDynamo Selections</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image52</property>
@@ -2394,6 +2545,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Delete System</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">delete system</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image20</property>
@@ -2408,6 +2560,7 @@
               <object class="GtkToolButton" id="toolbutton7_print_tudo">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">toolbutton7</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image56</property>
@@ -2443,6 +2596,7 @@
               <object class="GtkToggleToolButton" id="toolbutton_sequence">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Sequence</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image71</property>
@@ -2457,6 +2611,7 @@
               <object class="GtkToggleToolButton" id="toolbar_showCell">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Cell</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image70</property>
@@ -2471,6 +2626,7 @@
               <object class="GtkToggleToolButton" id="toolbutton_trajectory_tool">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">Trajectory</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image72</property>
@@ -2496,6 +2652,7 @@
               <object class="GtkToolItem" id="toolbutton19">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
                 <child>
                   <object class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
@@ -2512,6 +2669,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="use_action_appearance">False</property>
                             <signal name="toggled" handler="on_ToolBar_ChangeSelectionMode_toggled" swapped="no"/>
                           </object>
                         </child>
@@ -3243,6 +3401,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="use_action_appearance">False</property>
                                             <signal name="clicked" handler="on_button_ImportPKSelectionToDynamicList_activate" swapped="no"/>
                                           </object>
                                           <packing>
@@ -3264,6 +3423,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
                                 </child>
@@ -3330,6 +3490,7 @@
                   <object class="GtkToolButton" id="toolbutton12">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton12</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image74</property>
@@ -3343,6 +3504,7 @@
                   <object class="GtkToolButton" id="toolbutton13">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton13</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image75</property>
@@ -3356,6 +3518,7 @@
                   <object class="GtkToolButton" id="toolbutton17">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton17</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image76</property>
@@ -3370,6 +3533,7 @@
                   <object class="GtkToolButton" id="toolbutton_mplay">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton15</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image77</property>
@@ -3384,6 +3548,7 @@
                   <object class="GtkToolButton" id="toolbutton14">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton14</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image78</property>
@@ -3397,6 +3562,7 @@
                   <object class="GtkToolButton" id="toolbutton16">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <property name="label" translatable="yes">toolbutton16</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image79</property>
@@ -3420,6 +3586,7 @@
                   <object class="GtkToolItem" id="toolbutton8">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="use_action_appearance">False</property>
                     <child>
                       <object class="GtkHBox" id="hbox4">
                         <property name="visible">True</property>
