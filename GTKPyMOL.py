@@ -1278,7 +1278,9 @@ class TreeviewSelections(object):
 		model = tree.get_model()  # @+
 		iter = model.get_iter(path)  # @+
 		ID = model.get_value(iter, 1)  # @+
-		pprint (self.project.settings['job_history'][ID])
+		#pprint (self.project.settings['job_history'][ID])
+        #
+        #nao printa mais o (self.project.settings['job_history'][ID])
 
 class PyMOLCommandLine(object):	
 	'''                                            

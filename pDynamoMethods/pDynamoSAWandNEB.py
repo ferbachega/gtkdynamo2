@@ -115,6 +115,7 @@ def pDynamoNEB(
     # Create initial trajectory
     
     trajectoryPath=(os.path.join(data_path, trajectory_name))
+    
     if not os.path.isdir(trajectoryPath):
         os.mkdir(trajectoryPath)
         print "Log files will be saved in:  %s" % trajectoryPath
