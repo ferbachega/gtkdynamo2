@@ -1097,6 +1097,16 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_scan_16x16.png</property>
   </object>
+  <object class="GtkImage" id="image80">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_delete_16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image81">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_delete_16x16.png</property>
+  </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1823,7 +1833,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Import_ImportCoordenates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_menuitem_ImportCoordenates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1833,7 +1843,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Trajectory</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_File_Import_ImportTrajectory_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_File_Import_menuitemImportTrajectory_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1868,7 +1878,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Export_ExportCoordenates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_menuitem_ExportCoordinates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1900,6 +1910,24 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkImageMenuItem" id="menuitem21">
+                        <property name="label" translatable="yes">Delete</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="image">image81</property>
+                        <property name="use_stock">False</property>
+                        <signal name="activate" handler="on_ToolBar_ClearSystemInMemory_clicked" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem10">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem5">
                         <property name="label" translatable="yes">Quit</property>
                         <property name="visible">True</property>
@@ -1907,7 +1935,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="image">image43</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
+                        <signal name="activate" handler="on_menuitem_quit_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>

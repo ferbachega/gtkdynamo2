@@ -27,6 +27,11 @@ import time
 from PyMOLScripts.PyMOLScripts import PymolGetTable
 
 
+
+def set_charges_to_zero (project, selection):
+    """ Function doc """
+    pass
+
 def rescale_charges(project, selection, total_charge):	
     #selection       = self.builder.get_object('04_window_entry_pymol_selection').get_text()
     #total_charge    = int(self.builder.get_object('04_window_entry_charge').get_text())

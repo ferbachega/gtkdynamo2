@@ -13,7 +13,7 @@
       <object class="GtkVBox" id="amber12toamber11_dialog-vbox1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="spacing">20</property>
+        <property name="spacing">5</property>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="amber12toamber11_dialog-action_area1">
             <property name="visible">True</property>
@@ -60,6 +60,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0.5</property>
+            <property name="shadow_type">in</property>
             <child>
               <object class="GtkAlignment" id="amber12toamber11_alignment1">
                 <property name="visible">True</property>
@@ -78,7 +79,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">AMBER12 file:</property>
+                        <property name="label" translatable="yes">Amber12 file:</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -107,7 +108,7 @@
               <object class="GtkLabel" id="amber12toamber11_label1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Input files&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;Input file&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
@@ -123,6 +124,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0.5</property>
+            <property name="shadow_type">in</property>
             <child>
               <object class="GtkAlignment" id="amber12toamber11_alignment3">
                 <property name="visible">True</property>
@@ -135,7 +137,6 @@
                   <object class="GtkTable" id="amber12toamber11_table3">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="n_rows">2</property>
                     <property name="n_columns">2</property>
                     <property name="column_spacing">10</property>
                     <property name="row_spacing">10</property>
@@ -144,7 +145,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Output file:</property>
+                        <property name="label" translatable="yes">Amber11 file:</property>
                       </object>
                     </child>
                     <child>
@@ -165,12 +166,6 @@
                         <property name="right_attach">2</property>
                       </packing>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </child>
               </object>
@@ -179,7 +174,7 @@
               <object class="GtkLabel" id="amber12toamber11_label6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Output system&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;Output file&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
@@ -196,43 +191,14 @@
         <child>
           <placeholder/>
         </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
     </child>
     <action-widgets>
       <action-widget response="0">amber12toamber11_button2</action-widget>
       <action-widget response="0">amber12toamber11_button1</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkTable" id="amber12toamber11_table1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="n_rows">4</property>
-    <property name="n_columns">2</property>
-    <property name="column_spacing">5</property>
-    <property name="row_spacing">10</property>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>
