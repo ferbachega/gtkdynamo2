@@ -320,7 +320,8 @@ class LoadAndSaveFiles(object):
                 qc = []
                 for l in qc_table:
                     if l in boundaryAtoms:
-                        print l
+                        pass
+                        #print l
                     else:
                         qc.append(l)
 
@@ -357,7 +358,8 @@ class LoadAndSaveFiles(object):
                 qc = []
                 for l in qc_table:
                     if l in boundaryAtoms:
-                        print l
+                        pass
+                        #print l
                     else:
                         qc.append(l)
 

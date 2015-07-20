@@ -774,9 +774,11 @@ def DrawCell (cell):
         padding=0.0
         linewidth=2.0
         r=1.0
-        g=1.0
-        b=1.0
-
+        g=5.0
+        b=5.0
+        
+        #print maxX,maxY,maxZ
+        
         boundingBox = [
                 LINEWIDTH, float(linewidth),
 
@@ -829,6 +831,7 @@ def DrawCell (cell):
         except:
             pass
         
+        #print boundingBox
         boxName = "box_1"
         cmd.set('auto_zoom', 0)
         cmd.load_cgo(boundingBox,boxName)

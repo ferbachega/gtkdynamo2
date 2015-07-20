@@ -153,13 +153,14 @@ class ScanWindow():
         #-------------------------------------------------------------------------------------------------#
         self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
         
-        
+        self.BackUpWindowData()
         self.Visible  =  False
         self.window.destroy()
         return x, y, 
 
     def ScanDialog_ImportFromPyMOL(self, button):
         mode        =  self.builder.get_object('ScanDialog_combobox_SCAN_reaction_coordiante_type').get_active_text()
+        
         if mode == "simple-distance":
             try:
                 name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
@@ -170,9 +171,16 @@ class ScanWindow():
                 self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM1_name").set_text(name1)
                 self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM2").set_text(str(atom2_index))
                 self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM2_name").set_text(name2)
+            
+                self.atom1_index = atom1_index
+                self.name1       = name1      
+                self.atom2_index = atom2_index
+                self.name2       = name2      
+            
+            
             except:
                 cmd.edit_mode()
-                print "pk1, pk2 selection not found"					
+                print "pk1 and pk2 selections not found"					
                 print texto_d1
                 return	
 		
@@ -230,7 +238,7 @@ class ScanWindow():
             self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM2_name").set_text(name2)
             self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM3").set_text(str(atom3_index))
             self.builder.get_object("ScanDialog_SCAN_entry_cood1_ATOM3_name").set_text(name3)
-
+                    
     def Mass_weight_check(self):
         try:
             name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
@@ -286,14 +294,92 @@ class ScanWindow():
             self.builder.get_object('ScanDialog_SCAN_label_cood1_ATOM3_name').set_sensitive(False)
             self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3_name').set_sensitive(False)
             self.builder.get_object('ScanDialog_scan_checkbutton_mass_weight').set_sensitive(False)
+            self.distanceType = 0
         if mode == 'multiple-distance':
             self.builder.get_object('ScanDialog_SCAN_label_coord1_atom3').set_sensitive(True)
             self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3').set_sensitive(True)
             self.builder.get_object('ScanDialog_SCAN_label_cood1_ATOM3_name').set_sensitive(True)
             self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3_name').set_sensitive(True)
             self.builder.get_object('ScanDialog_scan_checkbutton_mass_weight').set_sensitive(True)
-
+            self.distanceType = 1
     
+    def BackUpWindowData (self):
+        """ Function doc """
+        
+        mode = self.builder.get_object('ScanDialog_combobox_SCAN_reaction_coordiante_type').get_active_text()
+        if mode == 'simple-distance':
+            self.distanceType = 0
+        if mode == 'multiple-distance':
+            self.distanceType = 1
+        #---------------------------------------------------------------------------------------------------------#
+        self.atom1_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1')     .get_text()           #
+        self.name1       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1_name').get_text()           #
+        self.atom2_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2')     .get_text()           #
+        self.name2       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2_name').get_text()           #
+        self.atom3_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3')     .get_text()           #
+        self.name3       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3_name').get_text()           #
+        #---------------------------------------------------------------------------------------------------------#
+
+        #---------------------------------------------------------------------------------------------------------#
+        self._mass_weight_check = self.builder.get_object("ScanDialog_scan_checkbutton_mass_weight").get_active() #
+        #---------------------------------------------------------------------------------------------------------#
+
+
+        #------------------------------------- importing parameters ----------------------------------------------#
+        self.DINCREMENT    = self.builder.get_object('ScanDialog_SCAN_entry_STEP_SIZE4')    .get_text()           #
+        self.NWINDOWS      = self.builder.get_object('ScanDialog_SCAN_entry_NWINDOWS4')     .get_text()           #
+        self.FORCECONSTANT = self.builder.get_object('ScanDialog_SCAN_entry_FORCE4')        .get_text()           #
+        self.DMINIMUM      = self.builder.get_object('ScanDialog_SCAN_entry_param_DMINIMUM').get_text()           #
+        #---------------------------------------------------------------------------------------------------------#
+
+
+
+        #---------------------------------------------------------------------------------------------------------#
+        mim_method	       = self.builder.get_object('ScanDialog_combobox_optimization_method').get_active_text() #
+        self.minitype      = 0                                                                                    #
+                                                                                                                  #
+        self.max_int       = self.builder.get_object("ScanDialog_SCAN_mim_param_entry_max_int1")  .get_text()     #
+        self.rms_grad      = self.builder.get_object("ScanDialog_SCAN_mim_param_entry_rmsd_grad1").get_text()     #
+
+    def PutBackUpWindowData (self):
+        
+        
+        #""" Function doc """
+        #mode = self.builder.get_object('ScanDialog_combobox_SCAN_reaction_coordiante_type').get_active_text()
+        #if mode == 'simple-distance':
+        #    self.distanceType = 0
+        #if mode == 'multiple-distance':
+        #    self.distanceType = 1
+        #---------------------------------------------------------------------------------------------------------#
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1')     .set_text(str(self.atom1_index))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1_name').set_text(str(self.name1      ))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2')     .set_text(str(self.atom2_index))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2_name').set_text(str(self.name2      ))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3')     .set_text(str(self.atom3_index))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3_name').set_text(str(self.name3      ))         #
+        #---------------------------------------------------------------------------------------------------------#
+        
+        #---------------------------------------------------------------------------------------------------------#
+        if self._mass_weight_check:                                                                               #
+            self.builder.get_object("ScanDialog_scan_checkbutton_mass_weight").set_active(True)                   #
+        #---------------------------------------------------------------------------------------------------------#
+
+
+        #------------------------------------- importing parameters ----------------------------------------------#
+        self.builder.get_object('ScanDialog_SCAN_entry_STEP_SIZE4')    .set_text(str(self.DINCREMENT   ))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_NWINDOWS4')     .set_text(str(self.NWINDOWS     ))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_FORCE4')        .set_text(str(self.FORCECONSTANT))         #
+        self.builder.get_object('ScanDialog_SCAN_entry_param_DMINIMUM').set_text(str(self.DMINIMUM     ))         #
+        #---------------------------------------------------------------------------------------------------------#
+        
+        #---------------------------------------------------------------------------------------------------------#
+        #mim_method	       = self.builder.get_object('ScanDialog_combobox_optimization_method').get_active_text() #
+        #self.minitype      = 0                                                                                   #
+                                                                                                                  #
+        self.builder.get_object("ScanDialog_SCAN_mim_param_entry_max_int1")  .set_text(str(self.max_int ))        #
+        self.builder.get_object("ScanDialog_SCAN_mim_param_entry_rmsd_grad1").set_text(str(self.rms_grad))        #
+        #---------------------------------------------------------------------------------------------------------#   
+  
     def OpenWindow (self, text):
         """ Function doc """
         if self.Visible  ==  False:
@@ -321,11 +407,11 @@ class ScanWindow():
             #--------------------- Setup ComboBoxes -------------------------
             combobox  = 'ScanDialog_combobox_SCAN_reaction_coordiante_type'                     
             combolist = ['simple-distance', 'multiple-distance']
-            self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
+            self.window_control.SETUP_COMBOBOXES(combobox, combolist, self.distanceType)     
 
             combobox  = 'ScanDialog_combobox_optimization_method'                     
             combolist = ['Conjugate Gradient', 'Steepest Descent','LBFGS']
-            self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
+            self.window_control.SETUP_COMBOBOXES(combobox, combolist, self.minitype )     
                                                                                                              
             
             self.window.show()                                               
@@ -333,12 +419,13 @@ class ScanWindow():
             self.builder.connect_signals(self)                                   
             
             self.Visible  =  True
+            self.PutBackUpWindowData()
             gtk.main()
             #----------------------------------------------------------------
 
     def CloseWindow (self, button):
         """ Function doc """
-        #print "Bacheguissimo"
+        self.BackUpWindowData()
         self.window.destroy()
 
     def __init__(self, GTKDynamoSession = None):
@@ -349,46 +436,29 @@ class ScanWindow():
             self.GTKDynamoSession = GTKDynamoSession        
             self.window_control   = GTKDynamoSession.window_control
         
+        self.atom1_index = ''
+        self.name1       = ''
+        self.atom2_index = ''
+        self.name2       = ''
+        self.atom3_index = ''
+        self.name3       = ''
+
+
+        self.distanceType  = 0
+        self.DMINIMUM      = ''
+        self.minitype      = 0
+
+        self.DINCREMENT    = '0.1'
+        self.NWINDOWS      = '10'
+        self.FORCECONSTANT = '4000'
+        self.max_int       = '500'
+        self.rms_grad      = '0.1'
+        
+        self._mass_weight_check = False
+
+
         #self.project   =  project
         self.Visible    =  False
-        #self.window_control = window_control
-        #self.builder = gtk.Builder()
-        #self.main_builder = main_builder
-
-        #self.builder.add_from_file(
-        #    os.path.join(GTKDYNAMO_GUI, 'ScanWindow.glade'))
-        #
-        #self.builder.connect_signals(self)
-        #self.window = self.builder.get_object('ScanWindow')
-        #
-        #self.sigma_pk1_pk3 = None
-        #self.sigma_pk3_pk1 = None
-        
-        '''
-		--------------------------------------------------
-		-                                                -
-		-	              WindowControl                  -
-		-                                                -
-		--------------------------------------------------
-		'''        
-        #self.window_control = WindowControl(self.builder)
-        #
-        ##--------------------- Setup ComboBoxes -------------------------
-        #combobox  = 'ScanDialog_combobox_SCAN_reaction_coordiante_type'                     
-        #combolist = ['simple-distance', 'multiple-distance']
-        #self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
-        #
-        #combobox  = 'ScanDialog_combobox_optimization_method'                     
-        #combolist = ['Conjugate Gradient', 'Steepest Descent','LBFGS']
-        #self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
-        #                                                                                                 
-        #
-        #self.window.show()                                               
-        ##                                                                
-        #self.builder.connect_signals(self)                                   
-        #gtk.main()
-        ##----------------------------------------------------------------
-        
 
 def main():
     dialog = ScanWindow()

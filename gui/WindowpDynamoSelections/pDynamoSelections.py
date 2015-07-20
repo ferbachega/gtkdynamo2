@@ -74,8 +74,14 @@ class pDynamoSelectionWindow():
             combolist = ["Select in PyMOl","FIX atoms","PRUNE atoms"]      #
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)   #                                                                                   
             #--------------------------------------------------------------#
+           
+           
+            self.builder.get_object('selection_entry1').set_text(self.chain    )   
+            self.builder.get_object('selection_entry2').set_text(self.resn     )           
+            self.builder.get_object('selection_entry3').set_text(str(self.resi))            
+            self.builder.get_object('selection_entry4').set_text(self.atom_name)     
             
-            
+                   
             # SPINBUTTON 
             spinbutton = 'selection_radius_spinbutton'                        
             config     = [0.0, 1.0, 500.0, 1.0, 0.0, 0.0]       
@@ -122,6 +128,14 @@ class pDynamoSelectionWindow():
             self.builder.get_object('selection_entry2').set_text(resn)
             self.builder.get_object('selection_entry3').set_text(str(resi))
             self.builder.get_object('selection_entry4').set_text(atom_name)
+            
+            
+            self.chain     = chain    
+            self.resn      = resn     
+            self.resi      = resi     
+            self.atom_name = atom_name
+
+            
         #except:
         #    cmd.edit_mode()
         #    print "pk1 selection not found"
@@ -137,6 +151,13 @@ class pDynamoSelectionWindow():
         iter2 = self.builder.get_object('selection_entry2').get_text()
         iter4 = self.builder.get_object('selection_entry3').get_text()
         iter1 = self.builder.get_object('selection_entry4').get_text()
+
+        self.iter3 = iter3 
+        self.iter2 = iter2 
+        self.iter4 = iter4 
+        self.iter1 = iter1 
+
+
 
         str_teste = "*:%s.%s:%s" %(iter2, iter4, iter1)
         
@@ -231,8 +252,10 @@ class pDynamoSelectionWindow():
         #    energy     = " - "
         #    time       = " - " 
         #    #self.insert_JOB_HISTORY_DATA ( step, process, potencial, energy, time )
-
     
+    def on_button_cancel_clicked(self, button):
+        """ Function doc """
+        self.window.destroy()  
     
     
     
@@ -242,6 +265,11 @@ class pDynamoSelectionWindow():
         self.GTKDynamoSession = GTKDynamoSession
         #self.project          = GTKDynamoSession.project
         self.Visible          = False
+        
+        self.chain     = ''
+        self.resn      = ''     
+        self.resi      = ''
+        self.atom_name = ''     
         #print self.project.settings['data_path']
 
 def main():

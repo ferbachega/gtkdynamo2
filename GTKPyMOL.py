@@ -447,13 +447,13 @@ class MainToolBar(object):
 
         chooser.set_current_folder(data_path)
         response = chooser.run()
-        if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
-        chooser.destroy()
-
-        #return filename	        
-                
-
-        self.project.Save_Project_To_File (filename, 'pkl')
+        if response == gtk.RESPONSE_OK: 
+            filename = chooser.get_filename()
+            chooser.destroy()
+            self.project.Save_Project_To_File (filename, 'pkl')
+        else:
+            chooser.destroy()
+            return None
 
     def on_toolbutton_sequence_toggled (self, button):
         """ Function doc """
@@ -497,10 +497,14 @@ class MainToolBar(object):
                                             gtk.STOCK_SAVE, gtk.RESPONSE_OK))
             chooser.set_current_folder(data_path)
             response = chooser.run()
-            if response == gtk.RESPONSE_OK: filename = chooser.get_filename()
-            chooser.destroy()
+            if response == gtk.RESPONSE_OK: 
+                filename = chooser.get_filename()
+                chooser.destroy()
+                self.project.Save_Project_To_File (filename, 'pkl')
+            else:
+                chooser.destroy()
+                return None
 
-            self.project.Save_Project_To_File (filename, 'pkl')
         else:
             filename = self.project.settings['filename']
             self.project.Save_Project_To_File (filename, 'pkl')
