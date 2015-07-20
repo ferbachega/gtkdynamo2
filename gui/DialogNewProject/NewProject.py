@@ -118,9 +118,9 @@ class NewProjectDialog():
         
         BufferText =  self.builder.get_object('textview1').get_buffer()  #
         BufferText = BufferText.get_text(*BufferText.get_bounds(), include_hidden_chars=False)
-        print BufferText
+        #print BufferText
         
-        
+        #print '\n\n\n' + BufferText + '\n\n\n' + 'teste aqui'
                 
         project          = self.project
         name             = self.builder.get_object("new_project_entry").get_text()
