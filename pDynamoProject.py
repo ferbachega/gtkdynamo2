@@ -1052,6 +1052,25 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             # self.settings['QC'] indicates that a QC system exist 
             if self.settings['QC'] == True:
                 self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
+                #qc_table = list(
+                #    self.system.energyModel.qcAtoms.QCAtomSelection())
+                boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())
+                self.settings['boundaryAtoms'] = boundaryAtoms
+                
+
+                qc = []
+                for l in self.settings['qc_table']:
+                    if l in self.settings['boundaryAtoms']:
+                        pass
+                        #print l
+                    else:
+                        qc.append(l)
+                self.settings['qc_table'] = qc
+                
+                
+                
+                
+                
                 PymolPutTable(self.settings['qc_table'], "QC_atoms")
                 command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
                 cmd.do(command)
