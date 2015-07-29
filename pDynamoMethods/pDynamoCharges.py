@@ -32,6 +32,28 @@ def set_charges_to_zero (project, selection):
     """ Function doc """
     pass
 
+
+def compute_selection_total_charge (system, selection = None):
+    """ Function doc """
+    #-------------------------------------------------------------------#
+    if selection == None:                                               #
+        index_table = PymolGetTable('sele')                             #
+    else:                                                               #
+        index_table = selection                                         #
+    
+    charges         = system.energyModel.mmAtoms.AtomicCharges()        #
+    charge_table    = []                                                #
+    #-------------------------------------------------------------------#
+    
+    for i in index_table:
+        charge_table.append(charges[i])
+        
+    _sum = sum(charge_table) # the sum of partial charges of the atoms from selection list
+    _len = len(charge_table)
+    return _sum, _len
+ 
+   
+
 def rescale_charges(project, selection, total_charge):	
     #selection       = self.builder.get_object('04_window_entry_pymol_selection').get_text()
     #total_charge    = int(self.builder.get_object('04_window_entry_charge').get_text())

@@ -161,6 +161,13 @@ from   MatplotGTK.MatplotGTK          import PlotGTKWindow                      
 from pDynamoProject    import *
 from WindowControl     import *
 
+from pDynamoMethods.pDynamoCharges   import compute_selection_total_charge
+
+
+
+
+
+
 
 class MainMenu (object):
         """ Class doc """
@@ -303,12 +310,101 @@ class MainMenu (object):
                 gtk.main_quit()
                 cmd.quit()
 
+        
+        def on_MainMenu_Edit_ClearFixedAtoms_activate (self, menuitem):
+            """ Function doc """
+            self.project.clean_fix_table()
+            self.project.SystemCheck( status = True, 
+                                            PyMOL = True, 
+                                           _color = True, 
+                                            _cell = True, 
+                                treeview_selections = True,
+                                        ORCA_backup = True)
+                                        
+        def on_MainMenu_Edit_ClearQCAtoms_activate (self, menuitem):
+            """ Function doc """
+            self.project.clean_qc_table()
+
+
+
+
+        
         def on_MainMenu_Edit_ChargeRescale_activate (self, menuitem):
                 """ Function doc """
                 self.ChargeRescaleDialog.dialog.run()
                 self.ChargeRescaleDialog.dialog.hide()
 
 
+        def on_MainMenu_Selection_SetQCTable(self, menuitem, click = None):    
+            table    = PymolGetTable('sele')
+            oldTable = self.project.settings['qc_table']
+            self.project.put_qc_table(table)
+            newTable = self.project.settings['qc_table']
+
+            if newTable != oldTable:
+                '''
+                                                          d i a l o g
+                                                 #  -  I M P O R T A N T  -  #                                   
+                                    #---------------------------------------------------------#                  
+                                    #                                                         #                  
+                                    #        Message Dialog  -  when 2 buttons will be shown  #                  
+                                    #  1 -create the warning message                          #                  
+                                    #  2 -hide the actual dialog - optional                   #                  
+                                    #  3 -show the message dialog                             #                  
+                                    #  4 -hide the message dialog                             #                  
+                                    #  5 -check the returned valor by the message dialog      #                  
+                                    #  6 -do something                                        #                  
+                                    #  7 -restore the actual dialog - optional                #                  
+                                    #---------------------------------------------------------#                  
+                '''
+                                                                                                      
+                self.builder.get_object('MessageDialogQuestion').format_secondary_text("A new quantum region has been defined. Would you like setup your QC paramaters now?")  
+                dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                                  
+                a = dialog.run()  # possible "a" valors                                                           
+                # 4 step          # -8  -  yes                                                                    
+                dialog.hide()     # -9  -  no                                                                     
+                                  # -4  -  close                                                                  
+                                  # -5  -  OK                                                                     
+                                  # -6  -  Cancel                                                                 
+                                                                                                                  
+                # 5 step                                                                                          
+                if a == -8:                                                                                       
+                    # 6 step                                                                                      
+                    # auto calculate the mm charge from the selected region and set the valor to the spinbutton
+                    _sum, _len = compute_selection_total_charge(self.project.system, selection = None )
+                    _sum = int(round(_sum))
+                    self.QuantumChemistrySetupDialog.builder.get_object('spinbutton_charge').set_value(_sum)
+                    
+                    self.QuantumChemistrySetupDialog.dialog.run()
+                    self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
+                else:                                                                                             
+                    return 0                                                                                      
+                # 7 step                                                                                          
+                #self.load_trj_windows.run()                                                                      
+            else:                                                                                                 
+                pass                                                                                   
+
+
+
+            print 'QC table:'
+            print self.project.settings['qc_table']
+
+
+
+        def on_MainMenu_Selection_ComputeCharge_activate(self, menuitem):
+            """ Function doc """
+            _sum, _len = compute_selection_total_charge(self.project.system, selection = None )
+            #print _sum, _len
+            #energy = self.project.ComputeEnergy()
+            #colocar um check system aqui 
+            self.builder.get_object('EnergyMessageDialog').set_markup("MM Charges")   
+            
+            self.builder.get_object('EnergyMessageDialog').format_secondary_text("Selection charge ("+str(_len) +" atoms): " + str(round(_sum, 8)))   
+            dialog = self.builder.get_object('EnergyMessageDialog')
+            dialog.run()                                                                
+            dialog.hide()
+        
         #def on_MainMenu_Calculate_Scan1D_activate(self, menuItem):
         #    """ Function ChargeRescaleDialogdoc """
         #    self.ScanDialog.dialog.run()
@@ -750,56 +846,6 @@ class GLMenu(object):
         if item == self.builder.get_object('gl_menuitem_ray'):
             cmd.ray()
                 
-    def on_GLAreaMenu_itemActive_SetQCTable(self, menuitem, click = None):    
-        table    = PymolGetTable('sele')
-        oldTable = self.project.settings['qc_table']
-        self.project.put_qc_table(table)
-        newTable = self.project.settings['qc_table']
-        
-        if newTable != oldTable:
-            '''
-                                                      d i a l o g
-                                             #  -  I M P O R T A N T  -  #                                   
-                                #---------------------------------------------------------#                  
-                                #                                                         #                  
-                                #        Message Dialog  -  when 2 buttons will be shown  #                  
-                                #  1 -create the warning message                          #                  
-                                #  2 -hide the actual dialog - optional                   #                  
-                                #  3 -show the message dialog                             #                  
-                                #  4 -hide the message dialog                             #                  
-                                #  5 -check the returned valor by the message dialog      #                  
-                                #  6 -do something                                        #                  
-                                #  7 -restore the actual dialog - optional                #                  
-                                #---------------------------------------------------------#                  
-            '''
-                                                                                                  
-            self.builder.get_object('MessageDialogQuestion').format_secondary_text("A new quantum region has been defined. Would you like setup your QC paramaters now?")  
-            dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                              
-            a = dialog.run()  # possible "a" valors                                                           
-            # 4 step          # -8  -  yes                                                                    
-            dialog.hide()     # -9  -  no                                                                     
-                              # -4  -  close                                                                  
-                              # -5  -  OK                                                                     
-                              # -6  -  Cancel                                                                 
-                                                                                                              
-            # 5 step                                                                                          
-            if a == -8:                                                                                       
-                # 6 step                                                                                      
-                self.QuantumChemistrySetupDialog.dialog.run()
-                self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
-            else:                                                                                             
-                return 0                                                                                      
-            # 7 step                                                                                          
-            #self.load_trj_windows.run()                                                                      
-        else:                                                                                                 
-            pass                                                                                   
-
-
-
-        print 'QC table:'
-        print self.project.settings['qc_table']
-
     def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem, click = None):    
         self.project.clean_qc_table()
         #print self.project.settings['qc_table']

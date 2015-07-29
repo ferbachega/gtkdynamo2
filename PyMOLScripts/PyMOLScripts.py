@@ -282,6 +282,7 @@ SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 '''
 
+
 def DihedralFromPKSelection (selections = []):
     """ Function doc """
     dihedral = {}
@@ -336,12 +337,9 @@ def DistancesFromPKSelection(selections = []):
         distances['pk3pk4'] = None
     return distances
         
-        
-        
 def GetFileType(filename):
     file_type = filename.split('.')
     return file_type[-1]
-
 
 def GTKDynamoTemporaryFolderRefresh():
     """ Function doc """
@@ -354,7 +352,6 @@ def GTKDynamoTemporaryFolderRefresh():
         os.mkdir(GTKDYNAMO_TMP)
         print "Temporary files directory:  %s" % GTKDYNAMO_TMP
     return GTKDYNAMO_TMP
-
 
 def AddFileTypeSuffix(filename, type_):
     file_type = GetFileType(filename)
@@ -390,7 +387,11 @@ def PymolPutTable(table, selection):
     # add a selection in PyMOL from a given table [pDynamoProject mainly] 
     # obs: In  pDynamo the index starts in number 0        
     '''
-
+    try:
+        cmd.delete(selection)
+    except:
+        pass
+        
     # selection that will be generated in the pymol
     selection_string = selection + ", index "
     n = 0												        #

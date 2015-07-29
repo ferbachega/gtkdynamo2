@@ -1949,6 +1949,33 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
+                      <object class="GtkMenuItem" id="menuitem67">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Clear QC atoms</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_MainMenu_Edit_ClearQCAtoms_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem68">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Clear fixed atoms</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_MainMenu_Edit_ClearFixedAtoms_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem69">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="imagemenuitem9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -2078,7 +2105,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Set as QC Atoms</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_GLAreaMenu_itemActive_SetQCTable" swapped="no"/>
+                        <signal name="activate" handler="on_MainMenu_Selection_SetQCTable" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2100,6 +2127,23 @@
                         <property name="image">image61</property>
                         <property name="use_stock">False</property>
                         <signal name="activate" handler="on_GLAreaMenu_itemActive_SetPruneTable" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem31">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem_Compute_charge">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Compute charge</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_MainMenu_Selection_ComputeCharge_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2811,12 +2855,12 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
+                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
-                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
                                 <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
+                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
-                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                     <property name="clickable">True</property>

@@ -822,9 +822,15 @@ class QuantumChemistrySetup(object):
         self.settings['qc_table'] = qc_table
    
     def clean_qc_table(self):
-        self.system.DefineQCModel (None)
+        #self.system.DefineQCModel (None)
+        self.system.energyModel.ClearQCModel(True)
+        self.set_nbModel_to_system()
+        self.settings['QC']       = False
         self.settings['qc_table'] = []
         self.SystemCheck()
+
+
+
 
 class FixedTableSetup(object):
     """ Class doc """
@@ -1007,6 +1013,109 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             self.pdbInfo[index2] = [resn2, chain2, resi2, A_name2]
             n = n + 1
     
+    
+    
+    
+    def ShowQCRegion (self, PyMOL_Obj):
+        """ Function doc """
+        try:
+            cmd.delete("QC_atoms")
+        except:
+            pass
+        
+        #print '8'
+        try:
+            qc_table      = list(self.system.energyModel.qcAtoms.QCAtomSelection())
+            boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())
+            self.settings['QC']       = False
+
+        except:
+            return False
+            
+        qc = []
+        for l in qc_table:
+            if l in boundaryAtoms:
+                pass
+                print l
+            else:
+                qc.append(l)
+        self.settings['qc_table'] = qc
+        
+
+        #print len(self.settings['qc_table'])
+        #cmd.hide("spheres",  "QC_atoms")
+        #cmd.hide("dots"   ,  "QC_atoms")
+        #cmd.hide("spheres",  "QC_atoms")
+        #cmd.hide("lines"  ,  "QC_atoms")
+        #cmd.hide("sticks" ,  "QC_atoms")
+        #cmd.delete("QC_atoms")
+        
+        PymolPutTable(self.settings['qc_table'], "QC_atoms")
+        command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
+        cmd.do(command)
+        
+        
+        #print len(self.settings['qc_table'])
+        
+        if self.GTKDynamoConfig['QC']['dots']:
+            try:
+                cmd.hide("dots",  PyMOL_Obj)
+            except:
+                pass
+            cmd.show("dots",  "QC_atoms")
+        
+        
+        if self.GTKDynamoConfig['QC']['spheres']:
+            try:
+                cmd.hide("spheres",  PyMOL_Obj)
+            except:
+                pass
+            cmd.show("spheres",  "QC_atoms")
+        
+        
+        if self.GTKDynamoConfig['QC']['lines']:
+            try:
+                cmd.hide("lines",  PyMOL_Obj)
+            except:
+                pass
+            cmd.show("lines",  "QC_atoms")
+        
+        
+        if self.GTKDynamoConfig['QC']['sticks']:
+            try:
+                cmd.hide("sticks",  PyMOL_Obj)
+            except:
+                pass
+            cmd.show("sticks",  "QC_atoms")    
+
+    def ShowFIXRegion (self, PyMOL_Obj):
+        """ Function doc """
+        try:
+            cmd.delete("FIX_atoms")
+        except:
+            pass
+        #print '8'
+    
+        PymolPutTable(self.settings['fix_table'], "FIX_atoms")
+        command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
+        cmd.do(command)
+
+        if self.GTKDynamoConfig['FIX']['dots']:
+            cmd.show("dots",  "FIX_atoms")
+        
+        if self.GTKDynamoConfig['FIX']['spheres']:
+            cmd.show("spheres",  "FIX_atoms")
+        
+        if self.GTKDynamoConfig['FIX']['lines']:
+            cmd.show("lines",  "FIX_atoms")
+        
+        if self.GTKDynamoConfig['FIX']['sticks']:
+            cmd.show("sticks",  "FIX_atoms")
+    
+    
+        
+    
+    
     def SystemCheck(self, status = True, 
                            PyMOL = True, 
                           _color = True, 
@@ -1041,125 +1150,16 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
                 StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
             self.window_control.STATUSBAR_SET_TEXT(StatusText) 
-        else:
-            pass
-
-        
+       
         if PyMOL == True:
             # this is the PyMOL_Obj in memory
             PyMOL_Obj      = self.settings['PyMOL_Obj']
-
             # self.settings['QC'] indicates that a QC system exist 
             if self.settings['QC'] == True:
-                self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                #qc_table = list(
-                #    self.system.energyModel.qcAtoms.QCAtomSelection())
-                boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())
-                self.settings['boundaryAtoms'] = boundaryAtoms
-                
+                self.ShowQCRegion(PyMOL_Obj)
 
-                qc = []
-                for l in self.settings['qc_table']:
-                    if l in self.settings['boundaryAtoms']:
-                        pass
-                        #print l
-                    else:
-                        qc.append(l)
-                self.settings['qc_table'] = qc
-                
-                
-                
-                
-                
-                PymolPutTable(self.settings['qc_table'], "QC_atoms")
-                command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
-                cmd.do(command)
-                
-                if self.GTKDynamoConfig['QC']['dots']:
-                    cmd.show("dots",  "QC_atoms")
-                
-                if self.GTKDynamoConfig['QC']['spheres']:
-                    cmd.show("spheres",  "QC_atoms")
-                
-                if self.GTKDynamoConfig['QC']['lines']:
-                    cmd.show("lines",  "QC_atoms")
-                
-                if self.GTKDynamoConfig['QC']['sticks']:
-                    cmd.show("sticks",  "QC_atoms")
-                '''
-                if self.settings['qc_table'] != []:
-                    cmd.hide('stick',  PyMOL_Obj)
-                    cmd.hide("sphere", PyMOL_Obj)
-                    
-                    try:
-                        cmd.delete("QC_atoms")
-                    except:
-                        pass
-                    
-                    PymolPutTable(self.settings['qc_table'], "QC_atoms")
-                    command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
-                    cmd.do(command)
-                    
-                    
-                    if self.GTKDynamoConfig['QC']['dots']:
-                        cmd.show("dots",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['spheres']:
-                        cmd.show("spheres",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['lines']:
-                        cmd.show("lines",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['sticks']:
-                        cmd.show("sticks",  "QC_atoms")
-
-                if self.settings['qc_table'] == []:
-                    
-                    self.settings['qc_table']  = list(self.system.energyModel.qcAtoms.QCAtomSelection ( ) )
-                    PymolPutTable(self.settings['qc_table'], "QC_atoms")
-                    command = 'select QC_atoms, (' + PyMOL_Obj + ' and  QC_atoms )'
-                    cmd.do(command)
-                    
-                    if self.GTKDynamoConfig['QC']['dots']:
-                        cmd.show("dots",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['spheres']:
-                        cmd.show("spheres",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['lines']:
-                        cmd.show("lines",  "QC_atoms")
-                    
-                    if self.GTKDynamoConfig['QC']['sticks']:
-                        cmd.show("sticks",  "QC_atoms")
-                '''
-            else:
-                pass
-            
             if self.settings['fix_table'] != []:
-                #PyMOL_Obj = self.job_history[self.step][0] #= [type_, pymol_id, "potencial", "1192.0987"]
-                try:
-                    cmd.delete("FIX_atoms")
-                except:
-                    pass
-                #print '8'
-            
-                PymolPutTable(self.settings['fix_table'], "FIX_atoms")
-                command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
-                cmd.do(command)
-
-                if self.GTKDynamoConfig['FIX']['dots']:
-                    cmd.show("dots",  "FIX_atoms")
-                
-                if self.GTKDynamoConfig['FIX']['spheres']:
-                    cmd.show("spheres",  "FIX_atoms")
-                
-                if self.GTKDynamoConfig['FIX']['lines']:
-                    cmd.show("lines",  "FIX_atoms")
-                
-                if self.GTKDynamoConfig['FIX']['sticks']:
-                    cmd.show("sticks",  "FIX_atoms")
-            
-            
+                self.ShowFIXRegion (PyMOL_Obj)
             # disable selections
             #--------------------------------#
             try:                             #
