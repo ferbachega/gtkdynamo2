@@ -829,7 +829,9 @@ class QuantumChemistrySetup(object):
         self.settings['qc_table'] = []
         self.HideQCRegion(self.settings['PyMOL_Obj'])
         self.SystemCheck()
-
+        print 'aqui'
+        
+        
 class FixedTableSetup(object):
     """ Class doc """
     
@@ -1044,7 +1046,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         try:
             qc_table      = list(self.system.energyModel.qcAtoms.QCAtomSelection())
             boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())
-            self.settings['QC']       = False
+            #self.settings['QC']       = False
         
         except:
             print 'failing importing qc atoms' 
@@ -1179,8 +1181,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
 
         """
 
-
-
+        print '----------------------antes-----------------------'
+        pprint (self.settings)
+        
         if self.system == None:
             #print "System empty"
             StatusText =''
@@ -1262,8 +1265,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         if status == True:
             return SummaryFile
             # Only necessary to open the log file with TextEditor
-
-
+        
+        print '----------------------depois-----------------------'
+        pprint (self.settings)
             
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
@@ -1287,36 +1291,13 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 treeview_selections = False ,
                         ORCA_backup = False )
             
-            
-            
-            '''  SystemCheck default
-            SystemCheck(self, status = True, 
-                           PyMOL = True, 
-                          _color = True, 
-                           _cell = True, 
-             treeview_selections = True,
-                     ORCA_backup = True 
-                    ) 
-            '''
-            
-            
+           
             #      pDyanmo  -- >  PyMOL
             pymol_id = ExportFramesToPymol(self, type_)
             self.settings['PyMOL_Obj'] = pymol_id
-            
-            
-            #                OLD
-            #
-            #self.job_history[self.step] = [pymol_id                             ,  
-            #                               type_                                ,    # - process type
-            #                               self.parameters['Energy Model']      ,    # - potencial 
-            #                               self.parameters['Number of QC Atoms'],    # - QC atoms
-            #                               'black'                                   # - color
-            #                               ]
-            
-            
+
             #                NEW
-            #            
+
             self.settings['job_history'][str(self.settings['step'])] = {
                                                                    'object'    : pymol_id                             ,
                                                                    'type'      : type_                                ,
@@ -1361,7 +1342,12 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         
         
         self.nbModel = nbModel
-        self.SystemCheck()
+        self.SystemCheck(PyMOL = False, # - refresh the QC region
+                        disable = True, # - disable selections in PyMOL
+                         _color = False, #
+                          _cell = False, #
+            treeview_selections = False, #
+                ORCA_backup = False )
 
     def put_prune_table(self, prune_table):
         #self.settings['prune_table']=[]

@@ -84,7 +84,7 @@ def ParseSummaryLogFile (log_file):
         
         try:  # Energy Model    -   Summary for Energy Model "AMBER/ABFS"
             if linex[0] == 'Summary':
-                print line
+                #print line
                 if linex[1] == 'for':
                     if linex[2] == 'Energy':
                         if linex[3] == 'Model': 
@@ -387,14 +387,14 @@ def ParseProcessLogFile(log_file):
         parameters['title' ] = 'Chain-Of-States'
         parameters['xlabel'] = 'Frames'
         parameters['ylabel'] = 'Energy (KJ)'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
         
         
     if '                              GTKDynamo SCAN2D\n' in lines:
         index = lines.index('                              GTKDynamo SCAN2D\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         i             =   0
         j             =   0        
         matrix_lines  = []
@@ -411,7 +411,7 @@ def ParseProcessLogFile(log_file):
                             r1 = r1 +atom[2] + '(' +atom[6] + ')'
                         else:
                             r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
-                        print r1
+                        #print r1
 
 
             if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
@@ -423,7 +423,7 @@ def ParseProcessLogFile(log_file):
                             r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
                         else:
                             r1 = r1 +atom[2] + '(' +atom[6] + ')'
-                        print r1
+                        #print r1
 
             
             
@@ -439,7 +439,7 @@ def ParseProcessLogFile(log_file):
                             r2 = r2 +atom[2] + '(' +atom[6] + ')'
                         else:
                             r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
-                        print r2
+                        #print r2
             
             if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
                 index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
@@ -450,7 +450,7 @@ def ParseProcessLogFile(log_file):
                             r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
                         else:
                             r2 = r2 +atom[2] + '(' +atom[6] + ')'
-                        print r2
+                        #print r2
 
             
             
@@ -482,15 +482,15 @@ def ParseProcessLogFile(log_file):
         parameters['matrix'] =  X
         parameters['xlabel'] = r1
         parameters['ylabel'] = r2
-        print parameters
+        #print parameters
         return parameters
 
 
 
     if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
         index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         Frame      = []
         PK1_PK2    = []
         PK2_PK3    = []
@@ -502,7 +502,7 @@ def ParseProcessLogFile(log_file):
             #print linex
             
             if len(linex) == 4:
-                print linex
+                #print linex
                 
                 try:
                     Frame.append(float(linex[0]))
@@ -517,15 +517,15 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Energy
         parameters['xlabel'] = 'Frames'
         parameters['ylabel'] = 'Energy (KJ)'
-        print parameters
+        #print parameters
         return parameters
 
 
 
     if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
         index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         Frame      = []
         PK1_PK2    = []
         PK2_PK3    = []
@@ -537,7 +537,7 @@ def ParseProcessLogFile(log_file):
             #print linex
             
             if len(linex) == 3:
-                print linex
+                #print linex
                 
                 try:
                     Frame.append(float(linex[0]))
@@ -572,7 +572,7 @@ def ParseProcessLogFile(log_file):
     '''
     if '    ReactionCoord            PMF                 PDF\n' in lines:
         index = lines.index('    ReactionCoord            PMF                 PDF\n')
-        print lines[index]
+        #print lines[index]
         print index
         
         
@@ -581,7 +581,7 @@ def ParseProcessLogFile(log_file):
         PMF           = []
         
         for line in lines[index: -1]:
-            print line 
+            #print line 
             line2 = line.split()
             if len(line2) == 3:
                 try:
@@ -598,7 +598,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = PMF
         parameters['xlabel'] = 'ReactionCoord'
         parameters['ylabel'] = 'Energy (KJ)'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
@@ -624,8 +624,8 @@ def ParseProcessLogFile(log_file):
 
     if '------------------------------------- L-BFGS Minimizer Options -------------------------------------\n' in lines:
         index = lines.index('------------------------------------- L-BFGS Minimizer Options -------------------------------------\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         interact = []
         Function = []
         RMS_Grad = []
@@ -653,7 +653,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Function
         parameters['xlabel'] = 'Frames'
         parameters['ylabel'] = 'Energy (KJ)'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
@@ -678,7 +678,7 @@ def ParseProcessLogFile(log_file):
 
     if '-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n' in lines:
         index = lines.index('-------------------------------  Conjugate Gradient Minimizer Options ------------------------------\n')
-        print lines[index]
+        #print lines[index]
         print index
         interact = []
         Function = []
@@ -708,7 +708,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Function
         parameters['xlabel'] = 'Frames'
         parameters['ylabel'] = 'Energy (KJ)'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
@@ -734,8 +734,8 @@ def ParseProcessLogFile(log_file):
     '''
     if '-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n' in lines:
         index = lines.index('-------------------------------- Steepest-Descent Minimizer Options --------------------------------\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         for line in lines[index: -1]:
             line2 = line.split()
             lengh = len(line2)
@@ -771,7 +771,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Function
         parameters['xlabel'] = 'Frames'
         parameters['ylabel'] = 'Energy (KJ)'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
@@ -791,8 +791,8 @@ def ParseProcessLogFile(log_file):
     '''
     if '                                 Velocity Verlet Integrator Results\n' in lines:
         index = lines.index('                                 Velocity Verlet Integrator Results\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         Time             = []
         Total_energy     = []
         Kinetic_Energy   = []
@@ -822,7 +822,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Total_energy
         parameters['xlabel'] = 'Time'
         parameters['ylabel'] = 'Total_energy'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
@@ -839,7 +839,7 @@ def ParseProcessLogFile(log_file):
     '''
     if '                                                     Leapfrog Verlet Integrator Results\n' in lines:
         index = lines.index('                                                     Leapfrog Verlet Integrator Results\n')
-        print lines[index]
+        #print lines[index]
         print index
         Time             = []
         Total_energy     = []
@@ -894,8 +894,8 @@ def ParseProcessLogFile(log_file):
     '''
     if '                             Langevin Velocity Verlet Integrator Results\n' in lines:
         index = lines.index('                             Langevin Velocity Verlet Integrator Results\n')
-        print lines[index]
-        print index
+        #print lines[index]
+        #print index
         Time             = []
         Total_energy     = []
         Kinetic_Energy   = []
@@ -929,7 +929,7 @@ def ParseProcessLogFile(log_file):
         parameters['Y'     ] = Total_energy
         parameters['xlabel'] = 'Time'
         parameters['ylabel'] = 'Total_energy'
-        pprint(parameters)
+        #pprint(parameters)
         return parameters
 
 
