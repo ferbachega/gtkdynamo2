@@ -827,10 +827,8 @@ class QuantumChemistrySetup(object):
         self.set_nbModel_to_system()
         self.settings['QC']       = False
         self.settings['qc_table'] = []
+        self.HideQCRegion(self.settings['PyMOL_Obj'])
         self.SystemCheck()
-
-
-
 
 class FixedTableSetup(object):
     """ Class doc """
@@ -1015,7 +1013,26 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
     
     
     
-    
+
+    def HideQCRegion(self, PyMOL_Obj):
+        """ Function doc """
+        try:
+            cmd.hide("spheres",  PyMOL_Obj)
+        except:
+            pass
+        
+        try:
+            cmd.hide("dots"   , PyMOL_Obj)
+        except:
+            pass
+        
+        try:
+            cmd.hide("sticks" , PyMOL_Obj)
+        except:
+            pass
+
+        cmd.show('lines', PyMOL_Obj)
+
     def ShowQCRegion (self, PyMOL_Obj):
         """ Function doc """
         try:
@@ -1028,8 +1045,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             qc_table      = list(self.system.energyModel.qcAtoms.QCAtomSelection())
             boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())
             self.settings['QC']       = False
-
+        
         except:
+            print 'failing importing qc atoms' 
             return False
             
         qc = []
@@ -1095,36 +1113,74 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         except:
             pass
         #print '8'
-    
-        PymolPutTable(self.settings['fix_table'], "FIX_atoms")
-        command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
-        cmd.do(command)
+        if self.settings['fix_table'] != []:
+            PymolPutTable(self.settings['fix_table'], "FIX_atoms")
+            command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
+            cmd.do(command)
 
-        if self.GTKDynamoConfig['FIX']['dots']:
-            cmd.show("dots",  "FIX_atoms")
-        
-        if self.GTKDynamoConfig['FIX']['spheres']:
-            cmd.show("spheres",  "FIX_atoms")
-        
-        if self.GTKDynamoConfig['FIX']['lines']:
-            cmd.show("lines",  "FIX_atoms")
-        
-        if self.GTKDynamoConfig['FIX']['sticks']:
-            cmd.show("sticks",  "FIX_atoms")
+            if self.GTKDynamoConfig['FIX']['dots']:
+                cmd.show("dots",  "FIX_atoms")
+            
+            if self.GTKDynamoConfig['FIX']['spheres']:
+                cmd.show("spheres",  "FIX_atoms")
+            
+            if self.GTKDynamoConfig['FIX']['lines']:
+                cmd.show("lines",  "FIX_atoms")
+            
+            if self.GTKDynamoConfig['FIX']['sticks']:
+                cmd.show("sticks",  "FIX_atoms")
     
-    
-        
-    
-    
-    def SystemCheck(self, status = True, 
-                           PyMOL = True, 
-                          _color = True, 
-                           _cell = True, 
-             treeview_selections = True,
-                     ORCA_backup = True 
+    def GetStatusFromSystemSummary(self):
+        """ Function doc """
+        SummaryFile             = "Summary"+'_Step'+str(self.settings['step'])+".log"
+        self.system.Summary(log = DualTextLog(self.settings['data_path'], SummaryFile))
+        self.parameters         = ParseSummaryLogFile(os.path.join(self.settings['data_path'], SummaryFile))
+        #-------------------------------------#
+        #              STATUSBAR              #
+        #-------------------------------------#
+        StatusText = ''
+        if self.parameters is not None:
+            StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
+            StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
+            StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
+            StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
+            StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
+            StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
+            StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
+        self.window_control.STATUSBAR_SET_TEXT(StatusText) 
+        return SummaryFile
+
+
+
+
+ 
+
+    def SystemCheck(self, status = True, #
+                           PyMOL = True, # - refresh the QC region
+                              QC = True, # - refresh the QC region
+                             FIX = True, # - refresh the Fixed region
+                         disable = True, # - disable selections in PyMOL
+                          _color = True, #
+                           _cell = True, #
+             treeview_selections = True, #
+                     ORCA_backup = True  #
                     ): 
-        pass
         
+        """ Function doc 
+                          status = True, #
+                           PyMOL = True, # - refresh the QC region
+                              QC = True, # - refresh the QC region
+                             FIX = True, # - refresh the Fixed region
+                         disable = True, # - disable selections in PyMOL
+                          _color = True, #
+                           _cell = True, #
+             treeview_selections = True, #
+                     ORCA_backup = True  #
+
+        """
+
+
+
         if self.system == None:
             #print "System empty"
             StatusText =''
@@ -1132,53 +1188,37 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             return 0
         
         if status == True:
-            """ Function doc """
-            SummaryFile             = "Summary"+'_Step'+str(self.settings['step'])+".log"
-            self.system.Summary(log = DualTextLog(self.settings['data_path'], SummaryFile))
-            self.parameters         = ParseSummaryLogFile(os.path.join(self.settings['data_path'], SummaryFile))
-            
-            #-------------------------------------#
-            #              STATUSBAR              #
-            #-------------------------------------#
-            StatusText = ''
-            if self.parameters is not None:
-                StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
-                StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
-                StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
-                StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
-                StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
-                StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
-                StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
-            self.window_control.STATUSBAR_SET_TEXT(StatusText) 
-       
+            SummaryFile = self.GetStatusFromSystemSummary()
+            SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
+
         if PyMOL == True:
-            # this is the PyMOL_Obj in memory
-            PyMOL_Obj      = self.settings['PyMOL_Obj']
-            # self.settings['QC'] indicates that a QC system exist 
-            if self.settings['QC'] == True:
-                self.ShowQCRegion(PyMOL_Obj)
-
-            if self.settings['fix_table'] != []:
+            PyMOL_Obj      = self.settings['PyMOL_Obj'] # this is the PyMOL_Obj in memory
+            if QC:
+                # self.settings['QC'] indicates that a QC system exist 
+                if self.settings['QC'] == True:
+                    self.HideQCRegion(PyMOL_Obj)                
+                    self.ShowQCRegion(PyMOL_Obj)
+                #else:
+                #    self.HideQCRegion(PyMOL_Obj)
+            if FIX:
                 self.ShowFIXRegion (PyMOL_Obj)
-            # disable selections
-            #--------------------------------#
-            try:                             #
-                cmd.disable("sele")          #
-            except:                          #
-                pass                         #
-                                             #
-            try:                             #
-                cmd.disable("FIX_atoms")     #
-            except:                          #
-                pass                         #
-                                             #
-            try:                             #
-                cmd.disable("QC_atoms")      #
-            except:                          #
-                pass                         #
-            #--------------------------------#
+                    
+            if disable: # disable selections
+                try:                             
+                    cmd.disable("sele")          
+                except:                          
+                    pass                         
+                                                 
+                try:                             
+                    cmd.disable("FIX_atoms")     
+                except:                          
+                    pass                         
+                                                 
+                try:                             
+                    cmd.disable("QC_atoms")      
+                except:                          
+                    pass                         
 
-            
             if _color:
                 try:
                     cmd.color(self.GTKDynamoConfig['color'],PyMOL_Obj)
@@ -1195,20 +1235,12 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                     cmd.bg_color(self.GTKDynamoConfig['bg_color'])
                 except:
                     pass
-            else:
-                pass 
-        
-        
+
         if treeview_selections:
             pymol_objects2 = cmd.get_names('selections')
-            
             liststore      = self.builder.get_object('liststore1')
             self.window_control.TREEVIEW_ADD_DATA (liststore, pymol_objects2)
         
-        #-----------------------------------------------#
-        #                   DrawCell                    #
-        #-----------------------------------------------#
-    
         if self.ShowCell == True:
             cell = self.importCellParameters()
             DrawCell(cell)
@@ -1224,15 +1256,14 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 pass
         #-----------------------------------------------#
 
-        
-        if status == True:
-            SummaryFile = os.path.join(self.settings['data_path'], SummaryFile)
-            #print 'final'
-            return SummaryFile 
-
-        
         if ORCA_backup == True:
             self.back_orca_output()
+
+        if status == True:
+            return SummaryFile
+            # Only necessary to open the log file with TextEditor
+
+
             
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
