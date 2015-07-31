@@ -313,17 +313,77 @@ class MainMenu (object):
         
         def on_MainMenu_Edit_ClearFixedAtoms_activate (self, menuitem):
             """ Function doc """
-            self.project.clean_fix_table()
-            self.project.SystemCheck( status = True, 
-                                            PyMOL = True, 
-                                           _color = True, 
-                                            _cell = True, 
-                                treeview_selections = True,
-                                        ORCA_backup = True)
-                                        
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #                                   
+                                #---------------------------------------------------------#                  
+                                #                                                         #                  
+                                #        Message Dialog  -  when 2 buttons will be shown  #                  
+                                #  1 -create the warning message                          #                  
+                                #  2 -hide the actual dialog - optional                   #                  
+                                #  3 -show the message dialog                             #                  
+                                #  4 -hide the message dialog                             #                  
+                                #  5 -check the returned valor by the message dialog      #                  
+                                #  6 -do something                                        #                  
+                                #  7 -restore the actual dialog - optional                #                  
+                                #---------------------------------------------------------#                  
+            '''
+                                                                                                  
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the fixed region?")  
+            dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                              
+            a = dialog.run()  # possible "a" valors                                                           
+            # 4 step          # -8  -  yes                                                                    
+            dialog.hide()     # -9  -  no                                                                     
+                              # -4  -  close                                                                  
+                              # -5  -  OK                                                                     
+                              # -6  -  Cancel   
+            if a == -8: 
+                self.project.clean_fix_table()
+                self.project.SystemCheck( status = True, 
+                                                PyMOL = True, 
+                                               _color = True, 
+                                                _cell = True, 
+                                    treeview_selections = True,
+                                            ORCA_backup = True)
+            else:                                                                                             
+                return 0  
+
         def on_MainMenu_Edit_ClearQCAtoms_activate (self, menuitem):
-            """ Function doc """
-            self.project.clean_qc_table()
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #                                   
+                                #---------------------------------------------------------#                  
+                                #                                                         #                  
+                                #        Message Dialog  -  when 2 buttons will be shown  #                  
+                                #  1 -create the warning message                          #                  
+                                #  2 -hide the actual dialog - optional                   #                  
+                                #  3 -show the message dialog                             #                  
+                                #  4 -hide the message dialog                             #                  
+                                #  5 -check the returned valor by the message dialog      #                  
+                                #  6 -do something                                        #                  
+                                #  7 -restore the actual dialog - optional                #                  
+                                #---------------------------------------------------------#                  
+            '''
+                                                                                                  
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the quantum region?")  
+            dialog = self.builder.get_object('MessageDialogQuestion')                                         
+                                                                                                              
+            a = dialog.run()  # possible "a" valors                                                           
+            # 4 step          # -8  -  yes                                                                    
+            dialog.hide()     # -9  -  no                                                                     
+                              # -4  -  close                                                                  
+                              # -5  -  OK                                                                     
+                              # -6  -  Cancel                                                                 
+            # 5 step                                                                                          
+            if a == -8:                                                                                       
+                self.project.clean_qc_table()                                                                                 
+            else:                                                                                             
+                return 0   
+
+
+
+
 
 
 
@@ -372,7 +432,8 @@ class MainMenu (object):
                 if a == -8:                                                                                       
                     # 6 step                                                                                      
                     # auto calculate the mm charge from the selected region and set the valor to the spinbutton
-                    _sum, _len = compute_selection_total_charge(self.project.system, selection = None )
+                    _sum, _len = self.project.ComputeChargesFromSelection()
+                    #_sum, _len = compute_selection_total_charge(self.project.system, selection = None )
                     _sum = int(round(_sum))
                     self.QuantumChemistrySetupDialog.builder.get_object('spinbutton_charge').set_value(_sum)
                     
@@ -394,12 +455,8 @@ class MainMenu (object):
 
         def on_MainMenu_Selection_ComputeCharge_activate(self, menuitem):
             """ Function doc """
-            _sum, _len = compute_selection_total_charge(self.project.system, selection = None )
-            #print _sum, _len
-            #energy = self.project.ComputeEnergy()
-            #colocar um check system aqui 
+            _sum, _len = self.project.ComputeChargesFromSelection()
             self.builder.get_object('EnergyMessageDialog').set_markup("MM Charges")   
-            
             self.builder.get_object('EnergyMessageDialog').format_secondary_text("Selection charge ("+str(_len) +" atoms): " + str(round(_sum, 8)))   
             dialog = self.builder.get_object('EnergyMessageDialog')
             dialog.run()                                                                

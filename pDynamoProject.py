@@ -10,6 +10,7 @@ from pDynamoMethods.pDynamoMinimization      import *
 from pDynamoMethods.pDynamoEnergy            import *
 from pDynamoMethods.pDynamoMolecularDynamics import *
 from pDynamoMethods.pDynamoCharges           import *
+
 from PyMOLScripts.PyMOLScripts import *
 #from PyMOLScripts.DrawCell     import DrawCell
 
@@ -1014,7 +1015,11 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             n = n + 1
     
     
-    
+    def ComputeChargesFromSelection(self):        
+        MMsystem  = Clone(self.system)
+        MMsystem.energyModel.ClearQCModel(True)
+        _sum, _len = compute_selection_total_charge(MMsystem, selection = None )
+        return _sum, _len
 
     def HideQCRegion(self, PyMOL_Obj):
         """ Function doc """
@@ -1152,10 +1157,57 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         self.window_control.STATUSBAR_SET_TEXT(StatusText) 
         return SummaryFile
 
+    def DisableSelections (self, sele = True,
+                                 FIX  = True,
+                                 QC   = True
+                           ):
+        """ Function doc """
+        if sele:
+            try:                             
+                cmd.disable("sele")          
+            except:                          
+                pass                         
+        if FIX:
+            try:                             
+                cmd.disable("FIX_atoms")     
+            except:                          
+                pass                         
+        if QC:
+            try:                             
+                cmd.disable("QC_atoms")      
+            except:                          
+                pass 
+
+    def SetColors (self,
+                  PyMOL_Obj = None,
+                  carbons   = True,
+                  FIX       = True,
+                  bg        = True
+                  ):
+        """ Function doc """
+
+        if  PyMOL_Obj == None:
+            PyMOL_Obj = self.settings['PyMOL_Obj']
+        if carbons:
+            try:
+                cmd.color(self.GTKDynamoConfig['color'],PyMOL_Obj)
+                cmd.util.cnc(PyMOL_Obj)
+            except:
+                pass
+        
+        if FIX:
+            try:
+                cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
+            except:
+                pass
+        if bg:
+            try:
+                cmd.bg_color(self.GTKDynamoConfig['bg_color'])
+            except:
+                pass        
 
 
 
- 
 
     def SystemCheck(self, status = True, #
                            PyMOL = True, # - refresh the QC region
@@ -1207,37 +1259,10 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 self.ShowFIXRegion (PyMOL_Obj)
                     
             if disable: # disable selections
-                try:                             
-                    cmd.disable("sele")          
-                except:                          
-                    pass                         
-                                                 
-                try:                             
-                    cmd.disable("FIX_atoms")     
-                except:                          
-                    pass                         
-                                                 
-                try:                             
-                    cmd.disable("QC_atoms")      
-                except:                          
-                    pass                         
+                self.DisableSelections()                       
 
             if _color:
-                try:
-                    cmd.color(self.GTKDynamoConfig['color'],PyMOL_Obj)
-                    cmd.util.cnc(PyMOL_Obj)
-                except:
-                    pass
-                
-                try:
-                    cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
-                except:
-                    pass
-                
-                try:
-                    cmd.bg_color(self.GTKDynamoConfig['bg_color'])
-                except:
-                    pass
+                self.SetColors()
 
         if treeview_selections:
             pymol_objects2 = cmd.get_names('selections')
@@ -1375,6 +1400,13 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         #self.step = self.step + 1
         self.settings['step']      = self.settings['step'] + 1
         self.settings['last_step'] = self.settings['step']
+
+    def CloneSystem (self):
+        """ Function doc """
+        newsystem = Clone(self.system)
+        
+
+        return newsystem
 
     def ActiveModeCheck(self):
         """ Function doc """
