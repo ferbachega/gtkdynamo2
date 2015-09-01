@@ -184,7 +184,6 @@ class MainMenu (object):
                 self.TrajectoryDialog.dialog.run()
                 self.TrajectoryDialog.dialog.hide()
 
-
         def on_MainMenu_View_ShowSequence_activate(self, button):
                 #print """ Function doc """
                 if self.builder.get_object('menuitem29').get_active() == True:
@@ -1644,9 +1643,9 @@ class gtkdynamo_main(threading.Thread,
                                'HideWorkSpaceDialog': False    ,  
                                'WorkSpace'          : self.HOME,  
                                'ORCAPATH'           : self.ORCA,
-                               'bg_color'           : 'white'  ,
+                               'bg_color'           : 'black'  ,
                                'fixed'              : 'grey80' ,
-                               'color'              : 'black'  ,
+                               'color'              : 'radon'  ,
                                'History'            : {}       }                              
 
         self.Load_GTKDYNAMO_ConfigFile()
