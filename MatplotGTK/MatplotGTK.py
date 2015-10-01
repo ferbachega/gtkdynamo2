@@ -18,7 +18,7 @@ from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanva
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 # implement the default mpl key bindings
-from matplotlib.backend_bases import key_press_handler
+#from matplotlib.backend_bases import key_press_handler
 #from matplotlib.widgets import Cursor
 
 class PlotGTKWindow:
