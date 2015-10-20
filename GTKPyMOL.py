@@ -1169,7 +1169,7 @@ class TreeviewHistory(object):
             cmd.hide ('sticks', PyMOL_Obj)
 
         if item == self.builder.get_object('menuitem_hide_ribbon'):
-            cmd.hide ('cartoon', PyMOL_Obj)
+            cmd.hide ('ribbon', PyMOL_Obj)
 
         if item == self.builder.get_object('menuitem_hide_cartoon'):
             cmd.hide ('cartoon', PyMOL_Obj)
