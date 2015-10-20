@@ -120,27 +120,29 @@ from gui.FileChooserWindow                                  import *            
 from gui.DialogNewProject.NewProject                        import *                         #
 from gui.DialogQuantumChemistrySetup.QuantumChemistrySetup  import *                         #
                                                                                              #
-from gui.DialogChargeRescale.ImportCoordinates              import ImportCoordinatesDialog  #
-from gui.DialogChargeRescale.ImportCoordinates              import ExportCoordinatesDialog  #
-
-from gui.DialogAmber12ToAmber11.DialogAmber12ToAmber11      import DialogAmber12ToAmber11
+from gui.DialogChargeRescale.ImportCoordinates              import ImportCoordinatesDialog   #
+from gui.DialogChargeRescale.ImportCoordinates              import ExportCoordinatesDialog   #
+                                                                                             #
+from gui.DialogAmber12ToAmber11.DialogAmber12ToAmber11      import DialogAmber12ToAmber11    #
                                                                                              #
 from gui.DialogNonBond.NonBond                              import *                         #
 from gui.WindowScan1D.Scan                                  import *                         #
 from gui.WindowScan2D.Scan2D                                import *                         #
                                                                                              #
 from gui.WindowpDynamoSelections.pDynamoSelections          import pDynamoSelectionWindow    #
-from gui.DialogPreferences.Preferences                      import *         #
+from gui.DialogPreferences.Preferences                      import *                         #
                                                                                              #
 from gui.DialogLoadTrajectory.Trajectory                    import *                         #
 from gui.DialogAbout.About                                  import AboutDialog               #
 from gui.DialogNEB.NEBandSAW                                import NEBDialog                 #
 from gui.DialogNEB.NEBandSAW                                import SAWDialog                 #
-                                                                                             #
+from gui.MOPACEnergy.MOPACEnergy                            import MOPACSEnergyDialog        #
                                                                                              #
 from gui.DialogWorkSpaceDialog.WorkSpace                    import WorkSpaceDialog           #
 from gui.DialogChargeRescale.ChargeRescale                  import ChargeRescaleDialog       #
 from gui.WindowUmbrellaSampling.UmbrellaSampling            import UmbrellaSamplingWindow    #
+
+
 #/home/fernando/Documents/gtkdynamo2/gui/DialogPreferences/Preferences.py
 #from gui.MainMenu           import  MainMenu                                                                        
 #from gui.MainToolBar        import  MainToolBar 
@@ -516,6 +518,11 @@ class MainMenu (object):
                 self.NEBDialog.dialog.run()
                 self.NEBDialog.dialog.hide()
 
+        def on_MainMenu_Extensions_MOPACEnergy(self, menuItem):
+            """ Function doc """
+            self.DialogMOPACSEnergy.dialog.run()
+            self.DialogMOPACSEnergy.dialog.hide()
+            #print 'MOPACEnergy'
 
         def on_MainMenu_Edit_NonBondingModels_activate(self, button):
                 """ Function doc """
@@ -1752,6 +1759,9 @@ class gtkdynamo_main(threading.Thread,
         self.AboutDialog             = AboutDialog(self)
         self.SAWDialog               = SAWDialog(self)
         self.NEBDialog               = NEBDialog(self)
+        
+        self.DialogMOPACSEnergy      = MOPACSEnergyDialog(self)
+        
         #---------------------------------------------------------------------------------------#
         self.graph = None
 
