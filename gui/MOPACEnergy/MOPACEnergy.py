@@ -36,6 +36,7 @@ from pMoleculeScripts import *
 
 import subprocess 
 from pprint import pprint
+from DualTextLogFileWriter3 import *
 
 
 
@@ -81,6 +82,8 @@ class pDynamoToMOPAC:
             text += 'GRAD QMMM'+ ' '
         
         self.MopacKeys = text
+        return text
+        
         
     def generate_atoms_dic (self):
         """ Function doc """
@@ -300,7 +303,7 @@ class MOPACSEnergyDialog():
         trajectory = self.builder.get_object('filechooserbutton1').get_filename()
         #print 'aqui'
         #trajectory = SystemGeometryTrajectory ('/home/fernando/pDynamoWorkSpace/TIM/12_step_Scan', system, mode = "r" )
-        print trajectory
+        trajetoryFile = trajectory
         trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
 
         #print 'aqui2'
@@ -327,15 +330,16 @@ class MOPACSEnergyDialog():
             n = 0 
             while trajectory.RestoreOwnerData ( ):
                 MOPAC_system = pDynamoToMOPAC(system = system)
-                MOPAC_system.DefineMopacKeys (methods      = method      ,
-                                              charge       = charge      ,
-                                              multiplicity = multiplicity,
-                                              AUX          = True        ,
-                                              single_point = True        ,
-                                              MOZYME       = True        , 
-                                              BONDS        = False       ,
-                                              PDBOUT       = False       ,
-                                              SOLV         = SOLV        )
+                
+                keywords = MOPAC_system.DefineMopacKeys (methods      = method      ,
+                                                         charge       = charge      ,
+                                                         multiplicity = multiplicity,
+                                                         AUX          = True        ,
+                                                         single_point = True        ,
+                                                         MOZYME       = True        , 
+                                                         BONDS        = False       ,
+                                                         PDBOUT       = False       ,
+                                                         SOLV         = SOLV        )
                 
                 energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system'+str(n)+'.mop'))  # tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')
                 
@@ -345,21 +349,38 @@ class MOPACSEnergyDialog():
                 #Energy.append(energy)
                 #print n
                 n  += 1
-            #pprint (logs)
 
-
-        #n= 0
+        
+        
+        
+        
+        #-------------------------------------------------------#
+        #                   LOG FILE SUMMARY                    #                         
+        #-------------------------------------------------------#
+        #logFile = os.path.join(logfile_outpath, log_file_name) #
+        #log = DualTextLog(logfile_outpath, log_file_name)      #
+        #system.Summary(log=log)                                #
+        #-------------------------------------------------------#
+        #string = '\n'
         string = ''
-
+        #string += 'charge:       ' + charge        + '\n'
+        #string += 'multiplicity: ' + multiplicity  + '\n'
+        string += 'trajectoy:    ' + trajetoryFile + '\n'
+        string += 'keywords:     ' + keywords      + '\n'
+        string += '\n'
+        
         for method in logs:
-            string += method + '  '
+            #string += method + '  '
+            string += " %15s "     % (method)
         string += '\n'
 
         
         
         for i in range( 0, n): #len(logs['AM1']['energyNorm'])):  
             for method in logs:
-                string += str(logs[method]['energyNorm'][i]) + '  '
+                #string += str(logs[method]['energyNorm'][i]) + '  '
+                string += " %15.5f "  % (logs[method]['energyNorm'][i])
+                
             string += '\n'
             #n += 1
         #pprint (Energy)
@@ -375,7 +396,15 @@ class MOPACSEnergyDialog():
 
 
 
-
+    def on_combobox1_changed(self, button):
+        _type        = self.builder.get_object('combobox1').get_active_text()
+        """ Function doc """
+        if _type == 'folder - pDynamo':
+            self.builder.get_object('filechooserbutton2').hide()
+            self.builder.get_object('filechooserbutton1').show()
+        else:
+            self.builder.get_object('filechooserbutton2').show()
+            self.builder.get_object('filechooserbutton1').hide()
 
 
 
@@ -418,7 +447,16 @@ class MOPACSEnergyDialog():
         spinbutton = 'spinbutton_multiplicity'
         config     = [0.0, 1.0,    500.0, 1.0, 0.0, 0.0]
         self.window_control.SETUP_SPINBUTTON(spinbutton, config)
+
+        self.builder.get_object('filechooserbutton2').hide()
         
+        #----------------- Setup ComboBoxes -------------------------#
+        combobox = 'combobox1'         #
+        combolist = ["folder - pDynamo", "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
+
+
+
 
 def main():
     dialog = MOPACSEnergyDialog()

@@ -265,6 +265,7 @@
                           <object class="GtkComboBox" id="combobox1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <signal name="changed" handler="on_combobox1_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
