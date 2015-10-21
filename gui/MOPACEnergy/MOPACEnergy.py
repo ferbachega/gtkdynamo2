@@ -24,6 +24,7 @@
 #
 import os
 import gtk
+import time
 import gobject
 from WindowControl import *
 
@@ -32,6 +33,9 @@ from pBabel           import *
 from pCore            import *
 from pMolecule        import *
 from pMoleculeScripts import *
+
+import subprocess 
+from pprint import pprint
 
 
 
@@ -245,12 +249,46 @@ class MOPACSEnergyDialog():
     def runMOPACEnergy (self, button):
         """ Function doc """
         
+        #                                       Time and log file 
+        #---------------------------------------------------------------------------------------------------------------#
+        localtime = time.asctime(time.localtime(time.time()))                                                           #
+        localtime = localtime.split()                                                                                   #
+        #  0     1    2       3         4                                                                               #
+        #[Sun] [Sep] [28] [02:32:04] [2014]                                                                             #
+        log_file_name = 'MOPAC_Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log' #
+        #---------------------------------------------------------------------------------------------------------------#
+        
+        
+        #                                      folder and datapath
+        #-----------------------------------------------------------------------------------------------#
+        data_path     = self.GTKDynamoSession.project.settings['data_path']                             #
+                                                                                                        #
+        #traj          = self.builder.get_object('umbrella_entry_TRAJECTORY').get_text()                #
+        if not os.path.exists (os.path.join(data_path, 'MOPAC_files')):                                 #
+            os.mkdir (os.path.join(data_path,'MOPAC_files'))                                            #
+        logfile_outpath = os.path.join(data_path, 'MOPAC_files')                                        # 
+                                                                                                        #
+                                                                                                        #
+        if not os.path.exists (os.path.join(logfile_outpath, 'tmp')):                                   #
+            os.mkdir (os.path.join(logfile_outpath,'tmp'))                                              #
+        tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')                                          # 
+                                                                                                        #
+        #-----------------------------------------------------------------------------------------------#        
+        
+        
+        
+        
+        
+        
+        
+        #
         charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()
         charge          = str(charge)
         
         multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()
         multiplicity    = 'Singlet'
-        
+        SOLV    =  True
+
         
         
         #charge       = '-2'
@@ -259,20 +297,22 @@ class MOPACSEnergyDialog():
         system = self.project.system
         #system = Unpickle('TIM_sitiogrande.pkl')
         
-        trajectory = self.builder.get_object('filechooserbutton1').get_filenames()
-        
-        trajectory = SystemGeometryTrajectory ('/home/fernando/pDynamoWorkSpace/TIM/12_step_Scan', system, mode = "r" )
-        
+        trajectory = self.builder.get_object('filechooserbutton1').get_filename()
+        #print 'aqui'
+        #trajectory = SystemGeometryTrajectory ('/home/fernando/pDynamoWorkSpace/TIM/12_step_Scan', system, mode = "r" )
+        print trajectory
+        trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
+
+        #print 'aqui2'
         
         methods = self.builder.get_object('entry1').get_text()
         #methods = ['AM1','PM3','RM1','PM6','PM6-DH','PM6-DH2','PM6-DH+','PM6-DH2X','PM6-D3H4','PM7'] 
         methods = methods.split()
-        SOLV    =  True
         
         system.Summary()
         
         print charge, multiplicity, methods#, trajectory
-        trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
+        #trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
         
         
         logs = {
@@ -297,7 +337,7 @@ class MOPACSEnergyDialog():
                                               PDBOUT       = False       ,
                                               SOLV         = SOLV        )
                 
-                energy = MOPAC_system.Energy(fileout = 'system'+str(n)+'.mop')
+                energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system'+str(n)+'.mop'))  # tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')
                 
                 logs[method]['energy'].append(float(energy))
                 logs[method]['energyNorm'].append(float(energy) - logs[method]['energy'][0])
@@ -308,23 +348,25 @@ class MOPACSEnergyDialog():
             #pprint (logs)
 
 
-        n= 0
+        #n= 0
         string = ''
 
         for method in logs:
             string += method + '  '
         string += '\n'
 
-        for i in range( 0, len(logs['AM1']['energyNorm'])):  
+        
+        
+        for i in range( 0, n): #len(logs['AM1']['energyNorm'])):  
             for method in logs:
                 string += str(logs[method]['energyNorm'][i]) + '  '
             string += '\n'
-            n += 1
+            #n += 1
         #pprint (Energy)
-        pprint (logs)
+        #pprint (logs)
 
         print string
-        arq = open('MOPAC_TEST.log', 'w') 
+        arq = open(os.path.join(logfile_outpath, log_file_name), 'w') 
         arq.writelines(string)
         arq.close()
 
