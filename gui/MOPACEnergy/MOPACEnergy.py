@@ -55,11 +55,14 @@ class pDynamoToMOPAC:
                          multiplicity = 'Singlet'  ,
                          AUX          = True ,
                          single_point = True ,
-                         MOZYME       = True , 
+                         MOZYME       = False , 
                          BONDS        = False,
                          PDBOUT       = False,
-                         SOLV         = False
-                         ):
+                         QMMM         = False,
+                         SOLV         = False,
+                         ESP          = None ,
+                         RSOLV        = None):
+        
         """ Function doc """
         text = ''
         text += methods + ' '
@@ -77,10 +80,10 @@ class pDynamoToMOPAC:
         if PDBOUT:
             text += 'PDBOUT' + ' '
         if SOLV:
-            text += 'EPS=78.39 RSOLV=1.3'+ ' '
-        if self.QMMM:
+            text += 'EPS='+ESP +' RSOLV='+RSOLV+' '
+        if QMMM:
             text += 'GRAD QMMM'+ ' '
-        
+            self.QMMM = True
         self.MopacKeys = text
         return text
         
@@ -115,9 +118,9 @@ class pDynamoToMOPAC:
             boundaryAtoms = list(self.system.energyModel.qcAtoms.BoundaryAtomSelection())#
         #--------------------------------------------------------------------------------#
 
-        #---------------- Q M M M ---------------------#
-        atoms_dic = generate_atoms_dic(self.system)    #
-        #----------------------------------------------#
+        #---------------- Q M M M --------------------------#
+        atoms_dic = self.generate_atoms_dic()               #
+        #---------------------------------------------------#
         
         #phi = 0
         #print len (atoms_dic)
@@ -168,7 +171,7 @@ class pDynamoToMOPAC:
         #             Q M M M              #
         #----------------------------------#
         if self.QMMM == True:# False
-            generate_molin_file(self.system)
+            self.generate_molin_file(self.system)
         else:
             pass
         #----------------------------------#
@@ -290,10 +293,27 @@ class MOPACSEnergyDialog():
         
         multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()
         multiplicity    = 'Singlet'
-        SOLV    =  True
+        
+        if self.builder.get_object('checkbutton1').get_active() == True:
+            SOLV    =  True
+            ESP     =  self.builder.get_object('entry2').get_text()
+            RSOLV   =  self.builder.get_object('entry3').get_text()
 
+        else:  
+            SOLV    = False
+            ESP     = None
+            RSOLV   = None
         
+        if self.builder.get_object('checkbutton2').get_active() == True:
+            MOZYME    =  True
+        else:  
+            MOZYME    = False
         
+        if self.builder.get_object('checkbutton3').get_active() == True:
+            QMMM    =  True
+        else:  
+            QMMM    = False
+
         #charge       = '-2'
         #multiplicity = 'Singlet'
         
@@ -336,10 +356,13 @@ class MOPACSEnergyDialog():
                                                          multiplicity = multiplicity,
                                                          AUX          = True        ,
                                                          single_point = True        ,
-                                                         MOZYME       = True        , 
+                                                         MOZYME       = MOZYME      , 
                                                          BONDS        = False       ,
                                                          PDBOUT       = False       ,
-                                                         SOLV         = SOLV        )
+                                                         SOLV         = SOLV        ,
+                                                         ESP          = ESP         ,
+                                                         RSOLV        = RSOLV       ,
+                                                         QMMM         = QMMM        )
                 
                 energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system'+str(n)+'.mop'))  # tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')
                 
