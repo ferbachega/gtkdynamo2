@@ -121,6 +121,27 @@ class UmbrellaSamplingWindow():
                                'sigma_pk3_pk1': sigma_pk3_pk1}                                            #
         #-------------------------------------------------------------------------------------------------#
 
+        
+        
+        #----------------------------------------------------------------------------------------#
+        #                      Reacion path type  sequential / from trajectory                   #
+        #----------------------------------------------------------------------------------------#
+        reaction_path_type = self.builder.get_object("combobox1"         ).get_active_text()     #
+        trajectory         = self.builder.get_object("filechooserbutton1").get_filename()        #
+        N_process          = self.builder.get_object("spinbutton1"       ).get_value_as_int()    #
+                                                                                                 #
+        REACTION_COORD1['REACTION_PATH_TYPE'] = reaction_path_type                               #
+        REACTION_COORD1['FROM_TRAJECTORY']    = trajectory                                       #
+        REACTION_COORD1['N_PROCESS']          = N_process                                        #
+        '''
+        REACTION_PATH_TYPE  = sequential or from trajectory
+        FROM_TRAJECTORY     = a trajectory obtained by SCANS 
+        N_PROCESS           = number of CPUs used 
+        '''
+        #----------------------------------------------------------------------------------------#
+
+    
+        
         #-----------------------------------import trajectory parameters--------------------------------#
         max_int       = int(self.builder.get_object  ("SCAN_MIN_entry_max_int").get_text())             #
         rms_grad      = float(self.builder.get_object("SCAN_MIN_entry_rmsd_grad").get_text())           #
@@ -222,14 +243,14 @@ class UmbrellaSamplingWindow():
         pprint(MINIMIZATION_PARAMETERS)
         pprint(MDYNAMICS_PARAMETERS)
 
-        logFile = umbrella_sampling (outpath                 , 
-                                     REACTION_COORD1         ,
-                                     MINIMIZATION_PARAMETERS ,
-                                     MDYNAMICS_PARAMETERS    ,
-                                     self.GTKDynamoSession.project
-                                     )
-
-        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
+        #logFile = umbrella_sampling (outpath                 , 
+        #                             REACTION_COORD1         ,
+        #                             MINIMIZATION_PARAMETERS ,
+        #                             MDYNAMICS_PARAMETERS    ,
+        #                             self.GTKDynamoSession.project
+        #                             )
+        #
+        #self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
         self.Visible  =  False
         self.window.destroy()
 
@@ -527,6 +548,33 @@ class UmbrellaSamplingWindow():
                 self.builder.get_object('entry_coord2_ATOM3_name' ).set_sensitive(True)
                 self.builder.get_object('checkbutton_mass_weight2').set_sensitive(True)
 
+        if combobox == self.builder.get_object('combobox1'):
+            mode = self.builder.get_object('combobox1').get_active_text()
+            
+            if mode == 'sequential':
+                self.builder.get_object('scan2d_label_step_size1'                      ).show()
+                self.builder.get_object('entry_STEP_size1'                             ).show()
+                self.builder.get_object('13_window_scan2d_scam_label_step_Nwindows2'   ).show()
+                self.builder.get_object('entry_NWINDOWS1'                              ).show()
+                self.builder.get_object('13_window_scan2d_scam_label_step_trajectory3' ).show()
+                self.builder.get_object('entry_param_DMINIMUM1'                        ).show()
+                
+                #self.builder.get_object('table3').show()
+                self.builder.get_object('table1').hide()
+
+            if mode == 'from trajectory':
+                #self.builder.get_object('table3').hide()
+                self.builder.get_object('scan2d_label_step_size1'                      ).hide()
+                self.builder.get_object('entry_STEP_size1'                             ).hide()
+                self.builder.get_object('13_window_scan2d_scam_label_step_Nwindows2'   ).hide()
+                self.builder.get_object('entry_NWINDOWS1'                              ).hide()
+                self.builder.get_object('13_window_scan2d_scam_label_step_trajectory3' ).hide()
+                self.builder.get_object('entry_param_DMINIMUM1'                        ).hide()
+                
+                self.builder.get_object('table1').show()
+
+
+
     def checkbutton_Minimization (self, checkbutton):
         if self.builder.get_object("checkbutton_minimization").get_active():
             self.builder.get_object('table17').set_sensitive(True)
@@ -566,6 +614,12 @@ class UmbrellaSamplingWindow():
             combolist = ['simple-distance', 'multiple-distance']
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
 
+            
+            combobox  = 'combobox1'                     
+            combolist = ['sequential', 'from trajectory']
+            self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)  
+            
+            
             combobox  = 'combobox_optimization_method'                     
             combolist = ['Conjugate Gradient', 'Steepest Descent','LBFGS']
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
@@ -574,6 +628,12 @@ class UmbrellaSamplingWindow():
             combolist = ["Velocity Verlet Dynamics", "Leap Frog Dynamics","Langevin Dynamics"]
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
             #------------------------------------------------------------#
+
+            # QC SPIN MULTIPLICITY
+            spinbutton = 'spinbutton1'
+            config     = [0.0, 1.0,    500.0, 1.0, 0.0, 0.0]
+            self.window_control.SETUP_SPINBUTTON(spinbutton, config)
+
 
             self.window.show()                                               
             #                                                                

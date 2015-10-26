@@ -67,7 +67,8 @@ def umbrella_sampling(outpath                 ,
 															#-----------------#
 	#-----------------------------------------------------------------------------------------------------------------------------------#
 	mode1 = REACTION_COORD1['MODE']                                                                                                     #
-	if mode1 == 'simple-distance':                                                                                                      #
+	
+    if mode1 == 'simple-distance':                                                                                                      #
 		coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]                                                                         #
 		coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']                                                                         #
 		coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]                                                                         #
@@ -112,24 +113,44 @@ def umbrella_sampling(outpath                 ,
 		text = text + "\n--------------------------------------------------------------------------------"                              #
 	#-----------------------------------------------------------------------------------------------------------------------------------#
     
-    
-				    
-				    
-				     
-	                 #  MINIMIZATION_PARAMETERS  #
-	#---------------------------------------------------------------#
-	if MINIMIZATION_PARAMETERS == {}:                               #
-		minimization =  False                                       #
-	else:                                                           #
-		max_int      = MINIMIZATION_PARAMETERS['max_int'   ]        #
-		log_freq     = MINIMIZATION_PARAMETERS['log_freq'  ]        #
-		rms_grad     = MINIMIZATION_PARAMETERS['rms_grad'  ]        #
-		mim_method   = MINIMIZATION_PARAMETERS['mim_method']        #
-		minimization = True                                         #
-	#---------------------------------------------------------------#
-	
 
-	# . Define a constraint container and assign it to the system.
+
+    reaction_path_type  = REACTION_COORD1['REACTION_PATH_TYPE'] 
+    trajectory          = REACTION_COORD1['FROM_TRAJECTORY'   ]    
+    N_process           = REACTION_COORD1['N_PROCESS'         ]          
+    
+    
+    # parei aqui 
+    if reaction_path_type == 'from trajectory':
+        from multiprocessing import Pool
+        p = Pool(n_process)
+        print(p.map(parallel_umbrella_sampling, pklFiles ))
+    
+    
+    
+                    
+    
+    
+    
+    
+    
+    
+    
+    
+                     
+                     #  MINIMIZATION_PARAMETERS  #
+    #---------------------------------------------------------------#
+    if MINIMIZATION_PARAMETERS == {}:                               #
+        minimization =  False                                       #
+    else:                                                           #
+        max_int      = MINIMIZATION_PARAMETERS['max_int'   ]        #
+        log_freq     = MINIMIZATION_PARAMETERS['log_freq'  ]        #
+        rms_grad     = MINIMIZATION_PARAMETERS['rms_grad'  ]        #
+        mim_method   = MINIMIZATION_PARAMETERS['mim_method']        #
+        minimization = True                                         #
+    #---------------------------------------------------------------#
+	
+    # . Define a constraint container and assign it to the system.
 	constraints = SoftConstraintContainer ( )
 	project.system.DefineSoftConstraints ( constraints )
 	
@@ -401,4 +422,122 @@ def umbrella_sampling(outpath                 ,
 	
 	logFile = os.path.join(outpath,  "UmbrellaSampling.log")
 	return logFile
+
+
+
+
+
+
+
+
+def parallel_umbrella_sampling (pklFile):
+    """ Function doc """
+    
+    trajname = pklFile.split('.')
+    trajname = trajname[0]
+
+    molecule.coordinates3 = Unpickle( os.path.join (trajectory, pklFile ))
+   
+    
+    #mode1 = 'simple-distance'
+    mode1 = "multiple-distance"
+
+    
+    coord1_ATOM1 =  1978
+    coord1_ATOM2 =  4860
+    coord1_ATOM3 =  4858
+    coord1_sigma_pk1_pk3 =  1.0
+    coord1_sigma_pk3_pk1 = -1.0
+    dist  = molecule.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2 )
+    coord1_FORCECONSTANT1 = 20.0
+    #print dist
+
+    #distance between atom 1 and atom 2:  1.48042589779
+    #distance between atom 2 and atom 3:  3.54179171028
+    dist12  = molecule.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2 )
+    dist23  = molecule.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3 )
+    
+    dist  = dist12 - dist23
+    
+    
+    # . Define a constraint container and assign it to the system.
+    constraints = SoftConstraintContainer ( )
+    molecule.DefineSoftConstraints ( constraints )
+                                      
+                                      #--------------------------#
+                                      #     SAMPLING DISTANCE    #
+                                      #--------------------------#	
+    
+    
+    
+    #-------------------------------------------------------------------------------------------------
+    
+    if mode1 == 'simple-distance':                                                                   
+        rxncoord     = float(dist)
+        print rxncoord
+        scModel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )              
+        constraint   = SoftConstraintDistance         ( coord1_ATOM1, coord1_ATOM2, scModel )             
+        constraints["ReactionCoord"] = constraint                                                         
+
+    if mode1 == "multiple-distance":                                                                                #
+        rxncoord     = float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                                          #
+        scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                        #
+        constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                               #
+                                                          coord1_sigma_pk1_pk3],                                    #
+                                                          [coord1_ATOM2, coord1_ATOM3, coord1_sigma_pk3_pk1]],      #
+                                                          scmodel )                                                 #                                                               #
+        constraints["ReactionCoord"] = constraint			                                                        #
+
+
+    logFrequency        = 100   #MDYNAMICS_PARAMETERS['log_freq']                                       
+    steps               = 50000 #MDYNAMICS_PARAMETERS['nsteps_EQ']                                     
+    temperature         = 300   #MDYNAMICS_PARAMETERS['temperature']                                    
+    temperatureCoupling = 0.1   #MDYNAMICS_PARAMETERS['temperatureCoupling']                            
+    timeStep            = 0.001 #MDYNAMICS_PARAMETERS['timestep']                                     
+                                                                                                      
+    # . Equilibration.                                                                                
+    LeapFrogDynamics_SystemGeometry ( molecule                  ,                                     
+                                      log                 = None,                                     
+                                      logFrequency        = logFrequency,                             
+                                      #rng                 = rng,                                     
+                                      steps               = steps,                                    
+                                      temperature         = temperature,                              
+                                      temperatureCoupling = temperatureCoupling,                      
+                                      timeStep            = timeStep  )                               
+    #-------------------------------------------------------------------------------------------------
+    
+                              #--------------------------#
+                              #      DATA COLLECTION     #
+                              #--------------------------#
+    #------------------------------------------------------------------------------------------------------------------------------------#                   
+                                                                                                                                    
+    # . Data-collection.                                                                                                            
+    traj = SystemSoftConstraintTrajectory ( trajname, molecule, mode = "w" )                                                        
+                                                                                                                                    
+    steps               = 100000# MDYNAMICS_PARAMETERS['nsteps_DC']                                                                 
+    LeapFrogDynamics_SystemGeometry ( molecule,                                                                                     
+                                      logFrequency        = logFrequency,                                                           
+                                      log                 = None, 
+                                      #rng                 = rng,                                                                   
+                                      steps               = steps,                                                                  
+                                      temperature         = temperature,                                                            
+                                      temperatureCoupling = temperatureCoupling,                                                    
+                                      timeStep            = timeStep,                                                               
+                                      trajectories        = [ ( traj, 1 ) ] )                                                       
+    #------------------------------------------------------------------------------------------------------------------------------------#
+    
+
+    
+    energy = molecule.Energy (log                 = None )
+    ##print energy
+    return energy
+
+
+
+
+
+
+
+
+
 

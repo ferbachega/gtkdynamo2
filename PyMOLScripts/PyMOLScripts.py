@@ -705,7 +705,8 @@ def compute_sigma_a1_a3 (pk1_name, pk3_name):
 		 where H is the moving atom
 		 calculation only includes N and O ! 
 	"""
-	
+	#pk1_name
+    #pk3_name
 	mass1 = atomic_dic[pk1_name][4]
 	mass3 = atomic_dic[pk3_name][4]
 	
@@ -724,34 +725,50 @@ def distance_a1_a2(Xa,Ya,Za,Xb,Yb,Zb):
 	return dist
 
 def import_ATOM1_ATOM2(pka,pkb):   # get PyMOL pk1 and pk2 
-	""" Function doc """
-	atom1 = cmd.get_model(pka)
-	for a in atom1.atom:
-		idx1        = a.index
-		atom1_index = int(idx1) -1
-		#name1       = a.name
-		name1       = a.symbol
-		atom1       = idx1	
-		X1 = a.coord[0]
-		Y1 = a.coord[1]
-		Z1 = a.coord[2]	
-		#print "Atom1: ", name1,",  index: ",idx1, ", Coordinates: ",X1,Y1,Z1	
+    """ Function doc """
+    atom1 = cmd.get_model(pka)
+    for a in atom1.atom:
+        idx1        = a.index
+        atom1_index = int(idx1) -1
+        #name1       = a.name
+        
+        name1       = a.symbol
+        if len(name1) == 2:
+            a1 = name1[0]
+            a2 = name1[1]
+            a2 = a2.lower()
+            name1 = a1 + a2
+        
+        
+        atom1       = idx1	
+        X1 = a.coord[0]
+        Y1 = a.coord[1]
+        Z1 = a.coord[2]	
+        #print "Atom1: ", name1,",  index: ",idx1, ", Coordinates: ",X1,Y1,Z1	
 
-	atom2 = cmd.get_model(pkb)
-	for a in atom2.atom:
-		idx2        = a.index
-		atom2_index = int(idx2) -1
-		#name2       = a.name
-		name2       = a.symbol
-		atom2       = idx2
-		X2 = a.coord[0]
-		Y2 = a.coord[1]
-		Z2 = a.coord[2]
-		#print "Atom2: ", name2,",  index: ",idx2, ", Coordinates: ",X2,Y2,Z2
-	
-	distance  = distance_a1_a2(X1,Y1,Z1,X2,Y2,Z2)
-	#print "Distance  atom1 ---> atom2  = ", distance 
-	return name1 , atom1_index, name2,  atom2_index, distance
+    atom2 = cmd.get_model(pkb)
+    for a in atom2.atom:
+        idx2        = a.index
+        atom2_index = int(idx2) -1
+        #name2       = a.name
+        
+        name2       = a.symbol
+        if len(name2) == 2:
+            a1 = name2[0]
+            a2 = name2[1]
+            a2 = a2.lower()
+            name2 = a1 + a2
+        
+        
+        atom2       = idx2
+        X2 = a.coord[0]
+        Y2 = a.coord[1]
+        Z2 = a.coord[2]
+        #print "Atom2: ", name2,",  index: ",idx2, ", Coordinates: ",X2,Y2,Z2
+
+    distance  = distance_a1_a2(X1,Y1,Z1,X2,Y2,Z2)
+    #print "Distance  atom1 ---> atom2  = ", distance 
+    return name1 , atom1_index, name2,  atom2_index, distance
 
 
 def DrawCell (cell):

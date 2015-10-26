@@ -38,6 +38,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="CloseWindow" swapped="no"/>
                       </object>
                       <packing>
@@ -52,6 +53,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="RunScan" swapped="no"/>
                         <signal name="clicked" handler="CloseWindow" swapped="no"/>
                       </object>
@@ -151,15 +153,6 @@ For multiple-distance, select three atoms in pymol using the editing mode</prope
                                     <property name="column_spacing">10</property>
                                     <property name="row_spacing">5</property>
                                     <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
                                       <object class="GtkLabel" id="ScanDialog_SCAN_label_coord1_atom1">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
@@ -214,7 +207,6 @@ For multiple-distance, select three atoms in pymol using the editing mode</prope
                                         <property name="width_request">60</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="editable">False</property>
                                         <property name="invisible_char">●</property>
                                         <property name="text" translatable="yes">-</property>
                                         <property name="invisible_char_set">True</property>
@@ -348,6 +340,15 @@ For multiple-distance, select three atoms in pymol using the editing mode</prope
                                         <property name="bottom_attach">3</property>
                                       </packing>
                                     </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
                                   </object>
                                   <packing>
                                     <property name="expand">True</property>
@@ -362,6 +363,7 @@ For multiple-distance, select three atoms in pymol using the editing mode</prope
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
+                                    <property name="use_action_appearance">False</property>
                                     <signal name="clicked" handler="ScanDialog_ImportFromPyMOL" swapped="no"/>
                                     <child>
                                       <object class="GtkHBox" id="hbox1">
@@ -408,6 +410,7 @@ For multiple-distance, select three atoms in pymol using the editing mode</prope
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="draw_indicator">True</property>
                                     <signal name="toggled" handler="on_ScanDialog_checkbutton_MassWeight" swapped="no"/>
                                   </object>
