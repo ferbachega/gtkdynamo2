@@ -243,13 +243,13 @@ class UmbrellaSamplingWindow():
         pprint(MINIMIZATION_PARAMETERS)
         pprint(MDYNAMICS_PARAMETERS)
 
-        #logFile = umbrella_sampling (outpath                 , 
-        #                             REACTION_COORD1         ,
-        #                             MINIMIZATION_PARAMETERS ,
-        #                             MDYNAMICS_PARAMETERS    ,
-        #                             self.GTKDynamoSession.project
-        #                             )
-        #
+        logFile = umbrella_sampling (outpath                 , 
+                                     REACTION_COORD1         ,
+                                     MINIMIZATION_PARAMETERS ,
+                                     MDYNAMICS_PARAMETERS    ,
+                                     self.GTKDynamoSession.project
+                                     )
+        
         #self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
         self.Visible  =  False
         self.window.destroy()

@@ -117,22 +117,57 @@ def umbrella_sampling(outpath                 ,
 
     reaction_path_type  = REACTION_COORD1['REACTION_PATH_TYPE'] 
     trajectory          = REACTION_COORD1['FROM_TRAJECTORY'   ]    
-    N_process           = REACTION_COORD1['N_PROCESS'         ]          
-
-
-    # parei aqui 
-    if reaction_path_type == 'from trajectory':
-        from multiprocessing import Pool
-        p = Pool(n_process)
-        print(p.map(parallel_umbrella_sampling, pklFiles ))
-
-
-
-                    
+    n_process           = REACTION_COORD1['N_PROCESS'         ]          
 
 
 
 
+
+
+
+
+            #------------------------------------------------------------#
+            #                    PARALLEL U.SAMPLING                     #
+            #------------------------------------------------------------#
+    #------------------------------------------------------------------------------#
+    Files    = os.listdir(trajectory)                                              #
+    pklFiles = []                                                                  #
+    for File in Files:                                                             #
+                                                                                   #
+        File2 = File.split('.')                                                    #
+        #print File2                                                               #
+        if File2[-1] ==  'pkl':                                                    #
+            pklFiles.append(File)                                                  #
+    print pklFiles                                                                 #
+    #------------------------------------------------------------------------------#
+    inputs = []                                                                    #
+                                                                                   #
+    for coordinate_file in pklFiles:                                               #
+        input_system = [coordinate_file         ,                                  #
+                        outpath                 ,                                  #
+					    REACTION_COORD1         ,                                  #
+					    MINIMIZATION_PARAMETERS ,                                  #
+					    MDYNAMICS_PARAMETERS    ,                                  #
+					    project                 ]                                  #
+                                                                                   #
+        inputs.append(input_system)                                                #
+                                                                                   #
+    if reaction_path_type == 'from trajectory':                                    #
+        from multiprocessing import Pool                                           #
+        p = Pool(n_process)                                                        #
+        print(p.map(parallel_umbrella_sampling, inputs ))                          #
+    #------------------------------------------------------------------------------#
+
+
+            #------------------------------------------------------------#
+            #                  SEQUENTIAL U.SAMPLING                     #
+            #------------------------------------------------------------#
+    else:
+        pass
+
+
+
+'''
 
 
 
@@ -422,6 +457,7 @@ def umbrella_sampling(outpath                 ,
 
     logFile = os.path.join(outpath,  "UmbrellaSampling.log")
     return logFile
+'''
 
 
 
@@ -429,74 +465,106 @@ def umbrella_sampling(outpath                 ,
 
 
 
-
-def parallel_umbrella_sampling (pklFile):
+def parallel_umbrella_sampling (input_system):
     """ Function doc """
+    coordinate_file         = input_system[0]
+    outpath                 = input_system[1]
+    REACTION_COORD1         = input_system[2]
+    MINIMIZATION_PARAMETERS = input_system[3]
+    MDYNAMICS_PARAMETERS    = input_system[4]
+    project                 = input_system[5]
+    
+    
+    
+    #----------------------------------------------#
+    trajname   = coordinate_file.split('.')        #
+    trajname   = trajname[0]                       #
+    trajname   = os.path.join (outpath, trajname)  #
+    #----------------------------------------------#
+    
+    
+    #----------------------------------------------------------------------------------#
+    trajectory = REACTION_COORD1['FROM_TRAJECTORY'   ]                                 #
+    project.system.coordinates3 = Unpickle( os.path.join (trajectory, coordinate_file))#
+    #----------------------------------------------------------------------------------#
 
-    trajname = pklFile.split('.')
-    trajname = trajname[0]
+    
+    '''                Define a constraint container                  '''
+    # . Define a constraint container and assign it to the system-------#
+    constraints = SoftConstraintContainer ( )                           #
+    project.system.DefineSoftConstraints ( constraints )                #
+    #-------------------------------------------------------------------#
 
-    molecule.coordinates3 = Unpickle( os.path.join (trajectory, pklFile ))
+    
+    
+    mode1 = REACTION_COORD1['MODE']
 
+    #--------------------------------------------------------------------------------
+    if mode1 == 'simple-distance':                                        
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]           
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']           
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]           
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']           
+                                                                          
+                                                                          
+        coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']           
+        coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']             
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']        
+        coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']             
+                                                                          
+        dist = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+    
+        #--------------------------------------------------------------------------------------#
+        rxncoord     = float(dist)                                                             #
+        print rxncoord                                                                         #
+        scModel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )   #
+        constraint   = SoftConstraintDistance         ( coord1_ATOM1, coord1_ATOM2, scModel )  #
+        constraints["ReactionCoord"] = constraint                                              #
+        #--------------------------------------------------------------------------------------#
+                                                                                  
+    if mode1 == "multiple-distance":                                      
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]           
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']           
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]           
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']	          
+        coord1_ATOM3            = REACTION_COORD1['ATOM3'     ]           
+        coord1_ATOM3_name       = REACTION_COORD1['ATOM3_name']	          
+                                                                          
+        coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']           
+        coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']             
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']        
+        coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']             
+                                                                          
+        coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']        
+        coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']        
+                                                                          
+        dist12  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+        dist23  = project.system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+        dist    = dist12 - dist23
 
-    #mode1 = 'simple-distance'
-    mode1 = "multiple-distance"
+        #------------------------------------------------------------------------------------------------------#                  
+        rxncoord     = float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                        #
+        scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                   #
+        constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                          #
+                                                          coord1_sigma_pk1_pk3],                               #
+                                                          [coord1_ATOM2, coord1_ATOM3, coord1_sigma_pk3_pk1]], #
+                                                          scmodel )                                            #
+        constraints["ReactionCoord"] = constraint			                                                   #
+        #------------------------------------------------------------------------------------------------------#
 
-
-    coord1_ATOM1 =  1978
-    coord1_ATOM2 =  4860
-    coord1_ATOM3 =  4858
-    coord1_sigma_pk1_pk3 =  1.0
-    coord1_sigma_pk3_pk1 = -1.0
-    dist  = molecule.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2 )
-    coord1_FORCECONSTANT1 = 20.0
-    #print dist
-
-    #distance between atom 1 and atom 2:  1.48042589779
-    #distance between atom 2 and atom 3:  3.54179171028
-    dist12  = molecule.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2 )
-    dist23  = molecule.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3 )
-
-    dist  = dist12 - dist23
-
-
-    # . Define a constraint container and assign it to the system.
-    constraints = SoftConstraintContainer ( )
-    molecule.DefineSoftConstraints ( constraints )
-                                      
-                                      #--------------------------#
-                                      #     SAMPLING DISTANCE    #
-                                      #--------------------------#	
-
-
-
-    #-------------------------------------------------------------------------------------------------
-
-    if mode1 == 'simple-distance':                                                                   
-        rxncoord     = float(dist)
-        print rxncoord
-        scModel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )              
-        constraint   = SoftConstraintDistance         ( coord1_ATOM1, coord1_ATOM2, scModel )             
-        constraints["ReactionCoord"] = constraint                                                         
-
-    if mode1 == "multiple-distance":                                                                                #
-        rxncoord     = float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                                          #
-        scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                        #
-        constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                               #
-                                                          coord1_sigma_pk1_pk3],                                    #
-                                                          [coord1_ATOM2, coord1_ATOM3, coord1_sigma_pk3_pk1]],      #
-                                                          scmodel )                                                 #                                                               #
-        constraints["ReactionCoord"] = constraint			                                                        #
-
-
-    logFrequency        = 100   #MDYNAMICS_PARAMETERS['log_freq']                                       
-    steps               = 50000 #MDYNAMICS_PARAMETERS['nsteps_EQ']                                     
-    temperature         = 300   #MDYNAMICS_PARAMETERS['temperature']                                    
-    temperatureCoupling = 0.1   #MDYNAMICS_PARAMETERS['temperatureCoupling']                            
-    timeStep            = 0.001 #MDYNAMICS_PARAMETERS['timestep']                                     
+    
+    
+                              #---------------------------#
+                              #       EQUILIBRATION       #
+                              #---------------------------#
+    logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                       
+    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                     
+    temperature         = MDYNAMICS_PARAMETERS['temperature']                                    
+    temperatureCoupling = MDYNAMICS_PARAMETERS['temperatureCoupling']                            
+    timeStep            = MDYNAMICS_PARAMETERS['timestep']                                     
                                                                                                       
     # . Equilibration.                                                                                
-    LeapFrogDynamics_SystemGeometry ( molecule                  ,                                     
+    LeapFrogDynamics_SystemGeometry ( project.system                  ,                                     
                                       log                 = None,                                     
                                       logFrequency        = logFrequency,                             
                                       #rng                 = rng,                                     
@@ -512,13 +580,13 @@ def parallel_umbrella_sampling (pklFile):
     #------------------------------------------------------------------------------------------------------------------------------------#                   
                                                                                                                                     
     # . Data-collection.                                                                                                            
-    traj = SystemSoftConstraintTrajectory ( trajname, molecule, mode = "w" )                                                        
+    traj = SystemSoftConstraintTrajectory ( trajname, project.system, mode = "w" )                                                        
                                                                                                                                     
-    steps               = 100000# MDYNAMICS_PARAMETERS['nsteps_DC']                                                                 
-    LeapFrogDynamics_SystemGeometry ( molecule,                                                                                     
+
+    steps               = MDYNAMICS_PARAMETERS['nsteps_DC']
+    LeapFrogDynamics_SystemGeometry ( project.system,                                                                                     
                                       logFrequency        = logFrequency,                                                           
                                       log                 = None, 
-                                      #rng                 = rng,                                                                   
                                       steps               = steps,                                                                  
                                       temperature         = temperature,                                                            
                                       temperatureCoupling = temperatureCoupling,                                                    
@@ -528,7 +596,7 @@ def parallel_umbrella_sampling (pklFile):
 
 
 
-    energy = molecule.Energy (log                 = None )
+    energy = project.system.Energy (log                 = None )
     ##print energy
     return energy
 
