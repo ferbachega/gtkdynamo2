@@ -18,7 +18,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">button</property>
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -32,7 +32,7 @@
             </child>
             <child>
               <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">button</property>
+                <property name="label" translatable="yes">Run</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -46,7 +46,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
@@ -126,11 +126,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="NEBDialog_NEB_number_of_structures">
+                      <object class="GtkEntry" id="Bins">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="text" translatable="yes">24</property>
+                        <property name="text" translatable="yes">100</property>
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
@@ -143,11 +143,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="NEBDialog_NEB_maximum_interations">
+                      <object class="GtkEntry" id="LogFrequency">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="text" translatable="yes">5000</property>
+                        <property name="text" translatable="yes">1</property>
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
@@ -162,11 +162,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="NEBDialog_NEB_grad_tol">
+                      <object class="GtkEntry" id="MaximumIterations">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="text" translatable="yes">0.02</property>
+                        <property name="text" translatable="yes">1000</property>
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
@@ -181,11 +181,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="trajectory_name">
+                      <object class="GtkEntry" id="RMSGradientTolerance:">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="text" translatable="yes">NEB_reac_pd_path.trj</property>
+                        <property name="text" translatable="yes">1.0e-3</property>
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
@@ -214,7 +214,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="NEBDialog_NEB_maximum_interations1">
+                      <object class="GtkEntry" id="Temperature">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
@@ -246,7 +246,7 @@
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
@@ -282,14 +282,17 @@
                             <property name="headers_clickable">False</property>
                             <property name="rules_hint">True</property>
                             <property name="search_column">0</property>
+                            <signal name="button-press-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn1">
                                 <property name="resizable">True</property>
-                                <property name="title" translatable="yes">file</property>
+                                <property name="clickable">True</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                                  <object class="GtkCellRendererToggle" id="cellrenderertext1">
+                                    <signal name="toggled" handler="on_cellrenderertoggle1_toggled" swapped="no"/>
+                                  </object>
                                   <attributes>
-                                    <attribute name="text">0</attribute>
+                                    <attribute name="active">0</attribute>
                                   </attributes>
                                 </child>
                               </object>
@@ -297,7 +300,7 @@
                             <child>
                               <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                 <property name="resizable">True</property>
-                                <property name="title" translatable="yes">type</property>
+                                <property name="title" translatable="yes">trajectory block</property>
                                 <child>
                                   <object class="GtkCellRendererText" id="cellrenderertext2"/>
                                   <attributes>
@@ -332,11 +335,12 @@
                     <property name="layout_style">start</property>
                     <child>
                       <object class="GtkButton" id="button3">
-                        <property name="label" translatable="yes">button</property>
+                        <property name="label" translatable="yes">Add trajectory block</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="add_files_to_the_treeview" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -346,7 +350,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="button4">
-                        <property name="label" translatable="yes">button</property>
+                        <property name="label" translatable="yes">Clear list</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -360,7 +364,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
@@ -385,5 +389,13 @@
       <action-widget response="0">button2</action-widget>
       <action-widget response="0">button1</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name TrueOrFalse -->
+      <column type="gboolean"/>
+      <!-- column-name FileNames -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

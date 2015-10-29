@@ -2337,6 +2337,16 @@
                         <signal name="activate" handler="on_Analysis_PlotLogGraph_activate" swapped="no"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menuitem70WHAMEquationSolver ">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">WHAM Equation solver (PMF calculations)</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_MainMenu_Analysis_WHAMEquationSolver_activate" swapped="no"/>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -2873,20 +2883,17 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
-                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
-                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
-                                <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
                                 <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
+                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
+                                <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
+                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
                                     <property name="clickable">True</property>
-                                    <signal name="clicked" handler="on_treeviewcolumn2_clicked" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererToggle" id="cellrenderertoggle1">
-                                        <signal name="toggled" handler="on_cellrenderertoggle1_toggled" swapped="no"/>
-                                      </object>
+                                      <object class="GtkCellRendererToggle" id="cellrenderertoggle1"/>
                                       <attributes>
                                         <attribute name="activatable">0</attribute>
                                         <attribute name="active">0</attribute>

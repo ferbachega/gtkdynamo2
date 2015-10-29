@@ -143,6 +143,7 @@ from gui.DialogWorkSpaceDialog.WorkSpace                     import WorkSpaceDia
 from gui.DialogChargeRescale.ChargeRescale                   import ChargeRescaleDialog         #
 from gui.WindowUmbrellaSampling.UmbrellaSampling             import UmbrellaSamplingWindow      #
 
+from gui.DialogWHAM.WHAM                                     import WHAMEquationSolverDialog
 
 #/home/fernando/Documents/gtkdynamo2/gui/DialogPreferences/Preferences.py
 #from gui.MainMenu           import  MainMenu                                                                        
@@ -536,14 +537,23 @@ class MainMenu (object):
             #print 'MOPACEnergy'
 
         def on_MainMenu_Edit_NonBondingModels_activate(self, button):
-                """ Function doc """
-                self.NonBondDialog.dialog.run()
-                self.NonBondDialog.dialog.hide()
+            """ Function doc """
+            self.NonBondDialog.dialog.run()
+            self.NonBondDialog.dialog.hide()
+
+
+        def on_MainMenu_Analysis_WHAMEquationSolver_activate(self, menuItem):
+            """ Function doc """
+            self.WHAMEquationSolver.dialog.run()
+            self.WHAMEquationSolver.dialog.hide()
 
 
         def on_Analysis_PlotLogGraph_activate (self, button):
             """ Function doc """
-            
+    
+    
+    
+    
             FileChooser = FileChooserWindow()
             FileName = FileChooser.GetLogFileName(self.builder)
             
@@ -1295,110 +1305,112 @@ class TreeviewHistory(object):
                     model.set(iter, 0, true_or_false)
 
 class TreeviewSelections(object):
-	'''                                            
-	#      ---------------------------------  
-	#           PyMOL TREEVIEW  methods    
-	#      ---------------------------------
+    '''                                            
+    #      ---------------------------------  
+    #           PyMOL TREEVIEW  methods    
+    #      ---------------------------------
 
-	'''   
-	def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
-		if event.button == 3:
-			#print "Mostrar menu de contexto botao3"
-			selection     = tree.get_selection()
-			model         = tree.get_model()
-			(model, iter) = selection.get_selected()
-			if iter != None:
-				#self.selectedID  = str(model.get_value(iter, 0))  # @+
-				self.selectedObj = str(model.get_value(iter, 0))
-				self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
-				
-				widget = self.builder.get_object('treeview_menu')
-				widget.popup(None, None, None, event.button, event.time)
-		
-		if event.button == 2:
-			selection     = tree.get_selection()
-			model         = tree.get_model()
-			(model, iter) = selection.get_selected()
-			pymol_object = model.get_value(iter, 0) 
-			
-			string2 = 'select sele, '+ pymol_object
-			cmd.do(string2)
-			cmd.center('sele')
-		
-		
-		if event.button == 1:
-			selection     = tree.get_selection()
-			model         = tree.get_model()
-			(model, iter) = selection.get_selected()
-			pymol_object = model.get_value(iter, 0) 
-			
-			string2 = 'select sele, '+ pymol_object
-			cmd.do(string2)
-			cmd.enable('sele')
+    '''   
+    def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
+        if event.button == 3:
+            #print "Mostrar menu de contexto botao3"
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            if iter != None:
+                #self.selectedID  = str(model.get_value(iter, 0))  # @+
+                self.selectedObj = str(model.get_value(iter, 0))
+                self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
+                
+                widget = self.builder.get_object('treeview_menu')
+                widget.popup(None, None, None, event.button, event.time)
+        
+        if event.button == 2:
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            pymol_object = model.get_value(iter, 0) 
+            
+            string2 = 'select sele, '+ pymol_object
+            cmd.do(string2)
+            cmd.center('sele')
+        
+        
+        if event.button == 1:
+            selection     = tree.get_selection()
+            model         = tree.get_model()
+            (model, iter) = selection.get_selected()
+            pymol_object = model.get_value(iter, 0) 
+            
+            string2 = 'select sele, '+ pymol_object
+            cmd.do(string2)
+            cmd.enable('sele')
 
-	def on_treeview2_select_cursor_parent (self, tree, path, column):
-		""" Function doc """
-		print 'select_cursor_parent' 
+    def on_treeview2_select_cursor_parent (self, tree, path, column):
+        """ Function doc """
+        print 'select_cursor_parent' 
 
-	def handle_history_keypress(self, widget, event):
-		if gtk.gdk.keyval_name(event.keyval) == 'Delete':
-			print 'Excluir item'
+    def handle_history_keypress(self, widget, event):
+        if gtk.gdk.keyval_name(event.keyval) == 'Delete':
+            print 'Excluir item'
 
-	def on_treeview2_select(self, tree, path, column):
-		print "aqui keybord"
+    def on_treeview2_select(self, tree, path, column):
+        print "aqui keybord"
 
-	def on_treeview2_select_cursor_row (self, tree, path, column):
-		""" Function doc """
-		print "aqui select_cursor_row"
+    def on_treeview2_select_cursor_row (self, tree, path, column):
+        """ Function doc """
+        print "aqui select_cursor_row"
 
-	def  on_treeviewcolumn2_clicked(self, column):
-		""" Function doc """
-		print 'treeviewcolumn2_clicked'
+    def  on_treeviewcolumn2_clicked(self, column):
+        """ Function doc """
+        print 'treeviewcolumn2_clicked'
 
-	def on_cellrenderertoggle1_toggled (self, cell, path):
-		""" Function doc """
-		print 'cellrenderertoggle1'
-		"""
-		Sets the toggled state on the toggle button to true or false.
-		"""
-		print cell, path
+    def on_cellrenderertoggle1_toggled (self, cell, path):
+        """ Function doc """
+        #print 'cellrenderertoggle1'
+        """
+        Sets the toggled state on the toggle button to true or false.
+        """
+        #print cell, path
+        pass
+        
+    def  on_treeview2_select_cursor_parent(self, tree, path, column):
+        """ Function doc """
+        #print 'aaaa'
+        model = tree.get_model()  # @+
+        iter = model.get_iter(path)  # @+
+        pymol_object = model.get_value(iter, 2)  # @+
+        true_or_false = model.get_value(iter, 0)
+        # atomtype = model.get_value( iter, 2) #@+
+        # print true_or_false
 
-	def  on_treeview2_select_cursor_parent(self, tree, path, column):
-		""" Function doc """
-		model = tree.get_model()  # @+
-		iter = model.get_iter(path)  # @+
-		pymol_object = model.get_value(iter, 2)  # @+
-		true_or_false = model.get_value(iter, 0)
-		# atomtype = model.get_value( iter, 2) #@+
-		# print true_or_false
+        if true_or_false == False:
+            cmd.enable(pymol_object)
+            true_or_false = True
+            model.set(iter, 0, true_or_false)
+            # print true_or_false
 
-		if true_or_false == False:
-			cmd.enable(pymol_object)
-			true_or_false = True
-			model.set(iter, 0, true_or_false)
-			# print true_or_false
+        else:
+            cmd.disable(pymol_object)
+            true_or_false = False
+            model.set(iter, 0, true_or_false)
+            # print true_or_false
 
-		else:
-			cmd.disable(pymol_object)
-			true_or_false = False
-			model.set(iter, 0, true_or_false)
-			# print true_or_false
+    def row_activated(self, tree, path, column):
 
-	def row_activated(self, tree, path, column):
+        model = tree.get_model()   
+        iter = model.get_iter(path)  
+        pymol_object = model.get_value(iter, 0)  
 
-		model = tree.get_model()   
-		iter = model.get_iter(path)  
-		pymol_object = model.get_value(iter, 0)  
+        string2 = 'select sele, '+ pymol_object
+        cmd.do(string2)
+        cmd.enable('sele')
 
-		string2 = 'select sele, '+ pymol_object
-		cmd.do(string2)
-		cmd.enable('sele')
-
-	def row_activated2(self, tree, path, column):
-		model = tree.get_model()  # @+
-		iter = model.get_iter(path)  # @+
-		ID = model.get_value(iter, 1)  # @+
-		#pprint (self.project.settings['job_history'][ID])
+    def row_activated2(self, tree, path, column):
+        model = tree.get_model()  # @+
+        iter = model.get_iter(path)  # @+
+        ID = model.get_value(iter, 1)  # @+
+        #pprint (self.project.settings['job_history'][ID])
         #
         #nao printa mais o (self.project.settings['job_history'][ID])
 
@@ -1772,6 +1784,7 @@ class gtkdynamo_main(threading.Thread,
         self.NEBDialog               = NEBDialog(self)
         self.EnergyRefineDialog      = TrajectoryEnergyRefineDialog(self)
         
+        self.WHAMEquationSolver      = WHAMEquationSolverDialog(self)
         
         
         self.DialogMOPACSEnergy      = MOPACSEnergyDialog(self)
