@@ -97,7 +97,15 @@ class WHAMEquationSolverDialog():
         
         #return index,atomname,atomtype,charge_table
     
-    
+    def clear_trajectory_blocks_list (self, button):
+        """ Function doc """
+        self.FileNames = {
+                         }   
+        liststore = self.builder.get_object('liststore1')
+        #
+        self.WHAM_TREEVIEW_ADD_DATA (liststore = liststore, trajectory_blocks=self.FileNames)
+        
+        
     def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
         
         pass

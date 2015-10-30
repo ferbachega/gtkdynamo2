@@ -356,6 +356,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="clear_trajectory_blocks_list" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>

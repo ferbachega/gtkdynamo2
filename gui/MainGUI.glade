@@ -1046,7 +1046,7 @@
   <object class="GtkImage" id="image71">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">.icon_sequence.png</property>
+    <property name="pixbuf">.show_sequence_24x24.png</property>
   </object>
   <object class="GtkImage" id="image72">
     <property name="visible">True</property>
@@ -1102,6 +1102,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_delete_16x16.png</property>
+  </object>
+  <object class="GtkImage" id="image82">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.icon_PMF.png</property>
   </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
@@ -2338,12 +2343,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="menuitem70WHAMEquationSolver ">
+                      <object class="GtkImageMenuItem" id="menuitem70WHAMEquationSolver ">
+                        <property name="label" translatable="yes">WHAM Equation Solver (PMF calculations)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">WHAM Equation solver (PMF calculations)</property>
-                        <property name="use_underline">True</property>
+                        <property name="image">image82</property>
+                        <property name="use_stock">False</property>
                         <signal name="activate" handler="on_MainMenu_Analysis_WHAMEquationSolver_activate" swapped="no"/>
                       </object>
                     </child>
@@ -2883,11 +2889,11 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
+                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
-                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
                                 <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
-                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
+                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
