@@ -1676,6 +1676,14 @@ class gtkdynamo_main(threading.Thread,
                                'bg_color'           : 'black'  ,
                                'fixed'              : 'grey80' ,
                                'color'              : 'radon'  ,
+                               
+                               "FIX": {
+                                        "dots"   : False, 
+                                        "spheres": False, 
+                                        "lines"  : True, 
+                                        "sticks" : False
+                                      },
+
                                "QC": {
                                         "dots"   : False, 
                                         "spheres": True , 
