@@ -26,6 +26,7 @@ import os
 import gtk
 import gobject
 import pango
+import time
 
 from gui.FileChooserWindow                                   import *           
 
@@ -40,6 +41,9 @@ GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
 
 GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
 from pprint import pprint
+from pDynamoMethods.pDynamoUmbrellaSampling import  run_WHAM
+from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
+from   MatplotGTK.LogParse            import *                                      #
 
 
 '''
@@ -51,6 +55,48 @@ comentarios serao salvos no history dos processos
 
 class WHAMEquationSolverDialog():
 
+
+    def run_WHAM_Equation_Solver (self, button):
+        """ Function doc """
+        Bins                 = self.builder.get_object('Bins'                ).get_text()
+        LogFrequency         = self.builder.get_object('LogFrequency'        ).get_text()
+        MaximumIterations    = self.builder.get_object('MaximumIterations'   ).get_text()
+        RMSGradientTolerance = self.builder.get_object('RMSGradientTolerance').get_text()
+        Temperature          = self.builder.get_object('Temperature'         ).get_text()
+    
+        model                = self.builder.get_object("liststore1") 
+        data_path            = self.GTKDynamoSession.project.settings['data_path']
+        trajectory_blocks = []
+        
+        for i in model:
+            if i[0] == True:
+                trajectory_blocks.append(i[1])
+            else:
+                pass
+
+        print 'Bins'                 , Bins                
+        print 'LogFrequency'         , LogFrequency              
+        print 'MaximumIterations'    , MaximumIterations          
+        print 'RMSGradientTolerance' , RMSGradientTolerance       
+        print 'Temperature'          , Temperature                
+        pprint (trajectory_blocks)
+        
+        PARAMETERS = {
+                    'Bins'                 : Bins                 ,
+                    'LogFrequency'         : LogFrequency         ,
+                    'MaximumIterations'    : MaximumIterations    ,
+                    'RMSGradientTolerance' : RMSGradientTolerance ,
+                    'Temperature'          : Temperature          ,
+                    'trajectory_blocks'    : trajectory_blocks    ,
+                    'output'               : data_path            ,
+                    }
+        
+        logFile = run_WHAM (PARAMETERS)
+        #parameters = ParseProcessLogFile(logFile)
+        #PlotGTKWindow(parameters)
+        
+        #return index,atomname,atomtype,charge_table
+    
     
     def on_treeview_PyMOL_Objects_button_release_event(self, tree, event):
         

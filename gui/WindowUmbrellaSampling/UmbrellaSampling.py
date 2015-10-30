@@ -159,14 +159,15 @@ class UmbrellaSamplingWindow():
         
         if self.builder.get_object("checkbutton_minimization").get_active():
             MINIMIZATION_PARAMETERS={
-                                    'max_int'   : max_int   ,
-                                    'log_freq'  : log_freq  ,
-                                    'rms_grad'  : rms_grad  ,
-                                    'mim_method': mim_method,
-                                    'outpath'   : outpath
+                                    'do_minimizaton': True      ,
+                                    'max_int'       : max_int   ,
+                                    'log_freq'      : log_freq  ,
+                                    'rms_grad'      : rms_grad  ,
+                                    'mim_method'    : mim_method,
+                                    'outpath'       : outpath
                                     }
         else:
-            MINIMIZATION_PARAMETERS = {}	
+            MINIMIZATION_PARAMETERS = {'do_minimizaton': False }	
         
         MDYNAMICS_PARAMETERS  = {}
         MD_mode               =  self.builder.get_object('combobox_molecular_dynamics_method').get_active_text()
@@ -250,7 +251,7 @@ class UmbrellaSamplingWindow():
                                      self.GTKDynamoSession.project
                                      )
         
-        #self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
+        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
         self.Visible  =  False
         self.window.destroy()
 
