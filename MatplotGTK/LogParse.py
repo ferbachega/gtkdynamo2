@@ -622,13 +622,13 @@ def ParseProcessLogFile(log_file):
         parameters[1]['xlabel'] = 'ReactionCoord'
         parameters[1]['ylabel'] = 'Energy (KJ)'
 
-        parameters[2] = {}
-        parameters[2]['type'  ] = 'line'
-        parameters[2]['title' ] = 'Potential of mean force'
-        parameters[2]['X'     ] = ReactionCoord
-        parameters[2]['Y'     ] = PDF
-        parameters[2]['xlabel'] = 'Reaction Coordinate'
-        parameters[2]['ylabel'] = ' - '
+        #parameters[2] = {}
+        #parameters[2]['type'  ] = 'line'
+        #parameters[2]['title' ] = 'Potential of mean force'
+        #parameters[2]['X'     ] = ReactionCoord
+        #parameters[2]['Y'     ] = PDF
+        #parameters[2]['xlabel'] = 'Reaction Coordinate'
+        #parameters[2]['ylabel'] = ' - '
         
 
         return parameters

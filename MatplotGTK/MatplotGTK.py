@@ -92,10 +92,12 @@ class PlotGTKWindow:
         self.toolbar = NavigationToolbar(self.canvas, self.win)
         self.vbox.pack_start(self.toolbar, False, False)
         
+        '''
         self.status_bar = gtk.Statusbar()
         self.vbox.pack_end(self.status_bar, False, False)
         self.status_bar.push(0, '')
-
+        '''
+        
         plots = len(parameters)
         for i in parameters:
             
@@ -123,12 +125,12 @@ class PlotGTKWindow:
 
                 from pylab import colorbar
                 colorbar(im)
-                #im1=ax.imshow([[1,2],[2, 3]])
-                #plt.colorbar(im1, cax=ax, orientation="horizontal", ticks=[1,2,3])
-                #ax.imshow(matrix, cmap=cm.jet, interpolation='nearest', extent=(-4.1,4.5,-4,4))
+                im1=self.ax.imshow([[1,2],[2, 3]])
+                #plt.colorbar(im1, cax=self.ax, orientation="horizontal", ticks=[1,2,3])
+                #self.ax.imshow(matrix, cmap=cm.jet, interpolation='nearest', extent=(-4.1,4.5,-4,4))
 
                 from pylab import grid
-                #ax.imshow(matrix, cmap=cm.jet, interpolation='bilinear')
+                self.ax.imshow(matrix, cmap=cm.jet, interpolation='bilinear')
                 grid(True)
                 xlabel = parameters[i]['xlabel']
                 ylabel = parameters[i]['ylabel']
