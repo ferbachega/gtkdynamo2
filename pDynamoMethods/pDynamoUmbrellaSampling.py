@@ -103,7 +103,7 @@ def umbrella_sampling(outpath                 ,
         coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']                                                                           #
         coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
         coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
-                                                                                                                                        #
+        coord1_MASS_WEIGHT      = REACTION_COORD1['mass_weight']                                                                        #
         coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']                                                                      #
         coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']                                                                      #
                                                                                                                                         #
@@ -115,7 +115,66 @@ def umbrella_sampling(outpath                 ,
         text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
         text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
         text = text + "\n--------------------------------------------------------------------------------"                              #
+        
+        #if coord1_MASS_WEIGHT:
+        #    text = text + '\n'
+        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                            \                  /                                '
+        #    text = text + '\n                             A1--A2  . . . . A3                                 '
+        #    text = text + '\n                            /                  \                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                             ^   ^            ^                                 '
+        #    text = text + '\n                             |   |            |                                 '
+        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
+        #    text = text + '\n                               d1       d2	                                     '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
+        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
+        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n--------------------------------------------------------------------------------'
+        #
+        #
+        #else:
+        #    text = text + '\n'
+        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                            \                  /                                '
+        #    text = text + '\n                             A1--A2  . . . . A3                                 '
+        #    text = text + '\n                            /                  \                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                             ^   ^            ^                                 '
+        #    text = text + '\n                             |   |            |                                 '
+        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
+        #    text = text + '\n                               d1       d2	                                     '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
+        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
+        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n--------------------------------------------------------------------------------'
+        
+        
+        
+        
+        
+        
     #-----------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+
 
     
     reaction_path_type  = REACTION_COORD1['REACTION_PATH_TYPE'] 
@@ -403,16 +462,32 @@ def parallel_umbrella_sampling (input_system):
         coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']             
         coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']        
         coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']             
-                                                                          
+        coord1_MASS_WEIGHT      = REACTION_COORD1['mass_weight']                                                                  
         coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']        
         coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']        
                                                                           
-        dist12  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
-        dist23  = project.system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
-        dist    = dist12 - dist23
+        distance_a1_a2  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+        distance_a2_a3  = project.system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+        
+        
+        #-------------------------------#
+        #           MASS_WEIGHT         #
+        #-------------------------------#
+        if coord1_MASS_WEIGHT:
+            DMINIMUM =  (coord1_sigma_pk1_pk3 * distance_a1_a2) - (coord1_sigma_pk3_pk1 * distance_a2_a3*-1)
+        
+      
+        #-------------------------------#
+        #             NORMAL            #
+        #-------------------------------#
+        else:
+            #self.sigma_pk1_pk3 =  1.0
+            #self.sigma_pk3_pk1 = -1.0
+            DMINIMUM = distance_a1_a2 - distance_a2_a3        
+        #dist    = dist12 - dist23
 
         #------------------------------------------------------------------------------------------------------#                  
-        rxncoord     = float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                        #
+        rxncoord     = DMINIMUM #float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                        #
         scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                   #
         constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                          #
                                                           coord1_sigma_pk1_pk3],                               #

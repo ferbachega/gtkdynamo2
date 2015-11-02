@@ -118,6 +118,8 @@ class ScanWindow():
             ATOM3      = int(self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3').get_text())     #
             ATOM3_name = self.builder.get_object    ('ScanDialog_SCAN_entry_cood1_ATOM3_name').get_text() #
                                                                                                           #
+            mass_weight= self.builder.get_object("ScanDialog_scan_checkbutton_mass_weight").get_active() 
+                        
             print "  "+ATOM1_name+"   ->-  "+ATOM2_name+"  -->-- "+ATOM3_name+"  "                        #
             print " pk1 --- pk2 ---- pk3 \n"                                                              #
             print "DMINIMUM  : ",DMINIMUM                                                                 #
@@ -146,6 +148,7 @@ class ScanWindow():
                           'log_freq'     : log_freq,                                                      #
                           'rms_grad'     : rms_grad,                                                      #
                           'mim_method'   : mim_method,                                                    #
+                          'mass_weight'  : mass_weight,                                                   #
                           'data_path'    : data_path  }                                                   #
                                                                                                           #
                                                                                                           #

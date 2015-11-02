@@ -96,6 +96,8 @@ class UmbrellaSamplingWindow():
             ATOM3      = int(self.builder.get_object("entry_coord1_ATOM3"     ).get_text())               #
             ATOM3_name = self.builder.get_object    ("entry_coord1_ATOM3_name").get_text()                #
                                                                                                           #
+            mass_weight= self.builder.get_object    ("checkbutton_mass_weight1").get_active()             #
+                                                                                                          #
             print "  "+ATOM1_name+"   ->-  "+ATOM2_name+"  -->-- "+ATOM3_name+"  "                        #
             print " pk1 --- pk2 ---- pk3 \n"                                                              #
             print "DMINIMUM  : ",DMINIMUM                                                                 #
@@ -117,6 +119,7 @@ class UmbrellaSamplingWindow():
                                'NWINDOWS'     : NWINDOWS,                                                 #
                                'FORCECONSTANT': FORCECONSTANT,                                            #
                                'DMINIMUM'     : DMINIMUM,                                                 #
+                               'mass_weight'  : mass_weight,                                              #
                                'sigma_pk1_pk3': sigma_pk1_pk3,                                            #
                                'sigma_pk3_pk1': sigma_pk3_pk1}                                            #
         #-------------------------------------------------------------------------------------------------#

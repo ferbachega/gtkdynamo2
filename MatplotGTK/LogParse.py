@@ -351,12 +351,14 @@ def ParseSummaryLogFile (log_file):
 def ParseProcessLogFile(log_file):
     """ Function doc """
     parameters = {
-                 'type'  : 'line'    ,   # line / matrix
-                 'title' : ''        ,   #
-                 'X'     : []        ,   # X 
-                 'Y'     : []        ,   # Y 
-                 'xlabel': 'x label' ,   # xlabel,
-                 'ylabel': 'y label' ,   # ylabel,
+                  1: {
+                     'type'  : 'line'    ,   # line / matrix
+                     'title' : ''        ,   #
+                     'X'     : []        ,   # X 
+                     'Y'     : []        ,   # Y 
+                     'xlabel': 'x label' ,   # xlabel,
+                     'ylabel': 'y label' ,   # ylabel,
+                     }
                  }
     
     
@@ -382,11 +384,11 @@ def ParseProcessLogFile(log_file):
                 parameters['X'     ].append(line2[0])
                 parameters['Y'     ].append(line2[2])
             
-            
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Chain-Of-States'
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
+         
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Chain-Of-States'
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
         #pprint(parameters)
         return parameters
         
@@ -477,11 +479,11 @@ def ParseProcessLogFile(log_file):
         X = np.array(matrix_lines)
 
                 
-        parameters['type'  ] = 'matrix'
-        parameters['title' ] = 'SCAN2D'
-        parameters['matrix'] =  X
-        parameters['xlabel'] = r1
-        parameters['ylabel'] = r2
+        parameters[1]['type'  ] = 'matrix'
+        parameters[1]['title' ] = 'SCAN2D'
+        parameters[1]['matrix'] =  X
+        parameters[1]['xlabel'] = r1
+        parameters[1]['ylabel'] = r2
         #print parameters
         return parameters
 
@@ -494,6 +496,7 @@ def ParseProcessLogFile(log_file):
         Frame      = []
         PK1_PK2    = []
         PK2_PK3    = []
+        ReactionCoord = []
         Energy     = []
 
         
@@ -507,16 +510,26 @@ def ParseProcessLogFile(log_file):
                 try:
                     Frame.append(float(linex[0]))
                     
+                    ReactionCoord.append(float(linex[1])-float(linex[2]))
                 
                     Energy.append(float(linex[-1]))
                 except:
                     a = None
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'SCAN Multiple-Distance'
-        parameters['X'     ] = Frame
-        parameters['Y'     ] = Energy
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'     ] = Frame
+        parameters[1]['Y'     ] = Energy
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+        parameters[2] = {}
+        parameters[2]['type'  ] = 'line'
+        parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        parameters[2]['X'     ] = ReactionCoord
+        parameters[2]['Y'     ] = Energy
+        parameters[2]['xlabel'] = 'Reaction Coordinate(r1 -r2)'
+        parameters[2]['ylabel'] = 'Energy (KJ)'
+        
         #print parameters
         return parameters
 
@@ -541,18 +554,28 @@ def ParseProcessLogFile(log_file):
                 
                 try:
                     Frame.append(float(linex[0]))
-                    
-                
+                    ReactionCoord.append(float(linex[1]))
                     Energy.append(float(linex[-1]))
                 except:
                     a = None
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'SCAN Multiple-Distance'
-        parameters['X'     ] = Frame
-        parameters['Y'     ] = Energy
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
-        print parameters
+        
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'     ] = Frame
+        parameters[1]['Y'     ] = Energy
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+        parameters[2] = {}
+        parameters[2]['type'  ] = 'line'
+        parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        parameters[2]['X'     ] = ReactionCoord
+        parameters[2]['Y'     ] = Energy
+        parameters[2]['xlabel'] = 'Reaction Coordinate(r1)'
+        parameters[2]['ylabel'] = 'Energy (KJ)'
+        
+        
+        #print parameters
         return parameters	
 
 
@@ -592,13 +615,22 @@ def ParseProcessLogFile(log_file):
                     pass
         
         
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Potential of mean force'
-        parameters['X'     ] = ReactionCoord
-        parameters['Y'     ] = PMF
-        parameters['xlabel'] = 'ReactionCoord'
-        parameters['ylabel'] = 'Energy (KJ)'
-        #pprint(parameters)
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Potential of mean force'
+        parameters[1]['X'     ] = ReactionCoord
+        parameters[1]['Y'     ] = PMF
+        parameters[1]['xlabel'] = 'ReactionCoord'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+
+        parameters[2] = {}
+        parameters[2]['type'  ] = 'line'
+        parameters[2]['title' ] = 'Potential of mean force'
+        parameters[2]['X'     ] = ReactionCoord
+        parameters[2]['Y'     ] = PDF
+        parameters[2]['xlabel'] = 'Reaction Coordinate'
+        parameters[2]['ylabel'] = ' - '
+        
+
         return parameters
 
 
@@ -647,12 +679,14 @@ def ParseProcessLogFile(log_file):
                 except:
                     pass
         
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Energy minimization: L-BFGS'
-        parameters['X'     ] = interact
-        parameters['Y'     ] = Function
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Energy minimization: L-BFGS'
+        parameters[1]['X'     ] = interact
+        parameters[1]['Y'     ] = Function
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+        
         #pprint(parameters)
         return parameters
 
@@ -702,12 +736,12 @@ def ParseProcessLogFile(log_file):
                 except:
                     pass
         
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Energy minimization: Conjugate-Gradient'
-        parameters['X'     ] = interact
-        parameters['Y'     ] = Function
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Energy minimization: Conjugate-Gradient'
+        parameters[1]['X'     ] = interact
+        parameters[1]['Y'     ] = Function
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
         #pprint(parameters)
         return parameters
 
@@ -765,12 +799,12 @@ def ParseProcessLogFile(log_file):
                 except:
                     pass
 
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Energy minimization: Steepest-Descent'
-        parameters['X'     ] = interact
-        parameters['Y'     ] = Function
-        parameters['xlabel'] = 'Frames'
-        parameters['ylabel'] = 'Energy (KJ)'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Energy minimization: Steepest-Descent'
+        parameters[1]['X'     ] = interact
+        parameters[1]['Y'     ] = Function
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
         #pprint(parameters)
         return parameters
 
@@ -816,12 +850,15 @@ def ParseProcessLogFile(log_file):
                         pass
 
 
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Velocity Verlet Integrator'
-        parameters['X'     ] = Time
-        parameters['Y'     ] = Total_energy
-        parameters['xlabel'] = 'Time'
-        parameters['ylabel'] = 'Total_energy'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Velocity Verlet Integrator'
+        parameters[1]['X'     ] = Time
+        parameters[1]['Y'     ] = Total_energy
+        parameters[1]['xlabel'] = 'Time'
+        parameters[1]['ylabel'] = 'Total_energy'
+        
+        
+        
         #pprint(parameters)
         return parameters
 
@@ -868,12 +905,12 @@ def ParseProcessLogFile(log_file):
                         pass
 
 
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Leapfrog Verlet Integrator'
-        parameters['X'     ] = Time
-        parameters['Y'     ] = Total_energy
-        parameters['xlabel'] = 'Time'
-        parameters['ylabel'] = 'Total_energy'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Leapfrog Verlet Integrator'
+        parameters[1]['X'     ] = Time
+        parameters[1]['Y'     ] = Total_energy
+        parameters[1]['xlabel'] = 'Time'
+        parameters[1]['ylabel'] = 'Total_energy'
         pprint(parameters)
         return parameters
 
@@ -923,12 +960,12 @@ def ParseProcessLogFile(log_file):
                         pass
 
 
-        parameters['type'  ] = 'line'
-        parameters['title' ] = 'Langevin Velocity Verlet Integrator'
-        parameters['X'     ] = Time
-        parameters['Y'     ] = Total_energy
-        parameters['xlabel'] = 'Time'
-        parameters['ylabel'] = 'Total_energy'
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'Langevin Velocity Verlet Integrator'
+        parameters[1]['X'     ] = Time
+        parameters[1]['Y'     ] = Total_energy
+        parameters[1]['xlabel'] = 'Time'
+        parameters[1]['ylabel'] = 'Total_energy'
         #pprint(parameters)
         return parameters
 

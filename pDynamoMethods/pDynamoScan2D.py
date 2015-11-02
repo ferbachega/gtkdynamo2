@@ -286,8 +286,8 @@ def Scan2D(outpath            ,
                                                                                                                                   #
                 try:                                                                                                              #
                     parameters = ParseProcessLogFile (outpath+ "/"+"tmp.log")                                                     #
-                    x = parameters['X']
-                    y = parameters['Y']
+                    x = parameters[1]['X']
+                    y = parameters[1]['Y']
                     X[i][j] = y[-1]                                                                                               #
                     text = text + "%18.8f  " % (X[i][j])                                                                          #
                     #print text                                                                                                   #
