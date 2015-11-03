@@ -522,13 +522,13 @@ def ParseProcessLogFile(log_file):
         parameters[1]['xlabel'] = 'Frames'
         parameters[1]['ylabel'] = 'Energy (KJ)'
         
-        parameters[2] = {}
-        parameters[2]['type'  ] = 'line'
-        parameters[2]['title' ] = 'SCAN Multiple-Distance'
-        parameters[2]['X'     ] = ReactionCoord
-        parameters[2]['Y'     ] = Energy
-        parameters[2]['xlabel'] = 'Reaction Coordinate(r1 -r2)'
-        parameters[2]['ylabel'] = 'Energy (KJ)'
+        #parameters[2] = {}
+        #parameters[2]['type'  ] = 'line'
+        #parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        #parameters[2]['X'     ] = ReactionCoord
+        #parameters[2]['Y'     ] = Energy
+        #parameters[2]['xlabel'] = 'Reaction Coordinate(r1 -r2)'
+        #parameters[2]['ylabel'] = 'Energy (KJ)'
         
         #print parameters
         return parameters
@@ -543,7 +543,7 @@ def ParseProcessLogFile(log_file):
         PK1_PK2    = []
         PK2_PK3    = []
         Energy     = []
-
+        ReactionCoord = []
         
         for line in lines[index: -1]:
             linex = line.split()
@@ -553,9 +553,9 @@ def ParseProcessLogFile(log_file):
                 #print linex
                 
                 try:
-                    Frame.append(float(linex[0]))
-                    ReactionCoord.append(float(linex[1]))
-                    Energy.append(float(linex[-1]))
+                    Frame        .append(float(linex[0] ))
+                    ReactionCoord.append(float(linex[1] ))
+                    Energy       .append(float(linex[-1]))
                 except:
                     a = None
         
@@ -566,13 +566,13 @@ def ParseProcessLogFile(log_file):
         parameters[1]['xlabel'] = 'Frames'
         parameters[1]['ylabel'] = 'Energy (KJ)'
         
-        parameters[2] = {}
-        parameters[2]['type'  ] = 'line'
-        parameters[2]['title' ] = 'SCAN Multiple-Distance'
-        parameters[2]['X'     ] = ReactionCoord
-        parameters[2]['Y'     ] = Energy
-        parameters[2]['xlabel'] = 'Reaction Coordinate(r1)'
-        parameters[2]['ylabel'] = 'Energy (KJ)'
+        #parameters[2] = {}
+        #parameters[2]['type'  ] = 'line'
+        #parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        #parameters[2]['X'     ] = ReactionCoord
+        #parameters[2]['Y'     ] = Energy
+        #parameters[2]['xlabel'] = 'Reaction Coordinate(r1)'
+        #parameters[2]['ylabel'] = 'Energy (KJ)'
         
         
         #print parameters
