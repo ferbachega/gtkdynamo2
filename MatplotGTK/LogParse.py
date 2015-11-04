@@ -381,8 +381,8 @@ def ParseProcessLogFile(log_file):
         for line in lines[index:]:
             line2 =  line.split()
             if len(line2) == 9:
-                parameters['X'     ].append(line2[0])
-                parameters['Y'     ].append(line2[2])
+                parameters[1]['X'     ].append(line2[0])
+                parameters[1]['Y'     ].append(line2[2])
             
          
         parameters[1]['type'  ] = 'line'

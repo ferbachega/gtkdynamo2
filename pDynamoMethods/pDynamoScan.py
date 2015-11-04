@@ -156,8 +156,8 @@ def ScanSimpleDistance(parameters = None, project = None):
 
         #x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
         parameters = ParseProcessLogFile (outpath + '/' + "_scan_step"+str(i)+".log") 
-        x = parameters['X']
-        y = parameters['Y']
+        x = parameters[1]['X']
+        y = parameters[1]['Y']
         X_general.append(i)
         Y_general.append(y[-1])
 
@@ -281,8 +281,8 @@ def ScanMultipleDistances(parameters = None, project = None):
 
         #x,y = ParseProcessLogFile(outpath + '/' + "_scan_step"+str(i)+".log")
         parameters = ParseProcessLogFile (outpath + '/' + "_scan_step"+str(i)+".log") 
-        x = parameters['X']
-        y = parameters['Y']
+        x = parameters[1]['X']
+        y = parameters[1]['Y']
         X_general.append(i)
         Y_general.append(y[-1])
 

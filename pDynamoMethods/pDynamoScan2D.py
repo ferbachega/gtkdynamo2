@@ -353,7 +353,7 @@ def Scan2D(outpath            ,
 
 
 
-
+'''
 
 def ScanSimpleDistance(parameters = None, project = None):                 
     if parameters != None:
@@ -590,9 +590,9 @@ def ScanMultipleDistances(parameters = None, project = None):
     arq.writelines(text)
     arq.close()
     project.system.DefineSoftConstraints ( None )
-    return X_general, Y_general	, logFile 
+    return X_general, Y_general	, logFile  
     
-    
+'''
 
 def back_orca_output(output_path, step):
     try:
