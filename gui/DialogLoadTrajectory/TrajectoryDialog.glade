@@ -83,7 +83,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Trajactory type:</property>
+                        <property name="label" translatable="yes">Trajectory type:</property>
                       </object>
                       <packing>
                         <property name="x_options"/>
