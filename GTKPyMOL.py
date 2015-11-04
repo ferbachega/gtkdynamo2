@@ -309,7 +309,7 @@ class MainMenu (object):
 
         def on_MainMenu_File_Quit_activate (self, menuitem):
                 """ Function doc """
-                print '''\n\nThanks for use EasyHybrid - GTKDynamo 1.9 - \n\n'''
+                print '''\n\nThanks for using EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
 
