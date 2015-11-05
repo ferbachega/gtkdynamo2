@@ -1341,11 +1341,12 @@ class TreeviewSelections(object):
             selection     = tree.get_selection()
             model         = tree.get_model()
             (model, iter) = selection.get_selected()
-            pymol_object = model.get_value(iter, 0)
+            if iter is not None:
+                pymol_object = model.get_value(iter, 0)
 
-            string2 = 'select sele, '+ pymol_object
-            cmd.do(string2)
-            cmd.enable('sele')
+                string2 = 'select sele, '+ pymol_object
+                cmd.do(string2)
+                cmd.enable('sele')
 
     def on_treeview2_select_cursor_parent (self, tree, path, column):
         """ Function doc """
