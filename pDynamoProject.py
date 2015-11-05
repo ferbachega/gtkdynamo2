@@ -830,7 +830,7 @@ class QuantumChemistrySetup(object):
         self.settings['qc_table'] = []
         self.HideQCRegion(self.settings['PyMOL_Obj'])
         self.SystemCheck()
-        print 'aqui'
+        #print 'aqui'
         
         
 class FixedTableSetup(object):
@@ -1233,8 +1233,8 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
 
         """
 
-        print '----------------------antes-----------------------'
-        pprint (self.settings)
+        #print '----------------------antes-----------------------'
+        #pprint (self.settings)
         
         if self.system == None:
             #print "System empty"
@@ -1291,8 +1291,8 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             return SummaryFile
             # Only necessary to open the log file with TextEditor
         
-        print '----------------------depois-----------------------'
-        pprint (self.settings)
+        #print '----------------------depois-----------------------'
+        #pprint (self.settings)
             
     def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
         """ 
