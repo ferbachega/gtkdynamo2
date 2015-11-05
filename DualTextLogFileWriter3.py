@@ -59,7 +59,7 @@ def DualTextLog(path, filename="log.gui.txt"):
 #   - Jose Fernando R Bachega           |         - Fernando V Maluf          #
 #   - Troy Wymore                       |         - Lucas Assirati            #
 #   - Martin Field                      |         - Leonardo R Bachega        #
-#   - Osmar Norbeto de souza            |         - Richard Garratt           #
+#   - Osmar Norberto de Souza           |         - Richard Garratt           #
 #   - Luis Fernando S M Timmers         |                                     #
 #   - Walter R Paixao-Cortes            |                                     #
 #   - Michele Silva                     |                                     #

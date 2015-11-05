@@ -33,7 +33,7 @@ text1 = """
 #   - Michele Silva             - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #
 #   Special thanks to:
-#   - Osmar Norbeto de souza    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Osmar Norberto de Souza   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #   - Fernando V Maluf          - Univesity of Sao Paulo - SP, Brazil
 #   - Lucas Assirati            - Univesity of Sao Paulo - SP, Brazil
 #   - Leonardo R Bachega        - University of Purdue - West Lafayette, IN - USA
@@ -312,6 +312,7 @@ class MainMenu (object):
                 print '''\n\nThanks for using EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
+                sys.exit()
 
 
         def on_MainMenu_Edit_ClearFixedAtoms_activate (self, menuitem):
@@ -1340,11 +1341,12 @@ class TreeviewSelections(object):
             selection     = tree.get_selection()
             model         = tree.get_model()
             (model, iter) = selection.get_selected()
-            pymol_object = model.get_value(iter, 0)
+            if iter is not None:
+                pymol_object = model.get_value(iter, 0)
 
-            string2 = 'select sele, '+ pymol_object
-            cmd.do(string2)
-            cmd.enable('sele')
+                string2 = 'select sele, '+ pymol_object
+                cmd.do(string2)
+                cmd.enable('sele')
 
     def on_treeview2_select_cursor_parent (self, tree, path, column):
         """ Function doc """
