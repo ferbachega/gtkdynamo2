@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 text1 = """
-#   
 #
-#   
-#   
 #
-#   
+#
+#
+#
+#
 #
 #                         ---- GTKDynamo 2.0 - EasyHybrid ----
-#                           
-#       
+#
+#
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
 #
 #               visit: https://sites.google.com/site/gtkdynamo/
@@ -24,28 +24,28 @@ text1 = """
 #       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #       GNU General Public License for more details.
 #
-#   
+#
 #   GTKDynamo team:
-#   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil                            
-#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA           
-#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France                      
+#   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA
+#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France
 #   - Luis Fernando S M Timmers - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #   - Michele Silva             - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
-#    
-#   Special thanks to:       
+#
+#   Special thanks to:
 #   - Osmar Norbeto de souza    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
-#   - Fernando V Maluf          - Univesity of Sao Paulo - SP, Brazil                             
-#   - Lucas Assirati            - Univesity of Sao Paulo - SP, Brazil                             
-#   - Leonardo R Bachega        - University of Purdue - West Lafayette, IN - USA                 
-#   - Richard Garratt           - Univesity of Sao Paulo - SP, Brazil                             
+#   - Fernando V Maluf          - Univesity of Sao Paulo - SP, Brazil
+#   - Lucas Assirati            - Univesity of Sao Paulo - SP, Brazil
+#   - Leonardo R Bachega        - University of Purdue - West Lafayette, IN - USA
+#   - Richard Garratt           - Univesity of Sao Paulo - SP, Brazil
 #   - Walter R Paixao-Cortes    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #
 #
 #   Cite this work as:
-#   J. F. R. Bachega, L. F. S. M. Timmers, L. Assirati, L. B. Bachega, M. J. Field, 
+#   J. F. R. Bachega, L. F. S. M. Timmers, L. Assirati, L. B. Bachega, M. J. Field,
 #   T. Wymore. J. Comput. Chem. 2013, 34, 2190-2196. DOI: 10.1002/jcc.23346
 #
-#       
+#
 """
 
 
@@ -146,8 +146,8 @@ from gui.WindowUmbrellaSampling.UmbrellaSampling             import UmbrellaSamp
 from gui.DialogWHAM.WHAM                                     import WHAMEquationSolverDialog
 
 #/home/fernando/Documents/gtkdynamo2/gui/DialogPreferences/Preferences.py
-#from gui.MainMenu           import  MainMenu                                                                        
-#from gui.MainToolBar        import  MainToolBar 
+#from gui.MainMenu           import  MainMenu
+#from gui.MainToolBar        import  MainToolBar
 #from gui.GLMenu             import  GLMenu
 #from gui.TreeviewHistory    import  TreeviewHistory
 #from gui.TreeviewSelections import  TreeviewSelections
@@ -215,30 +215,30 @@ class MainMenu (object):
                         cmd.do('set valence, 0.1')
                 else:
                         #cmd.set('valence', 0.0)
-                        cmd.do('set valence, 0.0')		
+                        cmd.do('set valence, 0.0')
 
-        
+
         def on_MainMenu_Edit_Preferences_activate (self, button):
                 """ Function doc """
                 self.PreferencesDialog.dialog.run()
                 self.PreferencesDialog.dialog.hide()
 
-        
-        
+
+
         def on_MainMenu_View_PYMOLCommand_line_activate(self, button):
                 """ Function doc """
                 #print """ Function doc """
                 if self.builder.get_object('PyMOL_command_line_check').get_active() == True:
                         #cmd.set('valence', 0.1)
-                        pymol.cmd.set("internal_feedback", 1) 
+                        pymol.cmd.set("internal_feedback", 1)
                 else:
                         #cmd.set('valence', 0.0)
-                        pymol.cmd.set("internal_feedback", 0) 
-                        
-        
-        
-        
-        
+                        pymol.cmd.set("internal_feedback", 0)
+
+
+
+
+
         def on_MainMenu_View_ShowTrajectoryTool_clicked (self, button):
                 """ Function doc """
                 if self.builder.get_object('toolbutton_trajectory_tool').get_active() == True:
@@ -246,25 +246,25 @@ class MainMenu (object):
                         self.builder.get_object('handlebox1').show()
                 else:
                         #cmd.set('valence', 0.0)
-                        self.builder.get_object('handlebox1').hide()  
-                           
-                        
+                        self.builder.get_object('handlebox1').hide()
+
+
 
         def on_MainMenu_File_NewProject_activate(self, button):
                 """ Function doc """
                 localtime = time.asctime(time.localtime(time.time()))
                 #print "Local current time :", localtime
-                localtime = localtime.split()        
+                localtime = localtime.split()
                 #  0     1    2       3         4
                 #[Sun] [Sep] [28] [02:32:04] [2014]
                 text = 'NewProjec_' + localtime[1] + \
                         '_' + localtime[2] + '_' + localtime[4]
                 self._NewProjectDialog.builder.get_object("new_project_entry").set_text(text)
-                
-                
+
+
                 WorkSpace = self.GTKDynamoConfig['WorkSpace']
                 #print WorkSpace, text
-                
+
                 path      = os.path.join(WorkSpace, text)
                 self._NewProjectDialog.builder.get_object("ProjectDirectory").set_text(path)
 
@@ -304,85 +304,85 @@ class MainMenu (object):
 
                         if _FileType in ['gtkdyn']:
                                 self.project.load_GTKDYNAMO_project(FileName)
-                        
+
                 self.PyMOL_change_selection_mode()
 
         def on_MainMenu_File_Quit_activate (self, menuitem):
                 """ Function doc """
-                print '''\n\nThanks for use EasyHybrid - GTKDynamo 1.9 - \n\n'''
+                print '''\n\nThanks for using EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
 
-        
+
         def on_MainMenu_Edit_ClearFixedAtoms_activate (self, menuitem):
             """ Function doc """
             '''
                                                       d i a l o g
-                                             #  -  I M P O R T A N T  -  #                                   
-                                #---------------------------------------------------------#                  
-                                #                                                         #                  
-                                #        Message Dialog  -  when 2 buttons will be shown  #                  
-                                #  1 -create the warning message                          #                  
-                                #  2 -hide the actual dialog - optional                   #                  
-                                #  3 -show the message dialog                             #                  
-                                #  4 -hide the message dialog                             #                  
-                                #  5 -check the returned valor by the message dialog      #                  
-                                #  6 -do something                                        #                  
-                                #  7 -restore the actual dialog - optional                #                  
-                                #---------------------------------------------------------#                  
+                                             #  -  I M P O R T A N T  -  #
+                                #---------------------------------------------------------#
+                                #                                                         #
+                                #        Message Dialog  -  when 2 buttons will be shown  #
+                                #  1 -create the warning message                          #
+                                #  2 -hide the actual dialog - optional                   #
+                                #  3 -show the message dialog                             #
+                                #  4 -hide the message dialog                             #
+                                #  5 -check the returned valor by the message dialog      #
+                                #  6 -do something                                        #
+                                #  7 -restore the actual dialog - optional                #
+                                #---------------------------------------------------------#
             '''
-                                                                                                  
-            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the fixed region?")  
-            dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                              
-            a = dialog.run()  # possible "a" valors                                                           
-            # 4 step          # -8  -  yes                                                                    
-            dialog.hide()     # -9  -  no                                                                     
-                              # -4  -  close                                                                  
-                              # -5  -  OK                                                                     
-                              # -6  -  Cancel   
-            if a == -8: 
+
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the fixed region?")
+            dialog = self.builder.get_object('MessageDialogQuestion')
+
+            a = dialog.run()  # possible "a" valors
+            # 4 step          # -8  -  yes
+            dialog.hide()     # -9  -  no
+                              # -4  -  close
+                              # -5  -  OK
+                              # -6  -  Cancel
+            if a == -8:
                 self.project.clean_fix_table()
-                self.project.SystemCheck( status = True, 
-                                                PyMOL = True, 
-                                               _color = True, 
-                                                _cell = True, 
+                self.project.SystemCheck( status = True,
+                                                PyMOL = True,
+                                               _color = True,
+                                                _cell = True,
                                     treeview_selections = True,
                                             ORCA_backup = True)
-            else:                                                                                             
-                return 0  
+            else:
+                return 0
 
         def on_MainMenu_Edit_ClearQCAtoms_activate (self, menuitem):
             '''
                                                       d i a l o g
-                                             #  -  I M P O R T A N T  -  #                                   
-                                #---------------------------------------------------------#                  
-                                #                                                         #                  
-                                #        Message Dialog  -  when 2 buttons will be shown  #                  
-                                #  1 -create the warning message                          #                  
-                                #  2 -hide the actual dialog - optional                   #                  
-                                #  3 -show the message dialog                             #                  
-                                #  4 -hide the message dialog                             #                  
-                                #  5 -check the returned valor by the message dialog      #                  
-                                #  6 -do something                                        #                  
-                                #  7 -restore the actual dialog - optional                #                  
-                                #---------------------------------------------------------#                  
+                                             #  -  I M P O R T A N T  -  #
+                                #---------------------------------------------------------#
+                                #                                                         #
+                                #        Message Dialog  -  when 2 buttons will be shown  #
+                                #  1 -create the warning message                          #
+                                #  2 -hide the actual dialog - optional                   #
+                                #  3 -show the message dialog                             #
+                                #  4 -hide the message dialog                             #
+                                #  5 -check the returned valor by the message dialog      #
+                                #  6 -do something                                        #
+                                #  7 -restore the actual dialog - optional                #
+                                #---------------------------------------------------------#
             '''
-                                                                                                  
-            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the quantum region?")  
-            dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                              
-            a = dialog.run()  # possible "a" valors                                                           
-            # 4 step          # -8  -  yes                                                                    
-            dialog.hide()     # -9  -  no                                                                     
-                              # -4  -  close                                                                  
-                              # -5  -  OK                                                                     
-                              # -6  -  Cancel                                                                 
-            # 5 step                                                                                          
-            if a == -8:                                                                                       
-                self.project.clean_qc_table()                                                                                 
-            else:                                                                                             
-                return 0   
+
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Remove all atoms from the quantum region?")
+            dialog = self.builder.get_object('MessageDialogQuestion')
+
+            a = dialog.run()  # possible "a" valors
+            # 4 step          # -8  -  yes
+            dialog.hide()     # -9  -  no
+                              # -4  -  close
+                              # -5  -  OK
+                              # -6  -  Cancel
+            # 5 step
+            if a == -8:
+                self.project.clean_qc_table()
+            else:
+                return 0
 
 
 
@@ -391,14 +391,14 @@ class MainMenu (object):
 
 
 
-        
+
         def on_MainMenu_Edit_ChargeRescale_activate (self, menuitem):
                 """ Function doc """
                 self.ChargeRescaleDialog.dialog.run()
                 self.ChargeRescaleDialog.dialog.hide()
 
 
-        def on_MainMenu_Selection_SetQCTable(self, menuitem, click = None):    
+        def on_MainMenu_Selection_SetQCTable(self, menuitem, click = None):
             table    = PymolGetTable('sele')
             oldTable = self.project.settings['qc_table']
             self.project.put_qc_table(table)
@@ -407,47 +407,47 @@ class MainMenu (object):
             if newTable != oldTable:
                 '''
                                                           d i a l o g
-                                                 #  -  I M P O R T A N T  -  #                                   
-                                    #---------------------------------------------------------#                  
-                                    #                                                         #                  
-                                    #        Message Dialog  -  when 2 buttons will be shown  #                  
-                                    #  1 -create the warning message                          #                  
-                                    #  2 -hide the actual dialog - optional                   #                  
-                                    #  3 -show the message dialog                             #                  
-                                    #  4 -hide the message dialog                             #                  
-                                    #  5 -check the returned valor by the message dialog      #                  
-                                    #  6 -do something                                        #                  
-                                    #  7 -restore the actual dialog - optional                #                  
-                                    #---------------------------------------------------------#                  
+                                                 #  -  I M P O R T A N T  -  #
+                                    #---------------------------------------------------------#
+                                    #                                                         #
+                                    #        Message Dialog  -  when 2 buttons will be shown  #
+                                    #  1 -create the warning message                          #
+                                    #  2 -hide the actual dialog - optional                   #
+                                    #  3 -show the message dialog                             #
+                                    #  4 -hide the message dialog                             #
+                                    #  5 -check the returned valor by the message dialog      #
+                                    #  6 -do something                                        #
+                                    #  7 -restore the actual dialog - optional                #
+                                    #---------------------------------------------------------#
                 '''
-                                                                                                      
-                self.builder.get_object('MessageDialogQuestion').format_secondary_text("A new quantum region has been defined. Would you like setup your QC paramaters now?")  
-                dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                                  
-                a = dialog.run()  # possible "a" valors                                                           
-                # 4 step          # -8  -  yes                                                                    
-                dialog.hide()     # -9  -  no                                                                     
-                                  # -4  -  close                                                                  
-                                  # -5  -  OK                                                                     
-                                  # -6  -  Cancel                                                                 
-                                                                                                                  
-                # 5 step                                                                                          
-                if a == -8:                                                                                       
-                    # 6 step                                                                                      
+
+                self.builder.get_object('MessageDialogQuestion').format_secondary_text("A new quantum region has been defined. Would you like setup your QC paramaters now?")
+                dialog = self.builder.get_object('MessageDialogQuestion')
+
+                a = dialog.run()  # possible "a" valors
+                # 4 step          # -8  -  yes
+                dialog.hide()     # -9  -  no
+                                  # -4  -  close
+                                  # -5  -  OK
+                                  # -6  -  Cancel
+
+                # 5 step
+                if a == -8:
+                    # 6 step
                     # auto calculate the mm charge from the selected region and set the valor to the spinbutton
                     _sum, _len = self.project.ComputeChargesFromSelection()
                     #_sum, _len = compute_selection_total_charge(self.project.system, selection = None )
                     _sum = int(round(_sum))
                     self.QuantumChemistrySetupDialog.builder.get_object('spinbutton_charge').set_value(_sum)
-                    
+
                     self.QuantumChemistrySetupDialog.dialog.run()
-                    self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
-                else:                                                                                             
-                    return 0                                                                                      
-                # 7 step                                                                                          
-                #self.load_trj_windows.run()                                                                      
-            else:                                                                                                 
-                pass                                                                                   
+                    self.QuantumChemistrySetupDialog.dialog.hide()
+                else:
+                    return 0
+                # 7 step
+                #self.load_trj_windows.run()
+            else:
+                pass
 
 
 
@@ -459,26 +459,26 @@ class MainMenu (object):
         def on_MainMenu_Selection_ComputeCharge_activate(self, menuitem):
             """ Function doc """
             _sum, _len = self.project.ComputeChargesFromSelection()
-            self.builder.get_object('EnergyMessageDialog').set_markup("MM Charges")   
-            self.builder.get_object('EnergyMessageDialog').format_secondary_text("Selection charge ("+str(_len) +" atoms): " + str(round(_sum, 8)))   
+            self.builder.get_object('EnergyMessageDialog').set_markup("MM Charges")
+            self.builder.get_object('EnergyMessageDialog').format_secondary_text("Selection charge ("+str(_len) +" atoms): " + str(round(_sum, 8)))
             dialog = self.builder.get_object('EnergyMessageDialog')
-            dialog.run()                                                                
+            dialog.run()
             dialog.hide()
-        
+
         #def on_MainMenu_Calculate_Scan1D_activate(self, menuItem):
         #    """ Function ChargeRescaleDialogdoc """
         #    self.ScanDialog.dialog.run()
-        #    self.ScanDialog.dialog.hide()  
+        #    self.ScanDialog.dialog.hide()
 
         def on_MainMenu_Calculate_Scan1D_activate(self, menuitem):
                 """ Function doc """
                 if self.ScanWindow.Visible == False:
                         #print self.project.settings['step']
                         text = str(self.project.settings['step'] + 1) + '_step_Scan'
-                        #print text			
+                        #print text
                         self.ScanWindow.OpenWindow(text)
-                
-                
+
+
                 #try:
                 #    _FileType = GetFileType(FileName)
                 #
@@ -493,7 +493,7 @@ class MainMenu (object):
                 if self.ScanWindow2D.Visible == False:
                         #print self.project.settings['step']
                         text = str(self.project.settings['step'] + 1) + '_step_Scan2D'
-                        #print text	
+                        #print text
                         self.ScanWindow2D.OpenWindow(text)
 
         def on_MainMenu_Calculate_UmbrellaSampling_activate(self, menuItem):
@@ -519,16 +519,16 @@ class MainMenu (object):
                 self.NEBDialog.builder.get_object("trajectory_name").set_text(text)
                 self.NEBDialog.dialog.run()
                 self.NEBDialog.dialog.hide()
-        
+
         def  on_MainMenu_Calculate_EnergyRefine_activate(self, menuItem):
             """ Function doc """
             self.EnergyRefineDialog.dialog.run()
             self.EnergyRefineDialog.dialog.hide()
 
-            
-            
-            
-            
+
+
+
+
 
         def on_MainMenu_Extensions_MOPACEnergy(self, menuItem):
             """ Function doc """
@@ -550,16 +550,16 @@ class MainMenu (object):
 
         def on_Analysis_PlotLogGraph_activate (self, button):
             """ Function doc """
-    
-    
-    
-    
+
+
+
+
             FileChooser = FileChooserWindow()
             FileName = FileChooser.GetLogFileName(self.builder)
-            
+
             parameters = ParseProcessLogFile(FileName)
             PlotGTKWindow(parameters)
-                
+
 
             #if FileName == None:
             #        pass
@@ -573,20 +573,20 @@ class MainMenu (object):
             #
             #        if _FileType in ['gtkdyn']:
             #                self.project.load_GTKDYNAMO_project(FileName)
-            #        
+            #
             #self.PyMOL_change_selection_mode()
 
         def on_Amber12ToAmber11_activate (self, button):
             """ Function doc """
             self.DialogAmber12ToAmber11.dialog.run()
-            self.DialogAmber12ToAmber11.dialog.hide()           
+            self.DialogAmber12ToAmber11.dialog.hide()
 
 
         def on_MainMenu_Help_About_activate(self, button):
                 """ Function doc """
                 self.AboutDialog.dialog.run()
                 self.AboutDialog.dialog.hide()
-	
+
 class MainToolBar(object):
     """ Class doc """
 
@@ -619,7 +619,7 @@ class MainToolBar(object):
 
         chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
                                         gtk.FILE_CHOOSER_ACTION_SAVE         ,
-                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                       (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
 
 
@@ -627,7 +627,7 @@ class MainToolBar(object):
 
         chooser.set_current_folder(data_path)
         response = chooser.run()
-        if response == gtk.RESPONSE_OK: 
+        if response == gtk.RESPONSE_OK:
             filename = chooser.get_filename()
             chooser.destroy()
             self.project.Save_Project_To_File (filename, 'pkl')
@@ -642,14 +642,14 @@ class MainToolBar(object):
                 pymol.cmd.set("seq_view", 1)
         else:
                 #print '"seq_view", 0'
-                pymol.cmd.set("seq_view", 0) 		
- 
+                pymol.cmd.set("seq_view", 0)
+
     def on_toolbar_showCell_toggled (self, button):
         """ Function doc """
-        
+
         if button.get_active():
             self.project.ShowCell = True
-        
+
         else:
             self.project.ShowCell = False
             # print '# If control reaches here, the toggle button is up'
@@ -660,24 +660,24 @@ class MainToolBar(object):
         """ Function doc """
         _01_window_main = self.builder.get_object("win")
         data_path       = self.project.settings['data_path']
-        
+
         filename = None
-        
-        
+
+
         if 'filename' in self.project.settings:
             pass
         else:
             self.project.settings['filename'] = None
-        
-        
+
+
         if self.project.settings['filename'] == None:
             chooser = gtk.FileChooserDialog("Save File...",   _01_window_main ,
                                             gtk.FILE_CHOOSER_ACTION_SAVE         ,
-                                           (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
+                                           (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                             gtk.STOCK_SAVE, gtk.RESPONSE_OK))
             chooser.set_current_folder(data_path)
             response = chooser.run()
-            if response == gtk.RESPONSE_OK: 
+            if response == gtk.RESPONSE_OK:
                 filename = chooser.get_filename()
                 chooser.destroy()
                 self.project.Save_Project_To_File (filename, 'pkl')
@@ -699,30 +699,30 @@ class MainToolBar(object):
         else:
             # print '# If control reaches here, the toggle button is up'
             self.builder.get_object('notebook3').hide()
-            #pymol.cmd.set("internal_gui", 0)       
+            #pymol.cmd.set("internal_gui", 0)
     def on_ToolBar_buttonpDynamoSelections_clicked(self, button):
         """ Function doc """
         if self.project.system == None:
             print 'system empty'
         else:
             if self.pDynamoSelectionWindow.Visible == False:
-                self.pDynamoSelectionWindow.OpenWindow()  
+                self.pDynamoSelectionWindow.OpenWindow()
 
     def on_ToolBar_CheckSystem_clicked(self, button):
         """ Function doc """
         filein = self.project.SystemCheck(_color = False)
         #filein = self.project.settings['job_history'][self.selectedID]['log']
         editor = TextEditor.GTKDynamoTextEditor(filein)
-        
+
     def on_ToolBar_SinglePoint_clicked(self, button):
         """ Function doc """
         energy = self.project.ComputeEnergy()
-        #colocar um check system aqui 
-        self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")   
+        #colocar um check system aqui
+        self.builder.get_object('EnergyMessageDialog').format_secondary_text("Total energy: " + str(energy) + " KJ/mol")
         dialog = self.builder.get_object('EnergyMessageDialog')
-        dialog.run()                                                                
+        dialog.run()
         dialog.hide()
-                
+
     def on_ToolBar_QuantumChemistrySetup_clicked(self, button):
         """ Function doc """
         self.QuantumChemistrySetupDialog.dialog.run()
@@ -744,7 +744,7 @@ class MainToolBar(object):
         self.MolecularDynamicsWindow.builder.get_object("MMDialog_entry_trajectory_name").set_text(text)
         self.MolecularDynamicsWindow.dialog.run()
         self.MolecularDynamicsWindow.dialog.hide()
-        
+
     def on_ToolBar_ChangeSelectionMode_toggled(self, button):
         #if self.builder.get_object('togglebutton1').get_active():
         #	# print '# If control reaches here, the toggle button is down'
@@ -764,7 +764,7 @@ class MainToolBar(object):
         #	self.project.settings['edit_mode_button'] = False
         #
         self.PyMOL_change_selection_mode()
-        
+
     def on_ToolBar_ChangeSelectionMode_changed(self, button):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
@@ -782,54 +782,54 @@ class MainToolBar(object):
         if self.project.system != None:
             '''
                                                       d i a l o g
-                                             #  -  I M P O R T A N T  -  #                                   
-                                #---------------------------------------------------------#                  
-                                #                                                         #                  
-                                #        Message Dialog  -  when 2 buttons will be showed #                  
-                                #  1 -create the warning message                          #                  
-                                #  2 -hide the actual dialog - optional                   #                  
-                                #  3 -show the message dialog                             #                  
-                                #  4 -hide the message dialog                             #                  
-                                #  5 -check the returned valor by the message dialog      #                  
-                                #  6 -do something                                        #                  
-                                #  7 -restore the actual dialog - optional                #                  
-                                #---------------------------------------------------------#                  
+                                             #  -  I M P O R T A N T  -  #
+                                #---------------------------------------------------------#
+                                #                                                         #
+                                #        Message Dialog  -  when 2 buttons will be showed #
+                                #  1 -create the warning message                          #
+                                #  2 -hide the actual dialog - optional                   #
+                                #  3 -show the message dialog                             #
+                                #  4 -hide the message dialog                             #
+                                #  5 -check the returned valor by the message dialog      #
+                                #  6 -do something                                        #
+                                #  7 -restore the actual dialog - optional                #
+                                #---------------------------------------------------------#
             '''
-                                                                                                  
-            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: there is a system loaded in memory. Are you sure that you want to delete it?")  
-            dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                              
-            a = dialog.run()  # possible "a" valors                                                           
-            # 4 step          # -8  -  yes                                                                    
-            dialog.hide()     # -9  -  no                                                                     
-                              # -4  -  close                                                                  
-                              # -5  -  OK                                                                     
-                              # -6  -  Cancel                                                                 
-                                                                                                              
-            # 5 step                                                                                          
-            if a == -8:                                                                                       
-                # 6 step 
+
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: there is a system loaded in memory. Are you sure that you want to delete it?")
+            dialog = self.builder.get_object('MessageDialogQuestion')
+
+            a = dialog.run()  # possible "a" valors
+            # 4 step          # -8  -  yes
+            dialog.hide()     # -9  -  no
+                              # -4  -  close
+                              # -5  -  OK
+                              # -6  -  Cancel
+
+            # 5 step
+            if a == -8:
+                # 6 step
                 #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
                 self.project = None
-                self.project = pDynamoProject(data_path       = GTKDYNAMO_TMP      , 
-                                              builder         = self.builder       , 
+                self.project = pDynamoProject(data_path       = GTKDYNAMO_TMP      ,
+                                              builder         = self.builder       ,
                                               window_control  = self.window_control,
-                                              GTKDynamoConfig = self.GTKDynamoConfig )                                   
+                                              GTKDynamoConfig = self.GTKDynamoConfig )
 
                 self.project.PyMOL = True                                                                                                    #
-                #----------------------------------------------------------------------------------------------------------------------------#  
+                #----------------------------------------------------------------------------------------------------------------------------#
 
                 cmd.delete('all')
                 pymol_objects  = cmd.get_names()
                 liststore = self.builder.get_object('liststore2')
                 self.project.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , None)
-                
-                
+
+
                 self.project.SystemCheck()
                 self.PyMOL_initialize()
-                #cmd.delete('all')                                                                                  
-            else:                                                                                             
-                return 0 
+                #cmd.delete('all')
+            else:
+                return 0
 
     def MeasureToolPutValores(self, distances = None, angles = None, dihedral = None):
         if distances != None:
@@ -839,24 +839,24 @@ class MainToolBar(object):
             else:
                 self.builder.get_object('pk1pk2').set_sensitive(False)
                 self.builder.get_object('pk1pk2').set_text('')
-                
-                
+
+
             if distances['pk1pk3'] != None:
                 self.builder.get_object('pk1pk3').set_sensitive(True)
                 self.builder.get_object('pk1pk3').set_text(distances['pk1pk3'])
             else:
                 self.builder.get_object('pk1pk3').set_sensitive(False)
                 self.builder.get_object('pk1pk3').set_text('')
-                
-                
+
+
             if distances['pk1pk4'] != None:
                 self.builder.get_object('pk1pk4').set_sensitive(True)
                 self.builder.get_object('pk1pk4').set_text(distances['pk1pk4'])
             else:
                 self.builder.get_object('pk1pk4').set_sensitive(False)
                 self.builder.get_object('pk1pk4').set_text('')
-                
-                
+
+
             if distances['pk2pk3'] != None:
                 self.builder.get_object('pk2pk3').set_sensitive(True)
                 self.builder.get_object('pk2pk3').set_text(distances['pk2pk3'])
@@ -870,12 +870,12 @@ class MainToolBar(object):
             else:
                 self.builder.get_object('pk2pk4').set_sensitive(False)
                 self.builder.get_object('pk2pk4').set_text('')
-                 
+
             if distances['pk3pk4'] != None:
                 self.builder.get_object('pk3pk4').set_sensitive(True)
                 self.builder.get_object('pk3pk4').set_text(distances['pk3pk4'])
             else:
-                self.builder.get_object('pk3pk4').set_sensitive(False)   
+                self.builder.get_object('pk3pk4').set_sensitive(False)
                 self.builder.get_object('pk3pk4').set_text('')
 
         if  angles != None:
@@ -891,7 +891,7 @@ class MainToolBar(object):
                 self.builder.get_object('pk2pk3pk4').set_sensitive(True)
                 self.builder.get_object('pk2pk3pk4').set_text(angles['pk2pk3pk4'])
             else:
-                self.builder.get_object('pk2pk3pk4').set_sensitive(False) 
+                self.builder.get_object('pk2pk3pk4').set_sensitive(False)
                 self.builder.get_object('pk2pk3pk4').set_text('')
         #print dihedral
         if  dihedral != None:
@@ -905,7 +905,7 @@ class GLMenu(object):
     """
     #--------------------------------------------#
     #                GL AREA MENU                #
-    #--------------------------------------------# 
+    #--------------------------------------------#
     """
 
     def __init__ (self, GUI):
@@ -917,7 +917,7 @@ class GLMenu(object):
 
 
     def on_GLAreaMenu_itemActive_view (self, item, click = None):
-        """ Function doc """ 
+        """ Function doc """
         #PyMOL_Obj = self.selectedObj
         if item == self.builder.get_object('gl_menuitem_zoon'):
             cmd.zoom()
@@ -929,8 +929,8 @@ class GLMenu(object):
             cmd.reset()
         if item == self.builder.get_object('gl_menuitem_ray'):
             cmd.ray()
-                
-    def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem, click = None):    
+
+    def on_GLAreaMenu_itemActive_CleanQCTable(self, menuitem, click = None):
         self.project.clean_qc_table()
         #print self.project.settings['qc_table']
 
@@ -948,51 +948,51 @@ class GLMenu(object):
         table = PymolGetTable('sele')
         '''
                                                   d i a l o g
-                                         #  -  I M P O R T A N T  -  #                                   
-                            #---------------------------------------------------------#                  
-                            #                                                         #                  
-                            #        Message Dialog  -  when 2 buttons will be showed #                  
-                            #  1 -create the warning message                          #                  
-                            #  2 -hide the actual dialog - optional                   #                  
-                            #  3 -show the message dialog                             #                  
-                            #  4 -hide the message dialog                             #                  
-                            #  5 -check the returned valor by the message dialog      #                  
-                            #  6 -do something                                        #                  
-                            #  7 -restore the actual dialog - optional                #                  
-                            #---------------------------------------------------------#                  
+                                         #  -  I M P O R T A N T  -  #
+                            #---------------------------------------------------------#
+                            #                                                         #
+                            #        Message Dialog  -  when 2 buttons will be showed #
+                            #  1 -create the warning message                          #
+                            #  2 -hide the actual dialog - optional                   #
+                            #  3 -show the message dialog                             #
+                            #  4 -hide the message dialog                             #
+                            #  5 -check the returned valor by the message dialog      #
+                            #  6 -do something                                        #
+                            #  7 -restore the actual dialog - optional                #
+                            #---------------------------------------------------------#
         '''
-                                                                                              
-        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: Prune the system is an irreversible process. Do you want to continue?")  
-        dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                          
-        a = dialog.run()  # possible "a" valors                                                           
-        # 4 step          # -8  -  yes                                                                    
-        dialog.hide()     # -9  -  no                                                                     
-                          # -4  -  close                                                                  
-                          # -5  -  OK                                                                     
-                          # -6  -  Cancel                                                                 
-                                                                                                          
-        # 5 step                                                                                          
-        if a == -8:                                                                                       
-            # 6 step 
+
+        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Warning: Prune the system is an irreversible process. Do you want to continue?")
+        dialog = self.builder.get_object('MessageDialogQuestion')
+
+        a = dialog.run()  # possible "a" valors
+        # 4 step          # -8  -  yes
+        dialog.hide()     # -9  -  no
+                          # -4  -  close
+                          # -5  -  OK
+                          # -6  -  Cancel
+
+        # 5 step
+        if a == -8:
+            # 6 step
             self.project.put_prune_table(table)
-            #print self.project.settings['prune_table']                                                                                     
+            #print self.project.settings['prune_table']
             #self.QuantumChemistrySetupDialog.dialog.run()
-            #self.QuantumChemistrySetupDialog.dialog.hide()                                                                                   
-        else:                                                                                             
-            return 0                                                                                      
+            #self.QuantumChemistrySetupDialog.dialog.hide()
+        else:
+            return 0
 
     def on_GLAreaMenu_PutLalbel_itemActive(self, menuitem, click=None):
         """ Function doc """
         #print 'teste'
-        
-        
+
+
         string = ""
         showTable = []
-        
+
         if self.builder.get_object('menuitem_index').get_active():
             showdic.append('index')
-        
+
         if self.builder.get_object('menuitem_atom_name').get_active():
             showdic.append('name')
 
@@ -1001,18 +1001,18 @@ class GLMenu(object):
 
         if self.builder.get_object('menuitem_residue_number').get_active():
             showdic.append('resi')
-            
+
         if self.builder.get_object('menuitem_partial_charge').get_active():
             showdic.append('partial_charge')
-        
+
         if item in showTable:
             string = string + item +','
 
-       
+
         cmd.label('sele', string)
 
     def on_gl_show_hide_items_activate (self, item, event):
-        
+
         #print """ gl menu items """
         if item == self.builder.get_object('gl_menuitem_show_lines'):
             cmd.show ('lines', 'sele')
@@ -1039,8 +1039,8 @@ class GLMenu(object):
             cmd.hide ('mesh', 'sele')
         if item == self.builder.get_object('gl_menuitem_hide_surface'):
             cmd.hide ('surface', 'sele')
-        
-        
+
+
         # Colors
         if item == self.builder.get_object('gl_menuitem_color_black'):
             cmd.color('grey10','sele')
@@ -1076,7 +1076,7 @@ class TreeviewHistory(object):
     #def handle_history_click(self, tree, event):
     #    if event.button == 3:
     #        print "Mostrar menu de contexto botao3"
-    #   
+    #
     #    if event.button == 1:
     #        print "Mostrar menu de contexto botao1"
 
@@ -1092,9 +1092,9 @@ class TreeviewHistory(object):
         filein = self.project.settings['job_history'][self.selectedID]['log']
         #print    self.project.settings['job_history'][self.selectedID]['log']
         parameters = ParseProcessLogFile(filein)
-        
+
         #xlabel = 'Frames'
-        #ylabel = 'Energy (KJ)' 
+        #ylabel = 'Energy (KJ)'
         #title  = os.path.split(filein)[-1]
         #print  X, Y
         #
@@ -1105,11 +1105,11 @@ class TreeviewHistory(object):
         #             'xlabel': xlabel,
         #             'ylabel': ylabel,
         #             }
-        
+
         PlotGTKWindow(parameters)
 
     def on_show_items_activate (self, item, event):
-        """ Function doc """ 
+        """ Function doc """
         PyMOL_Obj = self.selectedObj
 
         if item == self.builder.get_object('menuitem_show_lines'):
@@ -1142,49 +1142,49 @@ class TreeviewHistory(object):
         data_path = self.project.settings['data_path']
         file_out  = 'exportXYZ.xyz'
         state     = -1
-        
+
         '''
                                                   d i a l o g
-                                         #  -  I M P O R T A N T  -  #                                   
-                            #---------------------------------------------------------#                  
-                            #                                                         #                  
-                            #        Message Dialog  -  when 2 buttons will be showed #                  
-                            #  1 -create the warning message                          #                  
-                            #  2 -hide the actual dialog - optional                   #                  
-                            #  3 -show the message dialog                             #                  
-                            #  4 -hide the message dialog                             #                  
-                            #  5 -check the returned valor by the message dialog      #                  
-                            #  6 -do something                                        #                  
-                            #  7 -restore the actual dialog - optional                #                  
-                            #---------------------------------------------------------#                  
+                                         #  -  I M P O R T A N T  -  #
+                            #---------------------------------------------------------#
+                            #                                                         #
+                            #        Message Dialog  -  when 2 buttons will be showed #
+                            #  1 -create the warning message                          #
+                            #  2 -hide the actual dialog - optional                   #
+                            #  3 -show the message dialog                             #
+                            #  4 -hide the message dialog                             #
+                            #  5 -check the returned valor by the message dialog      #
+                            #  6 -do something                                        #
+                            #  7 -restore the actual dialog - optional                #
+                            #---------------------------------------------------------#
         '''
-                                                                                              
-        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Set object: " +PyMOL_Obj +" as active?")  
-        dialog = self.builder.get_object('MessageDialogQuestion')                                         
-                                                                                                          
-        a = dialog.run()  # possible "a" valors                                                           
-        # 4 step          # -8  -  yes                                                                    
-        dialog.hide()     # -9  -  no                                                                     
-                          # -4  -  close                                                                  
-                          # -5  -  OK                                                                     
-                          # -6  -  Cancel                                                                 
-                                                                                                          
-        # 5 step                                                                                          
-        if a == -8:                                                                                       
-            # 6 step 
+
+        self.builder.get_object('MessageDialogQuestion').format_secondary_text("Set object: " +PyMOL_Obj +" as active?")
+        dialog = self.builder.get_object('MessageDialogQuestion')
+
+        a = dialog.run()  # possible "a" valors
+        # 4 step          # -8  -  yes
+        dialog.hide()     # -9  -  no
+                          # -4  -  close
+                          # -5  -  OK
+                          # -6  -  Cancel
+
+        # 5 step
+        if a == -8:
+            # 6 step
             filename = PyMOL_export_XYZ_to_file(PyMOL_Obj, label, data_path, file_out, state)
             self.project.load_coordinate_file_to_system(filename)
             self.project.settings['PyMOL_Obj'] = PyMOL_Obj
             self.project.SystemCheck(status = True, PyMOL = True, _color = False, _cell = True, treeview_selections = True)
-            
+
             #liststore = self.builder.get_object('liststore2')
             #self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , PyMOL_Obj)
-            #print filename                                                                
-        else:                                                                                             
-            return 0 
-        
+            #print filename
+        else:
+            return 0
+
     def on_hide_items_activate (self, item, event):
-        """ Function doc """ 
+        """ Function doc """
         PyMOL_Obj = self.selectedObj
 
         if item == self.builder.get_object('menuitem_hide_everything'):
@@ -1212,43 +1212,43 @@ class TreeviewHistory(object):
         """ Function doc """
         #print 'view log'
         #pprint(self.project.settings['job_history'][self.selectedID])
-        
+
         PyMOL_Obj = self.selectedObj
-        
+
         if item == self.builder.get_object('menuitem_black'):
             cmd.color('grey10',PyMOL_Obj)
             cmd.util.cnc(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_green'):
             cmd.util.cbag(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_cyan'):
             cmd.util.cbac(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_magenta'):
             cmd.util.cbam(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_yellow'):
             cmd.util.cbay(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_salmon'):
             cmd.util.cbas(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_white'):
             cmd.util.cbaw(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_slate'):
             cmd.util.cbab(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_orange'):
             cmd.util.cbao(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_purple'):
             cmd.util.cbap(PyMOL_Obj)
-        
+
         if item == self.builder.get_object('menuitem_pink'):
             cmd.util.cbak(PyMOL_Obj)
-        
+
         if self.project.settings['fix_table'] != []:
             #PymolPutTable(self.project.settings['fix_table'], "FIX_atoms")
             cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
@@ -1266,7 +1266,7 @@ class TreeviewHistory(object):
                 self.selectedID  = str(model.get_value(iter, 1))  # @+
                 self.selectedObj = str(model.get_value(iter, 2))
                 self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
-                
+
                 widget = self.builder.get_object('treeview_menu')
                 widget.popup(None, None, None, event.button, event.time)
 
@@ -1275,19 +1275,19 @@ class TreeviewHistory(object):
 			selection     = tree.get_selection()
 			model         = tree.get_model()
 			(model, iter) = selection.get_selected()
-			pymol_object = model.get_value(iter, 0) 
-			
+			pymol_object = model.get_value(iter, 0)
+
 			string2 = 'select sele, '+ pymol_object
 			cmd.do(string2)
 			cmd.center('sele')
 
-           
+
         if event.button == 1:
             #print "Mostrar menu de contexto botao1"
             selection     = tree.get_selection()
             model         = tree.get_model()
             (model, iter) = selection.get_selected()
-            
+
             if iter != None:
                 #print model, iter
                 pymol_object  = model.get_value(iter, 2)  # @+
@@ -1298,19 +1298,19 @@ class TreeviewHistory(object):
                     true_or_false = True
                     model.set(iter, 0, true_or_false)
                     # print true_or_false
-                
+
                 else:
                     cmd.disable(pymol_object)
                     true_or_false = False
                     model.set(iter, 0, true_or_false)
 
 class TreeviewSelections(object):
-    '''                                            
-    #      ---------------------------------  
-    #           PyMOL TREEVIEW  methods    
+    '''
+    #      ---------------------------------
+    #           PyMOL TREEVIEW  methods
     #      ---------------------------------
 
-    '''   
+    '''
     def on_treeview_PyMOL_Selections_button_release_event (self, tree, event):
         if event.button == 3:
             #print "Mostrar menu de contexto botao3"
@@ -1321,34 +1321,34 @@ class TreeviewSelections(object):
                 #self.selectedID  = str(model.get_value(iter, 0))  # @+
                 self.selectedObj = str(model.get_value(iter, 0))
                 self.builder.get_object('TreeViewObjLabel').set_label('- ' +self.selectedObj+' -' )
-                
+
                 widget = self.builder.get_object('treeview_menu')
                 widget.popup(None, None, None, event.button, event.time)
-        
+
         if event.button == 2:
             selection     = tree.get_selection()
             model         = tree.get_model()
             (model, iter) = selection.get_selected()
-            pymol_object = model.get_value(iter, 0) 
-            
+            pymol_object = model.get_value(iter, 0)
+
             string2 = 'select sele, '+ pymol_object
             cmd.do(string2)
             cmd.center('sele')
-        
-        
+
+
         if event.button == 1:
             selection     = tree.get_selection()
             model         = tree.get_model()
             (model, iter) = selection.get_selected()
-            pymol_object = model.get_value(iter, 0) 
-            
+            pymol_object = model.get_value(iter, 0)
+
             string2 = 'select sele, '+ pymol_object
             cmd.do(string2)
             cmd.enable('sele')
 
     def on_treeview2_select_cursor_parent (self, tree, path, column):
         """ Function doc """
-        print 'select_cursor_parent' 
+        print 'select_cursor_parent'
 
     def handle_history_keypress(self, widget, event):
         if gtk.gdk.keyval_name(event.keyval) == 'Delete':
@@ -1373,7 +1373,7 @@ class TreeviewSelections(object):
         """
         #print cell, path
         pass
-        
+
     def  on_treeview2_select_cursor_parent(self, tree, path, column):
         """ Function doc """
         #print 'aaaa'
@@ -1398,9 +1398,9 @@ class TreeviewSelections(object):
 
     def row_activated(self, tree, path, column):
 
-        model = tree.get_model()   
-        iter = model.get_iter(path)  
-        pymol_object = model.get_value(iter, 0)  
+        model = tree.get_model()
+        iter = model.get_iter(path)
+        pymol_object = model.get_value(iter, 0)
 
         string2 = 'select sele, '+ pymol_object
         cmd.do(string2)
@@ -1414,10 +1414,10 @@ class TreeviewSelections(object):
         #
         #nao printa mais o (self.project.settings['job_history'][ID])
 
-class PyMOLCommandLine(object):	
-	'''                                            
-	#      ---------------------------------  
-	#           PyMOL COMMAND LINE    
+class PyMOLCommandLine(object):
+	'''
+	#      ---------------------------------
+	#           PyMOL COMMAND LINE
 	#      ---------------------------------
 	'''
 	def on_PyMOLCommandLine_entry1_activate(self, button):
@@ -1427,21 +1427,21 @@ class PyMOLCommandLine(object):
 		cmd.do(command)
 
 class TrajectoryTool(object):
-	'''                                            
-	#      ---------------------------------  
-	#          TrajectoryTool  methods    
+	'''
+	#      ---------------------------------
+	#          TrajectoryTool  methods
 	#      ---------------------------------
 
-	''' 
-	
+	'''
+
 	def __init__ (self):
 		""" Class initialiser """
 		pass
 
 
-	
+
 	def on_TrajectoryTool_Entry_Push(self, entry, data=None):
-		self.on_TrajectoryTool_HSCALE_update()	
+		self.on_TrajectoryTool_HSCALE_update()
 
 	def on_TrajectoryTool_HSCALE_update (self):
 		""" Function doc """
@@ -1457,29 +1457,29 @@ class TrajectoryTool(object):
 		valor = hscale.get_value()
 		cmd.frame( int (valor) )
 		BondTable = self.project.BondTable
-		
+
 		if self.builder.get_object('checkbutton_DynamicBonds').get_active():
 			lista     = self.project.settings['dynamic_list']
 			PyMOL_Obj = self.project.settings['PyMOL_Obj']
 			#print lista, PyMOL_Obj
 			for i in lista:
-				for j in lista: 
+				for j in lista:
 					if i != j:
-						#print i, j 
+						#print i, j
 						#bond_unbond1 = self.project.BondTable[i+1,j+1][1]
 						#Rcov         = self.project.BondTable[i+1,j+1][0]
 						#print lista[i], lista[j]
 						#print bond_unbond1, Rcov
-						
-						dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1), 
-														PyMOL_Obj+' and index '+ str(j+1), 
+
+						dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1),
+														PyMOL_Obj+' and index '+ str(j+1),
 														int (valor) )
-						
+
 						if dist > self.project.BondTable[i+1,j+1][0]:
-							cmd.unbond(PyMOL_Obj+' and index '+ str(i+1), 
+							cmd.unbond(PyMOL_Obj+' and index '+ str(i+1),
 									   PyMOL_Obj+' and index '+ str(j+1))
 						else:
-							cmd.bond(PyMOL_Obj+' and index '+ str(i+1), 
+							cmd.bond(PyMOL_Obj+' and index '+ str(i+1),
 									 PyMOL_Obj+' and index '+ str(j+1))
 
 		if self.builder.get_object('toolbutton6_measure').get_active():
@@ -1499,34 +1499,34 @@ class GTKDynamoConfig(object):
     def Save_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
         path = os.path.join(self.HOME,'.config')
-        if not os.path.exists (path): 
+        if not os.path.exists (path):
             os.mkdir (path)
 
         path = os.path.join(path, 'GTKDynamo')
-        if not os.path.exists (path): 
+        if not os.path.exists (path):
             os.mkdir (path)
-        
+
         filename = os.path.join(path,'gtkdynamo.config')
         json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
-        
+
 
     def Load_GTKDYNAMO_ConfigFile (self, filename = None):
         """ Function doc """
         #.config
         path = os.path.join(self.HOME,'.config', 'GTKDynamo', 'gtkdynamo.config')
-        
+
         try:
-            self.GTKDynamoConfig = json.load(open(path)) 
+            self.GTKDynamoConfig = json.load(open(path))
         except:
             print 'error: GTKDynamo config file not found'
             print 'opening WorkSpace Dialog'
-    
+
 class gtkdynamo_main(threading.Thread,
-                     MainMenu, 
-					 MainToolBar, 
-                     GLMenu, 
-                     TreeviewHistory, 
-                     TreeviewSelections, 
+                     MainMenu,
+					 MainToolBar,
+                     GLMenu,
+                     TreeviewHistory,
+                     TreeviewSelections,
                      PyMOLCommandLine,
                      TrajectoryTool,
                      GTKDynamoConfig):
@@ -1562,7 +1562,7 @@ class gtkdynamo_main(threading.Thread,
         #pymol.cmd.set("internal_gui_mode", 1)                   #
         #pymol.cmd.set("internal_feedback", 0)                   #
         #pymol.cmd.set("internal_gui_width", 220)                #
-        pymol.cmd.set("cartoon_fancy_helices", 'on')            # 
+        pymol.cmd.set("cartoon_fancy_helices", 'on')            #
         sphere_scale = 0.25                                     #
         stick_radius = 0.15                                     #
         label_distance_digits = 4                               #
@@ -1572,15 +1572,15 @@ class gtkdynamo_main(threading.Thread,
         cmd.set('label_distance_digits', label_distance_digits) #
         cmd.set('mesh_width', mesh_width)                       #
         cmd.set("retain_order")         # keep atom ordering    #
-        
-        
+
+
         #BG color
         try:
             cmd.bg_color(self.GTKDynamoConfig['bg_color'])
         except:
             cmd.bg_color('black')
-        
-        
+
+
         #cmd.do("set field_of_view, 70")                         #
         cmd.do("set ray_shadows,off")                           #
         cmd.do('set cartoon_highlight_color, 24')               #
@@ -1590,12 +1590,12 @@ class gtkdynamo_main(threading.Thread,
         #cmd.extend('axes', axes)
         #axes()
         #-------------------------------------------------------#
-        
+
 
     def on_button_ImportPKSelectionToDynamicList_activate (self, button):
         """ Function doc """
-        
-        
+
+
         text = ''
         atoms = []
         #print 'aqui'
@@ -1603,17 +1603,17 @@ class gtkdynamo_main(threading.Thread,
         try:
             atom1 = PymolGetTable('pk1')
             DynamicList.append(atom1[0])
-            model = cmd.get_model('pk1') 
+            model = cmd.get_model('pk1')
             atoms  = model.atoms
 
             for i in atoms:
-                #print i 
+                #print i
                 name  = i.name
                 #print name
-            
+
             #print 'depois'
 
-            
+
         except:
             pass
         try:
@@ -1638,7 +1638,7 @@ class gtkdynamo_main(threading.Thread,
 
 
     def __init__(self):
-            
+
         print '           Intializing EasyHybrid - GTKDynamo GUI object          '
         self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
         try:
@@ -1649,7 +1649,7 @@ class gtkdynamo_main(threading.Thread,
         self.HOME           = os.environ.get('HOME')
         self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
         self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
-        
+
 
         #---------------------------------- GTKDYNAMO ------------------------------------#
                                                                                           #
@@ -1666,46 +1666,46 @@ class gtkdynamo_main(threading.Thread,
         self.builder.get_object('notebook3').hide()                                       #
                                                                                           #
         #---------------------------------------------------------------------------------#
-        
-        
-        
-        self.GTKDynamoConfig = {                              
-                               'HideWorkSpaceDialog': False    ,  
-                               'WorkSpace'          : self.HOME,  
+
+
+
+        self.GTKDynamoConfig = {
+                               'HideWorkSpaceDialog': False    ,
+                               'WorkSpace'          : self.HOME,
                                'ORCAPATH'           : self.ORCA,
                                'bg_color'           : 'black'  ,
                                'fixed'              : 'grey80' ,
                                'color'              : 'radon'  ,
-                               
+
                                "FIX": {
-                                        "dots"   : False, 
-                                        "spheres": False, 
-                                        "lines"  : True, 
+                                        "dots"   : False,
+                                        "spheres": False,
+                                        "lines"  : True,
                                         "sticks" : False
                                       },
 
                                "QC": {
-                                        "dots"   : False, 
-                                        "spheres": True , 
-                                        "lines"  : False, 
+                                        "dots"   : False,
+                                        "spheres": True ,
+                                        "lines"  : False,
                                         "sticks" : True
                                       },
-                               'History'            : {}       }                              
+                               'History'            : {}       }
 
-           
+
 
 
         self.Load_GTKDYNAMO_ConfigFile()
         self.changed = False
-        
+
         try:
             a = self.GTKDynamoConfig['ORCAPATH']
         except:
             self.GTKDynamoConfig['ORCAPATH'] = self.ORCA
-        
-        
-        
-        
+
+
+
+
         #-------------------- config GLarea --------------------#
         #container = self.builder.get_object("container")        #
         #pymol.start()                                           #
@@ -1723,9 +1723,9 @@ class gtkdynamo_main(threading.Thread,
         #self.PyMOL_initialize()                                      #
         #print text1                                                  #
         #------------------------------------------------------------#
-        
 
-        
+
+
               #------------------------------------------------#
               #-                 WindowControl                 #
               #------------------------------------------------#
@@ -1745,7 +1745,7 @@ class gtkdynamo_main(threading.Thread,
         #------------------------------------------------------------#
 
 
-        
+
         #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
         self.project = pDynamoProject(                                                                                               #
                                       data_path       = GTKDYNAMO_TMP,                                                               #
@@ -1755,7 +1755,7 @@ class gtkdynamo_main(threading.Thread,
         self.project.PyMOL = True                                                                                                    #
         #----------------------------------------------------------------------------------------------------------------------------#
 
-       
+
         self.project.settings['data_path'] = GTKDYNAMO_TMP
 
 
@@ -1776,7 +1776,7 @@ class gtkdynamo_main(threading.Thread,
                                                                                                 #
         self.ScanWindow                  = ScanWindow(self)                                     #
                                                                                                 #
-        self.ScanWindow2D = ScanWindow2D(self)                                                  #                    
+        self.ScanWindow2D = ScanWindow2D(self)                                                  #
                                                                                                 #
         self.TrajectoryDialog = TrajectoryDialog(self)                                          #
                                                                                                 #
@@ -1785,9 +1785,9 @@ class gtkdynamo_main(threading.Thread,
         self.pDynamoSelectionWindow = pDynamoSelectionWindow(self)                              #
                                                                                                 #
         self.ChargeRescaleDialog = ChargeRescaleDialog(self)                                    #
-        
+
         self.DialogAmber12ToAmber11 = DialogAmber12ToAmber11(self)
-        
+
         self.PreferencesDialog   = PreferencesDialog(self)
                                                                                                 #
         self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                              #
@@ -1795,35 +1795,35 @@ class gtkdynamo_main(threading.Thread,
         self.DialogImportCoordinates = ImportCoordinatesDialog(self)                            #
                                                                                                 #
         self.DialogExportCoordinates = ExportCoordinatesDialog(self)                            #
-        
+
         self.AboutDialog             = AboutDialog(self)
         self.SAWDialog               = SAWDialog(self)
         self.NEBDialog               = NEBDialog(self)
         self.EnergyRefineDialog      = TrajectoryEnergyRefineDialog(self)
-        
+
         self.WHAMEquationSolver      = WHAMEquationSolverDialog(self)
-        
-        
+
+
         self.DialogMOPACSEnergy      = MOPACSEnergyDialog(self)
-        
+
         #---------------------------------------------------------------------------------------#
         self.graph = None
 
 
-        
+
         if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
             self.WorkSpaceDialog.dialog.run()
             self.WorkSpaceDialog.dialog.hide()
 
-        
-        
+
+
         # hide widgets - not ethe final version
         self.builder.get_object('toolbutton7_print_tudo').hide()
         #self.builder.get_object('hbox4').hide()
         #cmd.button("double_left","None","None")                 #
         #cmd.button("single_right","None","None")                #
-        
-        
+
+
 
     def run(self):
         gtk.main()
@@ -1878,7 +1878,7 @@ gtkdynamo.run()
 
 #
 #gtkdynamo = gtkdynamo_main()
-#pymol.finish_launching()    
+#pymol.finish_launching()
 #gtk.gdk.threads_init()
 ##PyMOL_GUIConfig()
 
