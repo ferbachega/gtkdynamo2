@@ -292,7 +292,7 @@ def ScanMultipleDistances(parameters = None, project = None):
 
 
         text = text + "\n%9i       %13.12f        %13.12f      %13.12f"% (int(i), float(real_distance1), float(real_distance2), float(y[-1]))
-
+        # 
         try:
             XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )
         except:                                                              
