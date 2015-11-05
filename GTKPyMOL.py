@@ -312,6 +312,7 @@ class MainMenu (object):
                 print '''\n\nThanks for using EasyHybrid - GTKDynamo 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
+                sys.exit()
 
 
         def on_MainMenu_Edit_ClearFixedAtoms_activate (self, menuitem):
