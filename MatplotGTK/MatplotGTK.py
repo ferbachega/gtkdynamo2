@@ -46,6 +46,7 @@ class PlotGTKWindow:
         
         
         if parameters == None:
+            print 'Parameters not found'
             x = arange(0.0,3.0,0.01)
             y = sin(2*pi*x)
             parameters = {1: {
@@ -56,10 +57,159 @@ class PlotGTKWindow:
                             'xlabel': 'x\n ',
                             'ylabel': '\nsin'}
                          }
+            x = arange(0.0,3.0,0.01)
+            y = sin(2*pi*x)
         
-        x = arange(0.0,3.0,0.01)
-        y = sin(2*pi*x)
+        else:
+            self.win = gtk.Window()
+            self.win.connect("destroy", lambda x: gtk.main_quit())
+            self.win.set_default_size(560,420)
+            self.win.set_title("")
+
+            self.vbox = gtk.VBox()
+            self.win.add(self.vbox)
+            self.fig = Figure(figsize=(1,1), dpi=80)
+            self.canvas = FigureCanvas(self.fig)  # a gtk.DrawingArea
+            
+            self.vbox.pack_start(self.canvas)
+            self.toolbar = NavigationToolbar(self.canvas, self.win)
+            self.vbox.pack_start(self.toolbar, False, False)
+            
+            '''
+            self.status_bar = gtk.Statusbar()
+            self.vbox.pack_end(self.status_bar, False, False)
+            self.status_bar.push(0, '')
+            '''
+            
+            self.plots = len(parameters)
+            for i in parameters:
+                
+                if parameters[i]['type'] == 'line':
+                    x = parameters[i]['X']
+                    y = parameters[i]['Y']
+                    
+                    self.ax  = self.fig.add_subplot(self.plots, 1, i,)
+                    self.ax.grid(True)
+
+                    self.ax.set_xlabel(parameters[i]['xlabel'])
+                    self.ax.set_ylabel(parameters[i]['ylabel'])
+                    self.ax.plot(x, y, 'ko',x, y,'k', picker=5)
+                    self.win.show_all()
+                    gtk.main()
+                
+                if parameters[i]['type'] == 'matrix':
+                    self.plot_matrix (parameters[i])
+                    #from pylab import contour
+                    #from pylab import clabel
+                    #import numpy as np
+                    #matrix = parameters[i]['matrix']
+                    #self.ax  = self.fig.add_subplot(plots, 1, i)
+                    #im = self.ax.imshow(matrix, cmap=cm.jet, interpolation='none')# cmap=plt.cm.BuPu_r)
+                    #
+                    #c = self.ax.contour(matrix, colors = 'k',hold='on', linewidths = (np.arange(.5, 4, .5)))
+                    #clabel(c, fmt = '%2.1f', colors = 'k', fontsize=12)
+                    #
+                    #import matplotlib.pyplot as plt
+                    #plt.colorbar(im, orientation='horizontal', shrink=0.8)
+                    #
+                    #self.ax.grid(True)
+                    #xlabel = parameters[i]['xlabel']
+                    #ylabel = parameters[i]['ylabel']
+                    #self.ax.set_xlabel(xlabel)
+                    #self.ax.set_ylabel(ylabel)
+
+
+    
+    
+    def plot_matrix (self, parameters):
+        """ Function doc """
+        from matplotlib.figure import Figure
+        from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+        from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
         
+        
+        win = gtk.Window()
+        win.connect("destroy", lambda x: gtk.main_quit())
+        win.set_default_size(580,420)
+
+        title = parameters['title']
+        win.set_title(title)
+        vbox = gtk.VBox()
+        win.add(vbox)
+
+        import matplotlib.pyplot as plt
+        import matplotlib.cm as cm	
+        matrix = parameters['matrix']
+        fig = plt.figure()
+        
+        ax  = fig.add_subplot(111)
+        
+        #ax  = self.fig.add_subplot(self.plots, 1, i)
+        
+        im  = ax.imshow(matrix, cmap=cm.jet, interpolation='nearest')
+
+
+
+        from pylab import contour
+        from pylab import clabel
+        c = contour(matrix, colors = 'k', linewidths = (1,))
+        clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
+
+
+
+        from pylab import colorbar
+        colorbar(im)
+
+        from pylab import grid
+        grid(True)
+        xlabel = parameters['xlabel']
+        ylabel = parameters['ylabel']
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+
+        canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+        vbox.pack_start(canvas)
+        toolbar = NavigationToolbar(canvas, win)
+        vbox.pack_start(toolbar, False, False)
+
+
+        win.show_all()
+        gtk.main()	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+if __name__ == "__main__":
+    PlotGTKWindow = PlotGTKWindow()
+    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
+    
         #parameters[2] = {
         #                'type'  : 'line',
         #                'title' : 'test',
@@ -269,152 +419,4 @@ class PlotGTKWindow:
         
         #print parameters
 
-        self.win = gtk.Window()
-        self.win.connect("destroy", lambda x: gtk.main_quit())
-        self.win.set_default_size(560,420)
-        self.win.set_title("")
 
-        self.vbox = gtk.VBox()
-        self.win.add(self.vbox)
-        self.fig = Figure(figsize=(1,1), dpi=80)
-        self.canvas = FigureCanvas(self.fig)  # a gtk.DrawingArea
-        
-        self.vbox.pack_start(self.canvas)
-        self.toolbar = NavigationToolbar(self.canvas, self.win)
-        self.vbox.pack_start(self.toolbar, False, False)
-        
-        '''
-        self.status_bar = gtk.Statusbar()
-        self.vbox.pack_end(self.status_bar, False, False)
-        self.status_bar.push(0, '')
-        '''
-        
-        self.plots = len(parameters)
-        for i in parameters:
-            
-            if parameters[i]['type'] == 'line':
-                x = parameters[i]['X']
-                y = parameters[i]['Y']
-                
-                self.ax  = self.fig.add_subplot(self.plots, 1, i,)
-                self.ax.grid(True)
-
-                self.ax.set_xlabel(parameters[i]['xlabel'])
-                self.ax.set_ylabel(parameters[i]['ylabel'])
-                self.ax.plot(x, y, 'ko',x, y,'k', picker=5)
-                self.win.show_all()
-                gtk.main()
-            
-            if parameters[i]['type'] == 'matrix':
-                self.plot_matrix (parameters[i])
-                #from pylab import contour
-                #from pylab import clabel
-                #import numpy as np
-                #matrix = parameters[i]['matrix']
-                #self.ax  = self.fig.add_subplot(plots, 1, i)
-                #im = self.ax.imshow(matrix, cmap=cm.jet, interpolation='none')# cmap=plt.cm.BuPu_r)
-                #
-                #c = self.ax.contour(matrix, colors = 'k',hold='on', linewidths = (np.arange(.5, 4, .5)))
-                #clabel(c, fmt = '%2.1f', colors = 'k', fontsize=12)
-                #
-                #import matplotlib.pyplot as plt
-                #plt.colorbar(im, orientation='horizontal', shrink=0.8)
-                #
-                #self.ax.grid(True)
-                #xlabel = parameters[i]['xlabel']
-                #ylabel = parameters[i]['ylabel']
-                #self.ax.set_xlabel(xlabel)
-                #self.ax.set_ylabel(ylabel)
-
-
-    
-    
-    def plot_matrix (self, parameters):
-        """ Function doc """
-        from matplotlib.figure import Figure
-        from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
-        from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
-        
-        
-        win = gtk.Window()
-        win.connect("destroy", lambda x: gtk.main_quit())
-        win.set_default_size(580,420)
-
-        title = parameters['title']
-        win.set_title(title)
-        vbox = gtk.VBox()
-        win.add(vbox)
-
-        import matplotlib.pyplot as plt
-        import matplotlib.cm as cm	
-        matrix = parameters['matrix']
-        fig = plt.figure()
-        
-        ax  = fig.add_subplot(111)
-        
-        #ax  = self.fig.add_subplot(self.plots, 1, i)
-        
-        im  = ax.imshow(matrix, cmap=cm.jet, interpolation='nearest')
-
-
-
-        from pylab import contour
-        from pylab import clabel
-        c = contour(matrix, colors = 'k', linewidths = (1,))
-        clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
-
-
-
-        from pylab import colorbar
-        colorbar(im)
-
-        from pylab import grid
-        grid(True)
-        xlabel = parameters['xlabel']
-        ylabel = parameters['ylabel']
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel)
-
-        canvas = FigureCanvas(fig)  # a gtk.DrawingArea
-        vbox.pack_start(canvas)
-        toolbar = NavigationToolbar(canvas, win)
-        vbox.pack_start(toolbar, False, False)
-
-
-        win.show_all()
-        gtk.main()	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-if __name__ == "__main__":
-    PlotGTKWindow = PlotGTKWindow()
-    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
-    

@@ -85,9 +85,9 @@ def rescale_charges(project, selection, total_charge):
         i = i + frac
         charges_new.append(i)
         
-    print charges_new
-    print sum(charges_new)
-    
+    #print charges_new
+    #print sum(charges_new)
+    #
     
     charges.Print()
     n = 0

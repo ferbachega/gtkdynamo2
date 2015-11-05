@@ -309,7 +309,7 @@ def Scan2D(outpath            ,
         for j in range(n2):
             text = text + "%18.8f  " % (X_norm[i][j])
 
-    print text  
+    #print text  
     #print X
     #print X_norm
     #print text

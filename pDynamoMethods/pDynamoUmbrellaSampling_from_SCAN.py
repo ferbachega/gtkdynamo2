@@ -379,7 +379,7 @@ def umbrella_sampling(outpath                 ,
 	for fileName in fileNames:                                                                                             #
 		trajectories.append (SystemSoftConstraintTrajectory (fileName, project.system, mode = "r" ) )                      #
 	                                                                                                                       #
-	print trajectories                                                                                                     #
+	#print trajectories                                                                                                     #
                                                                                                                            #
                                                                                                                            #
 	# . Calculate the PMF.                                                                                                 #

@@ -193,7 +193,7 @@ class SAWDialog():
 		
 
         if self.GTKDynamoSession.project != None:
-            data_path = self.GTKDynamoSession.project.data_path
+            data_path = self.GTKDynamoSession.project.settings['data_path']
         else:
             data_path = "/home/teste"
 
@@ -221,6 +221,11 @@ class SAWDialog():
        
 
         plot_flag = False
+    
+  
+        #data_path = self.GTKDynamoSession.project.settings['data_path']
+  
+  
   
         
         parameters = {

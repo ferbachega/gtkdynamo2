@@ -180,8 +180,8 @@ def ScanSimpleDistance(parameters = None, project = None):
     text = str(text)
     arq.writelines(text)
     arq.close()
-    for i in X_general:
-        print i, Y_general[i]
+    #for i in X_general:
+    #    print i, Y_general[i]
     return X_general, Y_general , logFile
     
     

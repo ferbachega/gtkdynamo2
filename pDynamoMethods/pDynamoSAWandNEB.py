@@ -74,7 +74,7 @@ def pDynamoNEB(
     NEB_grad_tol             = parameters['NEB_grad_tol'             ]
     trajectory_name          = parameters['trajectory_name'          ]
     plot_flag                = parameters['plot_flag'                ]
-    print parameters
+    #print parameters
 
 
 
@@ -180,7 +180,7 @@ def pDynamoSAW(
     SAW_grad_tol             = parameters['SAW_grad_tol'             ]
     trajectory_name          = parameters['trajectory_name'          ]
     plot_flag                = parameters['plot_flag'                ]
-    print parameters
+    #print parameters
 
     if project == None:
         # . Define the energy models.
