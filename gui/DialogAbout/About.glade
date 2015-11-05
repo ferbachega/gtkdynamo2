@@ -30,7 +30,7 @@
    GNU General Public License for more details.
                          
 </property>
-    <property name="translator_credits" translatable="yes">GTKDynamo team:
+    <property name="authors" translatable="yes">GTKDynamo team:
 - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA           
 - Martin Field              - Institut de Biologie Structurale, Grenoble, France              
