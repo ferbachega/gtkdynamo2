@@ -160,16 +160,6 @@ def pDynamoSAW(
             parameters = None
             ):
 
-    if parameters == None:
-        parameters = {}
-        parameters['reactants_file'           ] = "/home/farminf/Programas/pDynamo-1.9.0/book/data/mol/bala_c7eq.mol"
-        parameters['products_file'            ] = "/home/farminf/Programas/pDynamo-1.9.0/book/data/xyz/bala_c5.xyz"
-        parameters['data_path'                ] = ''
-        parameters['SAW_number_of_structures' ] = 20
-        parameters['SAW_maximum_interations'  ] = 2000
-        parameters['SAW_grad_tol'             ] = 0.1
-        parameters['trajectory_name'          ] = 'SAWtest.trj'
-        parameters['plot_flag'                ] = False
     
     
     reactants_file           = parameters['reactants_file'           ]
@@ -177,11 +167,15 @@ def pDynamoSAW(
     data_path                = parameters['data_path'                ]
     SAW_number_of_structures = parameters['SAW_number_of_structures' ]
     SAW_maximum_interations  = parameters['SAW_maximum_interations'  ]
-    SAW_grad_tol             = parameters['SAW_grad_tol'             ]
-    trajectory_name          = parameters['trajectory_name'          ]
-    plot_flag                = parameters['plot_flag'                ]
-    #print parameters
+    trajectory_name          = parameters['trajectory'               ]
+    SAW_gamma                = parameters['SAW_gamma'                ]
 
+    #system                    ,
+    #trajectory                  ,
+    #gamma             = 1000.0  ,
+    #maximumIterations = 200     )
+    
+    
     if project == None:
         # . Define the energy models.
         mmModel = MMModelOPLS ( "bookSmallExamples" )
@@ -218,20 +212,27 @@ def pDynamoSAW(
     if not os.path.isdir(trajectoryPath):
         os.mkdir(trajectoryPath)
         print "Log files will be saved in:  %s" % trajectoryPath
-    log = DualTextLog(trajectoryPath, trajectory_name + ".log")  # LOG
+    log     = DualTextLog (trajectoryPath, trajectory_name + ".log")  # LOG
     logFile = os.path.join(trajectoryPath, trajectory_name + ".log")
     #--------------------Create initial trajectory-----------------------------------------
         
     system.Summary(log=log)
     
     # . Create a starting trajectory.
-    trajectory = SystemGeometryTrajectory.LinearlyInterpolate ( os.path.join ( scratchPath, "cyclohexane_sawPath.trj" ), molecule, 11, reactants, products )
+    trajectory = SystemGeometryTrajectory.LinearlyInterpolate ( os.path.join ( data_path, trajectory_name), system, 11, reactants, products )
 
     # . Optimization.
-    SAWOptimize_SystemGeometry ( system                    ,
-                                 trajectory                  ,
-                                 gamma             = 1000.0  ,
-                                 maximumIterations = 200     )
+    SAWOptimize_SystemGeometry ( system                               ,
+                                 trajectory   ,
+                                 gamma             = float(SAW_gamma) ,
+                                 maximumIterations = int(SAW_maximum_interations) )
+    
+    #reactants_file          
+    #products_file           
+    #data_path               
+    #SAW_number_of_structures
+    #SAW_maximum_interations 
+    #trajectory_name         
     
 
     

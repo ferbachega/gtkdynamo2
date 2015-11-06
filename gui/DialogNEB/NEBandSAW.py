@@ -226,20 +226,10 @@ class SAWDialog():
         #data_path = self.EasyHybridSession.project.settings['data_path']
   
   
-  
-        
-        parameters = {
-                     'reactants_file'           : reactants_file                 , 
-                     'products_file'            : products_file                  , 
-                     'data_path'                : data_path                      , 
-                     'SAW_number_of_structures' : int(SAW_number_of_structures)  , 
-                     'SAW_maximum_interations'  : int(SAW_maximum_interations )  , 
-                     'SAW_grad_tol'             : float(SAW_grad_tol      )      , 
-                     'trajectory_name'          : trajectory_name                ,
-                     'plot_flag'                : plot_flag
-                     }
-        
-        
+        parameters['reactants_file'] = reactants_file
+        parameters['products_file' ] = products_file 
+        parameters['data_path'     ] = data_path     
+
        
         logFile = pDynamoSAW(project  = self.EasyHybridSession.project, parameters = parameters )
         #-------------------------------------------------------------------------------------------------#
