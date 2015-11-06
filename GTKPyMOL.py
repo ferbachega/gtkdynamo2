@@ -275,13 +275,13 @@ class MainMenu (object):
                 self._NewProjectDialog.dialog.run()
                 self._NewProjectDialog.dialog.hide()
 
-        def on_MainMenu_Import_ImportCoordenates_activate (self, menuitem):
+        def on_MainMenu_Import_ImportCoordinates_activate (self, menuitem):
                 """ Function doc """
                 #self.DialogImportCoordinates.builder.get_object('entry_file_name').set_text('teste')
                 self.DialogImportCoordinates.dialog.run()
                 self.DialogImportCoordinates.dialog.hide()
 
-        def on_MainMenu_Export_ExportCoordenates_activate (self, menuitem):
+        def on_MainMenu_Export_ExportCoordinates_activate (self, menuitem):
                 """ Function doc """
                 self.DialogExportCoordinates.builder.get_object('entry_file_name').set_text('teste')
                 self.DialogExportCoordinates.dialog.run()

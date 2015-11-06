@@ -1831,13 +1831,13 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <child>
-                              <object class="GtkMenuItem" id="menuitem_ImportCoordenates">
+                              <object class="GtkMenuItem" id="menuitem_ImportCoordinates">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Import_ImportCoordenates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Import_ImportCoordinates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -1882,7 +1882,7 @@
                                 <property name="use_action_appearance">False</property>
                                 <property name="label" translatable="yes">Coordinates</property>
                                 <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_MainMenu_Export_ExportCoordenates_activate" swapped="no"/>
+                                <signal name="activate" handler="on_MainMenu_Export_ExportCoordinates_activate" swapped="no"/>
                               </object>
                             </child>
                             <child>
