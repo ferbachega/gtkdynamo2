@@ -125,7 +125,7 @@ def ScanSimpleDistance(parameters = None, project = None):
         constraints["ReactionCoord"] = constraint			
 
 
-        # Optmization
+        # Optimization
 
         TmpLog = DualTextLog(outpath, "_scan_step"+str(i)+".log")
         print 'Step : ',i 

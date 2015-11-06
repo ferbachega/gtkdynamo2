@@ -514,7 +514,7 @@ class MainMenu (object):
         def on_MainMenu_Calculate_NEB_activate(self, menuItem):
                 '''
                 #print self.project.settings['step']
-                text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
+                text = str(self.project.settings['step'] + 1) + '_step_GeometryOptimization'
                 self._02MinimizationWindow.builder.get_object(
                     "02_window_entry_traj_name").set_text(text)
                 self._02MinimizationWindow.dialog.run()
@@ -733,10 +733,10 @@ class MainToolBar(object):
         self.QuantumChemistrySetupDialog.dialog.run()
         self.QuantumChemistrySetupDialog.dialog.hide()
 
-    def on_ToolBar_OptmizationSetup_clicked(self, button):
+    def on_ToolBar_OptimizationSetup_clicked(self, button):
         """ Function doc """
         #print self.project.settings['step']
-        text = str(self.project.settings['step'] + 1) + '_step_GeometryOptmization'
+        text = str(self.project.settings['step'] + 1) + '_step_GeometryOptimization'
         self._02MinimizationWindow.builder.get_object(
             "02_window_entry_traj_name").set_text(text)
         self._02MinimizationWindow.dialog.run()

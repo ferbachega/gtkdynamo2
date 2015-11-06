@@ -361,7 +361,7 @@ glade = '''
    
     
 if __name__ == "__main__":
-    editor = EasyHybridTextEditor('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
-    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
+    editor = EasyHybridTextEditor('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptimization/2_step_GeometryOptimization.log')
+    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptimization/2_step_GeometryOptimization.log')
     
     #editor.main()

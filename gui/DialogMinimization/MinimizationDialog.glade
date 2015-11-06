@@ -5,7 +5,7 @@
   <object class="GtkDialog" id="02_MinimizationWindow">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Geometry Optmization</property>
+    <property name="title" translatable="yes">Geometry Optimization</property>
     <property name="resizable">False</property>
     <property name="icon">.icon_minimization_24x24.png</property>
     <property name="type_hint">dialog</property>

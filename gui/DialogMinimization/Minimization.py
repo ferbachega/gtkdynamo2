@@ -74,7 +74,7 @@ class MinimizationWindow():
 
 		if self.project.system is not None:
 			#------------------------------------------------------------------#
-			#                     Geometry optmization                         #
+			#                     Geometry optimization                         #
 			#                                                                  #
 			#    requires: method = 'Conjugate Gradient', parameters = None    #
 			# -----------------------------------------------------------------#

@@ -137,7 +137,7 @@ def  pDynamoMinimization(  system = None                ,
     system.Summary(log=log)
 
     #----------------------------------------------#
-    #             GEOMETRY OPTMIZATION             #
+    #             GEOMETRY OPTIMIZATION             #
     #----------------------------------------------#
     if method == 'Conjugate Gradient':
         try:
@@ -298,7 +298,7 @@ def  pDynamoMinimization(  system = None                ,
 #        self.system.Summary(log=log)
 #
 #    #----------------------------------------------#
-#    #             GEOMETRY OPTMIZATION             #
+#    #             GEOMETRY OPTIMIZATION             #
 #    #----------------------------------------------#
 #        if method == 'Conjugate Gradient':
 #            try:

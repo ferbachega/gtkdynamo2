@@ -697,8 +697,8 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="menuitem22GeometryOptmization">
-                        <property name="label" translatable="yes">Geometry Optmization</property>
+                      <object class="GtkImageMenuItem" id="menuitem22GeometryOptimization">
+                        <property name="label" translatable="yes">Geometry Optimization</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="image">image46</property>

@@ -208,7 +208,7 @@ class PlotGTKWindow:
    
 if __name__ == "__main__":
     PlotGTKWindow = PlotGTKWindow()
-    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
+    #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptimization/2_step_GeometryOptimization.log')
     
         #parameters[2] = {
         #                'type'  : 'line',

@@ -975,7 +975,7 @@ logList = []
 
 
 def main():
-    log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.EasyHybrid/2_step_GeometryOptmization/2_step_GeometryOptmization.log'
+    log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.EasyHybrid/2_step_GeometryOptimization/2_step_GeometryOptimization.log'
     parameters = ParseProcessLogFile (log_file)
     pprint (parameters)
     return 0

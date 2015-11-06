@@ -2222,14 +2222,14 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="menuitem22GeometryOptmization">
+                      <object class="GtkImageMenuItem" id="menuitem22GeometryOptimization">
                         <property name="label" translatable="yes">Geometry Optimization</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="image">image46</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
+                        <signal name="activate" handler="on_ToolBar_OptimizationSetup_clicked" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2625,7 +2625,7 @@
                 <property name="label" translatable="yes">Geometry Optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
-                <signal name="clicked" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_ToolBar_OptimizationSetup_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

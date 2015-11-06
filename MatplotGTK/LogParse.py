@@ -25,9 +25,9 @@ import os
 from pprint import pprint
 logList = [
         #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/2_step_MolecularDynamics.log'   , 
-        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/6_step_GeometryOptmization.log' , 
-        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/9_step_GeometryOptmization.log' , 
-        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/10_step_GeometryOptmization.log', 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/6_step_GeometryOptimization.log' , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/9_step_GeometryOptimization.log' , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/10_step_GeometryOptimization.log', 
         '/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D.log'                     , 
 		'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D_m.log',
 		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/ScanLog-MultipleDistance.log',
