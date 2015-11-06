@@ -1,0 +1,160 @@
+!!python/object/apply:pCore.Serialization.RawObjectConstructor {args: [!!python/name:pMolecule.System.System ''],
+  state: {atoms: {atomicNumber: [6, 1, 1, 35, 1, 17]}, configuration: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+      args: [!!python/name:pMolecule.Configuration.Configuration ''], state: {coordinates3: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+          args: [!!python/name:pCore.Coordinates3.Coordinates3 ''], state: {items: [
+              -8.192131449577658, -1.552134897753278, 0.9878061648514751, -7.082935513125197,
+              -1.5491880537279017, 1.0281580507431292, -8.582607119684493, -0.5216611906945695,
+              1.1204636579949072, -8.854271352942584, -2.6455744206558447, 2.4017049983867436,
+              -8.538705950660422, -1.9710103167030653, 0.020140883232250068, -3.6143016550696463,
+              6.296412577550658, -9.413916852517705], shape: [6, 3], storage: RowMajor}}}},
+    electronicState: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+      args: [!!python/name:pMolecule.ElectronicState.ElectronicState ''], state: {
+        charge: -1, multiplicity: 1}}, energyModel: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+      args: [!!python/name:pMolecule.EnergyModel.EnergyModel ''], state: {label: AM1,
+        qcAtoms: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+          args: [!!python/name:pMolecule.QCAtomContainer.QCAtomContainer ''], state: {
+            atomFields: [isBoundary, linkFactor, widthExponent, widthNormalization,
+              atomicNumber, center, index, qcPartner, densityStart, fittingStart,
+              orbitalStart, poissonStart, densityFunctions, fittingFunctions, orbitalFunctions,
+              poissonFunctions, densityWorkStart, fittingWorkStart, orbitalWorkStart,
+              poissonWorkStart, densityWorkFunctions, fittingWorkFunctions, orbitalWorkFunctions,
+              poissonWorkFunctions], atoms: [[false, 0.0, 127323954.47351627, 258012275465.59592,
+                6, 1, 0, -1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 4, 0], [false,
+                0.0, 127323954.47351627, 258012275465.59592, 1, 0, 1, -1, 0, 0, 4,
+                0, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 1, 0], [false, 0.0, 127323954.47351627,
+                258012275465.59592, 1, 0, 2, -1, 0, 0, 5, 0, 0, 0, 1, 0, 0, 0, 5,
+                0, 0, 0, 1, 0], [false, 0.0, 127323954.47351627, 258012275465.59592,
+                35, 3, 3, -1, 0, 0, 6, 0, 0, 0, 4, 0, 0, 0, 6, 0, 0, 0, 4, 0], [false,
+                0.0, 127323954.47351627, 258012275465.59592, 1, 0, 4, -1, 0, 0, 10,
+                0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0, 1, 0], [false, 0.0, 127323954.47351627,
+                258012275465.59592, 17, 2, 5, -1, 0, 0, 11, 0, 0, 0, 4, 0, 0, 0, 11,
+                0, 0, 0, 4, 0]], boundaryAtoms: 0, densityFunctions: 0, densityWorkFunctions: 0,
+            energyBaseLine: 32.93191523442718, fittingFunctions: 0, fittingWorkFunctions: 0,
+            mmPartners: {}, nuclearCharge: 21, orbitalFunctions: 15, orbitalWorkFunctions: 15,
+            poissonFunctions: 0, poissonWorkFunctions: 0, useLinkRatio: true, useSphericalFunctions: false}},
+        qcModel: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+          args: [!!python/name:pMolecule.QCModelMNDO.QCModelMNDO ''], state: {converger: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+              args: [!!python/name:pMolecule.DIISSCFConverger.DIISSCFConverger ''],
+              state: {densityTolerance: 1.0e-08, diisOnset: 0.2, energyTolerance: 0.0002,
+                history: 10, maximumSCFCycles: 100, useRCA: true}}, fermiBroadening: 1000.0,
+            hasCI: false, isSpinRestricted: 1, keepOrbitalData: 0, label: AM1, linkAtomRatio: 1,
+            mndoModel: am1, numberFractionalAlphaHOOs: 1, numberFractionalAlphaLUOs: 0,
+            numberFractionalBetaHOOs: 1, numberFractionalBetaLUOs: 0, numberFractionalHOOs: 1,
+            numberFractionalLUOs: 0, occupancyType: Cardinal, orbitalBasis: mndostong,
+            qcChargeModel: Lowdin}}, qcParameters: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+          args: [!!python/name:pMolecule.QCParameters.QCParameters ''], state: {centers: [
+              {atomicNumber: 1, mndoParameters: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [&id001 !!python/name:pMolecule.MNDOParameters.MNDOParameters ''],
+                  state: {AM1/PM3 Gaussian Parameter Fields: [fn1, fn2, fn3], AM1/PM3 Gaussian Parameter Units: [
+                      A eV, A^-2, A], AM1/PM3 Gaussian Parameters: [[0.122796, 5.0,
+                        1.2], [0.00509, 5.0, 1.8], [-0.018336, 2.0, 2.1]], Scalar Parameter Fields: [
+                      Label, Value, Units], Scalar Parameters: [[atomicNumber, 1,
+                        none], [orbitals, 1, none], [iii, 1, none], [iiid, 3, none],
+                      [ir016, 0, none], [ir066, 0, none], [ir244, 0, none], [ir266,
+                        0, none], [ir466, 0, none], [qnd, 0, none], [qnp, 0, none],
+                      [qns, 1, none], [ad, 0.472155340694659, atomic], [alp, 2.882324,
+                        A^-1], [am, 0.472155340694659, atomic], [aq, 0.472155340694659,
+                        atomic], [betad, 0.0, eV], [betap, 0.0, eV], [betas, -6.173787,
+                        eV], [dd, 0.0, atomic], [eheat, 52.102, kcal/mole], [eisol,
+                        -11.396427, eV], [f0sd, 0.0, eV], [gphot, 1.0, dimensionless],
+                      [gpp, 0.0, eV], [gp2, 0.0, eV], [gsp, 0.0, eV], [gss, 12.848,
+                        eV], [g2sd, 0.0, eV], [hsp, 0.0, eV], [pcore, 0.0, atomic],
+                      [qq, 0.0, atomic], [udd, 0.0, eV], [upp, 0.0, eV], [uss, -11.396427,
+                        eV], [zcore, 1.0, atomic], [zetad, 0.0, atomic], [zetap, 0.0,
+                        atomic], [zetas, 1.188078, atomic], [zdn, 0.0, atomic], [
+                        zpn, 0.0, atomic], [zsn, 0.0, atomic]]}}, orbitalBasis: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [&id002 !!python/name:pMolecule.GaussianBasis.GaussianBasis ''],
+                  state: {Atomic Number: 1, Is Spherical: true, Normalized Primitives: true,
+                    Primitive Fields: [Exponent, Coefficients], Shells: [{Primitives: [
+                          [23.10303149, [0.00916359628]], [4.235915534, [0.04936149294]],
+                          [1.185056519, [0.1685383049]], [0.4070988982, [0.3705627997]],
+                          [0.1580884151, [0.4164915298]], [0.06510953954, [0.1303340841]]],
+                        Type: S}]}}}, {atomicNumber: 6, mndoParameters: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id001], state: {AM1/PM3 Gaussian Parameter Fields: [fn1,
+                      fn2, fn3], AM1/PM3 Gaussian Parameter Units: [A eV, A^-2, A],
+                    AM1/PM3 Gaussian Parameters: [[0.011355, 5.0, 1.6], [0.045924,
+                        5.0, 1.85], [-0.020061, 5.0, 2.05], [-0.00126, 5.0, 2.65]],
+                    Scalar Parameter Fields: [Label, Value, Units], Scalar Parameters: [
+                      [atomicNumber, 6, none], [orbitals, 4, none], [iii, 2, none],
+                      [iiid, 3, none], [ir016, 0, none], [ir066, 0, none], [ir244,
+                        0, none], [ir266, 0, none], [ir466, 0, none], [qnd, 0, none],
+                      [qnp, 2, none], [qns, 2, none], [ad, 0.608280549385416, atomic],
+                      [alp, 2.648274, A^-1], [am, 0.449444257214795, atomic], [aq,
+                        0.642338683148749, atomic], [betad, 0.0, eV], [betap, -7.719283,
+                        eV], [betas, -15.715783, eV], [dd, 0.823673559100821, atomic],
+                      [eheat, 170.89, kcal/mole], [eisol, -120.81579400000001, eV],
+                      [f0sd, 0.0, eV], [gphot, 1.0, dimensionless], [gpp, 11.08, eV],
+                      [gp2, 9.84, eV], [gsp, 11.47, eV], [gss, 12.23, eV], [g2sd,
+                        0.0, eV], [hsp, 2.43, eV], [pcore, 0.0, atomic], [qq, 0.726801520721178,
+                        atomic], [udd, 0.0, eV], [upp, -39.614239, eV], [uss, -52.028658,
+                        eV], [zcore, 4.0, atomic], [zetad, 0.0, atomic], [zetap, 1.685116,
+                        atomic], [zetas, 1.808665, atomic], [zdn, 0.0, atomic], [
+                        zpn, 0.0, atomic], [zsn, 0.0, atomic]]}}, orbitalBasis: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id002], state: {Atomic Number: 6, Is Spherical: true, Normalized Primitives: true,
+                    Primitive Fields: [Exponent, Coefficients], Shells: [{Primitives: [
+                          [27.68496241, [-0.004151277819]], [5.077140627, [-0.02067024148]],
+                          [1.42678605, [-0.05150303337]], [0.2040335729, [0.3346271174]],
+                          [0.09260298399, [0.5621061301]], [0.04416183978, [0.1712994697]]],
+                        Type: S}, {Primitives: [[5.868285913, [0.007924233646]], [
+                            1.530329631, [0.05144104825]], [0.5475665231, [0.189840006]],
+                          [0.2288932733, [0.4049863191]], [0.1046655969, [0.4012362861]],
+                          [0.04948220127, [0.1051855189]]], Type: P}]}}}, {atomicNumber: 17,
+                mndoParameters: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id001], state: {AM1/PM3 Gaussian Parameter Fields: [fn1,
+                      fn2, fn3], AM1/PM3 Gaussian Parameter Units: [A eV, A^-2, A],
+                    AM1/PM3 Gaussian Parameters: [[0.094243, 4.0, 1.3], [0.027168,
+                        4.0, 2.1]], Scalar Parameter Fields: [Label, Value, Units],
+                    Scalar Parameters: [[atomicNumber, 17, none], [orbitals, 4, none],
+                      [iii, 3, none], [iiid, 3, none], [ir016, 0, none], [ir066, 0,
+                        none], [ir244, 0, none], [ir266, 0, none], [ir466, 0, none],
+                      [qnd, 0, none], [qnp, 3, none], [qns, 3, none], [ad, 0.769303419989304,
+                        atomic], [alp, 2.919368, A^-1], [am, 0.55234237006855, atomic],
+                      [aq, 0.613326445295692, atomic], [betad, 0.0, eV], [betap, -14.637216,
+                        eV], [betas, -24.59467, eV], [dd, 0.540628637004127, atomic],
+                      [eheat, 28.99, kcal/mole], [eisol, -372.1984310000001, eV],
+                      [f0sd, 0.0, eV], [gphot, 1.0, dimensionless], [gpp, 11.3, eV],
+                      [gp2, 9.97, eV], [gsp, 13.16, eV], [gss, 15.03, eV], [g2sd,
+                        0.0, eV], [hsp, 2.42, eV], [pcore, 0.0, atomic], [qq, 0.805720752498509,
+                        atomic], [udd, 0.0, eV], [upp, -76.640107, eV], [uss, -111.613948,
+                        eV], [zcore, 7.0, atomic], [zetad, 0.0, atomic], [zetap, 2.076799,
+                        atomic], [zetas, 3.631376, atomic], [zdn, 0.0, atomic], [
+                        zpn, 0.0, atomic], [zsn, 0.0, atomic]]}}, orbitalBasis: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id002], state: {Atomic Number: 17, Is Spherical: true, Normalized Primitives: true,
+                    Primitive Fields: [Exponent, Coefficients], Shells: [{Primitives: [
+                          [3.273031938, [-0.006775596947]], [0.9200611311, [-0.05639325779]],
+                          [0.3593349765, [-0.1587856086]], [0.08636686991, [0.5534527651]],
+                          [0.04797373812, [0.501535102]], [0.02724741144, [0.07223633674]]],
+                        Type: S}, {Primitives: [[5.077973607, [-0.00332992984]], [
+                            1.34078694, [-0.0141948834]], [0.2248434849, [0.163939577]],
+                          [0.1131741848, [0.4485358256]], [0.06076408893, [0.390881305]],
+                          [0.03315424265, [0.07411456232]]], Type: P}]}}}, {atomicNumber: 35,
+                mndoParameters: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id001], state: {AM1/PM3 Gaussian Parameter Fields: [fn1,
+                      fn2, fn3], AM1/PM3 Gaussian Parameter Units: [A eV, A^-2, A],
+                    AM1/PM3 Gaussian Parameters: [[0.066685, 4.0, 1.5], [0.025568,
+                        4.0, 2.3]], Scalar Parameter Fields: [Label, Value, Units],
+                    Scalar Parameters: [[atomicNumber, 35, none], [orbitals, 4, none],
+                      [iii, 4, none], [iiid, 4, none], [ir016, 0, none], [ir066, 0,
+                        none], [ir244, 0, none], [ir266, 0, none], [ir466, 0, none],
+                      [qnd, 0, none], [qnp, 4, none], [qns, 4, none], [ad, 0.602445822589943,
+                        atomic], [alp, 2.576546, A^-1], [am, 0.552579017353451, atomic],
+                      [aq, 0.530745910885928, atomic], [betad, 0.0, eV], [betap, -8.957195,
+                        eV], [betas, -19.39988, eV], [dd, 0.845810384396393, atomic],
+                      [eheat, 26.74, kcal/mole], [eisol, -352.314209, eV], [f0sd,
+                        0.0, eV], [gphot, 1.0, dimensionless], [gpp, 11.2763254, eV],
+                      [gp2, 9.8544255, eV], [gsp, 13.0346824, eV], [gss, 15.0364395,
+                        eV], [g2sd, 0.0, eV], [hsp, 2.4558683, eV], [pcore, 0.0, atomic],
+                      [qq, 1.040713339557198, atomic], [udd, 0.0, eV], [upp, -74.930052,
+                        eV], [uss, -104.656063, eV], [zcore, 7.0, atomic], [zetad,
+                        0.0, atomic], [zetap, 2.038333, atomic], [zetas, 3.064133,
+                        atomic], [zdn, 0.0, atomic], [zpn, 0.0, atomic], [zsn, 0.0,
+                        atomic]]}}, orbitalBasis: !!python/object/apply:pCore.Serialization.RawObjectConstructor {
+                  args: [*id002], state: {Atomic Number: 35, Is Spherical: true, Normalized Primitives: true,
+                    Primitive Fields: [Exponent, Coefficients], Shells: [{Primitives: [
+                          [3.232838646, [0.001374817488]], [0.3605788802, [-0.08666390043]],
+                          [0.1717905487, [-0.3130627309]], [0.05277666487, [0.7812787397]],
+                          [0.03163400284, [0.4389247988]], [0.01874093091, [0.02487178756]]],
+                        Type: S}, {Primitives: [[2.389722618, [-0.001665913575]],
+                          [0.7960947826, [-0.01657464971]], [0.341554138, [-0.05958513378]],
+                          [0.08847434525, [0.4053115554]], [0.04958248334, [0.5433958189]],
+                          [0.02816929784, [0.1204970491]]], Type: P}]}}}]}}}}, label: SN2_CL_CH3Br}}
