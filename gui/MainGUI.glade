@@ -1747,7 +1747,7 @@
     <property name="window_position">mouse</property>
     <property name="default_width">610</property>
     <property name="default_height">800</property>
-    <property name="icon">.icon_logo_40x40.png</property>
+    <property name="icon">easyhybrid_solo_100x100.png</property>
     <signal name="destroy" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
@@ -2918,11 +2918,11 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
+                                <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
                                 <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
-                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
-                                <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
+                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
@@ -3641,7 +3641,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton12</property>
+                    <property name="label" translatable="yes">Initial</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image74</property>
                     <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
@@ -3656,7 +3656,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton13</property>
+                    <property name="label" translatable="yes">Previous</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image75</property>
                     <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
@@ -3686,7 +3686,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton14</property>
+                    <property name="label" translatable="yes">Next</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image78</property>
                     <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
@@ -3701,7 +3701,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton16</property>
+                    <property name="label" translatable="yes">Final</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image79</property>
                     <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>

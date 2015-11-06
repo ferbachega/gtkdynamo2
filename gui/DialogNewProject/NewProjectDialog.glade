@@ -69,7 +69,7 @@
                   <object class="GtkImage" id="image1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="pixbuf">Logo100x100.png</property>
+                    <property name="pixbuf">logotipo_easyhybrid_solo_100x100.png</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
