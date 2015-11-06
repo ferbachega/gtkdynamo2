@@ -244,7 +244,7 @@ class NewProjectDialog():
 
 		#  0     1    2       3         4
 		#[Sun] [Sep] [28] [02:32:04] [2014]
-		text = 'NewProjec_' + localtime[1] + \
+		text = 'NewProject_' + localtime[1] + \
 			'_' + localtime[2] + '_' + localtime[4]
 		self.builder.get_object("new_project_entry").set_text(text)
 
