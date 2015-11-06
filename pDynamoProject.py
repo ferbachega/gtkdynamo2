@@ -1197,7 +1197,8 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         
         if FIX:
             try:
-                cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
+                if 'FIX_atoms' in cmd.get_names('selections'):
+                    cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
             except:
                 pass
         if bg:
