@@ -1710,7 +1710,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
-        <property name="label" translatable="yes">viewlog</property>
+        <property name="label" translatable="yes">view log</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_treeview2_show_logFile" swapped="no"/>
       </object>
@@ -1720,7 +1720,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="use_action_appearance">False</property>
-        <property name="label" translatable="yes">plotlog</property>
+        <property name="label" translatable="yes">plot log</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="on_menuitem_PlotLogFile_activate" swapped="no"/>
       </object>
