@@ -42,7 +42,7 @@ def DualTextLog(path, filename="log.gui.txt"):
     header = '''
 #-----------------------------------------------------------------------------#
 #                                                                             #
-#                                EasyHybrid                                    #
+#                                EasyHybrid                                   #
 #                        - A pDynamo graphical tool -                         #
 #                                                                             #
 #-----------------------------------------------------------------------------#
@@ -50,19 +50,19 @@ def DualTextLog(path, filename="log.gui.txt"):
 #     Developed by Jose Fernando R Bachega and Luis Fernando S M Timmers      #
 #                            <ferbachega@gmail.com>                           #
 #                                                                             #
-#             visit: https://sites.google.com/site/EasyHybrid/                 #
+#             visit: https://sites.google.com/site/EasyHybrid/                #
 #                   Univesity of Sao Paulo - SP, Brazil                       #
 #      Pontifical Catholic University of Rio Grande do Sul - RS, Brazil       #
 #                                                                             #
 #                                                                             #
-#   EasyHybrid team:                               Special thanks to:          #
+#   EasyHybrid team:                               Special thanks to:         #
 #   - Jose Fernando R Bachega           |         - Fernando V Maluf          #
-#   - Troy Wymore                       |         - Lucas Assirati            #
-#   - Martin Field                      |         - Leonardo R Bachega        #
-#   - Osmar Norberto de Souza           |         - Richard Garratt           #
-#   - Luis Fernando S M Timmers         |                                     #
-#   - Walter R Paixao-Cortes            |                                     #
 #   - Michele Silva                     |                                     #
+#   - Luis Fernando S M Timmers         |                                     #
+#   - Martin Field                      |         - Leonardo R Bachega        #
+#   - Troy Wymore                       |         - Lucas Assirati            #
+#   - Osmar Norberto de Souza           |         - Richard Garratt           #
+#   - Walter R Paixao-Cortes            |                                     #
 #                                                                             #
 #   Cite this work as:                                                        #
 #   J.F.R. Bachega, L.F.S.M. Timmers, L.Assirati, L.B. Bachega, M.J. Field,   #

@@ -316,7 +316,7 @@ class LoadAndSaveFiles(object):
 
                 self.settings['boundaryAtoms'] = boundaryAtoms
                 # print 'qc_table : '  , qc_table
-                print 'boundaryAtoms', (boundaryAtoms)
+                #print 'boundaryAtoms', (boundaryAtoms)
 
                 qc = []
                 for l in qc_table:
@@ -353,8 +353,8 @@ class LoadAndSaveFiles(object):
                     self.system.energyModel.qcAtoms.BoundaryAtomSelection())
 
                 self.settings['boundaryAtoms'] = boundaryAtoms
-                # print 'qc_table : '  , qc_table
-                print 'boundaryAtoms', (boundaryAtoms)
+                #print 'qc_table : '  , qc_table
+                #print 'boundaryAtoms', (boundaryAtoms)
 
                 qc = []
                 for l in qc_table:

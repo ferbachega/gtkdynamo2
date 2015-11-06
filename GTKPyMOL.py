@@ -27,10 +27,10 @@ text1 = """
 #
 #   EasyHybrid team:
 #   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
-#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA
-#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France
 #   - Luis Fernando S M Timmers - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #   - Michele Silva             - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA
+#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France
 #
 #   Special thanks to:
 #   - Osmar Norberto de Souza   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
@@ -313,7 +313,7 @@ class MainMenu (object):
 
         def on_MainMenu_File_Quit_activate (self, menuitem):
                 """ Function doc """
-                print '''\n\nThanks for using EasyHybrid - EasyHybrid 1.9 - \n\n'''
+                print '''\n\nThanks for using EasyHybrid \n\n'''
                 gtk.main_quit()
                 cmd.quit()
                 sys.exit()
@@ -1678,7 +1678,7 @@ class EasyHybrid_main(threading.Thread,
 
     def __init__(self):
 
-        print '           Intializing EasyHybrid - EasyHybrid GUI object          '
+        print '           Intializing EasyHybrid GUI object          '
         self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
         try:
             self.ORCA           = os.environ.get('ORCA')
@@ -1926,21 +1926,3 @@ EasyHybrid = EasyHybrid_main()
 EasyHybrid.PyMOL_initialize()
 EasyHybrid.run()
 
-#
-#EasyHybrid = EasyHybrid_main()
-#pymol.finish_launching()
-#gtk.gdk.threads_init()
-##PyMOL_GUIConfig()
-
-#masters = MastersMain()
-#masters.run()
-#fecha o gateway quando for sair do programa
-#p.terminate()
-#return 0
-
-#import sys
-#if len(sys.argv) > 1:
-#    EasyHybrid.project.load_coordinate_file_as_new_system(sys.argv[1])
-#    EasyHybrid.project.From_PDYNAMO_to_EasyHybrid(type_='new')
-
-#EasyHybrid.run()

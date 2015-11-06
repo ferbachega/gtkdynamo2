@@ -58,7 +58,7 @@ class NewProjectDialog():
         fftype = self.builder.get_object("combobox1").get_active_text()
 
         if fftype == "AMBER":
-            print fftype
+            #print fftype
             self.builder.get_object("amber_prmtop_label").  show()
             self.builder.get_object("amber_prmtop_chooser").show()
             self.builder.get_object("charmm_topologies_label").hide()
@@ -67,7 +67,7 @@ class NewProjectDialog():
             self.builder.get_object("opls_prmtop_chooser").hide()
 
         if fftype == "CHARMM":
-            print fftype
+            #print fftype
             self.builder.get_object("opls_prmtop_label").hide()
             self.builder.get_object("opls_prmtop_chooser").hide()
 
@@ -77,7 +77,7 @@ class NewProjectDialog():
             self.builder.get_object("charmm_topologies_chooser").show()
 
         if fftype == "GROMACS":
-            print fftype
+            #print fftype
             self.builder.get_object("amber_prmtop_label").  show()
             self.builder.get_object("amber_prmtop_chooser").show()
             self.builder.get_object("charmm_topologies_label").hide()
@@ -86,7 +86,7 @@ class NewProjectDialog():
             self.builder.get_object("opls_prmtop_chooser").hide()
 
         if fftype == "OPLS":
-            print fftype
+            #print fftype
             self.builder.get_object("amber_prmtop_label").  hide()
             self.builder.get_object("amber_prmtop_chooser").hide()
             self.builder.get_object("opls_prmtop_label").show()

@@ -84,14 +84,14 @@ class WindowControl():
                          # this is necessary to sort the job_history #
         #-----------------------------------------------------------------------------#
         numbers  = list(job_history)                                                  #
-        print job_history                                                             #
+        #print job_history                                                             #
         numbers2 = []                                                                 #
-        print numbers                                                                 #
+        #print numbers                                                                 #
                                                                                       #
         for i in numbers:                                                             #
             numbers2.append(int(i))                                                   #
         numbers2.sort()                                                               #
-        print numbers2                                                                #
+        #print numbers2                                                                #
         #-----------------------------------------------------------------------------#
 
 
