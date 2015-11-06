@@ -292,7 +292,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="20_window_GTKDynamo_Script_frame2">
+          <object class="GtkFrame" id="20_window_EasyHybrid_Script_frame2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0.5</property>
@@ -305,7 +305,7 @@
                 <property name="left_padding">10</property>
                 <property name="right_padding">10</property>
                 <child>
-                  <object class="GtkCheckButton" id="20_window_GTKDynamo_Script_checkbutton">
+                  <object class="GtkCheckButton" id="20_window_EasyHybrid_Script_checkbutton">
                     <property name="label" translatable="yes">Export as Python Script.</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -316,10 +316,10 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="20_window_GTKDynamo_Script_label2">
+              <object class="GtkLabel" id="20_window_EasyHybrid_Script_label2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;GTKDynamo Script&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;EasyHybrid Script&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>

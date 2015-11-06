@@ -82,7 +82,7 @@
                           <object class="GtkLabel" id="label2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">GTKDynamo stores your projects in a folder called a workspace.
+                            <property name="label" translatable="yes">EasyHybrid stores your projects in a folder called a workspace.
 Please, choose a workspace folder to use for this session.</property>
                           </object>
                           <packing>

@@ -33,7 +33,7 @@ class WindowControl():
     spin buttons and other widgets.
 
     - this object has been created for the 
-    GTKDynamo_main class contains only those 
+    EasyHybrid_main class contains only those 
     methods associated with the events.
 
     """

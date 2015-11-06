@@ -31,8 +31,8 @@ from WindowControl import *
 
 
 
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -46,7 +46,7 @@ comentarios serao salvos no history dos processos
 class TrajectoryDialog():
     def on_TrajectoryDialog_button_load_clicked(self, button):
         """ Function doc """
-        self.project     = self.GTKDynamoSession.project
+        self.project     = self.EasyHybridSession.project
                
         first            = int(self.builder.get_object('TrajectoryDialog_first').get_text() )
         last             = int(self.builder.get_object('TrajectoryDialog_last').get_text()  )
@@ -71,8 +71,8 @@ class TrajectoryDialog():
               _type)            
         
         frames = self.project.load_trajectory_to_system(first, last, stride, traj_name, new_pymol_object, _type)
-        self.GTKDynamoSession.builder.get_object('trajectory_max_entrey').set_text(str(frames))
-        self.GTKDynamoSession.on_TrajectoryTool_HSCALE_update()
+        self.EasyHybridSession.builder.get_object('trajectory_max_entrey').set_text(str(frames))
+        self.EasyHybridSession.on_TrajectoryTool_HSCALE_update()
         
     def on_combobox1_changed(self, button):
         _type        = self.builder.get_object('combobox1').get_active_text()
@@ -85,15 +85,15 @@ class TrajectoryDialog():
             self.builder.get_object('filechooserbutton1').hide()
 
 
-    def __init__(self, GTKDynamoSession):
+    def __init__(self, EasyHybridSession):
         """ Class initialiser """
-        self.GTKDynamoSession = GTKDynamoSession
-        self.project          = GTKDynamoSession.project
-        self.main_builder     = GTKDynamoSession.builder
+        self.EasyHybridSession = EasyHybridSession
+        self.project          = EasyHybridSession.project
+        self.main_builder     = EasyHybridSession.builder
 
         self.builder = gtk.Builder()
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogLoadTrajectory','TrajectoryDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogLoadTrajectory','TrajectoryDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('TrajectoryDialog')
 

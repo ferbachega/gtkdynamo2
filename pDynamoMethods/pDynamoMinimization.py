@@ -34,14 +34,14 @@ from pMoleculeScripts import *
 from DualTextLogFileWriter3 import *
 
 
-GTKDYNAMO_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.getcwd()
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
-if not os.path.isdir(GTKDYNAMO_TMP):
-    os.mkdir(GTKDYNAMO_TMP)
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
+EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')
+if not os.path.isdir(EasyHybrid_TMP):
+    os.mkdir(EasyHybrid_TMP)
+    print "Temporary files directory:  %s" % EasyHybrid_TMP
 
 
 
@@ -53,7 +53,7 @@ def  pDynamoMinimization(  system = None                ,
     
     """ Function doc """
     if data_path == None:
-        data_path = GTKDYNAMO_TMP
+        data_path = EasyHybrid_TMP
 
     if parameters == None:
         logFrequency         = 1
@@ -78,7 +78,7 @@ def  pDynamoMinimization(  system = None                ,
     #
     try:
         os.rename(
-            GTKDYNAMO_TMP + '/log.gui.txt', GTKDYNAMO_TMP + '/log.gui.old')
+            EasyHybrid_TMP + '/log.gui.txt', EasyHybrid_TMP + '/log.gui.old')
     #
     except:
         a = None		                                                        #
@@ -217,7 +217,7 @@ def  pDynamoMinimization(  system = None                ,
 #        self.system = system
 #
 #        if data_path == None:
-#            data_path = GTKDYNAMO_TMP
+#            data_path = EasyHybrid_TMP
 #
 #        if parameters == None:
 #            logFrequency         = 1
@@ -242,7 +242,7 @@ def  pDynamoMinimization(  system = None                ,
 #        #
 #        try:
 #            os.rename(
-#                GTKDYNAMO_TMP + '/log.gui.txt', GTKDYNAMO_TMP + '/log.gui.old')
+#                EasyHybrid_TMP + '/log.gui.txt', EasyHybrid_TMP + '/log.gui.old')
 #        #
 #        except:
 #            a = None		                                                        #
@@ -348,7 +348,7 @@ def  pDynamoMinimization(  system = None                ,
 #
 #
 def main():
-    system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
+    system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     _min_ = pDynamoMinimization(system)
     #_min_    = pDynamoMinimization(system,'Steepest Descent')
     #_min_    = pDynamoMinimization(system,'LBFGS')

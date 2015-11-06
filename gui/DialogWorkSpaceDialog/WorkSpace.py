@@ -48,10 +48,10 @@ class WorkSpaceDialog():
         """ Function doc """
         WorkSpace       = self.builder.get_object('workspace_entry').get_text()
         WorkSpaceDialog = self.builder.get_object('checkbutton_workspace').get_active()
-        self.GTKDynamoSession.GTKDynamoConfig['HideWorkSpaceDialog'] = WorkSpaceDialog
+        self.EasyHybridSession.EasyHybridConfig['HideWorkSpaceDialog'] = WorkSpaceDialog
         print WorkSpace
-        self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']           = WorkSpace
-        print self.GTKDynamoSession.GTKDynamoConfig['WorkSpace'][0] 
+        self.EasyHybridSession.EasyHybridConfig['WorkSpace']           = WorkSpace
+        print self.EasyHybridSession.EasyHybridConfig['WorkSpace'][0] 
 
         
         WorkSpace = WorkSpace.split('/')
@@ -61,26 +61,26 @@ class WorkSpaceDialog():
             if not os.path.exists (path): 
                 os.mkdir (path)
 
-        #path = os.path.join(path, 'GTKDynamo')
+        #path = os.path.join(path, 'EasyHybrid')
         #if not os.path.exists (path): 
         #    os.mkdir (path)
 
        
         
-        print self.GTKDynamoSession.GTKDynamoConfig
-        self.GTKDynamoSession.Save_GTKDYNAMO_ConfigFile()
+        print self.EasyHybridSession.EasyHybridConfig
+        self.EasyHybridSession.Save_EasyHybrid_ConfigFile()
         
     
-    def __init__(self, GTKDynamoSession, window_control=None, main_builder=None):
+    def __init__(self, EasyHybridSession, window_control=None, main_builder=None):
         """ Class initialiser """
         self.builder           = gtk.Builder()
         self.main_builder      = main_builder
-        self.GTKDynamoSession  = GTKDynamoSession
-        self.GTKDYNAMO_ROOT    = GTKDynamoSession.GTKDYNAMO_ROOT
-        self.GTKDYNAMO_GUI     = GTKDynamoSession.GTKDYNAMO_GUI 
+        self.EasyHybridSession  = EasyHybridSession
+        self.EasyHybrid_ROOT    = EasyHybridSession.EasyHybrid_ROOT
+        self.EasyHybrid_GUI     = EasyHybridSession.EasyHybrid_GUI 
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI,'DialogWorkSpaceDialog', 'WorkSpaceDialog.glade'))
+            os.path.join(self.EasyHybrid_GUI,'DialogWorkSpaceDialog', 'WorkSpaceDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
         

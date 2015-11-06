@@ -28,12 +28,12 @@ import gobject
 #from pymol import cmd
 #from PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-#GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-GTKDYNAMO_GUI = ''
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+#EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+EasyHybrid_GUI = ''
 
 
 
@@ -48,30 +48,30 @@ class ImportCoordinatesDialog():
     """ Class doc """
     def on_on_button_import_coordinates_clicked(self, button):
 		""" Function doc """
-		self.project = self.GTKDynamoSession.project
+		self.project = self.EasyHybridSession.project
 		filename     = self.builder.get_object("filechooserbutton_import_coord_from_file").get_filename()
 		self.project.load_coordinate_file_to_system(filename, dualLog=None)
-		self.project.From_PDYNAMO_to_GTKDYNAMO(type_='Coord', log =  None)
+		self.project.From_PDYNAMO_to_EasyHybrid(type_='Coord', log =  None)
 
 		#self.project.ExportStateToFile(self, filename, type_)
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
         
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
-            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
+            self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
         
         else:
-            self.GTKDYNAMO_ROOT = ''
-            self.GTKDYNAMO_GUI  = ''
+            self.EasyHybrid_ROOT = ''
+            self.EasyHybrid_GUI  = ''
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI,'DialogChargeRescale', 'ImportCoordinates.glade'))
+            os.path.join(self.EasyHybrid_GUI,'DialogChargeRescale', 'ImportCoordinates.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('ImportCoordinatesDialog')
 
@@ -102,28 +102,28 @@ class ExportCoordinatesDialog():
 		print filename
 		
 		
-		self.project = self.GTKDynamoSession.project
+		self.project = self.EasyHybridSession.project
 		self.project.ExportStateToFile(filename, type_)
 
     
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
 		""" Class initialiser """
 		self.builder          = gtk.Builder()
 
-		if GTKDynamoSession != None:
-			self.project          = GTKDynamoSession.project
-			self.main_builder     = GTKDynamoSession.builder
-			self.GTKDynamoSession = GTKDynamoSession        
-			self.window_control   = GTKDynamoSession.window_control
-			self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+		if EasyHybridSession != None:
+			self.project          = EasyHybridSession.project
+			self.main_builder     = EasyHybridSession.builder
+			self.EasyHybridSession = EasyHybridSession        
+			self.window_control   = EasyHybridSession.window_control
+			self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
 
 		else:
-			self.GTKDYNAMO_ROOT = ''
-			self.GTKDYNAMO_GUI  = ''
+			self.EasyHybrid_ROOT = ''
+			self.EasyHybrid_GUI  = ''
 
 
 		self.builder.add_from_file(
-			os.path.join(self.GTKDYNAMO_GUI,'DialogChargeRescale','ExportCoordinates.glade'))
+			os.path.join(self.EasyHybrid_GUI,'DialogChargeRescale','ExportCoordinates.glade'))
 		self.builder.connect_signals(self)
 		self.dialog = self.builder.get_object('ExportCoordinates')
 

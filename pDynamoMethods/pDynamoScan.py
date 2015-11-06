@@ -34,16 +34,16 @@ from pMoleculeScripts       import *
 from DualTextLogFileWriter3 import *
 from MatplotGTK.LogParse    import *
 
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
-if not os.path.isdir(GTKDYNAMO_TMP):
-    os.mkdir(GTKDYNAMO_TMP)
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
+EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')
+if not os.path.isdir(EasyHybrid_TMP):
+    os.mkdir(EasyHybrid_TMP)
+    print "Temporary files directory:  %s" % EasyHybrid_TMP
 
 
 
@@ -82,10 +82,10 @@ def ScanSimpleDistance(parameters = None, project = None):
     
     text = text + "\n"
     text = text + "\n--------------------------------------------------------------------------------"
-    text = text + "\n                              GTKDynamo SCAN"
+    text = text + "\n                              EasyHybrid SCAN"
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n"
-    text = text + "\n------------------------- GTKDynamo SCAN Simple-Distance -----------------------"
+    text = text + "\n------------------------- EasyHybrid SCAN Simple-Distance -----------------------"
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,      ATOM1_name    )
     text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % ( ATOM2,      ATOM2_name    )			
     text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15i"     % ( NWINDOWS,   FORCECONSTANT )            
@@ -215,10 +215,10 @@ def ScanMultipleDistances(parameters = None, project = None):
     text = ""
     text = text + "\n"
     text = text + "\n--------------------------------------------------------------------------------"
-    text = text + "\n                              GTKDynamo SCAN"
+    text = text + "\n                              EasyHybrid SCAN"
     text = text + "\n--------------------------------------------------------------------------------"
     text = text + "\n"
-    text = text + "\n------------------------ GTKDynamo SCAN Multiple-Distance ----------------------"	
+    text = text + "\n------------------------ EasyHybrid SCAN Multiple-Distance ----------------------"	
     text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( ATOM1,         ATOM1_name    )
     text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % ( ATOM2,         ATOM2_name    )
     text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % ( ATOM3,         ATOM3_name    )		
@@ -323,7 +323,7 @@ def back_orca_output(output_path, step):
 
 
 def main():
-    system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
+    system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     pDynamoScan = pDynamoScan()
     return 0
 

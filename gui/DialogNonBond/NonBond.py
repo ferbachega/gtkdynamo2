@@ -27,13 +27,13 @@ import gtk
 import gobject
 #from PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 nbList = ['NBModelFull',
@@ -47,7 +47,7 @@ class NonBondDialog():
     """ Class doc """
     def on_button1_apply_NBModel_clicked(self, button):
         """ Function doc """
-        self.project          = self.GTKDynamoSession.project
+        self.project          = self.EasyHybridSession.project
 
         nbModel     = self.builder.get_object('combobox1_nb_types').get_active_text()
         innercutoff = float(self.builder.get_object('entry1').get_text())
@@ -99,15 +99,15 @@ class NonBondDialog():
         
         
         
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
         
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
         
         #self.project = project
         #self.window_control = window_control
@@ -115,7 +115,7 @@ class NonBondDialog():
         #self.main_builder = main_builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogNonBond', 'NonBondDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogNonBond', 'NonBondDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
 

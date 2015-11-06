@@ -5,7 +5,7 @@ from pMolecule        import *
 from pMoleculeScripts import *
 
 #
-# GTKDynamo
+# EasyHybrid
 from pDynamoMethods.pDynamoMinimization      import *
 from pDynamoMethods.pDynamoEnergy            import *
 from pDynamoMethods.pDynamoMolecularDynamics import *
@@ -168,7 +168,7 @@ class NewProject(object):
 
         #print BufferText
         self.system.label = name
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+        self.From_PDYNAMO_to_EasyHybrid(type_='new')
 
     def DeleteActualProject (self):
         """ Function doc """
@@ -507,7 +507,7 @@ class LoadAndSaveFiles(object):
         
         return a
         
-    def load_GTKDYNAMO_project(self, filename):
+    def load_EasyHybrid_project(self, filename):
         """ Function doc """
         #print self.settings
         #print filename
@@ -647,7 +647,7 @@ class pDynamoSimulations(object):
 
         #------------------  increment step  ---------------#
         #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='min', log = logFile )
+        self.From_PDYNAMO_to_EasyHybrid(type_='min', log = logFile )
         #
         #---------------------------------------------------#
 
@@ -665,7 +665,7 @@ class pDynamoSimulations(object):
         
         #------------------  increment step  ---------------#
         #
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='dyn', log = logFile)
+        self.From_PDYNAMO_to_EasyHybrid(type_='dyn', log = logFile)
         #
         #---------------------------------------------------#
 
@@ -861,9 +861,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                 builder         = None, 
                 window_control  = None, 
                 cmd             = None, 
-                GTKDynamoConfig = None ):
+                EasyHybridConfig = None ):
         
-        self.GTKDynamoConfig = GTKDynamoConfig
+        self.EasyHybridConfig = EasyHybridConfig
         self.settings = {
                        'projectID'       : None,
                        'force_field'     : None,
@@ -1082,7 +1082,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         
         #print len(self.settings['qc_table'])
         
-        if self.GTKDynamoConfig['QC']['dots']:
+        if self.EasyHybridConfig['QC']['dots']:
             try:
                 cmd.hide("dots",  PyMOL_Obj)
             except:
@@ -1090,7 +1090,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             cmd.show("dots",  "QC_atoms")
         
         
-        if self.GTKDynamoConfig['QC']['spheres']:
+        if self.EasyHybridConfig['QC']['spheres']:
             try:
                 cmd.hide("spheres",  PyMOL_Obj)
             except:
@@ -1098,7 +1098,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             cmd.show("spheres",  "QC_atoms")
         
         
-        if self.GTKDynamoConfig['QC']['lines']:
+        if self.EasyHybridConfig['QC']['lines']:
             try:
                 cmd.hide("lines",  PyMOL_Obj)
             except:
@@ -1106,7 +1106,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             cmd.show("lines",  "QC_atoms")
         
         
-        if self.GTKDynamoConfig['QC']['sticks']:
+        if self.EasyHybridConfig['QC']['sticks']:
             try:
                 cmd.hide("sticks",  PyMOL_Obj)
             except:
@@ -1125,16 +1125,16 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             command = 'select FIX_atoms, (' + PyMOL_Obj + ' and  FIX_atoms )'
             cmd.do(command)
 
-            if self.GTKDynamoConfig['FIX']['dots']:
+            if self.EasyHybridConfig['FIX']['dots']:
                 cmd.show("dots",  "FIX_atoms")
             
-            if self.GTKDynamoConfig['FIX']['spheres']:
+            if self.EasyHybridConfig['FIX']['spheres']:
                 cmd.show("spheres",  "FIX_atoms")
             
-            if self.GTKDynamoConfig['FIX']['lines']:
+            if self.EasyHybridConfig['FIX']['lines']:
                 cmd.show("lines",  "FIX_atoms")
             
-            if self.GTKDynamoConfig['FIX']['sticks']:
+            if self.EasyHybridConfig['FIX']['sticks']:
                 cmd.show("sticks",  "FIX_atoms")
     
     def GetStatusFromSystemSummary(self):
@@ -1190,19 +1190,19 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             PyMOL_Obj = self.settings['PyMOL_Obj']
         if carbons:
             try:
-                cmd.color(self.GTKDynamoConfig['color'],PyMOL_Obj)
+                cmd.color(self.EasyHybridConfig['color'],PyMOL_Obj)
                 cmd.util.cnc(PyMOL_Obj)
             except:
                 pass
         
         if FIX:
             try:
-                cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
+                cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
             except:
                 pass
         if bg:
             try:
-                cmd.bg_color(self.GTKDynamoConfig['bg_color'])
+                cmd.bg_color(self.EasyHybridConfig['bg_color'])
             except:
                 pass        
 
@@ -1294,9 +1294,9 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         #print '----------------------depois-----------------------'
         #pprint (self.settings)
             
-    def From_PDYNAMO_to_GTKDYNAMO(self, type_='UNK', log = None):
+    def From_PDYNAMO_to_EasyHybrid(self, type_='UNK', log = None):
         """ 
-                                From_PDYNAMO_to_GTKDYNAMO
+                                From_PDYNAMO_to_EasyHybrid
             this method is to responsible for :
                 Counting the Step
                 Export Current Frame to PyMOL
@@ -1390,7 +1390,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         except:
             pass
         
-        self.From_PDYNAMO_to_GTKDYNAMO(type_='prn')
+        self.From_PDYNAMO_to_EasyHybrid(type_='prn')
         #print 'pruned'        
         self.clean_fix_table()
         self.importPDBInformantion()

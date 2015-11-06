@@ -33,13 +33,13 @@ from gui.FileChooserWindow                                   import *
 #from pymol import cmd
 #from PyMOLScripts import *
 #from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 from pprint import pprint
 from pDynamoMethods.pDynamoUmbrellaSampling import  run_WHAM
 from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
@@ -65,7 +65,7 @@ class WHAMEquationSolverDialog():
         Temperature          = self.builder.get_object('Temperature'         ).get_text()
     
         model                = self.builder.get_object("liststore1") 
-        data_path            = self.GTKDynamoSession.project.settings['data_path']
+        data_path            = self.EasyHybridSession.project.settings['data_path']
         trajectory_blocks = []
         
         for i in model:
@@ -203,24 +203,24 @@ class WHAMEquationSolverDialog():
 
 
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
         
         
         
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
             
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogWHAM', 'WHAM.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogWHAM', 'WHAM.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
 
         self.FileNames = {
-                         # '/home/farminf/Programas/gtkdynamo2/gui/DialogWHAM' : True,
+                         # '/home/farminf/Programas/EasyHybrid2/gui/DialogWHAM' : True,
                          }

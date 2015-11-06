@@ -81,7 +81,7 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Please choose a simple project ID and project directory. The directory should not overlap with previously defined project directory. GTKDynamo will store settings and files specific to this project.</property>
+                    <property name="label" translatable="yes">Please choose a simple project ID and project directory. The directory should not overlap with previously defined project directory. EasyHybrid will store settings and files specific to this project.</property>
                     <property name="wrap">True</property>
                   </object>
                   <packing>

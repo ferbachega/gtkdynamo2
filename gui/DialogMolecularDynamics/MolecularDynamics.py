@@ -29,13 +29,13 @@ from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
 from pDynamoMethods.pDynamoMolecularDynamics import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -55,7 +55,7 @@ class MolecularDynamicsWindow():
     """ Class doc """
 
     def on_MMDialog_button1_RUN_DYNAMICS_clicked(self, button):
-        self.project        = self.GTKDynamoSession.project
+        self.project        = self.EasyHybridSession.project
                     
         trajectory_name     = self.builder.get_object      ("MMDialog_entry_trajectory_name").get_text()
         nsteps              = int(self.builder.get_object  ('MMDialog_n_steps_dy').get_text())
@@ -88,18 +88,18 @@ class MolecularDynamicsWindow():
         #RunMolecularDynamics(parameters, self.project)
  
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
 
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogMolecularDynamics', 'MolecularDynamicsDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogMolecularDynamics', 'MolecularDynamicsDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('MMDialog_molecular_dynamics')
 

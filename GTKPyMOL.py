@@ -7,12 +7,12 @@ text1 = """
 #
 #
 #
-#                         ---- GTKDynamo 2.0 - EasyHybrid ----
+#                         ---- EasyHybrid %s - GTKDynamo ----
 #
 #
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
 #
-#               visit: https://sites.google.com/site/gtkdynamo/
+#               visit: https://sites.google.com/site/EasyHybrid/
 #
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ text1 = """
 #       GNU General Public License for more details.
 #
 #
-#   GTKDynamo team:
+#   EasyHybrid team:
 #   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA
 #   - Martin Field              - Institut de Biologie Structurale, Grenoble, France
@@ -46,7 +46,7 @@ text1 = """
 #   T. Wymore. J. Comput. Chem. 2013, 34, 2190-2196. DOI: 10.1002/jcc.23346
 #
 #
-"""
+""" % ('2.0')
 
 
 texto_d1 = "\n\n                       -- simple-distance --\n\nFor simple-distance, select two atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n         ^            ^\n         |            |\n        pk1  . . . . pk2\n                d1\n"
@@ -63,6 +63,10 @@ dialog_text = {
     'delete2': "Warning: there is a system loaded in memory. Are you sure that you want to delete it?"
 }
 #
+
+
+VERSION = '2.0'
+
 
 # System
 import datetime
@@ -105,10 +109,10 @@ if not os.path.isdir(PDYNAMO_SCRATCH):                              #
     os.mkdir(PDYNAMO_SCRATCH)                                       #
     print "creating: ", PDYNAMO_SCRATCH                             #
                                                                     #
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')         #
-if not os.path.isdir(GTKDYNAMO_TMP):                                #
-    os.mkdir(GTKDYNAMO_TMP)                                         #
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP          #
+EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')         #
+if not os.path.isdir(EasyHybrid_TMP):                                #
+    os.mkdir(EasyHybrid_TMP)                                         #
+    print "Temporary files directory:  %s" % EasyHybrid_TMP          #
 #-------------------------------------------------------------------#
 
 
@@ -145,7 +149,7 @@ from gui.WindowUmbrellaSampling.UmbrellaSampling             import UmbrellaSamp
 
 from gui.DialogWHAM.WHAM                                     import WHAMEquationSolverDialog
 
-#/home/fernando/Documents/gtkdynamo2/gui/DialogPreferences/Preferences.py
+#/home/fernando/Documents/EasyHybrid2/gui/DialogPreferences/Preferences.py
 #from gui.MainMenu           import  MainMenu
 #from gui.MainToolBar        import  MainToolBar
 #from gui.GLMenu             import  GLMenu
@@ -262,7 +266,7 @@ class MainMenu (object):
                 self._NewProjectDialog.builder.get_object("new_project_entry").set_text(text)
 
 
-                WorkSpace = self.GTKDynamoConfig['WorkSpace']
+                WorkSpace = self.EasyHybridConfig['WorkSpace']
                 #print WorkSpace, text
 
                 path      = os.path.join(WorkSpace, text)
@@ -300,16 +304,16 @@ class MainMenu (object):
                         self.PyMOL_initialize()
                         if _FileType in ['pkl', 'yaml']:
                                 self.project.load_coordinate_file_as_new_system(FileName)
-                                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+                                self.project.From_PDYNAMO_to_EasyHybrid(type_='new')
 
                         if _FileType in ['gtkdyn']:
-                                self.project.load_GTKDYNAMO_project(FileName)
+                                self.project.load_EasyHybrid_project(FileName)
 
                 self.PyMOL_change_selection_mode()
 
         def on_MainMenu_File_Quit_activate (self, menuitem):
                 """ Function doc """
-                print '''\n\nThanks for using EasyHybrid - GTKDynamo 1.9 - \n\n'''
+                print '''\n\nThanks for using EasyHybrid - EasyHybrid 1.9 - \n\n'''
                 gtk.main_quit()
                 cmd.quit()
                 sys.exit()
@@ -485,7 +489,7 @@ class MainMenu (object):
                 #
                 #    if _FileType in ['pkl', 'yaml']:
                 #        self.project.load_coordinate_file_as_new_system(FileName)
-                #        self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+                #        self.project.From_PDYNAMO_to_EasyHybrid(type_='new')
                 #except:
                 #    pass
 
@@ -570,10 +574,10 @@ class MainMenu (object):
             #        self.PyMOL_initialize()
             #        if _FileType in ['dat','log' , '*']:
             #                self.project.load_coordinate_file_as_new_system(FileName)
-            #                self.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+            #                self.project.From_PDYNAMO_to_EasyHybrid(type_='new')
             #
             #        if _FileType in ['gtkdyn']:
-            #                self.project.load_GTKDYNAMO_project(FileName)
+            #                self.project.load_EasyHybrid_project(FileName)
             #
             #self.PyMOL_change_selection_mode()
 
@@ -713,7 +717,7 @@ class MainToolBar(object):
         """ Function doc """
         filein = self.project.SystemCheck(_color = False)
         #filein = self.project.settings['job_history'][self.selectedID]['log']
-        editor = TextEditor.GTKDynamoTextEditor(filein)
+        editor = TextEditor.EasyHybridTextEditor(filein)
 
     def on_ToolBar_SinglePoint_clicked(self, button):
         """ Function doc """
@@ -810,12 +814,12 @@ class MainToolBar(object):
             # 5 step
             if a == -8:
                 # 6 step
-                #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
+                #--------------------------------------------------EasyHybrid project---------------------------------------------------------#
                 self.project = None
-                self.project = pDynamoProject(data_path       = GTKDYNAMO_TMP      ,
+                self.project = pDynamoProject(data_path       = EasyHybrid_TMP      ,
                                               builder         = self.builder       ,
                                               window_control  = self.window_control,
-                                              GTKDynamoConfig = self.GTKDynamoConfig )
+                                              EasyHybridConfig = self.EasyHybridConfig )
 
                 self.project.PyMOL = True                                                                                                    #
                 #----------------------------------------------------------------------------------------------------------------------------#
@@ -1086,7 +1090,7 @@ class TreeviewHistory(object):
         #pprint(self.project.settings['job_history'][self.selectedID]['log'])
         filein = self.project.settings['job_history'][self.selectedID]['log']
         #print   self.project.settings['job_history'][self.selectedID]['log']
-        editor = TextEditor.GTKDynamoTextEditor(filein)
+        editor = TextEditor.EasyHybridTextEditor(filein)
         #editor.load_file(filein)
     def on_menuitem_PlotLogFile_activate(self, item):
         """ Function doc """
@@ -1252,7 +1256,7 @@ class TreeviewHistory(object):
 
         if self.project.settings['fix_table'] != []:
             #PymolPutTable(self.project.settings['fix_table'], "FIX_atoms")
-            cmd.color(self.GTKDynamoConfig['fixed'],'FIX_atoms')
+            cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
 
 
 
@@ -1429,101 +1433,134 @@ class PyMOLCommandLine(object):
 		cmd.do(command)
 
 class TrajectoryTool(object):
-	'''
-	#      ---------------------------------
-	#          TrajectoryTool  methods
-	#      ---------------------------------
+    '''
+    #      ---------------------------------
+    #          TrajectoryTool  methods
+    #      ---------------------------------
 
-	'''
+    '''
 
-	def __init__ (self):
-		""" Class initialiser """
-		pass
-
-
-
-	def on_TrajectoryTool_Entry_Push(self, entry, data=None):
-		self.on_TrajectoryTool_HSCALE_update()
-
-	def on_TrajectoryTool_HSCALE_update (self):
-		""" Function doc """
-		MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
-		MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
-
-		scale = self.builder.get_object("trajectory_hscale")
-		scale.set_range(MIN, MAX)
-		scale.set_increments(1, 10)
-		scale.set_digits(0)
-
-	def on_TrajectoryTool_BarSetFrame(self, hscale, text= None,  data=None):            # SETUP  trajectory window
-		valor = hscale.get_value()
-		cmd.frame( int (valor) )
-		BondTable = self.project.BondTable
-
-		if self.builder.get_object('checkbutton_DynamicBonds').get_active():
-			lista     = self.project.settings['dynamic_list']
-			PyMOL_Obj = self.project.settings['PyMOL_Obj']
-			#print lista, PyMOL_Obj
-			for i in lista:
-				for j in lista:
-					if i != j:
-						#print i, j
-						#bond_unbond1 = self.project.BondTable[i+1,j+1][1]
-						#Rcov         = self.project.BondTable[i+1,j+1][0]
-						#print lista[i], lista[j]
-						#print bond_unbond1, Rcov
-
-						dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1),
-														PyMOL_Obj+' and index '+ str(j+1),
-														int (valor) )
-
-						if dist > self.project.BondTable[i+1,j+1][0]:
-							cmd.unbond(PyMOL_Obj+' and index '+ str(i+1),
-									   PyMOL_Obj+' and index '+ str(j+1))
-						else:
-							cmd.bond(PyMOL_Obj+' and index '+ str(i+1),
-									 PyMOL_Obj+' and index '+ str(j+1))
-
-		if self.builder.get_object('toolbutton6_measure').get_active():
-			selections = cmd.get_names("selections")
-			Distances  = DistancesFromPKSelection(selections)
-			Angles     = AnglesFromPKSelection(selections)
-			Dihedral   = DihedralFromPKSelection(selections)
-			self.MeasureToolPutValores(Distances, Angles, Dihedral)
+    def __init__ (self):
+        """ Class initialiser """
+        pass
 
 
-class GTKDynamoConfig(object):
+    def on_player_buttons_press(self, button):
+        hscale = self.builder.get_object('trajectory_hscale') #
+        valor  = hscale.get_value()
+        
+        if button == self.builder.get_object('toolbutton1_play_trajectory'):
+            """ Function doc """
+            if button.get_active:
+                print 'ativo'
+            if button.get_active:
+                print 'Desativado'
+            
+        if button == self.builder.get_object('toolbutton12'):     # <
+            valor  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+            hscale.set_value(int(valor))
+
+        if button == self.builder.get_object('toolbutton16'):     # >
+            valor  = int(self.builder.get_object('trajectory_max_entrey').get_text())
+            hscale.set_value(int(valor))
+
+        if button == self.builder.get_object('toolbutton14'):     #   >>
+            valor  = hscale.get_value()                           #
+            valor  = int(valor)+1
+            hscale.set_value(int(valor)+1)                        #
+                                                                  #
+        if button == self.builder.get_object('toolbutton13'):     #   <<
+            valor  = hscale.get_value()                           #
+            valor  = int(valor)-1
+            hscale.set_value(valor)                               #
+        
+        cmd.frame( int (valor) )
+            
+
+    def on_TrajectoryTool_Entry_Push(self, entry, data=None):
+        self.on_TrajectoryTool_HSCALE_update()
+
+    def on_TrajectoryTool_HSCALE_update (self):
+        """ Function doc """
+        MAX  = int(self.builder.get_object('trajectory_max_entrey').get_text())
+        MIN  = int(self.builder.get_object('trajectory_min_entrey').get_text())
+
+        scale = self.builder.get_object("trajectory_hscale")
+        scale.set_range(MIN, MAX)
+        scale.set_increments(1, 10)
+        scale.set_digits(0)
+
+    def on_TrajectoryTool_BarSetFrame(self, hscale, text= None,  data=None):            # SETUP  trajectory window
+        valor = hscale.get_value()
+        cmd.frame( int (valor) )
+        BondTable = self.project.BondTable
+
+
+
+        if self.builder.get_object('checkbutton_DynamicBonds').get_active():
+            lista     = self.project.settings['dynamic_list']
+            PyMOL_Obj = self.project.settings['PyMOL_Obj']
+            #print lista, PyMOL_Obj
+            for i in lista:
+                for j in lista:
+                    if i != j:
+                        #print i, j
+                        #bond_unbond1 = self.project.BondTable[i+1,j+1][1]
+                        #Rcov         = self.project.BondTable[i+1,j+1][0]
+                        #print lista[i], lista[j]
+                        #print bond_unbond1, Rcov
+
+                        dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1),
+                                                        PyMOL_Obj+' and index '+ str(j+1),
+                                                        int (valor) )
+
+                        if dist > self.project.BondTable[i+1,j+1][0]:
+                            cmd.unbond(PyMOL_Obj+' and index '+ str(i+1),
+                                       PyMOL_Obj+' and index '+ str(j+1))
+                        else:
+                            cmd.bond(PyMOL_Obj+' and index '+ str(i+1),
+                                     PyMOL_Obj+' and index '+ str(j+1))
+
+        if self.builder.get_object('toolbutton6_measure').get_active():
+            selections = cmd.get_names("selections")
+            Distances  = DistancesFromPKSelection(selections)
+            Angles     = AnglesFromPKSelection(selections)
+            Dihedral   = DihedralFromPKSelection(selections)
+            self.MeasureToolPutValores(Distances, Angles, Dihedral)
+
+
+class EasyHybridConfig(object):
     """ Class doc """
     def __init__ (self):
         """ Class initialiser """
         pass
 
-    def Save_GTKDYNAMO_ConfigFile (self, filename = None):
+    def Save_EasyHybrid_ConfigFile (self, filename = None):
         """ Function doc """
         path = os.path.join(self.HOME,'.config')
         if not os.path.exists (path):
             os.mkdir (path)
 
-        path = os.path.join(path, 'GTKDynamo')
+        path = os.path.join(path, 'EasyHybrid')
         if not os.path.exists (path):
             os.mkdir (path)
 
-        filename = os.path.join(path,'gtkdynamo.config')
-        json.dump(self.GTKDynamoConfig, open(filename, 'w'), indent=2)
+        filename = os.path.join(path,'EasyHybrid.config')
+        json.dump(self.EasyHybridConfig, open(filename, 'w'), indent=2)
 
 
-    def Load_GTKDYNAMO_ConfigFile (self, filename = None):
+    def Load_EasyHybrid_ConfigFile (self, filename = None):
         """ Function doc """
         #.config
-        path = os.path.join(self.HOME,'.config', 'GTKDynamo', 'gtkdynamo.config')
+        path = os.path.join(self.HOME,'.config', 'EasyHybrid', 'EasyHybrid.config')
 
         try:
-            self.GTKDynamoConfig = json.load(open(path))
+            self.EasyHybridConfig = json.load(open(path))
         except:
-            print 'error: GTKDynamo config file not found'
+            print 'error: EasyHybrid config file not found'
             print 'opening WorkSpace Dialog'
 
-class gtkdynamo_main(threading.Thread,
+class EasyHybrid_main(threading.Thread,
                      MainMenu,
 					 MainToolBar,
                      GLMenu,
@@ -1531,7 +1568,7 @@ class gtkdynamo_main(threading.Thread,
                      TreeviewSelections,
                      PyMOLCommandLine,
                      TrajectoryTool,
-                     GTKDynamoConfig):
+                     EasyHybridConfig):
 
 
     def PyMOL_change_selection_mode (self):
@@ -1578,7 +1615,7 @@ class gtkdynamo_main(threading.Thread,
 
         #BG color
         try:
-            cmd.bg_color(self.GTKDynamoConfig['bg_color'])
+            cmd.bg_color(self.EasyHybridConfig['bg_color'])
         except:
             cmd.bg_color('black')
 
@@ -1641,7 +1678,7 @@ class gtkdynamo_main(threading.Thread,
 
     def __init__(self):
 
-        print '           Intializing EasyHybrid - GTKDynamo GUI object          '
+        print '           Intializing EasyHybrid - EasyHybrid GUI object          '
         self.SCRATCH        = os.environ.get('PDYNAMO_SCRATCH')
         try:
             self.ORCA           = os.environ.get('ORCA')
@@ -1649,19 +1686,20 @@ class gtkdynamo_main(threading.Thread,
             self.ORCA           = ''
             pass
         self.HOME           = os.environ.get('HOME')
-        self.GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-        self.GTKDYNAMO_GUI  = os.path.join(self.GTKDYNAMO_ROOT, "gui")
+        self.EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+        self.EasyHybrid_GUI  = os.path.join(self.EasyHybrid_ROOT, "gui")
 
 
-        #---------------------------------- GTKDYNAMO ------------------------------------#
+        #---------------------------------- EasyHybrid ------------------------------------#
                                                                                           #
         self.builder = gtk.Builder()                                                      #
         self.builder.add_from_file(                                                       #
-            os.path.join(self.GTKDYNAMO_GUI, "MainGUI.glade"))                            #
+            os.path.join(self.EasyHybrid_GUI, "MainGUI.glade"))                            #
         self.builder.add_from_file(                                                       #
-            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))              #
+            os.path.join(self.EasyHybrid_GUI, 'MessageDialogQuestion.glade'))              #
         self.win = self.builder.get_object("win")                                         #
         self.win.show()                                                                   #
+        self.win.set_default_size(560,420)
         self.builder.connect_signals(self)                                                #
         self.selectedID = None                                                            #
         self.MeasureToolVisible = False                                                   #
@@ -1671,7 +1709,7 @@ class gtkdynamo_main(threading.Thread,
 
 
 
-        self.GTKDynamoConfig = {
+        self.EasyHybridConfig = {
                                'HideWorkSpaceDialog': False    ,
                                'WorkSpace'          : self.HOME,
                                'ORCAPATH'           : self.ORCA,
@@ -1697,13 +1735,13 @@ class gtkdynamo_main(threading.Thread,
 
 
 
-        self.Load_GTKDYNAMO_ConfigFile()
+        self.Load_EasyHybrid_ConfigFile()
         self.changed = False
 
         try:
-            a = self.GTKDynamoConfig['ORCAPATH']
+            a = self.EasyHybridConfig['ORCAPATH']
         except:
-            self.GTKDynamoConfig['ORCAPATH'] = self.ORCA
+            self.EasyHybridConfig['ORCAPATH'] = self.ORCA
 
 
 
@@ -1748,20 +1786,20 @@ class gtkdynamo_main(threading.Thread,
 
 
 
-        #--------------------------------------------------GTKDynamo project---------------------------------------------------------#
+        #--------------------------------------------------EasyHybrid project---------------------------------------------------------#
         self.project = pDynamoProject(                                                                                               #
-                                      data_path       = GTKDYNAMO_TMP,                                                               #
+                                      data_path       = EasyHybrid_TMP,                                                               #
                                       builder         = self.builder,                                                                #
-                                      GTKDynamoConfig = self.GTKDynamoConfig,                                                        #
+                                      EasyHybridConfig = self.EasyHybridConfig,                                                        #
                                       window_control  = self.window_control)                                                         #
         self.project.PyMOL = True                                                                                                    #
         #----------------------------------------------------------------------------------------------------------------------------#
 
 
-        self.project.settings['data_path'] = GTKDYNAMO_TMP
+        self.project.settings['data_path'] = EasyHybrid_TMP
 
 
-        #------------------------------ GTKDynamo Dialogs --------------------------------------#
+        #------------------------------ EasyHybrid Dialogs --------------------------------------#
         #                                                                                       #
         '''os dialogs precisam ser criados aqui para que nao percam as alteracoes               #
         # que o usuario farah nas 'entries' '''                                                 #
@@ -1813,15 +1851,25 @@ class gtkdynamo_main(threading.Thread,
 
 
 
-        if self.GTKDynamoConfig['HideWorkSpaceDialog'] == False:
+        if self.EasyHybridConfig['HideWorkSpaceDialog'] == False:
             self.WorkSpaceDialog.dialog.run()
             self.WorkSpaceDialog.dialog.hide()
 
 
 
-        # hide widgets - not ethe final version
+        # hide widgets - not the final version
         self.builder.get_object('toolbutton7_print_tudo').hide()
-        #self.builder.get_object('hbox4').hide()
+        self.builder.get_object('toolbutton3').hide()
+        self.builder.get_object('menuItem_normal_modes').hide()
+        self.builder.get_object('menuitem27Surfaces').hide()
+        self.builder.get_object('menuitem26NormalModes').hide()
+        
+        self.builder.get_object('menuitem_Selection').hide()
+        self.builder.get_object('menuitem18').hide()
+        self.builder.get_object('menuitem15').hide()
+
+
+        
         #cmd.button("double_left","None","None")                 #
         #cmd.button("single_right","None","None")                #
 
@@ -1874,12 +1922,12 @@ gtk.gdk.threads_init()
 
 from pymol import *
 print "Creating object"
-gtkdynamo = gtkdynamo_main()
-gtkdynamo.PyMOL_initialize()
-gtkdynamo.run()
+EasyHybrid = EasyHybrid_main()
+EasyHybrid.PyMOL_initialize()
+EasyHybrid.run()
 
 #
-#gtkdynamo = gtkdynamo_main()
+#EasyHybrid = EasyHybrid_main()
 #pymol.finish_launching()
 #gtk.gdk.threads_init()
 ##PyMOL_GUIConfig()
@@ -1892,7 +1940,7 @@ gtkdynamo.run()
 
 #import sys
 #if len(sys.argv) > 1:
-#    gtkdynamo.project.load_coordinate_file_as_new_system(sys.argv[1])
-#    gtkdynamo.project.From_PDYNAMO_to_GTKDYNAMO(type_='new')
+#    EasyHybrid.project.load_coordinate_file_as_new_system(sys.argv[1])
+#    EasyHybrid.project.From_PDYNAMO_to_EasyHybrid(type_='new')
 
-#gtkdynamo.run()
+#EasyHybrid.run()

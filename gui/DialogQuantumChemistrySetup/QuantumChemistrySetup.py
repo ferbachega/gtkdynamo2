@@ -29,8 +29,8 @@ import gobject
 #from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 
-#GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+#EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 dialog_text = {
@@ -154,7 +154,7 @@ class QuantumChemistrySetupDialog():
     """ Class doc """
     def SetQCParameters (self, button):
         """Function doc """
-        self.project          = self.GTKDynamoSession.project
+        self.project          = self.EasyHybridSession.project
 
         qc_table      = self.project.settings['qc_table']                                                     
 
@@ -284,8 +284,8 @@ class QuantumChemistrySetupDialog():
 	
     def save_ORCAPATH(self, widget):
         """ Function doc """
-        self.GTKDynamoSession.GTKDynamoConfig['ORCAPATH'] = self.builder.get_object('ORCA_entry_command').get_text()
-        self.GTKDynamoSession.Save_GTKDYNAMO_ConfigFile()
+        self.EasyHybridSession.EasyHybridConfig['ORCAPATH'] = self.builder.get_object('ORCA_entry_command').get_text()
+        self.EasyHybridSession.Save_EasyHybrid_ConfigFile()
     
     def ORCA_check_parameters(self, widget):
         """ Function doc """
@@ -325,33 +325,33 @@ class QuantumChemistrySetupDialog():
         self.builder.get_object("ORCA_entry_keywords").set_text(orca_string)
 
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         ''''''
 
         self.builder = gtk.Builder()
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.window_control   = GTKDynamoSession.window_control
-            self.GTKDynamoSession = GTKDynamoSession
-            self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
-            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.window_control   = EasyHybridSession.window_control
+            self.EasyHybridSession = EasyHybridSession
+            self.EasyHybrid_ROOT   = EasyHybridSession.EasyHybrid_ROOT
+            self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
             
             
-            #      - - - importing ORCA PATH from GTKDynamoConfig file. - - -        
+            #      - - - importing ORCA PATH from EasyHybridConfig file. - - -        
             #-----------------------------------------------------------------------#
             try:                                                                    #
-                ORCA                  = GTKDynamoSession.GTKDynamoConfig['ORCAPATH']#
+                ORCA                  = EasyHybridSession.EasyHybridConfig['ORCAPATH']#
             except:                                                                 #
                 ORCA = ''                                                           #
             #-----------------------------------------------------------------------#
 
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'DialogQuantumChemistrySetup',  'QuantumChemistrySetupDialog.glade'))
+            os.path.join(self.EasyHybrid_GUI, 'DialogQuantumChemistrySetup',  'QuantumChemistrySetupDialog.glade'))
         
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'MessageDialogQuestion.glade'))
+            os.path.join(self.EasyHybrid_GUI, 'MessageDialogQuestion.glade'))
                 
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')

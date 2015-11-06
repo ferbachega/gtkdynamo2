@@ -28,12 +28,12 @@ import os
 import gtk
 import pango
 
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-GTKDYNAMO_GUI  = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+EasyHybrid_GUI  = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
-class GTKDynamoTextEditor:
+class EasyHybridTextEditor:
     
     def load_file(self, filename):
         # add Loading message to status bar and ensure GUI is current
@@ -72,7 +72,7 @@ class GTKDynamoTextEditor:
         # use GtkBuilder to build our interface from the XML file 
 
         builder = gtk.Builder()
-        builder.add_from_file(os.path.join(GTKDYNAMO_ROOT, 'TextEditor',"TextEditorWindow.glade")) 
+        builder.add_from_file(os.path.join(EasyHybrid_ROOT, 'TextEditor',"TextEditorWindow.glade")) 
         #builder.add_from_string(glade)
             
         # get the widgets which will be referenced in callbacks
@@ -361,7 +361,7 @@ glade = '''
    
     
 if __name__ == "__main__":
-    editor = GTKDynamoTextEditor('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
+    editor = EasyHybridTextEditor('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
     #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptmization/2_step_GeometryOptmization.log')
     
     #editor.main()

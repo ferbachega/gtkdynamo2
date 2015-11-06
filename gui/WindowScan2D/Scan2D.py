@@ -30,9 +30,9 @@ from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 from pDynamoMethods.pDynamoScan2D import *
 from pprint import pprint
-#GTKDYNAMO_ROOT = os.getcwd()
-#GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_GUI  = os.path.join(GTKDYNAMO_ROOT, "gui")
+#EasyHybrid_ROOT = os.getcwd()
+#EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_GUI  = os.path.join(EasyHybrid_ROOT, "gui")
 
 texto_d1   = "\n\n                       -- simple-distance --\n\nFor simple-distance, select two atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n         ^            ^\n         |            |\n        pk1  . . . . pk2\n                d1\n"
 texto_d2d1 = "\n                       -- multiple-distance --\n\nFor multiple-distance, select three atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n     ^   ^            ^\n     |   |            |\n    pk1-pk2  . . . . pk3\n       d1       d2\n"
@@ -65,7 +65,7 @@ class ScanWindow2D():
         mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante_type').get_active_text()
         print "\n\n"
         print mode 
-        self.GTKDynamoSession.project.ActiveModeCheck()
+        self.EasyHybridSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -146,7 +146,7 @@ class ScanWindow2D():
         mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante2_type').get_active_text()
         print "\n\n"
         print mode 
-        self.GTKDynamoSession.project.ActiveModeCheck()
+        self.EasyHybridSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -216,7 +216,7 @@ class ScanWindow2D():
 
 
         #-----------------------------------------------------------------------------------------------#
-        data_path     = self.GTKDynamoSession.project.settings['data_path']                                              #
+        data_path     = self.EasyHybridSession.project.settings['data_path']                                              #
         traj          = self.builder.get_object('SCAN_entry_trajectory_name').get_text()                #
         if not os.path.exists (os.path.join(data_path, traj)): os.mkdir (os.path.join(data_path, traj)) #
         outpath = os.path.join(data_path, traj)                                                         #
@@ -237,10 +237,10 @@ class ScanWindow2D():
                                      REACTION_COORD1 ,
                                      REACTION_COORD2 ,
                                      PARAMETERS      ,
-                                     self.GTKDynamoSession.project
+                                     self.EasyHybridSession.project
                                      )
                 
-        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='scn', log =  logFile)
+        self.EasyHybridSession.project.From_PDYNAMO_to_EasyHybrid(type_='scn', log =  logFile)
         self.Visible  =  False
         self.window.destroy()
         #return x, y, 
@@ -548,7 +548,7 @@ class ScanWindow2D():
         if self.Visible  ==  False:
             self.builder = gtk.Builder()
             self.builder.add_from_file(
-                os.path.join(self.GTKDYNAMO_GUI,'WindowScan2D' ,'ScanWindow2D.glade'))
+                os.path.join(self.EasyHybrid_GUI,'WindowScan2D' ,'ScanWindow2D.glade'))
             
             self.builder.connect_signals(self)
             self.window = self.builder.get_object('ScanWindow')
@@ -593,21 +593,21 @@ class ScanWindow2D():
         #print "Bacheguissimo"
         self.window.destroy()
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.Visible  =  False
         
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
-            self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
-            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
+            self.EasyHybrid_ROOT   = EasyHybridSession.EasyHybrid_ROOT
+            self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
         
         else:
-            self.GTKDYNAMO_ROOT = ''
-            self.GTKDYNAMO_GUI  = ''  
+            self.EasyHybrid_ROOT = ''
+            self.EasyHybrid_GUI  = ''  
             self.project  =  None
 
         
@@ -617,7 +617,7 @@ class ScanWindow2D():
         #self.main_builder = main_builder
 
         #self.builder.add_from_file(
-        #    os.path.join(GTKDYNAMO_GUI, 'ScanWindow.glade'))
+        #    os.path.join(EasyHybrid_GUI, 'ScanWindow.glade'))
         #
         #self.builder.connect_signals(self)
         #self.window = self.builder.get_object('ScanWindow')

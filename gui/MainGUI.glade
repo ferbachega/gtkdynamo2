@@ -1108,6 +1108,11 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">.icon_PMF.png</property>
   </object>
+  <object class="GtkImage" id="image83">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">.play.png</property>
+  </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1738,9 +1743,9 @@
   </object>
   <object class="GtkWindow" id="win">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">EasyHybrid</property>
+    <property name="title" translatable="yes">EasyHybrid - GTKDynamo 2.0</property>
     <property name="window_position">mouse</property>
-    <property name="default_width">1000</property>
+    <property name="default_width">610</property>
     <property name="default_height">800</property>
     <property name="icon">.icon_logo_40x40.png</property>
     <signal name="destroy" handler="on_MainMenu_File_Quit_activate" swapped="no"/>
@@ -1765,7 +1770,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem1">
-                        <property name="label" translatable="yes">New project</property>
+                        <property name="label" translatable="yes">New Project</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
@@ -1798,7 +1803,7 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="imagemenuitem4">
-                        <property name="label" translatable="yes">Save as</property>
+                        <property name="label" translatable="yes">Save As</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
@@ -1951,12 +1956,13 @@
                   <object class="GtkMenu" id="menu2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Quantum Chemistry Setup</property>
                     <child>
                       <object class="GtkMenuItem" id="menuitem67">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Clear QC atoms</property>
+                        <property name="label" translatable="yes">Clear QC Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_ClearQCAtoms_activate" swapped="no"/>
                       </object>
@@ -1966,7 +1972,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Clear fixed atoms</property>
+                        <property name="label" translatable="yes">Clear Fixed Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_ClearFixedAtoms_activate" swapped="no"/>
                       </object>
@@ -1979,11 +1985,28 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="menuitem71">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Quantum Chemistry</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_ToolBar_QuantumChemistrySetup_clicked" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem" id="menuitem70">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="imagemenuitem9">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Charge rescale</property>
+                        <property name="label" translatable="yes">Charge Rescale</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_ChargeRescale_activate" swapped="no"/>
                       </object>
@@ -1993,7 +2016,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">NonBond Model</property>
+                        <property name="label" translatable="yes">Setup NonBond Model</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_NonBondingModels_activate" swapped="no"/>
                       </object>
@@ -2040,13 +2063,13 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="menuitem26">
+                      <object class="GtkCheckMenuItem" id="menuitem26">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Cell</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_toolbar_showCell_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_toolbar_showCell_toggled" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -2060,7 +2083,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Show sequence</property>
+                        <property name="label" translatable="yes">Show Sequence Viewer</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_ShowSequence_activate" swapped="no"/>
                       </object>
@@ -2070,7 +2093,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">PyMOL internal GUI</property>
+                        <property name="label" translatable="yes">PyMOL Internal GUI</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_ShowPyMOLInternalGUI_activate" swapped="no"/>
                       </object>
@@ -2080,7 +2103,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">PyMOL command line</property>
+                        <property name="label" translatable="yes">PyMOL Command Line</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <signal name="toggled" handler="on_MainMenu_View_PYMOLCommand_line_activate" swapped="no"/>
@@ -2106,7 +2129,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Set as QC Atoms</property>
+                        <property name="label" translatable="yes">Set As QC Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Selection_SetQCTable" swapped="no"/>
                       </object>
@@ -2116,7 +2139,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Set as Fixed Atoms</property>
+                        <property name="label" translatable="yes">Set As Fixed Atoms</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_GLAreaMenu_itemActive_SetFixTable" swapped="no"/>
                       </object>
@@ -2144,7 +2167,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Compute charge</property>
+                        <property name="label" translatable="yes">Compute Charge</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Selection_ComputeCharge_activate" swapped="no"/>
                       </object>
@@ -2161,7 +2184,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">pDynamo selections</property>
+                        <property name="label" translatable="yes">Spherical Selections</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_ToolBar_buttonpDynamoSelections_clicked" swapped="no"/>
                       </object>
@@ -2307,7 +2330,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="use_action_appearance">False</property>
-                                <property name="label" translatable="yes">Energy refine</property>
+                                <property name="label" translatable="yes">Energy Refine</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_MainMenu_Calculate_EnergyRefine_activate" swapped="no"/>
                               </object>
@@ -2373,7 +2396,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Amber12 to amber11 topologies</property>
+                        <property name="label" translatable="yes">Amber12 to Amber11 Topologies</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_Amber12ToAmber11_activate" swapped="no"/>
                       </object>
@@ -2383,7 +2406,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">MOPAC energy</property>
+                        <property name="label" translatable="yes">MOPAC Energy</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Extensions_MOPACEnergy" swapped="no"/>
                       </object>
@@ -2433,9 +2456,9 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">new project</property>
+                <property name="tooltip_text" translatable="yes">New Project</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">new project</property>
+                <property name="label" translatable="yes">New Project</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image1</property>
                 <signal name="clicked" handler="on_MainMenu_File_NewProject_activate" swapped="no"/>
@@ -2449,9 +2472,9 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">open pDynamo/GTKDynamo project</property>
+                <property name="tooltip_text" translatable="yes">Open pDynamo/EasyHybrid's Projects</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">open</property>
+                <property name="label" translatable="yes">Open</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image2</property>
                 <signal name="clicked" handler="on_MainMenu_File_OpenFileChooserWindow_clicked" swapped="no"/>
@@ -2465,9 +2488,9 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">save</property>
+                <property name="tooltip_text" translatable="yes">Save</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">save</property>
+                <property name="label" translatable="yes">Save</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image3</property>
                 <signal name="clicked" handler="on_ToolBar_buttonSaveProject_clicked" swapped="no"/>
@@ -2481,9 +2504,9 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">save as</property>
+                <property name="tooltip_text" translatable="yes">Save As</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">save as</property>
+                <property name="label" translatable="yes">Save As</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image14</property>
                 <signal name="clicked" handler="on_ToolBar_buttonSave_As_Project_clicked" swapped="no"/>
@@ -2509,7 +2532,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Measure Distances</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton6</property>
+                <property name="label" translatable="yes">Measures</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image55</property>
                 <signal name="toggled" handler="on_ToolBar_buttonMeasure_toggled" swapped="no"/>
@@ -2523,9 +2546,9 @@
               <object class="GtkToolButton" id="toolbutton6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">pDynamo Selections</property>
+                <property name="tooltip_text" translatable="yes">pDynamo Spherical Selections</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton6</property>
+                <property name="label" translatable="yes">Spherical Selections</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image59</property>
                 <signal name="clicked" handler="on_ToolBar_buttonpDynamoSelections_clicked" swapped="no"/>
@@ -2565,9 +2588,9 @@
               <object class="GtkToolButton" id="toolbuttonCheckSystem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">check system</property>
+                <property name="tooltip_text" translatable="yes">Check System</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">check system</property>
+                <property name="label" translatable="yes">Check System</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image15</property>
                 <signal name="clicked" handler="on_ToolBar_CheckSystem_clicked" swapped="no"/>
@@ -2581,9 +2604,9 @@
               <object class="GtkToolButton" id="toolbuttonSinglePoint">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">single point</property>
+                <property name="tooltip_text" translatable="yes">Single Point Calculation</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">compute energy (single point))</property>
+                <property name="label" translatable="yes">Compute Energy</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image16</property>
                 <signal name="clicked" handler="on_ToolBar_SinglePoint_clicked" swapped="no"/>
@@ -2597,9 +2620,9 @@
               <object class="GtkToolButton" id="01_main_window_toolbutton7">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Geometry Optmization</property>
+                <property name="tooltip_text" translatable="yes">Geometry Optimization</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">geometry optimization</property>
+                <property name="label" translatable="yes">Geometry Optimization</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image17</property>
                 <signal name="clicked" handler="on_ToolBar_OptmizationSetup_clicked" swapped="no"/>
@@ -2613,9 +2636,9 @@
               <object class="GtkToolButton" id="01_main_window_MD_toolbutton9">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">molecular dynamics</property>
+                <property name="tooltip_text" translatable="yes">Molecular Dynamics</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">molecular dynamics</property>
+                <property name="label" translatable="yes">Molecular Dynamics</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image18</property>
                 <signal name="clicked" handler="on_ToolBar_MolecularDynamicsSetup_clicked" swapped="no"/>
@@ -2626,11 +2649,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="01_main_window_toolbutton_trajectory_tool">
+              <object class="GtkToolButton" id="menuItem_normal_modes">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">trajectory tool</property>
                 <property name="use_action_appearance">False</property>
+                <property name="visible_horizontal">False</property>
+                <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">Trajectory tool</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image19</property>
@@ -2646,6 +2671,8 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Reaction Coordinate Scan</property>
                 <property name="use_action_appearance">False</property>
+                <property name="visible_horizontal">False</property>
+                <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">pDynamo Selections</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image52</property>
@@ -2671,7 +2698,7 @@
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Delete System</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">delete system</property>
+                <property name="label" translatable="yes">Delete System</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">01_main_window_image20</property>
                 <signal name="clicked" handler="on_ToolBar_ClearSystemInMemory_clicked" swapped="no"/>
@@ -2686,6 +2713,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
+                <property name="visible_horizontal">False</property>
+                <property name="visible_vertical">False</property>
                 <property name="label" translatable="yes">toolbutton7</property>
                 <property name="use_underline">True</property>
                 <property name="icon_widget">image56</property>
@@ -2889,11 +2918,11 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
-                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
-                                <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
-                                <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
                                 <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
+                                <signal name="row-activated" handler="row_activated2" swapped="no"/>
+                                <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
+                                <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
@@ -2966,6 +2995,7 @@
                     </child>
                     <child>
                       <object class="GtkFrame" id="frame1">
+                        <property name="height_request">30</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label_xalign">0</property>
@@ -3614,6 +3644,7 @@
                     <property name="label" translatable="yes">toolbutton12</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image74</property>
+                    <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3628,6 +3659,7 @@
                     <property name="label" translatable="yes">toolbutton13</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image75</property>
+                    <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3635,29 +3667,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="toolbutton17">
+                  <object class="GtkToggleToolButton" id="toolbutton1_play_trajectory">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton17</property>
+                    <property name="label" translatable="yes">Play</property>
                     <property name="use_underline">True</property>
-                    <property name="icon_widget">image76</property>
-                    <signal name="clicked" handler="on_toolbutton_mstop_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToolButton" id="toolbutton_mplay">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="label" translatable="yes">toolbutton15</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_widget">image77</property>
-                    <signal name="clicked" handler="on_toolbutton_mplay_clicked" swapped="no"/>
+                    <property name="icon_widget">image83</property>
+                    <signal name="toggled" handler="on_player_buttons_press" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3672,6 +3689,7 @@
                     <property name="label" translatable="yes">toolbutton14</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image78</property>
+                    <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3686,6 +3704,7 @@
                     <property name="label" translatable="yes">toolbutton16</property>
                     <property name="use_underline">True</property>
                     <property name="icon_widget">image79</property>
+                    <signal name="clicked" handler="on_player_buttons_press" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3755,6 +3774,7 @@
                             <property name="can_focus">True</property>
                             <property name="round_digits">1</property>
                             <signal name="change-value" handler="on_TrajectoryTool_BarSetFrame" swapped="no"/>
+                            <signal name="value-changed" handler="BarSetFrame" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>

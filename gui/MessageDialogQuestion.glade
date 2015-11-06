@@ -42,7 +42,7 @@
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">question</property>
     <property name="buttons">yes-no</property>
-    <property name="text" translatable="yes">GTKDynamo Warning</property>
+    <property name="text" translatable="yes">EasyHybrid Warning</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox79">
         <property name="visible">True</property>

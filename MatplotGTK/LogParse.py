@@ -24,20 +24,20 @@
 import os
 from pprint import pprint
 logList = [
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/2_step_MolecularDynamics.log'   , 
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/6_step_GeometryOptmization.log' , 
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/9_step_GeometryOptmization.log' , 
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/10_step_GeometryOptmization.log', 
-        '/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/Scan2D.log'                     , 
-		'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/Scan2D_m.log',
-		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/ScanLog-MultipleDistance.log',
-		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/ScanLog-SimpleDistance.log',
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/2_step_MolecularDynamics.log'   , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/6_step_GeometryOptmization.log' , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/9_step_GeometryOptmization.log' , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/10_step_GeometryOptmization.log', 
+        '/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D.log'                     , 
+		'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D_m.log',
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/ScanLog-MultipleDistance.log',
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/ScanLog-SimpleDistance.log',
         
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/system_pmf.dat'                 , 
-        #'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/UmbrellaSampling.log'           ,
-		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/11_step_MolecularDynamics.log',
-		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/12_step_MolecularDynamics.log',
-		#'/home/fernando/programs/gtkdynamo2/MatplotGTK/logs/13_step_MolecularDynamics.log',
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/system_pmf.dat'                 , 
+        #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/UmbrellaSampling.log'           ,
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/11_step_MolecularDynamics.log',
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/12_step_MolecularDynamics.log',
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/13_step_MolecularDynamics.log',
         ] 
 
 
@@ -393,8 +393,8 @@ def ParseProcessLogFile(log_file):
         return parameters
         
         
-    if '                              GTKDynamo SCAN2D\n' in lines:
-        index = lines.index('                              GTKDynamo SCAN2D\n')
+    if '                              EasyHybrid SCAN2D\n' in lines:
+        index = lines.index('                              EasyHybrid SCAN2D\n')
         #print lines[index]
         #print index
         i             =   0
@@ -489,8 +489,8 @@ def ParseProcessLogFile(log_file):
 
 
 
-    if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
-        index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
+    if '------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n' in lines:
+        index = lines.index('------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n')
         #print lines[index]
         #print index
         Frame      = []
@@ -535,8 +535,8 @@ def ParseProcessLogFile(log_file):
 
 
 
-    if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
-        index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
+    if '------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n' in lines:
+        index = lines.index('------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n')
         #print lines[index]
         #print index
         Frame      = []

@@ -141,7 +141,7 @@ def rescale_charges(project, selection, total_charge):
 	#	#project.system.energyModel.mmAtoms.SetAtomicCharges(charges)
 
 def main():
-    system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
+    system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     pDynamoScan = pDynamoScan()
     return 0
 

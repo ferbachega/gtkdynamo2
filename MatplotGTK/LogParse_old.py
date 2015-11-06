@@ -815,10 +815,10 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
 
 
 
-        #------------------------ GTKDynamo SCAN Multiple-Distance ----------------------
+        #------------------------ EasyHybrid SCAN Multiple-Distance ----------------------
         #      [0]                  [1]      [2]        [3]                 [4]
         try:                                      # Check if the Log is a SCAN process of the GTKDYN
-            if linex[1] == "GTKDynamo":
+            if linex[1] == "EasyHybrid":
                 if linex[2] == "SCAN":
                     if linex[3] == 'Multiple-Distance':
                         print linex[2],linex[3]
@@ -852,10 +852,10 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
 
 
 
-        #------------------------ GTKDynamo SCAN  Simple-Distance -----------------------
+        #------------------------ EasyHybrid SCAN  Simple-Distance -----------------------
         #      [0]                  [1]      [2]        [3]                 [4]
         try:                                      # Check if the Log is a SCAN process of the GTKDYN
-            if linex[1] == "GTKDynamo":
+            if linex[1] == "EasyHybrid":
                 if linex[2] == "SCAN":
                     if linex[3] == 'Simple-Distance':
                         print linex[2],linex[3]
@@ -891,7 +891,7 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
         '''
         --------------------------------------------------------------------------------
         --                                                                            --
-        --                          GTKDynamo SCAN  2D                                --
+        --                          EasyHybrid SCAN  2D                                --
         [0]                            [1]    [2]  [3]                              [4]
         --                                                                            --
         --------------------------------------------------------------------------------
@@ -915,7 +915,7 @@ def ParseProcessLogFile(log_file):                              #  PROCESS  LOG 
 
         try:                                      # Check se o Log eh processo SCAN 2D do GTKDYN
             print line
-            if line == "--                          GTKDynamo SCAN  2D                                --":
+            if line == "--                          EasyHybrid SCAN  2D                                --":
                 return "matrix", "2d scan"
         except:
             a = None
@@ -975,7 +975,7 @@ logList = []
 
 
 def main():
-    log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.GTKDynamo/2_step_GeometryOptmization/2_step_GeometryOptmization.log'
+    log_file ='/home/fernando/programs/pDynamo-1.9.0/scratch/.EasyHybrid/2_step_GeometryOptmization/2_step_GeometryOptmization.log'
     parameters = ParseProcessLogFile (log_file)
     pprint (parameters)
     return 0

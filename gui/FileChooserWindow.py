@@ -3,10 +3,10 @@
 import os
 import gtk
 import gobject
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = '/home/labio/Dropbox/GTKPyMOL'
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = '/home/labio/Dropbox/GTKPyMOL'
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 class FileChooserWindow():
@@ -22,9 +22,9 @@ class FileChooserWindow():
                                          gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
         filter = gtk.FileFilter()  
-        filter.set_name("GTKDynamo logs - *.log")
+        filter.set_name("EasyHybrid logs - *.log")
         #
-        filter.add_mime_type("GTKDynamo logs")
+        filter.add_mime_type("EasyHybrid logs")
         filter.add_pattern("*.log")
         #
         chooser.add_filter(filter)
@@ -53,9 +53,9 @@ class FileChooserWindow():
                                          gtk.STOCK_OPEN, gtk.RESPONSE_OK))
 
         filter = gtk.FileFilter()  
-        filter.set_name("GTKDynamo projects - *.gtkdyn")
+        filter.set_name("EasyHybrid projects - *.gtkdyn")
         #
-        filter.add_mime_type("GTKDynamo projects")
+        filter.add_mime_type("EasyHybrid projects")
         filter.add_pattern("*.gtkdyn")
         #
         chooser.add_filter(filter)

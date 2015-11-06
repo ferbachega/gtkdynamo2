@@ -28,13 +28,13 @@ import gobject
 #from pymol import cmd
 #from PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -68,14 +68,14 @@ class PreferencesDialog():
         #FIX_representations = {'lines' : self.builder.get_object('FIX_lines').get_active()
         #                        }
         #
-        self.GTKDynamoSession.GTKDynamoConfig['bg_color'] = bq_color     
-        self.GTKDynamoSession.GTKDynamoConfig['fixed'   ] = fixed_atom_color
-        self.GTKDynamoSession.GTKDynamoConfig['color'   ] = atom_color        
-        self.GTKDynamoSession.GTKDynamoConfig['QC']       = QC_representations
-        self.GTKDynamoSession.GTKDynamoConfig['FIX']      = FIX_representations
+        self.EasyHybridSession.EasyHybridConfig['bg_color'] = bq_color     
+        self.EasyHybridSession.EasyHybridConfig['fixed'   ] = fixed_atom_color
+        self.EasyHybridSession.EasyHybridConfig['color'   ] = atom_color        
+        self.EasyHybridSession.EasyHybridConfig['QC']       = QC_representations
+        self.EasyHybridSession.EasyHybridConfig['FIX']      = FIX_representations
 
-        self.GTKDynamoSession.Save_GTKDYNAMO_ConfigFile()
-        self.GTKDynamoSession.project.SystemCheck(      status = True, 
+        self.EasyHybridSession.Save_EasyHybrid_ConfigFile()
+        self.EasyHybridSession.project.SystemCheck(      status = True, 
                                                          PyMOL = True, 
                                                         _color = True, 
                                                          _cell = True, 
@@ -87,19 +87,19 @@ class PreferencesDialog():
 
 
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
 
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
             
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogPreferences', 'Preferences.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogPreferences', 'Preferences.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog_preferences')
 

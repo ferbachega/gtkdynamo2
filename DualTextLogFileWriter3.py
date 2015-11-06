@@ -42,7 +42,7 @@ def DualTextLog(path, filename="log.gui.txt"):
     header = '''
 #-----------------------------------------------------------------------------#
 #                                                                             #
-#                                GTKDYNAMO                                    #
+#                                EasyHybrid                                    #
 #                        - A pDynamo graphical tool -                         #
 #                                                                             #
 #-----------------------------------------------------------------------------#
@@ -50,12 +50,12 @@ def DualTextLog(path, filename="log.gui.txt"):
 #     Developed by Jose Fernando R Bachega and Luis Fernando S M Timmers      #
 #                            <ferbachega@gmail.com>                           #
 #                                                                             #
-#             visit: https://sites.google.com/site/gtkdynamo/                 #
+#             visit: https://sites.google.com/site/EasyHybrid/                 #
 #                   Univesity of Sao Paulo - SP, Brazil                       #
 #      Pontifical Catholic University of Rio Grande do Sul - RS, Brazil       #
 #                                                                             #
 #                                                                             #
-#   GTKDynamo team:                               Special thanks to:          #
+#   EasyHybrid team:                               Special thanks to:          #
 #   - Jose Fernando R Bachega           |         - Fernando V Maluf          #
 #   - Troy Wymore                       |         - Lucas Assirati            #
 #   - Martin Field                      |         - Leonardo R Bachega        #
@@ -114,9 +114,9 @@ def DualTextLog(path, filename="log.gui.txt"):
 def main():
     dualLog = DualTextLog('/home/fernando/Pictures/')
 
-    GTKDYNAMO_ROOT = os.getcwd()
+    EasyHybrid_ROOT = os.getcwd()
 
-    system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
+    system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     system.Summary(log=dualLog)
 
     system.Energy(log=dualLog)

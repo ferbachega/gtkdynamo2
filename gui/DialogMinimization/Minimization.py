@@ -28,13 +28,13 @@ import gobject
 from pymol import cmd
 from PyMOLScripts import *
 from WindowControl import *
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -51,7 +51,7 @@ class MinimizationWindow():
 
     def on_02_window_button_RUN_MINIMIZATION1_clicked(self, button):
 		""" Function doc """
-		self.project          = self.GTKDynamoSession.project
+		self.project          = self.EasyHybridSession.project
 
 		trajectory           = self.builder.get_object("02_window_entry_traj_name").get_text()
 		maximumIterations    = int(self.builder.get_object("02_window_entry_max_int").get_text())
@@ -84,7 +84,7 @@ class MinimizationWindow():
 			toda esta parte abaixo ficou obsoleta devido ao novo metodo no pDynamoProject -  
 			 
 			 
-								  From_PDYNAMO_to_GTKDYNAMO
+								  From_PDYNAMO_to_EasyHybrid
 			 
 				esse metodo eh responsavel por:
 					contar o passo
@@ -93,18 +93,18 @@ class MinimizationWindow():
 					e adicionar informacoes ao history 
 				 
 			'''
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
             
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogMinimization', 'MinimizationDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogMinimization', 'MinimizationDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('02_MinimizationWindow')
 

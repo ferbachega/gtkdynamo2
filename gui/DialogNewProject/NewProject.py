@@ -29,13 +29,13 @@ from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 import time
 
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 class NewProjectDialog():
@@ -44,7 +44,7 @@ class NewProjectDialog():
     def on_new_project_entry_changed (self, entry):
 		""" Function doc """
 		text      = self.builder.get_object("new_project_entry").get_text()
-		WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+		WorkSpace = self.EasyHybridSession.EasyHybridConfig['WorkSpace']
 		try:
 			path      = os.path.join(WorkSpace, text)
 			
@@ -182,7 +182,7 @@ class NewProjectDialog():
                 "amber_inpcrd_chooser").get_filename()					#
 
 
-        self.project          = self.GTKDynamoSession.project
+        self.project          = self.EasyHybridSession.project
        
         #self.project.DeleteActualProject()
         self.project.Create_New_Project(
@@ -191,23 +191,23 @@ class NewProjectDialog():
         self.project.Save_Project_To_File (filename = filename, type_ = 'pkl')
         
         
-        # self.project.From_PDYNAMO_to_GTKDYNAMO()
+        # self.project.From_PDYNAMO_to_EasyHybrid()
         self.project.system.Summary()
         self.project.settings['add_info']  =  BufferText
 
         #
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
 		""" Class initialiser """
 		self.builder          = gtk.Builder()
 
-		if GTKDynamoSession != None:
-			self.project          = GTKDynamoSession.project
-			self.main_builder     = GTKDynamoSession.builder
-			self.GTKDynamoSession = GTKDynamoSession
+		if EasyHybridSession != None:
+			self.project          = EasyHybridSession.project
+			self.main_builder     = EasyHybridSession.builder
+			self.EasyHybridSession = EasyHybridSession
 
 		self.builder.add_from_file(
-			os.path.join(GTKDYNAMO_GUI,'DialogNewProject', 'NewProjectDialog.glade'))
+			os.path.join(EasyHybrid_GUI,'DialogNewProject', 'NewProjectDialog.glade'))
 		self.builder.connect_signals(self)
 		self.dialog = self.builder.get_object('dialog1')
 		self.dualLog = None
@@ -249,7 +249,7 @@ class NewProjectDialog():
 		self.builder.get_object("new_project_entry").set_text(text)
 
 
-		#WorkSpace = self.GTKDynamoSession.GTKDynamoConfig['WorkSpace']
+		#WorkSpace = self.EasyHybridSession.EasyHybridConfig['WorkSpace']
 		#path      = os.path.join(WorkSpace, text)
 		#self.builder.get_object("ProjectDirectory").set_text(text)
 

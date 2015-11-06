@@ -34,14 +34,14 @@ from pMoleculeScripts import *
 from DualTextLogFileWriter3 import *
 from pprint import pprint
 
-GTKDYNAMO_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.getcwd()
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
 
-GTKDYNAMO_TMP = os.path.join(PDYNAMO_SCRATCH, '.GTKDynamo')
-if not os.path.isdir(GTKDYNAMO_TMP):
-    os.mkdir(GTKDYNAMO_TMP)
-    print "Temporary files directory:  %s" % GTKDYNAMO_TMP
+EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')
+if not os.path.isdir(EasyHybrid_TMP):
+    os.mkdir(EasyHybrid_TMP)
+    print "Temporary files directory:  %s" % EasyHybrid_TMP
 
 
 def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = None, _type = '1D'):
@@ -95,7 +95,7 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
 
 
 def main():
-    system = Unpickle(GTKDYNAMO_ROOT + '/test/test.pkl')
+    system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     _min_ = pDynamoEnergy(system)
     #_min_    = pDynamoMinimization(system,'Steepest Descent')
     #_min_    = pDynamoMinimization(system,'LBFGS')

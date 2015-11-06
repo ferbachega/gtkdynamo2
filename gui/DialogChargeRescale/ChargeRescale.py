@@ -42,25 +42,25 @@ class ChargeRescaleDialog():
         
         
         
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         self.builder          = gtk.Builder()
         
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
-            self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
-            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
+            self.EasyHybrid_ROOT   = EasyHybridSession.EasyHybrid_ROOT
+            self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
         
         else:
-            self.GTKDYNAMO_ROOT = ''
-            self.GTKDYNAMO_GUI  = ''       
+            self.EasyHybrid_ROOT = ''
+            self.EasyHybrid_GUI  = ''       
 
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'DialogChargeRescale',  'ChargeRescale.glade'))
+            os.path.join(self.EasyHybrid_GUI, 'DialogChargeRescale',  'ChargeRescale.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog_charge_rescale')
 

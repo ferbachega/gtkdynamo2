@@ -31,13 +31,13 @@ from WindowControl import *
 from pDynamoMethods.pDynamoSAWandNEB   import *
 
 
-#GTKDYNAMO_ROOT   = os.environ.get('GTKDYNAMO_ROOT')
-#GTKDYNAMO_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT   = os.environ.get('EasyHybrid_ROOT')
+#EasyHybrid_ROOT   = '/home/fernando/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -76,8 +76,8 @@ class NEBDialog():
         NEB_grad_tol                  = float(self.builder.get_object('NEBDialog_NEB_grad_tol').get_text())
         trajectory_name               = self.builder.get_object('trajectory_name').get_text()
         
-        if self.GTKDynamoSession.project != None:
-            data_path = self.GTKDynamoSession.project.settings['data_path']
+        if self.EasyHybridSession.project != None:
+            data_path = self.EasyHybridSession.project.settings['data_path']
         else:
             data_path = "/home/teste"
 
@@ -116,24 +116,24 @@ class NEBDialog():
         
         
        
-        logFile = pDynamoNEB(project  = self.GTKDynamoSession.project, parameters = parameters )
+        logFile = pDynamoNEB(project  = self.EasyHybridSession.project, parameters = parameters )
         #-------------------------------------------------------------------------------------------------#
-        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='neb', log =  logFile)
+        self.EasyHybridSession.project.From_PDYNAMO_to_EasyHybrid(type_='neb', log =  logFile)
 
 
        
 
     
-    def __init__(self, GTKDynamoSession):
+    def __init__(self, EasyHybridSession):
         """ Class initialiser """
         #self.project = project
-        self.GTKDynamoSession = GTKDynamoSession
-        self.window_control   = GTKDynamoSession.window_control
+        self.EasyHybridSession = EasyHybridSession
+        self.window_control   = EasyHybridSession.window_control
         self.builder = gtk.Builder()
-        self.main_builder = GTKDynamoSession.builder
+        self.main_builder = EasyHybridSession.builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogNEB', 'NEBDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogNEB', 'NEBDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('NEBDialog')
 
@@ -192,8 +192,8 @@ class SAWDialog():
             print i, parameters[i]
 		
 
-        if self.GTKDynamoSession.project != None:
-            data_path = self.GTKDynamoSession.project.settings['data_path']
+        if self.EasyHybridSession.project != None:
+            data_path = self.EasyHybridSession.project.settings['data_path']
         else:
             data_path = "/home/teste"
 
@@ -223,7 +223,7 @@ class SAWDialog():
         plot_flag = False
     
   
-        #data_path = self.GTKDynamoSession.project.settings['data_path']
+        #data_path = self.EasyHybridSession.project.settings['data_path']
   
   
   
@@ -241,9 +241,9 @@ class SAWDialog():
         
         
        
-        logFile = pDynamoSAW(project  = self.GTKDynamoSession.project, parameters = parameters )
+        logFile = pDynamoSAW(project  = self.EasyHybridSession.project, parameters = parameters )
         #-------------------------------------------------------------------------------------------------#
-        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='saw', log =  logFile)
+        self.EasyHybridSession.project.From_PDYNAMO_to_EasyHybrid(type_='saw', log =  logFile)
 
 
 
@@ -251,16 +251,16 @@ class SAWDialog():
 
 
     
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
         #self.project = project
-        self.GTKDynamoSession = GTKDynamoSession
-        self.window_control   = GTKDynamoSession.window_control
+        self.EasyHybridSession = EasyHybridSession
+        self.window_control   = EasyHybridSession.window_control
         self.builder          = gtk.Builder()
-        self.main_builder     = GTKDynamoSession.builder
+        self.main_builder     = EasyHybridSession.builder
 
         self.builder.add_from_file(
-            os.path.join(GTKDYNAMO_GUI,'DialogNEB', 'SAWDialog.glade'))
+            os.path.join(EasyHybrid_GUI,'DialogNEB', 'SAWDialog.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('SAWDialog')
 

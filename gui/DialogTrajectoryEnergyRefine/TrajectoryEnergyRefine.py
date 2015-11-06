@@ -73,28 +73,28 @@ class TrajectoryEnergyRefineDialog():
             self.builder.get_object('filechooserbutton1').hide()
 
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
 
         self.builder = gtk.Builder()
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.window_control   = GTKDynamoSession.window_control
-            self.GTKDynamoSession = GTKDynamoSession
-            self.GTKDYNAMO_ROOT   = GTKDynamoSession.GTKDYNAMO_ROOT
-            self.GTKDYNAMO_GUI    = GTKDynamoSession.GTKDYNAMO_GUI 
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.window_control   = EasyHybridSession.window_control
+            self.EasyHybridSession = EasyHybridSession
+            self.EasyHybrid_ROOT   = EasyHybridSession.EasyHybrid_ROOT
+            self.EasyHybrid_GUI    = EasyHybridSession.EasyHybrid_GUI 
             
             
-            #      - - - importing ORCA PATH from GTKDynamoConfig file. - - -        
+            #      - - - importing ORCA PATH from EasyHybridConfig file. - - -        
             #-----------------------------------------------------------------------#
             try:                                                                    #
-                ORCA                  = GTKDynamoSession.GTKDynamoConfig['ORCAPATH']#
+                ORCA                  = EasyHybridSession.EasyHybridConfig['ORCAPATH']#
             except:                                                                 #
                 ORCA = ''                                                           #
             #-----------------------------------------------------------------------#
 
         self.builder.add_from_file(
-            os.path.join(self.GTKDYNAMO_GUI, 'DialogTrajectoryEnergyRefine','TrajectoryEnergyRefine.glade'))
+            os.path.join(self.EasyHybrid_GUI, 'DialogTrajectoryEnergyRefine','TrajectoryEnergyRefine.glade'))
                 
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
@@ -104,9 +104,8 @@ class TrajectoryEnergyRefineDialog():
         
         #----------------- Setup ComboBoxes -------------------------#
         combobox = 'combobox1'         #
-        combolist = ["folder - pDynamo", "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
+        combolist = ["folder - pDynamo"]#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
         self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
-
 
 
 

@@ -1,28 +1,28 @@
 import json 
 import os
     
-def Save_GTKDYNAMO_ConfigFile (home, GTKDynamoConfig):
+def Save_EasyHybrid_ConfigFile (home, EasyHybridConfig):
     """ Function doc """
     path = os.path.join(home,'.config')
     if not os.path.exists (path): 
         os.mkdir (path)
 
-    path = os.path.join(path, 'GTKDynamo')
+    path = os.path.join(path, 'EasyHybrid')
     if not os.path.exists (path): 
         os.mkdir (path)
     
-    filename = os.path.join(path,'gtkdynamo.config')
-    json.dump(GTKDynamoConfig, open(filename, 'w'), indent=2)
+    filename = os.path.join(path,'EasyHybrid.config')
+    json.dump(EasyHybridConfig, open(filename, 'w'), indent=2)
     
 
 
-def Load_GTKDYNAMO_ConfigFile (home, GTKDynamoConfig):
+def Load_EasyHybrid_ConfigFile (home, EasyHybridConfig):
     """ Function doc """
     #.config
-    path = os.path.join(home,'.config', 'GTKDynamo', 'gtkdynamo.config')
+    path = os.path.join(home,'.config', 'EasyHybrid', 'EasyHybrid.config')
     
     try:
-        GTKDynamoConfig = json.load(open(path)) 
+        EasyHybridConfig = json.load(open(path)) 
     except:
-        print 'error: GTKDynamo config file not found'
+        print 'error: EasyHybrid config file not found'
         print 'open WorkSpace Dialog'

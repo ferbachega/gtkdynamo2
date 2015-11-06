@@ -37,10 +37,10 @@ from pBabel           import *
 from pMolecule        import *
 from pMoleculeScripts import *
 
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = os.environ.get('GTKDYNAMO_ROOT')
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
 
-GTKDYNAMO_GUI = os.path.join(GTKDYNAMO_ROOT, "gui")
+EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
 
 
 
@@ -57,7 +57,7 @@ class pDynamoSelectionWindow():
         if self.Visible  ==  False:
             self.builder = gtk.Builder()
             self.builder.add_from_file(
-                os.path.join(GTKDYNAMO_GUI,'WindowpDynamoSelections', 'pDynamoSelectionsWindow.glade'))
+                os.path.join(EasyHybrid_GUI,'WindowpDynamoSelections', 'pDynamoSelectionsWindow.glade'))
             
             self.builder.connect_signals(self)
             self.window = self.builder.get_object('window1')
@@ -88,7 +88,7 @@ class pDynamoSelectionWindow():
             self.window_control.SETUP_SPINBUTTON(spinbutton, config)
             self.builder.get_object('selection_radius_spinbutton').set_value(int(self.radius_distance))
             
-            self.project = self.GTKDynamoSession.project
+            self.project = self.EasyHybridSession.project
             self.project.importPDBInformantion()
             #self.build_treeview()
             self.window.show()                                               
@@ -145,7 +145,7 @@ class pDynamoSelectionWindow():
     def apply_pdynamo_selection(self, button):    #pdynamo method
         """Fucntion that permits select atoms from pDynamo arguments"""
 
-        self.project          = self.GTKDynamoSession.project
+        self.project          = self.EasyHybridSession.project
 
         iter3 = self.builder.get_object('selection_entry1').get_text()
         iter2 = self.builder.get_object('selection_entry2').get_text()
@@ -259,11 +259,11 @@ class pDynamoSelectionWindow():
     
     
     
-    def __init__(self, GTKDynamoSession):
+    def __init__(self, EasyHybridSession):
         """ Class initialiser """
         self.radius_distance  = 16
-        self.GTKDynamoSession = GTKDynamoSession
-        #self.project          = GTKDynamoSession.project
+        self.EasyHybridSession = EasyHybridSession
+        #self.project          = EasyHybridSession.project
         self.Visible          = False
         
         self.chain     = ''

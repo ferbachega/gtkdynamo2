@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 text1 = """
-#	
 #
-#	
-#	
 #
-#	
 #
-#                            ---- GTKDynamo ----
-#		                    
-#		
+#
+#
+#
+#
+#                         ---- EasyHybrid %s - GTKDynamo ----
+#
+#
 #       Copyright 2012 Jose Fernando R Bachega  <ferbachega@gmail.com>
 #
-#               visit: https://sites.google.com/site/gtkdynamo/
+#               visit: https://sites.google.com/site/EasyHybrid/
 #
 #       This program is free software; you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -24,22 +24,29 @@ text1 = """
 #       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #       GNU General Public License for more details.
 #
-#       GTKDynamo team:
-#       - Jose Fernando R Bachega  < Univesity of Sao Paulo - SP, Brazil                              >
-#       - Troy Wymore              < Pittsburgh Super Computer Center, Pittsburgh PA - USA            >
-#       - Martin Field             < Institut de Biologie Structurale, Grenoble, France               >		
-#       - Luis Fernando S M Timmers< Pontifical Catholic University of Rio Grande do Sul - RS, Brazil >
 #
-#       Special thanks to:
-#       - Lucas Assirati           < Univesity of Sao Paulo - SP, Brazil                              >
-#       - Leonardo R Bachega       < University of Purdue - West Lafayette, IN - USA                  >
-#       - Richard Garratt          < Univesity of Sao Paulo - SP, Brazil                              >
+#   EasyHybrid team:
+#   - Jose Fernando R Bachega   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Troy Wymore               - Pittsburgh Super Computer Center, Pittsburgh PA - USA
+#   - Martin Field              - Institut de Biologie Structurale, Grenoble, France
+#   - Luis Fernando S M Timmers - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Michele Silva             - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#
+#   Special thanks to:
+#   - Osmar Norberto de Souza   - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
+#   - Fernando V Maluf          - Univesity of Sao Paulo - SP, Brazil
+#   - Lucas Assirati            - Univesity of Sao Paulo - SP, Brazil
+#   - Leonardo R Bachega        - University of Purdue - West Lafayette, IN - USA
+#   - Richard Garratt           - Univesity of Sao Paulo - SP, Brazil
+#   - Walter R Paixao-Cortes    - Pontifical Catholic University of Rio Grande do Sul - RS, Brazil
 #
 #
+#   Cite this work as:
+#   J. F. R. Bachega, L. F. S. M. Timmers, L. Assirati, L. B. Bachega, M. J. Field,
+#   T. Wymore. J. Comput. Chem. 2013, 34, 2190-2196. DOI: 10.1002/jcc.23346
 #
-#				        ---	GTKDynamo Installation	---
-#		
-"""  
+#
+""" % ('2.0')
 
 
 
@@ -481,7 +488,7 @@ else:
 
        #-----------------------------------#
        #                                   #
-       #             GTKDYNAMO             #
+       #             EasyHybrid             #
        #                                   #
        #-----------------------------------#
 
@@ -489,9 +496,9 @@ else:
 if system == True:
 	os.chdir(gtkdyn_folder)
 	folder = gtkdyn_folder
-	sh_gtkdynamo_root           = "GTKDYNAMO_ROOT="
-	sh_extport_gtkdynamo_root   = " ; export GTKDYNAMO_ROOT"
-	csh_gtkdynamo_root          = "setenv GTKDYNAMO_ROOT " 
+	sh_EasyHybrid_root           = "EasyHybrid_ROOT="
+	sh_extport_EasyHybrid_root   = " ; export EasyHybrid_ROOT"
+	csh_EasyHybrid_root          = "setenv EasyHybrid_ROOT " 
 
 	# creating the environment file
 	
@@ -501,8 +508,8 @@ if system == True:
 		# SH
 		arq  = open(os.path.join("environment_bash.com"), "w")
 		text = ""
-		text = text + '''#!/bin/bash \n\n# . Bash environment variables and paths to be added to a user's ".bash_profile" file.\n# . Some modifications may be necessary to work properly (e.g. GTKDYNAMO_ROOT and PYTHONPATH).\n\n'''
-		text = text + sh_gtkdynamo_root + folder + sh_extport_gtkdynamo_root
+		text = text + '''#!/bin/bash \n\n# . Bash environment variables and paths to be added to a user's ".bash_profile" file.\n# . Some modifications may be necessary to work properly (e.g. EasyHybrid_ROOT and PYTHONPATH).\n\n'''
+		text = text + sh_EasyHybrid_root + folder + sh_extport_EasyHybrid_root
 		arq.writelines(text)
 		arq.close()
 		print "\n\n"
@@ -511,8 +518,8 @@ if system == True:
 		#CSH
 		arq  = open(os.path.join("environment_cshell.com"), "w")
 		text = ""
-		text = text + '''#!/bin/bash\n\n# . Cshell environment variables and paths to be added to a user's ".cshrc" file.\n# . Some modifications may be necessary to work properly (e.g. GTKDYNAMO_ROOT and PYTHONPATH).\n\n'''
-		text = text + csh_gtkdynamo_root + folder 
+		text = text + '''#!/bin/bash\n\n# . Cshell environment variables and paths to be added to a user's ".cshrc" file.\n# . Some modifications may be necessary to work properly (e.g. EasyHybrid_ROOT and PYTHONPATH).\n\n'''
+		text = text + csh_EasyHybrid_root + folder 
 		arq.writelines(text)
 		arq.close()
 		print "creating the file: environment_cshell.com"
@@ -530,12 +537,12 @@ if system == True:
 	try:
 		#bashrc
 		answer = ["Y", "y", "Yes", "yes", "YES", "yEs", "yeS", ""]	
-		s = raw_input('\nWould like to auto add information to the .bashrc file? -GTKDynamo- (Y/n):')
+		s = raw_input('\nWould like to auto add information to the .bashrc file? -easyhybrid- (Y/n):')
 		
 			
-		text = "\n#GTKDynamo \n"
+		text = "\n#EasyHybrid \n"
 		text = text + "source " + folder + "/environment_bash.com\n"
-		text = text + "alias gtkdynamo='" + folder +"/GTKPyMOL.py'\n"
+		text = text + "alias easyhybrid='" + folder +"/GTKPyMOL.py'\n"
 		text = text + "export LC_ALL=en_US.UTF-8\n"		
 		text = text + "export LANG=en_US.UTF-8\n"	
 		text = text + "export LANGUAGE=en_US.UTF-8\n"	

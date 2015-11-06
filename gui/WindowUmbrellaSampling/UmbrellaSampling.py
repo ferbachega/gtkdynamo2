@@ -30,9 +30,9 @@ from PyMOLScripts.PyMOLScripts import *
 from WindowControl import *
 from pDynamoMethods.pDynamoUmbrellaSampling import *
 
-#GTKDYNAMO_ROOT = os.getcwd()
-GTKDYNAMO_ROOT = ''
-GTKDYNAMO_GUI  = ''
+#EasyHybrid_ROOT = os.getcwd()
+EasyHybrid_ROOT = ''
+EasyHybrid_GUI  = ''
 
 texto_d1   = "\n\n                       -- simple-distance --\n\nFor simple-distance, select two atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n         ^            ^\n         |            |\n        pk1  . . . . pk2\n                d1\n"
 texto_d2d1 = "\n                       -- multiple-distance --\n\nFor multiple-distance, select three atoms in pymol using the editing mode\nfollowing the diagram:\n\n   R                    R\n    \                  /\n     A1--A2  . . . . A3\n    /                  \ \n   R                    R\n     ^   ^            ^\n     |   |            |\n    pk1-pk2  . . . . pk3\n       d1       d2\n"
@@ -63,7 +63,7 @@ class UmbrellaSamplingWindow():
         mode  = self.builder.get_object('combobox_SCAN_reaction_coordiante_type').get_active_text()
         print "\n\n"
         print mode 
-        self.GTKDynamoSession.project.ActiveModeCheck()
+        self.EasyHybridSession.project.ActiveModeCheck()
         #-------------------------------------------------------------------------------------------------#
         #                                       simple-distance                                           #
         #-------------------------------------------------------------------------------------------------#
@@ -154,7 +154,7 @@ class UmbrellaSamplingWindow():
 
 
         #-----------------------------------------------------------------------------------------------#
-        data_path     = self.GTKDynamoSession.project.settings['data_path']                                              #
+        data_path     = self.EasyHybridSession.project.settings['data_path']                                              #
         traj          = self.builder.get_object('umbrella_entry_TRAJECTORY').get_text()                 #
         if not os.path.exists (os.path.join(data_path, traj)): os.mkdir (os.path.join(data_path, traj)) #
         outpath = os.path.join(data_path, traj)                                                         #
@@ -251,10 +251,10 @@ class UmbrellaSamplingWindow():
                                      REACTION_COORD1         ,
                                      MINIMIZATION_PARAMETERS ,
                                      MDYNAMICS_PARAMETERS    ,
-                                     self.GTKDynamoSession.project
+                                     self.EasyHybridSession.project
                                      )
         
-        self.GTKDynamoSession.project.From_PDYNAMO_to_GTKDYNAMO(type_='ubs', log =  logFile)
+        self.EasyHybridSession.project.From_PDYNAMO_to_EasyHybrid(type_='ubs', log =  logFile)
         self.Visible  =  False
         self.window.destroy()
 
@@ -587,14 +587,14 @@ class UmbrellaSamplingWindow():
 
     def OpenWindow (self, text):
         if self.Visible  ==  False:
-            self.project          = self.GTKDynamoSession.project
-            GTKDYNAMO_ROOT = self.GTKDynamoSession.GTKDYNAMO_ROOT
-            GTKDYNAMO_GUI  = self.GTKDynamoSession.GTKDYNAMO_GUI 
+            self.project          = self.EasyHybridSession.project
+            EasyHybrid_ROOT = self.EasyHybridSession.EasyHybrid_ROOT
+            EasyHybrid_GUI  = self.EasyHybridSession.EasyHybrid_GUI 
 
 
             self.builder = gtk.Builder()
             self.builder.add_from_file(
-                os.path.join(GTKDYNAMO_GUI,'WindowUmbrellaSampling', 'UmbrellaSampling2.glade'))
+                os.path.join(EasyHybrid_GUI,'WindowUmbrellaSampling', 'UmbrellaSampling2.glade'))
 
             self.builder.connect_signals(self)
             self.window = self.builder.get_object('window1')
@@ -651,13 +651,13 @@ class UmbrellaSamplingWindow():
         #print "Bacheguissimo"
         self.window.destroy()
 
-    def __init__(self, GTKDynamoSession = None):
+    def __init__(self, EasyHybridSession = None):
         """ Class initialiser """
-        if GTKDynamoSession != None:
-            self.project          = GTKDynamoSession.project
-            self.main_builder     = GTKDynamoSession.builder
-            self.GTKDynamoSession = GTKDynamoSession        
-            self.window_control   = GTKDynamoSession.window_control
+        if EasyHybridSession != None:
+            self.project          = EasyHybridSession.project
+            self.main_builder     = EasyHybridSession.builder
+            self.EasyHybridSession = EasyHybridSession        
+            self.window_control   = EasyHybridSession.window_control
 
         self.Visible    =  False
 
