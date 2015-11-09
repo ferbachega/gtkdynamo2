@@ -67,8 +67,14 @@ def rescale_charges(project, selection, total_charge):
     #-------------------------------------------------------------------#
     
     for i in index_table:
-        charge_table.append(charges[i])
-        
+        try:
+            charge_table.append(charges[i])
+        except:
+            print 'index_table', len(index_table)
+            print 'charges', len(charges)
+            print 'charge_table', len(charge_table)
+            
+            
     a = sum(charge_table) # the sum of partial charges of the atoms from selection list
     l = len(charge_table) # number of the atoms from selection list
 
