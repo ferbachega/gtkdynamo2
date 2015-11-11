@@ -393,6 +393,100 @@ def ParseProcessLogFile(log_file):
         return parameters
         
         
+    if '                              GTKDynamo SCAN2D\n' in lines:
+        index = lines.index('                              GTKDynamo SCAN2D\n')
+        #print lines[index]
+        #print index
+        i             =   0
+        j             =   0        
+        matrix_lines  = []
+        r1 = ''
+        r2 = ''
+        for line in lines[index: -1]:
+            if line == '----------------------- Coordinate 1 - Simple-Distance -------------------------\n':
+                index2 = lines.index('----------------------- Coordinate 1 - Simple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        
+                        if atom[0][-1] == '2':
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+                        else:
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
+                        #print r1
+
+
+            if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
+                index2 = lines.index('--------------------- Coordinate 1 - Multiple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '*':
+                            r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        else:
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+                        #print r1
+
+            
+            
+            
+            
+            
+            if line == '----------------------- Coordinate 2 - Simple-Distance -------------------------\n':
+                index2 = lines.index('----------------------- Coordinate 2 - Simple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '2':
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        else:
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
+                        #print r2
+            
+            if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
+                index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
+                for atomLine in lines[index2+1 :index2+4]:
+                    atom = atomLine.split()
+                    if atom[0][0:4] == 'ATOM':
+                        if atom[0][-1] == '*':
+                            r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        else:
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        #print r2
+
+            
+            
+            
+            #print line
+            try:
+                linex = line.split()
+                if linex[0] == "MATRIX2":
+                    #print linex
+                    i = len(linex) - 1
+                    j = j + 1
+                    mline = []
+                    
+                    for item in linex[1:-1]:
+                        #print item
+                        mline.append(float(item))
+                    #print mline
+                    
+                    matrix_lines.append(mline)
+                    
+            except:
+                pass	
+        import numpy as np
+        X = np.array(matrix_lines)
+
+                
+        parameters[1]['type'  ] = 'matrix'
+        parameters[1]['title' ] = 'SCAN2D'
+        parameters[1]['matrix'] =  X
+        parameters[1]['xlabel'] = r1
+        parameters[1]['ylabel'] = r2
+        #print parameters
+        return parameters
+
     if '                              EasyHybrid SCAN2D\n' in lines:
         index = lines.index('                              EasyHybrid SCAN2D\n')
         #print lines[index]
@@ -489,6 +583,56 @@ def ParseProcessLogFile(log_file):
 
 
 
+    
+    
+    
+    
+    
+    if '------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n' in lines:
+        index = lines.index('------------------------ GTKDynamo SCAN Multiple-Distance ----------------------\n')
+        #print lines[index]
+        #print index
+        Frame      = []
+        PK1_PK2    = []
+        PK2_PK3    = []
+        ReactionCoord = []
+        Energy     = []
+
+        
+        for line in lines[index: -1]:
+            linex = line.split()
+            #print linex
+            
+            if len(linex) == 4:
+                #print linex
+                
+                try:
+                    Frame.append(float(linex[0]))
+                    
+                    ReactionCoord.append(float(linex[1])-float(linex[2]))
+                
+                    Energy.append(float(linex[-1]))
+                except:
+                    a = None
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'     ] = Frame
+        parameters[1]['Y'     ] = Energy
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+        #parameters[2] = {}
+        #parameters[2]['type'  ] = 'line'
+        #parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        #parameters[2]['X'     ] = ReactionCoord
+        #parameters[2]['Y'     ] = Energy
+        #parameters[2]['xlabel'] = 'Reaction Coordinate(r1 -r2)'
+        #parameters[2]['ylabel'] = 'Energy (KJ)'
+        
+        #print parameters
+        return parameters
+    
+    
     if '------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n' in lines:
         index = lines.index('------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n')
         #print lines[index]
@@ -535,6 +679,50 @@ def ParseProcessLogFile(log_file):
 
 
 
+    if '------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n' in lines:
+        index = lines.index('------------------------- GTKDynamo SCAN Simple-Distance -----------------------\n')
+        #print lines[index]
+        #print index
+        Frame      = []
+        PK1_PK2    = []
+        PK2_PK3    = []
+        Energy     = []
+        ReactionCoord = []
+        
+        for line in lines[index: -1]:
+            linex = line.split()
+            #print linex
+            
+            if len(linex) == 3:
+                #print linex
+                
+                try:
+                    Frame        .append(float(linex[0] ))
+                    ReactionCoord.append(float(linex[1] ))
+                    Energy       .append(float(linex[-1]))
+                except:
+                    a = None
+        
+        parameters[1]['type'  ] = 'line'
+        parameters[1]['title' ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'     ] = Frame
+        parameters[1]['Y'     ] = Energy
+        parameters[1]['xlabel'] = 'Frames'
+        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+        #parameters[2] = {}
+        #parameters[2]['type'  ] = 'line'
+        #parameters[2]['title' ] = 'SCAN Multiple-Distance'
+        #parameters[2]['X'     ] = ReactionCoord
+        #parameters[2]['Y'     ] = Energy
+        #parameters[2]['xlabel'] = 'Reaction Coordinate(r1)'
+        #parameters[2]['ylabel'] = 'Energy (KJ)'
+        
+        
+        #print parameters
+        return parameters	
+
+    
     if '------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n' in lines:
         index = lines.index('------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n')
         #print lines[index]
@@ -577,6 +765,7 @@ def ParseProcessLogFile(log_file):
         
         #print parameters
         return parameters	
+
 
 
 

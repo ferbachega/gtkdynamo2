@@ -43,7 +43,7 @@ def DualTextLog(path, filename="log.gui.txt"):
 #-----------------------------------------------------------------------------#
 #                                                                             #
 #                                EasyHybrid                                   #
-#                        - A pDynamo graphical tool -                         #
+#                   - A pDynamo graphical user interface -                    #
 #                                                                             #
 #-----------------------------------------------------------------------------#
 #                                                                             #
