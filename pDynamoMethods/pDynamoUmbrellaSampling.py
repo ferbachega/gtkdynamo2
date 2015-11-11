@@ -39,6 +39,19 @@ from pMoleculeScripts       import *
 from DualTextLogFileWriter3 import *
 from MatplotGTK.LogParse    import *
 
+
+def get_normal_deviate_generator(seed):
+    """Create a normal deviate generator to set the random seed.
+
+    :param seed: The random seed.
+    """
+    randomNumberGenerator = RandomNumberGenerator( )
+    normalDeviateGenerator = NormalDeviateGenerator.WithRandomNumberGenerator(
+            randomNumberGenerator)
+    randomNumberGenerator.SetSeed(seed)
+    return normalDeviateGenerator
+
+
 def umbrella_sampling(outpath                 , 
 					  REACTION_COORD1         ,
 					  MINIMIZATION_PARAMETERS ,
@@ -553,14 +566,13 @@ def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
     coll_freq           = MDYNAMICS_PARAMETERS['coll_freq'  ]          
     seed                = MDYNAMICS_PARAMETERS['seed'       ]
 
-    randomNumberGenerator = RandomNumberGenerator ( )
-    normalDeviateGenerator = NormalDeviateGenerator.WithRandomNumberGenerator ( randomNumberGenerator )
-    randomNumberGenerator.SetSeed ( seed )
+    normalDeviateGenerator = get_normal_deviate_generator(seed)
+
     # . Equilibration.                                               
     LangevinDynamics_SystemGeometry (system,                 
+                    normalDeviateGenerator   =   normalDeviateGenerator,
                     logFrequency             =   logFrequency,      
                     #log                     =   dualLog,          
-                    normalDeviateGenerator   =   normalDeviateGenerator,     
                     steps                    =   steps,             
                     timeStep                 =  timeStep,             
                     collisionFrequency       = coll_freq,           
@@ -576,10 +588,10 @@ def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
     trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )  
                                                                             
     LangevinDynamics_SystemGeometry (system,                        
+                    normalDeviateGenerator = normalDeviateGenerator,
                     trajectories        =[ ( trajectory, 1) ],        
                     logFrequency        =   logFrequency,             
                     #log                 =   dualLog,                 
-                    normalDeviateGenerator   =   normalDeviateGenerator,                     
                     steps               =   steps,                    
                     timeStep            =  timeStep,                    
                     collisionFrequency  = coll_freq,                  
@@ -605,12 +617,11 @@ def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAM
     temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']
     seed                = MDYNAMICS_PARAMETERS['seed'       ]
 
-    randomNumberGenerator = RandomNumberGenerator ( )
-    randomNumberGenerator.SetSeed ( seed )                                                   #
+    normalDeviateGenerator = get_normal_deviate_generator(seed)
                                                                                              #
     # . Equilibration.                                                                       #
     VelocityVerletDynamics_SystemGeometry(system,                                            #
-                                        #rng                      =   rng,                   #
+                                        normalDeviateGenerator    =   normalDeviateGenerator,#
                                         log                       =   None,                  #
                                         logFrequency              =   logFrequency,          #
                                         steps                     =   steps,                 #
@@ -628,6 +639,7 @@ def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAM
     steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                  #
     trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )             #
     VelocityVerletDynamics_SystemGeometry(system,                                            #
+                                        normalDeviateGenerator    =   normalDeviateGenerator,#
                                         trajectories              =   [ ( trajectory, 1) ],  #
                                         log                       =   None,                  #
                                         #rng                      =   rng,                   #
@@ -655,9 +667,13 @@ def Run_LeapFrogDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
     temperature         = MDYNAMICS_PARAMETERS['temperature']                       #
     temperatureCoupling = MDYNAMICS_PARAMETERS['temperatureCoupling']               #
     timeStep            = MDYNAMICS_PARAMETERS['timestep']                          #
+    seed                = MDYNAMICS_PARAMETERS['seed'       ]
+
+    normalDeviateGenerator = get_normal_deviate_generator(seed)
                                                                                     #
     # . Equilibration.                                                              #
     LeapFrogDynamics_SystemGeometry ( system                  ,                     #
+                                      normalDeviateGenerator = normalDeviateGenerator,
                                       log                 = None,                   #
                                       logFrequency        = logFrequency,           #
                                       #rng                 = rng,                   #
@@ -678,6 +694,7 @@ def Run_LeapFrogDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
                                                                                      #
     steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                          #
     LeapFrogDynamics_SystemGeometry ( system,                                        #
+                                      normalDeviateGenerator = normalDeviateGenerator,
                                       logFrequency        = logFrequency,            #
                                       log                 = None,                    #
                                       steps               = steps,                   #
