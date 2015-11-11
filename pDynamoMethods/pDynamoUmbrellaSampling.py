@@ -551,15 +551,20 @@ def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
     temperature         = MDYNAMICS_PARAMETERS['temperature']        
     timeStep            = MDYNAMICS_PARAMETERS['timestep'   ]           
     coll_freq           = MDYNAMICS_PARAMETERS['coll_freq'  ]          
+    seed                = MDYNAMICS_PARAMETERS['seed'       ]
+
+    randomNumberGenerator = RandomNumberGenerator ( )
+    normalDeviateGenerator = NormalDeviateGenerator.WithRandomNumberGenerator ( randomNumberGenerator )
+    randomNumberGenerator.SetSeed ( seed )
     # . Equilibration.                                               
     LangevinDynamics_SystemGeometry (system,                 
-                    logFrequency        =   logFrequency,      
-                    #log                 =   dualLog,          
-                    #rng                 =   rng,              
-                    steps               =   steps,             
-                    timeStep            =  timeStep,             
-                    collisionFrequency  = coll_freq,           
-                    temperature         = temperature)         
+                    logFrequency             =   logFrequency,      
+                    #log                     =   dualLog,          
+                    normalDeviateGenerator   =   normalDeviateGenerator,     
+                    steps                    =   steps,             
+                    timeStep                 =  timeStep,             
+                    collisionFrequency       = coll_freq,           
+                    temperature              = temperature)         
     #----------------------------------------------------------------
 
 
@@ -574,7 +579,7 @@ def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
                     trajectories        =[ ( trajectory, 1) ],        
                     logFrequency        =   logFrequency,             
                     #log                 =   dualLog,                 
-                    #rng                 =   rng,                     
+                    normalDeviateGenerator   =   normalDeviateGenerator,                     
                     steps               =   steps,                    
                     timeStep            =  timeStep,                    
                     collisionFrequency  = coll_freq,                  
@@ -597,7 +602,11 @@ def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAM
     steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                  #
     temperature         = MDYNAMICS_PARAMETERS['temperature']                                #
     timeStep            = MDYNAMICS_PARAMETERS['timestep']                                   #
-    temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']                            #
+    temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']
+    seed                = MDYNAMICS_PARAMETERS['seed'       ]
+
+    randomNumberGenerator = RandomNumberGenerator ( )
+    randomNumberGenerator.SetSeed ( seed )                                                   #
                                                                                              #
     # . Equilibration.                                                                       #
     VelocityVerletDynamics_SystemGeometry(system,                                            #
