@@ -564,9 +564,13 @@ def ParseProcessLogFile(log_file):
                     j = j + 1
                     mline = []
                     
-                    for item in linex[1:-1]:
+                    for item in linex:#[1:-1]:
                         #print item
-                        mline.append(float(item))
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
+                            
                     #print mline
                     
                     matrix_lines.append(mline)
@@ -586,8 +590,11 @@ def ParseProcessLogFile(log_file):
                     j = j + 1
                     mline = []
                     
-                    for item in linex[1:-1]:
-                        mline.append(float(item))
+                    for item in linex:#[1:-1]:
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
                     rcoord1_lines.append(mline)
             except:
                 pass	
@@ -599,8 +606,105 @@ def ParseProcessLogFile(log_file):
                     j = j + 1
                     mline = []
                     
-                    for item in linex[1:-1]:
-                        mline.append(float(item))
+                    for item in linex:#[1:-1]:
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
+                    rcoord2_lines.append(mline)
+            except:
+                pass
+
+
+
+        import numpy as np
+        X  = np.array(matrix_lines)
+        R1 = np.array(rcoord1_lines)
+        R2 = np.array(rcoord2_lines)
+
+                
+        parameters[1]['type'  ] = 'matrix'
+        parameters[1]['title' ] = 'SCAN2D'
+        parameters[1]['matrix'] =  X
+        
+        parameters[1]['R1'    ] = R1
+        parameters[1]['R2'    ] = R2
+        parameters[1]['xlabel'] = r1
+        parameters[1]['ylabel'] = r2
+        
+        #print parameters
+        return parameters
+
+    if '----------------------------- EasyHybrid - MOPAC Energy Refine ---------------------------------\n' in lines:
+        index = lines.index('----------------------------- EasyHybrid - MOPAC Energy Refine ---------------------------------\n')
+        #print lines[index]
+        #print index
+        i              = 0
+        j              = 0        
+        matrix_lines   = []
+        rcoord1_lines  = []
+        rcoord2_lines  = []
+
+        
+        r1 = ''
+        r2 = ''
+        for line in lines[index: -1]:
+            #print line
+            try:
+                linex = line.split()
+                if linex[0] == "MATRIX2":
+                    #print linex
+                    i = len(linex) - 1
+                    j = j + 1
+                    mline = []
+                    
+                    for item in linex:#[1:-1]:
+                        #print item
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
+                            
+                    #print mline
+                    
+                    matrix_lines.append(mline)
+                    
+            except:
+                pass
+                
+            
+
+        #rcoord1_lines  = []
+        #rcoord2_lines  = []
+
+            try:
+                linex = line.split()
+                if linex[0] == "RCOORD1":
+                    i = len(linex) - 1
+                    j = j + 1
+                    mline = []
+                    
+                    for item in linex:#[1:-1]:
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
+                    rcoord1_lines.append(mline)
+            except:
+                pass	
+            
+            try:
+                linex = line.split()
+                if linex[0] == "RCOORD2":
+                    i = len(linex) - 1
+                    j = j + 1
+                    mline = []
+                    
+                    for item in linex:#[1:-1]:
+                        try:
+                            mline.append(float(item))
+                        except:
+                            pass
                     rcoord2_lines.append(mline)
             except:
                 pass
