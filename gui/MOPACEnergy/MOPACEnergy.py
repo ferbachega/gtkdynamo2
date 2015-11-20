@@ -37,6 +37,7 @@ from pMoleculeScripts import *
 import subprocess 
 from pprint import pprint
 from DualTextLogFileWriter3 import *
+from MatplotGTK.LogParse    import *
 
 
 
@@ -254,8 +255,8 @@ class MOPACSEnergyDialog():
 
     def runMOPACEnergy (self, button):
         """ Function doc """
-        
-        #                                       Time and log file 
+        #---------------------------------------------------------------------------------------------------------------#
+        #                                              Time and log file 
         #---------------------------------------------------------------------------------------------------------------#
         localtime = time.asctime(time.localtime(time.time()))                                                           #
         localtime = localtime.split()                                                                                   #
@@ -264,158 +265,270 @@ class MOPACSEnergyDialog():
         log_file_name = 'MOPAC_Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log' #
         #---------------------------------------------------------------------------------------------------------------#
         
-        
-        #                                      folder and datapath
         #-----------------------------------------------------------------------------------------------#
-        data_path     = self.EasyHybridSession.project.settings['data_path']                             #
+        #                                      folder and datapath                                      #
+        #-----------------------------------------------------------------------------------------------#
+        data_path     = self.EasyHybridSession.project.settings['data_path']                            #
                                                                                                         #
         #traj          = self.builder.get_object('umbrella_entry_TRAJECTORY').get_text()                #
         if not os.path.exists (os.path.join(data_path, 'MOPAC_files')):                                 #
             os.mkdir (os.path.join(data_path,'MOPAC_files'))                                            #
-        logfile_outpath = os.path.join(data_path, 'MOPAC_files')                                        # 
+        logfile_outpath = os.path.join(data_path, 'MOPAC_files')                                        #
                                                                                                         #
                                                                                                         #
         if not os.path.exists (os.path.join(logfile_outpath, 'tmp')):                                   #
             os.mkdir (os.path.join(logfile_outpath,'tmp'))                                              #
-        tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')                                          # 
+        tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')                                          #
                                                                                                         #
-        #-----------------------------------------------------------------------------------------------#        
+        #-----------------------------------------------------------------------------------------------#       
         
         
+        #-----------------------------------------------------------------------------------------------#
+        #                                      LOG file - optional                                      #
+        #-----------------------------------------------------------------------------------------------#
+        scanLogFile  = self.builder.get_object('filechooserbutton3').get_filename()
+        if scanLogFile == None:
+            parameters   = False 
+            summary      = False             
+            
+        else:
+            parameters   = ParseProcessLogFile(scanLogFile) 
+            summary      = ParseSummaryLogFile(scanLogFile) 
+        #-----------------------------------------------------------------------------------------------#
+    
         
+        #-----------------------------------------------------------------------------------------------#
+        charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()               #
+        charge          = str(charge)                                                                   #
+        multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()         #
+        multiplicity    = 'Singlet'                                                                     #
+                                                                                                        #
+        if self.builder.get_object('checkbutton1').get_active() == True:                                #
+            SOLV    =  True                                                                             #
+            ESP     =  self.builder.get_object('entry2').get_text()                                     #
+            RSOLV   =  self.builder.get_object('entry3').get_text()                                     #
+        else:                                                                                           #
+            SOLV    = False                                                                             #
+            ESP     = None                                                                              #
+            RSOLV   = None                                                                              #
+                                                                                                        #
+        if self.builder.get_object('checkbutton2').get_active() == True:                                #
+            MOZYME    =  True                                                                           #
+        else:                                                                                           #
+            MOZYME    = False                                                                           #
+                                                                                                        #
+        if self.builder.get_object('checkbutton3').get_active() == True:                                #
+            QMMM    =  True                                                                             #
+        else:                                                                                           #
+            QMMM    = False                                                                             #
+        #-----------------------------------------------------------------------------------------------#
         
+        trajectory_type = self.builder.get_object('combobox2').get_active_text()
+        # SCAN
+        # SCAN-2D
         
-        
-        
-        #
-        charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()
-        charge          = str(charge)
-        
-        multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()
-        multiplicity    = 'Singlet'
-        
-        if self.builder.get_object('checkbutton1').get_active() == True:
-            SOLV    =  True
-            ESP     =  self.builder.get_object('entry2').get_text()
-            RSOLV   =  self.builder.get_object('entry3').get_text()
+        #---------------------------------------------------------------------------#
+        system = self.project.system                                                #
+        trajectory = self.builder.get_object('filechooserbutton1').get_filename()   #
 
-        else:  
-            SOLV    = False
-            ESP     = None
-            RSOLV   = None
-        
-        if self.builder.get_object('checkbutton2').get_active() == True:
-            MOZYME    =  True
-        else:  
-            MOZYME    = False
-        
-        if self.builder.get_object('checkbutton3').get_active() == True:
-            QMMM    =  True
-        else:  
-            QMMM    = False
-
-        #charge       = '-2'
-        #multiplicity = 'Singlet'
-        
-        system = self.project.system
-        #system = Unpickle('TIM_sitiogrande.pkl')
-        
-        trajectory = self.builder.get_object('filechooserbutton1').get_filename()
-        #print 'aqui'
-        #trajectory = SystemGeometryTrajectory ('/home/fernando/pDynamoWorkSpace/TIM/12_step_Scan', system, mode = "r" )
-        trajetoryFile = trajectory
-        trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
-
-        #print 'aqui2'
-        
-        methods = self.builder.get_object('entry1').get_text()
-        #methods = ['AM1','PM3','RM1','PM6','PM6-DH','PM6-DH2','PM6-DH+','PM6-DH2X','PM6-D3H4','PM7'] 
-        methods = methods.split()
-        
-        system.Summary()
-        
-        print charge, multiplicity, methods#, trajectory
-        #trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
+                                                                                    #
+        methods = self.builder.get_object('entry1').get_text()                      #
+        methods = methods.split()                                                   #
+        system.Summary()                                                            #
+        #---------------------------------------------------------------------------#
         
         
+        
+        
+        
+        print charge, multiplicity, methods#, trajectory        
         logs = {
                 }
 
-        
         for method in methods:
             logs[method] = {
                             'energy'     : [],
                             'energyNorm' : [],
                             }
-            n = 0 
-            while trajectory.RestoreOwnerData ( ):
-                MOPAC_system = pDynamoToMOPAC(system = system)
+        #------------------------------------------------------------------------------------------------------------#
+            if trajectory_type == 'SCAN':                                                                            #
                 
-                keywords = MOPAC_system.DefineMopacKeys (methods      = method      ,
-                                                         charge       = charge      ,
-                                                         multiplicity = multiplicity,
-                                                         AUX          = True        ,
-                                                         single_point = True        ,
-                                                         MOZYME       = MOZYME      , 
-                                                         BONDS        = False       ,
-                                                         PDBOUT       = False       ,
-                                                         SOLV         = SOLV        ,
-                                                         ESP          = ESP         ,
-                                                         RSOLV        = RSOLV       ,
-                                                         QMMM         = QMMM        )
+                trajetoryFile = trajectory                                                                           #
+                trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )                              #
                 
-                energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system'+str(n)+'.mop'))  # tmpfile_outpath = os.path.join(logfile_outpath, 'tmp')
+                n = 0                                                                                                #
+                while trajectory.RestoreOwnerData ( ):                                                               #
+                    MOPAC_system = pDynamoToMOPAC(system = system)                                                   #
+                                                                                                                     #
+                    keywords = MOPAC_system.DefineMopacKeys (methods      = method      ,                            #
+                                                             charge       = charge      ,                            #
+                                                             multiplicity = multiplicity,                            #
+                                                             AUX          = True        ,                            #
+                                                             single_point = True        ,                            #
+                                                             MOZYME       = MOZYME      ,                            #
+                                                             BONDS        = False       ,                            #
+                                                             PDBOUT       = False       ,                            #
+                                                             SOLV         = SOLV        ,                            #
+                                                             ESP          = ESP         ,                            #
+                                                             RSOLV        = RSOLV       ,                            #
+                                                             QMMM         = QMMM        )                            #
+                                                                                                                     #
+                    energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system'+str(n)+'.mop'))   #
+                                                                                                                     #
+                    logs[method]['energy'].append(float(energy))                                                     #
+                    logs[method]['energyNorm'].append(float(energy) - logs[method]['energy'][0])                     #
+                                                                                                                     #
+                    #Energy.append(energy)                                                                           #
+                    #print n                                                                                         #
+                    n  += 1                                                                                          #
+                                                                                                                     #
+                #-------------------------------------------------------#                                            #
+                #                   LOG FILE SUMMARY                    #                                            #
+                #-------------------------------------------------------#                                            #
+                string = ''                                                                                          #
+                string += 'trajectoy:    ' + trajetoryFile + '\n'                                                    #
+                string += 'keywords:     ' + keywords      + '\n'                                                    #
+                string += '\n'                                                                                       #
+                                                                                                                     #
+                for method in logs:                                                                                  #
+                    string += " %15s "     % (method)                                                                #
+                string += '\n'                                                                                       #
+                                                                                                                     #
+                for i in range( 0, n): #len(logs['AM1']['energyNorm'])):                                             #
+                    for method in logs:                                                                              #
+                        string += " %15.5f "  % (logs[method]['energyNorm'][i])                                      #
+                                                                                                                     #
+                    string += '\n'                                                                                   #
+                                                                                                                     #
+                print string                                                                                         #
+                arq = open(os.path.join(logfile_outpath, log_file_name), 'w')                                        #
+                arq.writelines(string)                                                                               #
+                arq.close()                                                                                          #
+        #------------------------------------------------------------------------------------------------------------#
+
+            if trajectory_type == 'SCAN-2D':
+                n = 1
+                energy_table = {(0,0): 0.0}
+                i_table      = []
+                j_table      = []
+                #---------------------------------------------------------#
+                #import numpy as np                                        #
+                #X = 0*np.random.rand (coord1_NWINDOWS1, coord2_NWINDOWS2) #
+                #---------------------------------------------------------#
                 
-                logs[method]['energy'].append(float(energy))
-                logs[method]['energyNorm'].append(float(energy) - logs[method]['energy'][0])
                 
-                #Energy.append(energy)
-                #print n
-                n  += 1
-
-        
-        
-        
-        
-        #-------------------------------------------------------#
-        #                   LOG FILE SUMMARY                    #                         
-        #-------------------------------------------------------#
-        #logFile = os.path.join(logfile_outpath, log_file_name) #
-        #log = DualTextLog(logfile_outpath, log_file_name)      #
-        #system.Summary(log=log)                                #
-        #-------------------------------------------------------#
-        #string = '\n'
-        string = ''
-        #string += 'charge:       ' + charge        + '\n'
-        #string += 'multiplicity: ' + multiplicity  + '\n'
-        string += 'trajectoy:    ' + trajetoryFile + '\n'
-        string += 'keywords:     ' + keywords      + '\n'
-        string += '\n'
-        
-        for method in logs:
-            #string += method + '  '
-            string += " %15s "     % (method)
-        string += '\n'
-
-        
-        
-        for i in range( 0, n): #len(logs['AM1']['energyNorm'])):  
-            for method in logs:
-                #string += str(logs[method]['energyNorm'][i]) + '  '
-                string += " %15.5f "  % (logs[method]['energyNorm'][i])
                 
-            string += '\n'
-            #n += 1
-        #pprint (Energy)
-        #pprint (logs)
+                #--------------------------------------------------------------#
+                pass                                                           #
+                trajectory_files   = os.listdir(trajectory)                    #
+                trajectory_files2  = []                                        #
+                #--------------------------------------------------------------#
+                for File in trajectory_files:                                  #
+                    File2 = File.split('.')                                    #
+                                                                               #
+                    if File2[-1] == 'pkl':                                     #
+                        trajectory_files2.append(File)                         #
+                #--------------------------------------------------------------#
+                        
+                        
+                for File in trajectory_files2:
+                    File2 = File.split('.')
+                    File2 = File2[0].split('_')
+                    i = int(File2[1])
+                    j = int(File2[2])
+                    
+                    system.coordinates3 = Unpickle(os.path.join(trajectory,File))
+                    
+                    MOPAC_system = pDynamoToMOPAC(system = system)                                                
+                    
+                    keywords = MOPAC_system.DefineMopacKeys (methods      = method      ,                         
+                                                             charge       = charge      ,                         
+                                                             multiplicity = multiplicity,                         
+                                                             AUX          = True        ,                         
+                                                             single_point = True        ,                         
+                                                             MOZYME       = MOZYME      ,                         
+                                                             BONDS        = False       ,                         
+                                                             PDBOUT       = False       ,                         
+                                                             SOLV         = SOLV        ,                         
+                                                             ESP          = ESP         ,                         
+                                                             RSOLV        = RSOLV       ,                         
+                                                             QMMM         = QMMM        )                         
+                    energy = MOPAC_system.Energy(fileout =  os.path.join(tmpfile_outpath, 'system_'+str(i)+'_'+str(j)+'.mop'))                      
+                    energy_table[(i,j)] = float(energy)
+                    i_table.append(i)
+                    j_table.append(j)
+                    #print n, i, j, energy 
+                    n = n+1
+                
+                print i_table
+                print j_table
+                
+                
+                #---------------------------------------------------------#
+                import numpy as np                                        #
+                i_table  = np.array(i_table)
+                j_table  = np.array(j_table)
+                
+                i_max = i_table.max()
+                j_max = j_table.max()
+                
+                X = 0*np.random.rand (i_max+1, j_max+1)   
+                #---------------------------------------------------------#
 
-        print string
-        arq = open(os.path.join(logfile_outpath, log_file_name), 'w') 
-        arq.writelines(string)
-        arq.close()
+
+                text    = ''
+                                                                                                      #
+                #RCOORD1 = RCOORD1 + '\nRCOORD1'
+                #RCOORD2 = RCOORD2 + '\nRCOORD2' 
+
+
+                for i in range(0,i_max+1):
+                    text    = text    + "\nMATRIX1 "
+                    for j in range(0,j_max+1):
+                        X[i][j] = energy_table[(i,j)]
+                        text = text + "%18.8f  " % (X[i][j])
+                        
+                X_norm = X - np.min(X)
+                
+                for i in range(0,i_max+1):
+                
+                    text = text + "\nMATRIX2 "
+                    for j in range(0,j_max+1):
+                        text = text + "%18.8f  " % (X_norm[i][j])
+                
+
+                text = str(text)
+
+                print   len (energy_table)          
+                print   X
+                print   text
+                #parameters 
+                #summary    
+                header  = '---------------------- EasyHybrid - MOPAC Energy Refine ------------------------\n'
+                header += "\nMETHOD                 =%15s  "     % (method)        
+                header += "\nMOZYME                 =%15s  "     % ("True")
+                header += "\nSOLV                   =%15s  "     % ('True')        #
+                header += "\n--------------------------------------------------------------------------------"          
+                
+                header  = '---------------------- EasyHybrid - MOPAC Energy Refine ------------------------\n'
+                header += "\nTRAJECTORY             =%15s  "     % (trajectory)        
+                header += "\nORIGINAL LOG           =%15s  "     % ("True")
+                
+                if parameters:
+                    header += "\nRCOORD1                =%15s  "     % (parameters[1]['xlabel'])
+                    header += "\nRCOORD2                =%15s  "     % (parameters[1]['ylabel'])
+                header += "\n--------------------------------------------------------------------------------"          
+                
+                arq = open(os.path.join(trajectory, "Scan2D_"+method+".log"), 'a') 
+                arq.writelines(header)
+                arq.writelines('\n\n')
+                arq.writelines(text)
+                arq.close()
 
 
 
+
+                
     def on_checkbutton1_toggled(self, button):
         """ Function doc """
         if self.builder.get_object('checkbutton1').get_active():
@@ -479,10 +592,13 @@ class MOPACSEnergyDialog():
 
         self.builder.get_object('filechooserbutton2').hide()
         
-        #----------------- Setup ComboBoxes -------------------------#
-        combobox = 'combobox1'         #
-        combolist = ["folder - pDynamo"]#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
-        
+        #----------------- Setup ComboBoxes ----------------------------------------------#
+        combobox = 'combobox1'         #                                                  #
+        combolist = ["folder - pDynamo"]#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']#
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)                      #
+        combobox = 'combobox2'         #                                                  #
+        combolist = ["SCAN" , 'SCAN-2D']#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']#
+        #---------------------------------------------------------------------------------#
         self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
         
         # Hide unfinished widgets

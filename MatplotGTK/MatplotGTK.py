@@ -154,9 +154,6 @@ class PlotGTKWindow:
         from pylab import clabel
         c = contour(matrix, colors = 'k', linewidths = (1,))
         clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
-
-
-
         from pylab import colorbar
         colorbar(im)
 
@@ -166,13 +163,10 @@ class PlotGTKWindow:
         ylabel = parameters['ylabel']
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
-
         canvas = FigureCanvas(fig)  # a gtk.DrawingArea
         vbox.pack_start(canvas)
         toolbar = NavigationToolbar(canvas, win)
         vbox.pack_start(toolbar, False, False)
-
-
         win.show_all()
         gtk.main()	
 
@@ -181,8 +175,93 @@ class PlotGTKWindow:
 
 
 
+        ##----------------------------------------------------------------------#
+        #from mpl_toolkits.mplot3d import Axes3D
+        #import matplotlib        
+        #import numpy as np        
+        #from matplotlib import cm        
+        #from matplotlib import pyplot as plt           
+        #
+        #win = gtk.Window()
+        #win.connect("destroy", lambda x: gtk.main_quit())
+        #win.set_default_size(580,420)
+        #title = parameters['title']
+        #win.set_title(title)
+        #vbox = gtk.VBox()
+        #win.add(vbox)
+        #
+        #fig = plt.figure()
+        #ax = fig.add_subplot(111, projection='3d')
+        #Z  = parameters['matrix']
+        #R1 = parameters['R1'    ]
+        #R2 = parameters['R2'    ]
+        #r1 = parameters['xlabel']
+        #r2 = parameters['ylabel']
+        #
+        ## create supporting points in polar coordinates
+        #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
+        #canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+        #vbox.pack_start(canvas)
+        #toolbar = NavigationToolbar(canvas, win)
+        #vbox.pack_start(toolbar, False, False)
+        #win.show_all()
+        #gtk.main()
+        ##----------------------------------------------------------------------#
 
 
+
+
+
+        '''
+        #import matplotlib.pyplot as plt
+        #import matplotlib.cm as cm	
+
+
+        #import matplotlib.pyplot as plt
+        #from matplotlib.colors import BoundaryNorm
+        #from matplotlib.ticker import MaxNLocator
+        #import numpy as np
+        #from pprint import pprint 
+        #from matplotlib import cm
+        #
+        #from mpl_toolkits.mplot3d import Axes3D
+        #import matplotlib
+        #import numpy as np
+        #from matplotlib import cm
+        #from matplotlib import pyplot as plt        
+        #
+        #Z  = parameters['matrix']
+        #R1 = parameters['R1'    ]
+        #R2 = parameters['R2'    ]
+        #r1 = parameters['xlabel']
+        #r2 = parameters['ylabel']
+        #fig = plt.figure()
+        #
+        #ax = fig.add_subplot(111, projection='3d')
+        #
+        ## create supporting points in polar coordinates
+        #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
+        ##ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
+        ##ax.set_zlim3d(0, 1)
+        #
+        #plt.show()
+
+
+        #levels = MaxNLocator(nbins=600).tick_values(Z.min(), Z.max())
+        #cmap = cmap=cm.jet
+        #norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+        #fig, (ax1) = plt.subplots(nrows=1)
+        #
+        #cf = ax1.pcolormesh(R1, R2, Z, cmap=cmap)#, norm=norm)
+        #CS = ax1.contour (R1, R2, Z, 6, colors='k',)
+        #
+        #fig.colorbar(cf, ax=ax1)
+        #ax1.set_title('contourf with levels')
+        #
+        #fig.tight_layout()
+        #
+        #plt.show()
+        '''
 
 
 

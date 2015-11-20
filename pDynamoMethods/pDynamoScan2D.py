@@ -219,8 +219,8 @@ def Scan2D(outpath            ,
     # . Define a constraint container and assign it to the system.
     constraints  = SoftConstraintContainer ( )
     project.system.DefineSoftConstraints (constraints)
-    
-         
+    RCOORD1 = ''
+    RCOORD2 = ''
     #-------------------------------------------------------------------------------------------------------------------#
     for i in range ( coord1_NWINDOWS1 ):                                                                                #
         if mode1 == 'simple-distance':                                                                                  #
@@ -239,7 +239,10 @@ def Scan2D(outpath            ,
                                                                                                                         #
             constraints["ReactionCoord"] = constraint			                                                        #
                                                                                                                         #
-        text = text + "\nMATRIX1 "                                                                                      #
+        text    = text    + "\nMATRIX1 "                                                                                      #
+        RCOORD1 = RCOORD1 + '\nRCOORD1'
+        RCOORD2 = RCOORD2 + '\nRCOORD2' 
+        
                                                                                                                         #
         for j in range (coord2_NWINDOWS2):                                                                              #
             if mode2 == 'simple-distance':                                                                              #
@@ -283,9 +286,38 @@ def Scan2D(outpath            ,
                     Pickle    ( os.path.join ( outpath,"frame_" + str(i) + "_" + str(j) + ".pkl"), project.system.coordinates3 )  #
                                                                                                                                   #
                 distance_a3_a4 = project.system.coordinates3.Distance (coord2_ATOM1, coord2_ATOM2)                                #
-                                                                                                                                  #
-                try:                                                                                                              #
-                    parameters = ParseProcessLogFile (outpath+ "/"+"tmp.log")                                                     #
+                #-----------------------------------------------------------------------------------------------------------------#
+                
+                
+                
+                
+                #-----------------------------------------------------------------------------------------------------------------#
+                #                                            Reaction Coords 1 and 2                                              #
+                #-----------------------------------------------------------------------------------------------------------------#
+                if mode1 == 'simple-distance':                                                                    
+                    distance_a1_a2  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+                    RCOORD1         = RCOORD1 + "%18.8f  " % (distance_a1_a2) #' ' + str(distance_a1_a2)
+                    
+                if mode1 == "multiple-distance":    
+                    distance_a1_a2  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+                    distance_a2_a3  = project.system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+                    RCOORD1         = RCOORD1 + "%18.8f  " %(distance_a1_a2 -  distance_a2_a3)
+
+                if mode2 == 'simple-distance':                                                                    
+                    distance_a1_a2  = project.system.coordinates3.Distance ( coord2_ATOM1, coord2_ATOM2)
+                    RCOORD2         = RCOORD2 + "%18.8f  " %(distance_a1_a2)
+
+                if mode2 == "multiple-distance":    
+                    distance_a1_a2  = project.system.coordinates3.Distance ( coord2_ATOM1, coord2_ATOM2)
+                    distance_a2_a3  = project.system.coordinates3.Distance ( coord2_ATOM2, coord2_ATOM3)
+                    RCOORD2         = RCOORD2 + "%18.8f  " %(distance_a1_a2 -  distance_a2_a3)
+                #------------------------------------------------------------------------------------------------------------------                
+                
+
+
+
+                try:                                                                                              
+                    parameters = ParseProcessLogFile (outpath+ "/"+"tmp.log")                                     
                     x = parameters[1]['X']
                     y = parameters[1]['Y']
                     X[i][j] = y[-1]                                                                                               #
@@ -301,7 +333,10 @@ def Scan2D(outpath            ,
     n1     = coord1_NWINDOWS1
     n2     = coord2_NWINDOWS2
 
-    text = text + "\n\n"
+    
+    RCOORD1 = RCOORD1 + '\n\n'
+    RCOORD2 = RCOORD2 + '\n\n'
+    text    = text    + "\n\n"
     
     
     for i in range(n1):
@@ -317,7 +352,11 @@ def Scan2D(outpath            ,
     
     
     arq = open(os.path.join(outpath, "Scan2D.log"), 'a') 
+
     arq.writelines(text)
+    arq.writelines('\n\n')
+    arq.writelines(RCOORD1)
+    arq.writelines(RCOORD2)
     arq.close()
     project.system.DefineSoftConstraints ( None )
     logFile = os.path.join(outpath, "Scan2D.log")
