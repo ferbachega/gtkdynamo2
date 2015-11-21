@@ -64,7 +64,11 @@ class PlotGTKWindow:
             self.win = gtk.Window()
             self.win.connect("destroy", lambda x: gtk.main_quit())
             self.win.set_default_size(560,420)
-            self.win.set_title("")
+            
+            
+            log_file = parameters[1]['log_file'] 
+
+            self.win.set_title(log_file)
 
             self.vbox = gtk.VBox()
             self.win.add(self.vbox)
@@ -131,9 +135,10 @@ class PlotGTKWindow:
         win = gtk.Window()
         win.connect("destroy", lambda x: gtk.main_quit())
         win.set_default_size(580,420)
-
+        
+        log_file = parameters['log_file']
         title = parameters['title']
-        win.set_title(title)
+        win.set_title(log_file)
         vbox = gtk.VBox()
         win.add(vbox)
 

@@ -102,7 +102,7 @@ def rescale_charges(project, selection, total_charge):
     for i in index_table:
         charges[i]=charges_new[n]
         n = n+1
-    charges.Print()
+    #charges.Print()
     project.system.energyModel.mmAtoms.SetAtomicCharges(charges)
 
 	

@@ -360,13 +360,14 @@ def ParseProcessLogFile(log_file):
                      'ylabel': 'y label' ,   # ylabel,
                      }
                  }
-    
+    parameters[1]['log_file'] = log_file
     
     log = open( log_file , "r")
     #print log
     lines = log.readlines()
+    
     #print lines
-
+    
     interact = []
     Function = []
     RMS_Grad = []

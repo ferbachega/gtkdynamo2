@@ -535,7 +535,7 @@ class MOPACSEnergyDialog():
                                                          QMMM         = parameters['mopac_QMMM'  ])                                          #
                                                                                                                                              #
                                                                                                                                              #
-                energy = MOPAC_system.Energy(fileout =  os.path.join(parameters['tmpfile_outpath'], 'system_'+str(i)+'_'+str(j)+'.mop'))     #                
+                energy = MOPAC_system.Energy(fileout =  os.path.join(parameters['tmpfile_outpath'], 'system_'+method+'_'+str(i)+'_'+str(j)+'.mop'))     #                
                 energy_table[(i,j)] = float(energy)                                                                                          #
                 i_table.append(i)                                                                                                            #
                 j_table.append(j)                                                                                                            #
@@ -628,32 +628,44 @@ class MOPACSEnergyDialog():
         #print parameters['original_scan_log'][1]
         #print parameters['original_scan_log'][1]['R1'    ]
         
-        print parameters['original_scan_log'][1]['R1'    ]
-        #parameters['original_scan_log']
-        
         if parameters['original_scan_log']:
-            R1 = parameters['original_scan_log'][1]['R1'    ]
-            R2 = parameters['original_scan_log'][1]['R2'    ]
+            print parameters['original_scan_log'][1]['R1'    ]
+            #parameters['original_scan_log']
             
-            text_matrix1 += '\n\n'
-            for i in range(0,parameters['matrix_i']+1):
-                text_matrix1  += "\nRCOORD1  "
-                for j in range(0,parameters['matrix_j']+1):
-                    print i, j 
-                    text_matrix1 += "%18.8f  " % (R1[i][j])
-            
-            text_matrix1 += '\n\n'
-            for i in range(0,parameters['matrix_i']+1):
-                text_matrix1  += "\nRCOORD2  "
-                for j in range(0,parameters['matrix_j']+1):
-                    text_matrix1 += "%18.8f  " % (R2[i][j])
-        
-        
-        
-        arq = open(os.path.join(parameters['trajectory'], "Scan2D_"+parameters['actual_method']+".log"), 'w') 
+            if parameters['original_scan_log']:
+                R1 = parameters['original_scan_log'][1]['R1'    ]
+                R2 = parameters['original_scan_log'][1]['R2'    ]
+                
+                try:
+                    text_matrix1 += '\n\n'
+                    for i in range(0,parameters['matrix_i']+1):
+                        text_matrix1  += "\nRCOORD1  "
+                        for j in range(0,parameters['matrix_j']+1):
+                            print i, j 
+                            text_matrix1 += "%18.8f  " % (R1[i][j])
+
+                    text_matrix1 += '\n\n'
+                    for i in range(0,parameters['matrix_i']+1):
+                        text_matrix1  += "\nRCOORD2  "
+                        for j in range(0,parameters['matrix_j']+1):
+                            text_matrix1 += "%18.8f  " % (R2[i][j])
+                except:
+                    pass        
+
+        #---------------------------------------------------------------------------------------------------------------
+        #                                              Time and log file                                                
+        #---------------------------------------------------------------------------------------------------------------
+        localtime = time.asctime(time.localtime(time.time()))                                                           
+        localtime = localtime.split()                                                                                   
+        #  0     1    2       3         4                                                                               
+        #[Sun] [Sep] [28] [02:32:04] [2014]                                                                             
+        log_file_name = "Scan2D_"+parameters['actual_method'] +'_'+ localtime[1] +'_'+ localtime[2] +'_'+ localtime[3] +'_'+ localtime[4]+'.log' #
+        #--------------------------------------------------------------------------------------------------------------
+        arq = open(os.path.join(parameters['trajectory'], log_file_name), 'w')
         arq.writelines(header)
         arq.writelines(text_matrix1)
         arq.close()
+        #---------------------------------------------------------------------------------------------------------------
 
 
                 
