@@ -395,7 +395,11 @@ class MainMenu (object):
 
 
 
-
+        def on_MainMenu_Edit_Charge_Verify_activate (self, menuitem):
+            """ Function doc """
+            
+            check_charges_by_residue(project = self.project                     , 
+                                  PyMOL_Obj = self.project.settings['PyMOL_Obj'])
 
         def on_MainMenu_Edit_ChargeRescale_activate (self, menuitem):
                 """ Function doc """

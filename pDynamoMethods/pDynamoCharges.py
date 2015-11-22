@@ -25,7 +25,7 @@ import os
 import time
 #import sys
 from PyMOLScripts.PyMOLScripts import PymolGetTable
-
+from pymol import cmd 
 
 
 def set_charges_to_zero (project, selection):
@@ -33,20 +33,46 @@ def set_charges_to_zero (project, selection):
     pass
 
 
+def check_charges_by_residue (project = None, PyMOL_Obj = None):
+    """ Function doc """
+    system       = project.system
+    obj          = cmd.get_model(PyMOL_Obj)
+    model_split  = obj.atom	
+    residue_list = [] 
+
+    for i in model_split:
+        resi = i.resi
+        if resi in 	residue_list:
+            pass
+        else:
+            residue_list.append(resi)
+    #print residue_list
+    for resi in residue_list:
+        command = 'select sele, (' + PyMOL_Obj + ' and  resi ' + str(resi) +' )'
+        #cmd.do(command)
+        cmd.select ('sele',  PyMOL_Obj + ' and  resi ' + str(resi) )
+        _sum, _len = compute_selection_total_charge (system, selection = 'sele')
+        charge = round(_sum)
+        
+        diference  = charge - _sum
+        #print resi, _sum , charge ,  diference  
+        
+        rescale_charges(project, 'sele', charge)
+
 def compute_selection_total_charge (system, selection = None):
     """ Function doc """
     #-------------------------------------------------------------------#
     if selection == None:                                               #
         index_table = PymolGetTable('sele')                             #
     else:                                                               #
-        index_table = selection                                         #
+        index_table = PymolGetTable(selection)                          #
     
     charges         = system.energyModel.mmAtoms.AtomicCharges()        #
     charge_table    = []                                                #
     #-------------------------------------------------------------------#
-    
+    #print 'index_table:', index_table
     for i in index_table:
-        charge_table.append(charges[i])
+        charge_table.append(charges[int(i)])
         
     _sum = sum(charge_table) # the sum of partial charges of the atoms from selection list
     _len = len(charge_table)
@@ -95,7 +121,7 @@ def rescale_charges(project, selection, total_charge):
     #print sum(charges_new)
     #
     
-    charges.Print()
+    #charges.Print()
     n = 0
     
     # adding the new charges to system
