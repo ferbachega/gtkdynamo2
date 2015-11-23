@@ -2022,6 +2022,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="menuitem72">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Charge Split Main/Side Chain</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_MainMenu_Edit_split_charges_in_selection_activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="menuitem46">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

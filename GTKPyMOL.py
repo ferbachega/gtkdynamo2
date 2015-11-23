@@ -405,7 +405,13 @@ class MainMenu (object):
                 """ Function doc """
                 self.ChargeRescaleDialog.dialog.run()
                 self.ChargeRescaleDialog.dialog.hide()
-
+        
+        def on_MainMenu_Edit_split_charges_in_selection_activate (self, menuitem):
+            """ Function doc """
+            split_charges_in_selection(project = self.project                     , 
+                                     PyMOL_Obj = 'sele')
+        
+        
 
         def on_MainMenu_Selection_SetQCTable(self, menuitem, click = None):
             table    = PymolGetTable('sele')

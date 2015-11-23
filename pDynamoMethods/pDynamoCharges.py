@@ -33,8 +33,95 @@ def set_charges_to_zero (project, selection):
     pass
 
 
-def check_charges_by_residue (project = None, PyMOL_Obj = None):
+def split_charges_in_selection (project = None, PyMOL_Obj = None):                            
     """ Function doc """
+    print '--------------------------------------------------------------------'                                                                    
+    system       = project.system                                                             
+    
+    obj          = cmd.get_model(PyMOL_Obj)                                                   
+    model_split  = obj.atom	                                                                  
+    residue_list = []                                                                         
+    PyMOL_Obj    = project.settings['PyMOL_Obj']
+    for i in model_split:                                                                     
+        resi = i.resi                                                                         
+        if resi in 	residue_list:                                                             
+            pass                                                                              
+        else:                                                                                 
+            residue_list.append(resi)                                                         
+    
+    print PyMOL_Obj
+    #print model_split
+    print residue_list
+    
+    for resi in residue_list:                                                                 
+        #command = 'select charge_split, (' + PyMOL_Obj + ' and  resi ' + str(resi) +' )'              
+                                                                                              
+        #select sele, Step1 and  resi 178 and  not name ca+C+O+OXT+N+H+HA+H1+H2+H3            
+                                                                                              
+        #cmd.do(command)                                                                      
+        #                         N+HT1+HT2+HT3+CA+HA+HA2+C+O+HN+OT1+OT2   
+        #                         #----- AMBER / OPLS atom names       |            CHARMM atom names---------|              
+        commands = ['and not name CA+C+O+OXT+N+H+HA+HA2+HA3+H1+H2+H3',#+N+HT1+HT2+HT3+CA+HA+HA2+C+O+HN+OT1+OT2', # side chain               
+                    'and name     CA+C+O+OXT+N+H+HA+HA2+HA3+H1+H2+H3']#+N+HT1+HT2+HT3+CA+HA+HA2+C+O+HN+OT1+OT2'] # main chain               
+        
+        
+        print '\n\n--------------------------------------------------------------------', 
+        print 'Residue: ' , resi
+        
+        command = 'select  chg , ' +PyMOL_Obj + ' and resi '+str(resi)+' and not name CA+C+O+OXT+N+H+HA+HA2+HA3+H1+H2+H3'
+        cmd.do(command)
+        _sum, _len = compute_selection_total_charge (system, selection = 'chg')
+        charge = round(_sum)
+        
+        print  '-----------------------------------------------------------'
+        print  'SIDE CHAIN sum of partial charges: ', _sum                                                      
+        rescale_charges(project, 'chg', charge)                                                
+        _sum, _len = compute_selection_total_charge (system, selection = 'chg')
+        print  'SIDE CHAIN sum of partial charges after rescale: ', _sum                                                      
+        print  '-----------------------------------------------------------'
+        
+        
+        
+        
+        command = 'select  chg , ' +PyMOL_Obj + ' and resi '+str(resi)+' and name CA+C+O+OXT+N+H+HA+HA2+HA3+H1+H2+H3'
+        cmd.do(command)
+        _sum, _len = compute_selection_total_charge (system, selection = 'chg')            
+        charge = round(_sum)                                                                                 
+
+        if _sum >= 10e-10:
+            print  '-----------------------------------------------------------'
+            print  'MAIN CHAIN sum of partial charges: ', _sum
+            print  'MAIN CHAIN sum of partial charges after rescale: ', _sum
+            #print   _sum,     _len, charge                                                         
+            print  '-----------------------------------------------------------'
+
+            pass
+        else:
+            print  '-----------------------------------------------------------'
+            print  'MAIN CHAIN sum of partial charges: ', _sum
+            rescale_charges(project, 'chg', charge)    
+            _sum, _len = compute_selection_total_charge (system, selection = 'chg')                                                  
+            print  'MAIN CHAIN sum of partial charges after rescale: ', _sum
+            #print   _sum,     _len, charge                                                         
+            print  '-----------------------------------------------------------'
+
+                    
+                                                                                              
+        #for command in commands:                                                              
+        #    cmd.select ('charge_split',  PyMOL_Obj + ' and sele  and  resi ' + str(resi) + command)             
+        #    
+        #    _sum, _len = compute_selection_total_charge (system, selection = 'sele')          
+        #    charge = round(_sum)                                                              
+        #    #diference  = charge - _sum                                                       
+        #    rescale_charges(project, 'charge_split', charge)                                          
+                                                                                              
+                                                                                              
+                                                                                              
+                                                                                              
+                                                                                              
+                                                                                              
+def check_charges_by_residue (project = None, PyMOL_Obj = None):                              
+    """ Function doc """                                                                      
     system       = project.system
     obj          = cmd.get_model(PyMOL_Obj)
     model_split  = obj.atom	
@@ -55,7 +142,6 @@ def check_charges_by_residue (project = None, PyMOL_Obj = None):
         charge = round(_sum)
         
         diference  = charge - _sum
-        #print resi, _sum , charge ,  diference  
         
         rescale_charges(project, 'sele', charge)
 
