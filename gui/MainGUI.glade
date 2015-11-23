@@ -2006,7 +2006,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Charge Verify</property>
+                        <property name="label" translatable="yes">Charge Correction</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_MainMenu_Edit_Charge_Verify_activate" swapped="no"/>
                       </object>
@@ -2938,11 +2938,11 @@
                                 <property name="rules_hint">True</property>
                                 <property name="search_column">0</property>
                                 <signal name="select-cursor-parent" handler="on_treeview2_select_cursor_parent" swapped="no"/>
+                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
                                 <signal name="row-activated" handler="row_activated2" swapped="no"/>
                                 <signal name="columns-changed" handler="on_treeview2_select_cursor_row" swapped="no"/>
-                                <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
                                 <signal name="move-cursor" handler="on_treeview2_select" swapped="no"/>
-                                <signal name="key-press-event" handler="handle_history_keypress" swapped="no"/>
+                                <signal name="button-release-event" handler="on_treeview_PyMOL_Objects_button_release_event" swapped="no"/>
                                 <signal name="select-cursor-row" handler="on_treeview2_select_cursor_row" swapped="no"/>
                                 <child>
                                   <object class="GtkTreeViewColumn" id="treeviewcolumn2">
