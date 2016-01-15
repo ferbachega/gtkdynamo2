@@ -418,6 +418,10 @@ class UmbrellaSamplingWindow():
                 self.builder.get_object("entry_coord2_ATOM3"     ).set_text(str(atom3_index))
                 self.builder.get_object("entry_coord2_ATOM3_name").set_text(name3)
 
+    def on_ScanDialog_button_CANCEL_SCAN_clicked (self, button):
+        """ Function doc """
+        self.window.destroy()
+    
     def Mass_weight_check(self, checkbutton):
         
         '''
