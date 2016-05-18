@@ -220,13 +220,13 @@ class pDynamoToMOPAC:
         arq.close()
         return fileout
 
-    def Energy (self, fileout = 'system.mop'):
+    def Energy (self, fileout = 'system.mop', mopac_path = '/opt/mopac/MOPAC2016.exe'):
         """ Function doc """
         #print fileout
         mopfile = self.generate_MOPAC_file(fileout= fileout)
         
-        command   = '/opt/mopac/MOPAC2012.exe '+ mopfile 
-        
+        command   = mopac_path + ' '+ mopfile 
+        print command
         null_file = open(os.devnull, 'w' )
         
         subprocess.call(command.split(), stdout = null_file, stderr = null_file )
@@ -278,7 +278,7 @@ class MOPACSEnergyDialog():
         parameters['logfile_outpath']   = None
         parameters['log_file_name']     = None
         parameters['trajectory_type']   = "SCAN"
-        
+        parameters['mopac_path']        = '/opt/mopac/MOPAC2016.exe'
         
         #---------------------------------------------------------------------------------------------------------------#
         #                                              Time and log file                                                #
@@ -338,7 +338,12 @@ class MOPACSEnergyDialog():
         parameters['multiplicity']    = multiplicity                                                    #
         #-----------------------------------------------------------------------------------------------#
         
-        
+        #-----------------------------------------------------------------------------------------------#
+        #                                      mopac path                                               #
+        #-----------------------------------------------------------------------------------------------#
+        parameters['mopac_path'] = self.builder.get_object('mopac_path').get_text()                     #
+        print parameters['mopac_path']
+        #-----------------------------------------------------------------------------------------------#
         
         
         
@@ -457,7 +462,7 @@ class MOPACSEnergyDialog():
                                                          QMMM         = parameters['mopac_QMMM'  ])                            
                                                                                                                  
                 energy = MOPAC_system.Energy(fileout =  os.path.join(parameters['tmpfile_outpath'], 
-                                                                     'system'+str(n)+'.mop'))   
+                                                                     'system'+str(n)+'.mop'),  mopac_path = parameters['mopac_path'])   
                 
                 logs[method]['energy'].append(float(energy))                                                     
                 logs[method]['energyNorm'].append(float(energy) - logs[method]['energy'][0])                                                                                                            
@@ -535,7 +540,8 @@ class MOPACSEnergyDialog():
                                                          QMMM         = parameters['mopac_QMMM'  ])                                          #
                                                                                                                                              #
                                                                                                                                              #
-                energy = MOPAC_system.Energy(fileout =  os.path.join(parameters['tmpfile_outpath'], 'system_'+method+'_'+str(i)+'_'+str(j)+'.mop'))     #                
+                energy = MOPAC_system.Energy(fileout = os.path.join(parameters['tmpfile_outpath'], 'system_'+method+'_'+str(i)+'_'+str(j)+'.mop'),
+                                             mopac_path = parameters['mopac_path'])     #                
                 energy_table[(i,j)] = float(energy)                                                                                          #
                 i_table.append(i)                                                                                                            #
                 j_table.append(j)                                                                                                            #

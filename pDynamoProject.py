@@ -210,7 +210,7 @@ class NewProject(object):
                                        #      'type'      : 'new/min/dyn/prn' ,
                                        #      'parameters': parameters        ,       -  extracted from the log -  checksystem
                                        #      'potencial' : "AMBER/AM1/ABFS"  ,
-                                       #      'CQatoms'   : '43'              ,
+                                       #      'QCatoms'   : '43'              ,
                                        #      'color'     : 'black'
                                        #     }
                                        },
@@ -427,6 +427,80 @@ class LoadAndSaveFiles(object):
 
         return type_
 
+    
+    
+    def compute_dynamic_bonds(self, PyMOL_Obj = None, frame = None,  qc_table = None):
+        
+        #lista     = self.project.settings['dynamic_list']
+        
+        #PyMOL_Obj = self.project.settings['PyMOL_Obj']
+        #print lista, PyMOL_Obj
+        
+        #size = len(qc_table)
+        #for a in range(0,size):
+        #    for b in range(a,size):
+        #        if a != b: 
+        #            print a, b
+        #            
+        #            i = qc_table[a]
+        #            j = qc_table[b]
+        #            print i, j 
+        for i in qc_table:
+            for j in qc_table:
+                if i != j:
+                    #print i, j
+                    #bond_unbond1 = self.project.BondTable[i+1,j+1][1]
+                    #Rcov         = self.project.BondTable[i+1,j+1][0]
+                    #print lista[i], lista[j]
+                    #print bond_unbond1, Rcov
+                    
+                    print PyMOL_Obj+' and index '+ str(i+1), PyMOL_Obj+' and index '+ str(j+1)
+                    dist         = cmd.get_distance(PyMOL_Obj+' and index '+ str(i+1),
+                                                    PyMOL_Obj+' and index '+ str(j+1),
+                                                    frame)
+                    
+                    atom1 = cmd.get_model(PyMOL_Obj+' and index '+ str(i+1))
+                    for a in atom1.atom:
+                        idx1        = a.index
+                        atom1_index = int(idx1) -1
+                        name1       = a.symbol
+                    
+                    atom2 = cmd.get_model(PyMOL_Obj+' and index '+ str(j+1))
+                    for a in atom2.atom:
+                        idx2        = a.index
+                        atom2_index = int(idx2) -1
+                        name2       = a.symbol
+                    
+                    
+                    if len(name1) > 1: 
+                        name_1 = name1[0] + name1[1].lower() 
+                    else:
+                        name_1 = name1
+                        
+                    if len(name2) > 1: 
+                        name_2 = name2[0] + name2[1].lower() 
+                    else:
+                        name_2 = name2
+
+
+                    R1_covalent = atomic_dic[name_1][2]
+                    R2_covalent = atomic_dic[name_2][2]
+                    
+                    R1R2 = R1_covalent + R2_covalent
+                    
+                    print frame, dist , R1R2 ,name1,  R1_covalent, name2, R2_covalent 
+
+                    if dist >= R1R2:
+                        cmd.do ('mdo '+ str(frame) +' : unbond ' + PyMOL_Obj +' and index '+ str(i+1) +' , ' + PyMOL_Obj+' and index '+ str(j+1) + ', quiet=1') 
+                    else:
+                        cmd.do ('mdo ' + str(frame) + ' : bond '+ PyMOL_Obj +' and index '+ str(i+1) +' , ' + PyMOL_Obj+' and index '+ str(j+1)+ ', quiet=1') 
+        
+        
+        
+        
+        
+        
+        
     def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object, _type):
         cmd.disable('all')
 
@@ -453,15 +527,18 @@ class LoadAndSaveFiles(object):
         i = 0
         a = 0
         i = i + first
+        frames = 0 
         export_type = 'pdb'
-
+        
         while trajectory.RestoreOwnerData ( ):
             if export_type == 'pdb':
                 if a == i:
                     PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
                     cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+                    #self.compute_dynamic_bonds(PyMOL_Obj = new_pymol_object , frame = i+1,  qc_table = self.settings['qc_table'] )
                     i = i + stride
                     print "loading file: ",i
+                    frames += 1 
                 if a == last:
                     break
                 a=a+1
@@ -470,11 +547,22 @@ class LoadAndSaveFiles(object):
                     XYZFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".xyz" ), self.system)
                     cmd.load( os.path.join ( outPath, new_pymol_object +".xyz"))
                     i = i + stride
+                    frames += 1 
                     print "loading file: ",i
                 if a == last:
                     break
                 a=a+1	
         type_ = 'trj'
+        
+        #----------------------------#
+        #  dynamics bond using mset  #
+        #----------------------------#
+        #cmd.do('mset  1 -'+ str(frames))
+        #for frame in range(1,frames+1):
+        #    self.compute_dynamic_bonds(PyMOL_Obj = new_pymol_object , frame = frame,  qc_table = self.settings['qc_table'] )
+            
+        
+        
         
         put_new_obj_in_treeview = False
         
@@ -492,7 +580,7 @@ class LoadAndSaveFiles(object):
                                                                    'type'      : type_                                , 
                                                                    'parameters': self.parameters                      , 
                                                                    'potencial' : self.parameters['Energy Model']      , 
-                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'], 
+                                                                   'QCatoms'   : self.parameters['Number of QC Atoms'], 
                                                                    'color'     : 'black'
                                                                    }
             
@@ -898,7 +986,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                                           #      'type'      : 'new/min/dyn/prn' ,
                                           #      'parameters': parameters        ,       -  extracted from the log -  checksystem
                                           #      'potencial' : "AMBER/AM1/ABFS"  ,
-                                          #      'CQatoms'   : '43'              ,
+                                          #      'QCatoms'   : '43'              ,
                                           #      'color'     : 'black'
                                           #     }
                                           },
@@ -908,7 +996,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                        'pymol_session'   : None,   #  - pdynamo pkl/yaml file
                        'filename'        : None,
                        'pDynamo_system'  : None,   #  - pymol pse file
-                       'dynamic_list'    : None    # A list with atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
+                       'dynamic_list'    : None    # A list of atoms to calculate dynamicbonds - this is a pymol list  - subtrair 1 se quiser passar para o pdynamo  
                        } 
         self.nbModel         = 'NBModelABFS()'
         self.ABFS_options    = {"innerCutoff": 8.0, "outerCutoff": 12.0, "listCutoff": 13.5}
@@ -1329,7 +1417,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                                                                    'type'      : type_                                ,
                                                                    'parameters': self.parameters                      ,
                                                                    'potencial' : self.parameters['Energy Model']      ,
-                                                                   'CQatoms'   : self.parameters['Number of QC Atoms'],
+                                                                   'QCatoms'   : self.parameters['Number of QC Atoms'],
                                                                    'log'       : log                                  ,
                                                                    'color'     : 'black'
                                                                    }
