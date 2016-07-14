@@ -144,6 +144,9 @@ class PlotGTKWindow:
 
         import matplotlib.pyplot as plt
         import matplotlib.cm as cm	
+        #NOVA LINHA
+        cmap = cm.get_cmap(name='terrain', lut=None)
+        
         matrix = parameters['matrix']
         fig = plt.figure()
         
@@ -151,8 +154,8 @@ class PlotGTKWindow:
         
         #ax  = self.fig.add_subplot(self.plots, 1, i)
         
-        im  = ax.imshow(matrix, cmap=cm.jet, interpolation='nearest')
-
+        #im  = ax.imshow(matrix, cmap=cmap.jet, interpolation='nearest')
+        im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
 
 
         from pylab import contour
