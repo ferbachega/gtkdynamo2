@@ -228,7 +228,7 @@ class NewProjectDialog():
 		combolist = ["AMBER",                                        #
 					 "CHARMM",                                       #
 					 #
-					 "GROMACS",
+					 #"GROMACS",
 					 #
 					 "OPLS",
 					 #
