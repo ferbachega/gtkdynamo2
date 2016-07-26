@@ -105,6 +105,11 @@ rpm -i http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch
 yum --enablerepo=epel install pymol
 '''
 
+                 #--------------#
+                 #              #
+                 #     Linux    #
+                 #              #
+                 #--------------#
 
 print "\nChecking GTK and pyGTK"
 try:
@@ -113,7 +118,15 @@ try:
 except:
 	print "pygtk.......................Fail"
 	print "Please install  pygtk"
-	system = False
+	s = raw_input('\nWould like install PyGTK - OpenSuSe users - (Y/n):')
+	if s in answer:
+		try:
+			print "\nInstalling pygtk\n"
+			os.system("sudo zypper install python-gtk")
+		except:
+			pass
+	else:
+		system = False
 
 
 try:
@@ -122,9 +135,15 @@ try:
 except:
 	print "gtk.........................Fail"
 	print "Please install  gtk"
-	system = False
-
-
+	s = raw_input('\nWould like install GTK - OpenSuSe users - (Y/n):')
+	if s in answer:
+		try:
+			print "\nInstalling GTK\n"
+			os.system("sudo zypper install gtk2 python-numpy-devel")
+		except:
+			pass
+	else:
+		system = False
 
 
        #-----------------------------------#
@@ -135,24 +154,24 @@ except:
 
 #Checking GTKGL
 '''
-#----------------------------------------------------------------------------------------#
-print "\nChecking GTKGL"                                                                 #
-try:                                                                                     #
+#--------------------------------------------------------------------------------------------#
+print "\nChecking GTKGL"                                                                     #
+try:                                                                                         #
     import gtk.gtkgl
-    print "GTKGL.......................OK"                                               #
-except:                                                                                  #
-	print "GTKGL.......................Fail"                                             #
-	print "Please install GTKGL"                                                         #
-	                                                                                     #
-	s = raw_input('\nWould like install GTKGL - Ubuntu/Debian/Mint users only - (Y/n):') #
-	if s in answer:                                                                      #
-		try:                                                                             #
-			os.system("sudo apt-get install python-gtkglext1")                           #
-		except:                                                                          #
-			pass 	                                                                     #
-	else:                                                                                #
-		system = False                                                                   #
-#----------------------------------------------------------------------------------------#
+    print "GTKGL.......................OK"                                                   #
+except:                                                                                      #
+	print "GTKGL.......................Fail"                                                 #
+	print "Please install GTKGL"                                                             #
+	                                                                                         #
+	s = raw_input('\nWould like install GTKGL - Ubuntu/Debian/Mint/OpenSuSe users - (Y/n):') #
+	if s in answer:                                                                          #
+		try:                                                                                 #
+			os.system("sudo apt-get install python-gtkglext1")                               #
+		except:                                                                              #
+			pass 	                                                                         #
+	else:                                                                                    #
+		system = False                                                                       #
+#--------------------------------------------------------------------------------------------#
 '''
 
 
@@ -165,25 +184,25 @@ except:                                                                         
        #-----------------------------------#
 '''
 #Checking PyOpenGL
-#------------------------------------------------------------------------------------------#
-print "\nChecking PyOpenGL"                                                                #
-try:                                                                                       #
-    from OpenGL.GL import *                                                                #
-    from OpenGL.GLU import *                                                               #
-    print "PyOpenGL....................OK"                                                 #
-except:                                                                                    #
-	print "PyOpenGL....................Fail"                                               #
-	print "Please install PyOpenGL"                                                        #
-	                                                                                       #
-	s = raw_input('\nWould like install PyOpenGL - Ubuntu/Debian/Mint users only - (Y/n):')#
-	if s in answer:                                                                        #
-		try:                                                                               #
-			os.system("sudo apt-get install python-opengl")                                #
-		except:                                                                            #
-			pass 	                                                                       #
-	else:                                                                                  #
-		system = False                                                                     #
-#------------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------#
+print "\nChecking PyOpenGL"                                                                    #
+try:                                                                                           #
+    from OpenGL.GL import *                                                                    #
+    from OpenGL.GLU import *                                                                   #
+    print "PyOpenGL....................OK"                                                     #
+except:                                                                                        #
+	print "PyOpenGL....................Fail"                                                   #
+	print "Please install PyOpenGL"                                                            #
+	                                                                                           #
+	s = raw_input('\nWould like install PyOpenGL - Ubuntu/Debian/Mint/OpenSuSe users - (Y/n):')#
+	if s in answer:                                                                            #
+		try:                                                                                   #
+			os.system("sudo apt-get install python-opengl")                                    #
+		except:                                                                                #
+			pass 	                                                                           #
+	else:                                                                                      #
+		system = False                                                                         #
+#----------------------------------------------------------------------------------------------#
 '''
 
 
@@ -194,24 +213,24 @@ except:                                                                         
        #-----------------------------------#
 
 #Checking PyMOL
-#----------------------------------------------------------------------------------------#
-print "\nChecking PyMOL"                                                                 #
-try:                                                                                     #
-	import pymol                                                                         #
-	print "PyMOL.......................OK"                                               #
-except:                                                                                  #
-	print "PyMOL.......................Fail"                                             #
-	print "Please install PyMOL"                                                         #
-	                                                                                     #
-	s = raw_input('\nWould like install PyMOL - Ubuntu/Debian/Mint users only - (Y/n):') #
-	if s in answer:                                                                      #
-		try:                                                                             #
-			os.system("sudo apt-get install pymol")                                      #
-		except:                                                                          #
-			pass 	                                                                     #
-	else:                                                                                #
-		system = False                                                                   #
-#----------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------#
+print "\nChecking PyMOL"                                                                     #
+try:                                                                                         #
+	import pymol                                                                             #
+	print "PyMOL.......................OK"                                                   #
+except:                                                                                      #
+	print "PyMOL.......................Fail"                                                 #
+	print "Please install PyMOL"                                                             #
+	                                                                                         #
+	s = raw_input('\nWould like install PyMOL - Ubuntu/Debian/Mint/OpenSuSe users - (Y/n):') #
+	if s in answer:                                                                          #
+		try:                                                                                 #
+			os.system("sudo apt-get install pymol")                                          #
+		except:                                                                              #
+			pass 	                                                                         #
+	else:                                                                                    #
+		os.system("sudo zypper install pymol")                                               #
+#--------------------------------------------------------------------------------------------#
 
 
 
@@ -222,24 +241,24 @@ except:                                                                         
        #-----------------------------------#
 
 #Checking matplotlib
-#----------------------------------------------------------------------------------------------#
-print "\nChecking matplotlib"                                                                  #
-try:                                                                                           #
-	from matplotlib import *                                                                   #
-	print "matplotlib..................OK"                                                     #
-except:                                                                                        #
-	print "matplotlib..................Fail"                                                   #
-	print "Please install matplotlib"                                                          #
-	                                                                                           #
-	s = raw_input('\nWould like install matplotlib - Ubuntu/Debian/Mint users only - (Y/n):')  #
-	if s in answer:                                                                            #
-		try:                                                                                   #
-			os.system("sudo apt-get install python-matplotlib")                                #
-		except:                                                                                #
-			pass 	                                                                           #
-	else:                                                                                      #
-		system = False                                                                         #
-#----------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------#
+print "\nChecking matplotlib"                                                                                                         #
+try:                                                                                                                                  #
+	from matplotlib import *                                                                                                          #
+	print "matplotlib..................OK"                                                                                            #
+except:                                                                                                                               #
+	print "matplotlib..................Fail"                                                                                          #
+	print "Please install matplotlib"                                                                                                 #
+	                                                                                                                                  #
+	s = raw_input('\nWould like install matplotlib - Ubuntu/Debian/Mint/OpenSuSe users - (Y/n):')                                     #
+	if s in answer:                                                                                                                   #
+		try:                                                                                                                          #
+			os.system("sudo apt-get install python-matplotlib")                                                                       #
+		except:                                                                                                                       #
+			pass 	                                                                                                                  #
+	else:                                                                                                                             #
+		os.system("sudo zypper install python-matplotlib python-matplotlib-gtk2")                                                     #
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 
 
@@ -379,6 +398,8 @@ if _pDynamo == False:
                                                                                                          #
             try:                                                                                         #
                 os.system("sudo apt-get install python-dev")                                             #
+                os.system("sudo zypper install python-devel")                                            #
+                                                                                                         #
             except:                                                                                      #
                 pass                                                                                     #
                                                                                                          #
