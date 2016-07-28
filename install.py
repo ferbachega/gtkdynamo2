@@ -407,6 +407,8 @@ class InstallGTK:
 
                 if self.OpSystem == 'macos':
                     os.system("sudo port install gtk2")
+                    os.system("sudo port install gtk-engines2")
+                    os.system("sudo port install gtk-theme-switch")
 
                 if self.OpSystem == 'other':
                     print '\nPlease install GTK2\n'
@@ -497,7 +499,8 @@ class InstallMatPlotLib:
 
 
                 if self.OpSystem == 'macos':
-                    os.system("sudo port install py27-matplotlib")
+                    os.system("sudo port install py27-matplotlib +gtk2")
+
                 
 
                 if self.OpSystem == 'other':
