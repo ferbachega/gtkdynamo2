@@ -38,12 +38,14 @@ from gui.FileChooserWindow                                   import *
 #EasyHybrid_ROOT   = '/home/labio/Dropbox/GTKPyMOL'
 #EasyHybrid_ROOT = os.getcwd()
 EasyHybrid_ROOT = os.environ.get('EasyHybrid_ROOT')
-
 EasyHybrid_GUI = os.path.join(EasyHybrid_ROOT, "gui")
+
 from pprint import pprint
 from pDynamoMethods.pDynamoUmbrellaSampling import  run_WHAM
-from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
-from   MatplotGTK.LogParse            import *                                      #
+
+
+#from   MatplotGTK.MatplotGTK          import PlotGTKWindow                                   #
+#from   MatplotGTK.LogParse            import *                                      #
 
 
 '''

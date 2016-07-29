@@ -3,19 +3,16 @@
 show how to add a matplotlib FigureCanvasGTK or FigureCanvasGTKAgg widget and
 a toolbar to a gtk.Window
 """
-import gtk
 
-from matplotlib.figure import Figure
-from numpy import arange, sin, pi
 
 # uncomment to select /GTK/GTKAgg/GTKCairo
 #from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
-from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+#from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 #from matplotlib.backends.backend_gtkcairo import FigureCanvasGTKCairo as FigureCanvas
 
 # or NavigationToolbar for classic
 #from matplotlib.backends.backend_gtk import NavigationToolbar2GTK as NavigationToolbar
-from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+#from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
 # implement the default mpl key bindings
 #from matplotlib.backend_bases import key_press_handler
@@ -24,28 +21,32 @@ from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as Navig
 
 
 
-#-----------------------------------    MATRIX    -------------------------------------------#
-from matplotlib.figure import Figure                                                         #
-from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas            #
-from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar #
-import matplotlib.pyplot as plt                                                              #
-import matplotlib.cm as cm                                                                   #
-#--------------------------------------------------------------------------------------------#
+from numpy import arange, sin, pi
+import numpy as np
+import matplotlib.pyplot as plt                                             #
+import multiprocessing.dummy as multiprocessing
+import matplotlib                                                           #
 
+
+from pylab import contour
+from pylab import clabel
+from pylab import colorbar
+from pylab import grid
+#-------------------------------------------------------------------------------------------------
 
 
 
 class PlotGTKWindow:
-    
-    def __init__ (self, parameters = None):
+    def __init__ (self, gtk = True):
         """ Function doc """
         self.Xclick = []
         self.Yclick = []
         self.ax = None
-        
-        
-        
-        if parameters == None:
+
+    
+    def plot (self, parameters):
+        """ Function doc """
+        if parameters is None:
             print 'Parameters not found'
             x = arange(0.0,3.0,0.01)
             y = sin(2*pi*x)
@@ -60,239 +61,257 @@ class PlotGTKWindow:
             x = arange(0.0,3.0,0.01)
             y = sin(2*pi*x)
         
-        else:
-            self.win = gtk.Window()
-            self.win.connect("destroy", lambda x: gtk.main_quit())
-            self.win.set_default_size(560,420)
-            
-            
-            log_file = parameters[1]['log_file'] 
+        
+        print (parameters)
+        
+        
+        def tk_plot ():
+            from Tkinter import Tk, TOP, BOTH
+            import matplotlib
+            matplotlib.use('TkAgg')
+            from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 
-            self.win.set_title(log_file)
+            """ Function doc """
+            window=Tk()
+            window.wm_title("EasyHybrid TkWindow Plot")
+            fig = matplotlib.figure.Figure()
+            canvas = FigureCanvasTkAgg(fig, master=window)
+            canvas.show()
+            canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+            canvas._tkcanvas.pack(side=TOP, fill=BOTH, expand=1)
+            toolbar = NavigationToolbar2TkAgg(canvas, window)
+            log_file = parameters[1].get('log_file','log_file unknown')
+            window.wm_title(log_file)
+            self.figure_plot(parameters, fig)
+            window.mainloop()            
+       
+       
+        def gtk_plot ():
+            """ Function doc """
+            import gtk
+            from matplotlib.figure import Figure                                                         #
+            from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas            #
+            from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar #
+           
+            win = gtk.Window()
+            win.connect("destroy", lambda x: gtk.main_quit())
+            win.set_default_size(560,420)
 
-            self.vbox = gtk.VBox()
-            self.win.add(self.vbox)
-            self.fig = Figure(figsize=(1,1), dpi=80)
-            self.canvas = FigureCanvas(self.fig)  # a gtk.DrawingArea
-            
-            self.vbox.pack_start(self.canvas)
-            self.toolbar = NavigationToolbar(self.canvas, self.win)
-            self.vbox.pack_start(self.toolbar, False, False)
-            
+            log_file = parameters[1].get('log_file','log_file unknown')
+
+            win.set_title(log_file)
+
+            vbox = gtk.VBox()
+            win.add(vbox)
+            fig = Figure(figsize=(1,1), dpi=80)
+            canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+
+            vbox.pack_start(canvas)
+            toolbar = NavigationToolbar(canvas, win)
+            vbox.pack_start(toolbar, False, False)
+
             '''
-            self.status_bar = gtk.Statusbar()
-            self.vbox.pack_end(self.status_bar, False, False)
-            self.status_bar.push(0, '')
+            status_bar = gtk.Statusbar()
+            vbox.pack_end(status_bar, False, False)
+            status_bar.push(0, '')
             '''
-            
-            self.plots = len(parameters)
-            for i in parameters:
-                
-                if parameters[i]['type'] == 'line':
-                    x = parameters[i]['X']
-                    y = parameters[i]['Y']
-                    
-                    self.ax  = self.fig.add_subplot(self.plots, 1, i,)
-                    self.ax.grid(True)
+            self.figure_plot(parameters, fig)
 
-                    self.ax.set_xlabel(parameters[i]['xlabel'])
-                    self.ax.set_ylabel(parameters[i]['ylabel'])
-                    self.ax.plot(x, y, 'ko',x, y,'k', picker=5)
-                    self.win.show_all()
-                    gtk.main()
-                
-                if parameters[i]['type'] == 'matrix':
-                    self.plot_matrix (parameters[i])
-                    #from pylab import contour
-                    #from pylab import clabel
-                    #import numpy as np
-                    #matrix = parameters[i]['matrix']
-                    #self.ax  = self.fig.add_subplot(plots, 1, i)
-                    #im = self.ax.imshow(matrix, cmap=cm.jet, interpolation='none')# cmap=plt.cm.BuPu_r)
-                    #
-                    #c = self.ax.contour(matrix, colors = 'k',hold='on', linewidths = (np.arange(.5, 4, .5)))
-                    #clabel(c, fmt = '%2.1f', colors = 'k', fontsize=12)
-                    #
-                    #import matplotlib.pyplot as plt
-                    #plt.colorbar(im, orientation='horizontal', shrink=0.8)
-                    #
-                    #self.ax.grid(True)
-                    #xlabel = parameters[i]['xlabel']
-                    #ylabel = parameters[i]['ylabel']
-                    #self.ax.set_xlabel(xlabel)
-                    #self.ax.set_ylabel(ylabel)
+            win.show_all()
+            gtk.main()
 
-
+        try:
+            import matplotlib.backends.backend_gtkagg_X # arrumar isso depois! :D
+            gtk_plot()
+        except:
+            simulate=multiprocessing.Process(None, tk_plot)
+            simulate.start()
+        
     
-    
-    def plot_matrix (self, parameters):
+    def  figure_plot(self, parameters, fig):
         """ Function doc """
-        from matplotlib.figure import Figure
-        from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
-        from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
         
+        plots = len(parameters)
         
-        win = gtk.Window()
-        win.connect("destroy", lambda x: gtk.main_quit())
-        win.set_default_size(580,420)
+        for i in parameters:
+            
+            if parameters[i]['type'] == 'line':
+                x = parameters[i]['X']
+                y = parameters[i]['Y']
+                
+                ax  = fig.add_subplot(plots, 1, i,)
+                ax.grid(True)
         
-        log_file = parameters['log_file']
-        title = parameters['title']
-        win.set_title(log_file)
-        vbox = gtk.VBox()
-        win.add(vbox)
-
-        import matplotlib.pyplot as plt
-        import matplotlib.cm as cm	
-        #NOVA LINHA
-        cmap = cm.get_cmap(name='terrain', lut=None)
-        
-        matrix = parameters['matrix']
-        fig = plt.figure()
-        
-        ax  = fig.add_subplot(111)
-        
-        #ax  = self.fig.add_subplot(self.plots, 1, i)
-        
-        #im  = ax.imshow(matrix, cmap=cmap.jet, interpolation='nearest')
-        im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
-
-
-        from pylab import contour
-        from pylab import clabel
-        c = contour(matrix, colors = 'k', linewidths = (1,))
-        clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
-        from pylab import colorbar
-        colorbar(im)
-
-        from pylab import grid
-        grid(True)
-        xlabel = parameters['xlabel']
-        ylabel = parameters['ylabel']
-        ax.set_xlabel(xlabel)
-        ax.set_ylabel(ylabel)
-        canvas = FigureCanvas(fig)  # a gtk.DrawingArea
-        vbox.pack_start(canvas)
-        toolbar = NavigationToolbar(canvas, win)
-        vbox.pack_start(toolbar, False, False)
-        win.show_all()
-        gtk.main()	
-
-
-
-
-
-
-        ##----------------------------------------------------------------------#
-        #from mpl_toolkits.mplot3d import Axes3D
-        #import matplotlib        
-        #import numpy as np        
-        #from matplotlib import cm        
-        #from matplotlib import pyplot as plt           
-        #
-        #win = gtk.Window()
-        #win.connect("destroy", lambda x: gtk.main_quit())
-        #win.set_default_size(580,420)
-        #title = parameters['title']
-        #win.set_title(title)
-        #vbox = gtk.VBox()
-        #win.add(vbox)
-        #
-        #fig = plt.figure()
-        #ax = fig.add_subplot(111, projection='3d')
-        #Z  = parameters['matrix']
-        #R1 = parameters['R1'    ]
-        #R2 = parameters['R2'    ]
-        #r1 = parameters['xlabel']
-        #r2 = parameters['ylabel']
-        #
-        ## create supporting points in polar coordinates
-        #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
-        #canvas = FigureCanvas(fig)  # a gtk.DrawingArea
-        #vbox.pack_start(canvas)
-        #toolbar = NavigationToolbar(canvas, win)
-        #vbox.pack_start(toolbar, False, False)
-        #win.show_all()
-        #gtk.main()
-        ##----------------------------------------------------------------------#
-
-
-
-
-
-        '''
-        #import matplotlib.pyplot as plt
-        #import matplotlib.cm as cm	
-
-
-        #import matplotlib.pyplot as plt
-        #from matplotlib.colors import BoundaryNorm
-        #from matplotlib.ticker import MaxNLocator
-        #import numpy as np
-        #from pprint import pprint 
-        #from matplotlib import cm
-        #
-        #from mpl_toolkits.mplot3d import Axes3D
-        #import matplotlib
-        #import numpy as np
-        #from matplotlib import cm
-        #from matplotlib import pyplot as plt        
-        #
-        #Z  = parameters['matrix']
-        #R1 = parameters['R1'    ]
-        #R2 = parameters['R2'    ]
-        #r1 = parameters['xlabel']
-        #r2 = parameters['ylabel']
-        #fig = plt.figure()
-        #
-        #ax = fig.add_subplot(111, projection='3d')
-        #
-        ## create supporting points in polar coordinates
-        #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
-        ##ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
-        ##ax.set_zlim3d(0, 1)
-        #
-        #plt.show()
-
-
-        #levels = MaxNLocator(nbins=600).tick_values(Z.min(), Z.max())
-        #cmap = cmap=cm.jet
-        #norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
-        #fig, (ax1) = plt.subplots(nrows=1)
-        #
-        #cf = ax1.pcolormesh(R1, R2, Z, cmap=cmap)#, norm=norm)
-        #CS = ax1.contour (R1, R2, Z, 6, colors='k',)
-        #
-        #fig.colorbar(cf, ax=ax1)
-        #ax1.set_title('contourf with levels')
-        #
-        #fig.tight_layout()
-        #
-        #plt.show()
-        '''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
+                ax.set_xlabel(parameters[i]['xlabel'])
+                ax.set_ylabel(parameters[i]['ylabel'])
+                ax.plot(x, y, 'ko',x, y,'k', picker=5)
+                
+            if parameters[i]['type'] == 'matrix':
+                cmap = matplotlib.cm.get_cmap(name='terrain', lut=None)
+                matrix = parameters[i]['matrix']                  
+                ax  = fig.add_subplot(111)
+                
+                #ax  = self.fig.add_subplot(self.plots, 1, i)
+                #im  = ax.imshow(matrix, cmap=cmap.jet, interpolation='nearest')
+                im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
+               
+                c = contour(matrix, colors = 'k', linewidths = (1,))
+                clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
+                colorbar(im)
+                grid(True)
+                
+                xlabel = parameters[i]['xlabel']
+                ylabel = parameters[i]['ylabel']
+                ax.set_xlabel(xlabel)
+                ax.set_ylabel(ylabel)
+    
+    #def plot_matrix (self, parameters):
+    #    """ Function doc """
+    #
+    #    
+    #    win = gtk.Window()
+    #    win.connect("destroy", lambda x: gtk.main_quit())
+    #    win.set_default_size(580,420)
+    #    
+    #    log_file = parameters['log_file']
+    #    title = parameters['title']
+    #    win.set_title(log_file)
+    #    vbox = gtk.VBox()
+    #    win.add(vbox)
+    #
+    #    #import matplotlib.pyplot as plt
+    #    #import matplotlib.cm as cm	
+    #    #NOVA LINHA
+    #    cmap = cm.get_cmap(name='terrain', lut=None)
+    #    
+    #    matrix = parameters['matrix']
+    #    fig = plt.figure()
+    #    
+    #    ax  = fig.add_subplot(111)
+    #    
+    #    #ax  = self.fig.add_subplot(self.plots, 1, i)
+    #    
+    #    #im  = ax.imshow(matrix, cmap=cmap.jet, interpolation='nearest')
+    #    im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
+    #
+    #
+    #    #from pylab import contour
+    #    #from pylab import clabel
+    #    
+    #    c = contour(matrix, colors = 'k', linewidths = (1,))
+    #    clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
+    #    
+    #    #from pylab import colorbar
+    #    
+    #    colorbar(im)
+    #
+    #    #from pylab import grid
+    #    grid(True)
+    #    xlabel = parameters['xlabel']
+    #    ylabel = parameters['ylabel']
+    #    ax.set_xlabel(xlabel)
+    #    ax.set_ylabel(ylabel)
+    #    canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+    #    vbox.pack_start(canvas)
+    #    toolbar = NavigationToolbar(canvas, win)
+    #    vbox.pack_start(toolbar, False, False)
+    #    win.show_all()
+    #    gtk.main()	
+    #
+    #
+    #
+    #
+    #
+    #
+    #    ##----------------------------------------------------------------------#
+    #    #from mpl_toolkits.mplot3d import Axes3D
+    #    #import matplotlib        
+    #    #import numpy as np        
+    #    #from matplotlib import cm        
+    #    #from matplotlib import pyplot as plt           
+    #    #
+    #    #win = gtk.Window()
+    #    #win.connect("destroy", lambda x: gtk.main_quit())
+    #    #win.set_default_size(580,420)
+    #    #title = parameters['title']
+    #    #win.set_title(title)
+    #    #vbox = gtk.VBox()
+    #    #win.add(vbox)
+    #    #
+    #    #fig = plt.figure()
+    #    #ax = fig.add_subplot(111, projection='3d')
+    #    #Z  = parameters['matrix']
+    #    #R1 = parameters['R1'    ]
+    #    #R2 = parameters['R2'    ]
+    #    #r1 = parameters['xlabel']
+    #    #r2 = parameters['ylabel']
+    #    #
+    #    ## create supporting points in polar coordinates
+    #    #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
+    #    #canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+    #    #vbox.pack_start(canvas)
+    #    #toolbar = NavigationToolbar(canvas, win)
+    #    #vbox.pack_start(toolbar, False, False)
+    #    #win.show_all()
+    #    #gtk.main()
+    #    ##----------------------------------------------------------------------#
+    #
+    #
+    #
+    #
+    #
+    #    '''
+    #    #import matplotlib.pyplot as plt
+    #    #import matplotlib.cm as cm	
+    #
+    #
+    #    #import matplotlib.pyplot as plt
+    #    #from matplotlib.colors import BoundaryNorm
+    #    #from matplotlib.ticker import MaxNLocator
+    #    #import numpy as np
+    #    #from pprint import pprint 
+    #    #from matplotlib import cm
+    #    #
+    #    #from mpl_toolkits.mplot3d import Axes3D
+    #    #import matplotlib
+    #    #import numpy as np
+    #    #from matplotlib import cm
+    #    #from matplotlib import pyplot as plt        
+    #    #
+    #    #Z  = parameters['matrix']
+    #    #R1 = parameters['R1'    ]
+    #    #R2 = parameters['R2'    ]
+    #    #r1 = parameters['xlabel']
+    #    #r2 = parameters['ylabel']
+    #    #fig = plt.figure()
+    #    #
+    #    #ax = fig.add_subplot(111, projection='3d')
+    #    #
+    #    ## create supporting points in polar coordinates
+    #    #ax.plot_surface(R1, R2, Z, rstride=1, cstride=1, cmap=cm.jet)
+    #    ##ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
+    #    ##ax.set_zlim3d(0, 1)
+    #    #
+    #    #plt.show()
+    #
+    #
+    #    #levels = MaxNLocator(nbins=600).tick_values(Z.min(), Z.max())
+    #    #cmap = cmap=cm.jet
+    #    #norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+    #    #fig, (ax1) = plt.subplots(nrows=1)
+    #    #
+    #    #cf = ax1.pcolormesh(R1, R2, Z, cmap=cmap)#, norm=norm)
+    #    #CS = ax1.contour (R1, R2, Z, 6, colors='k',)
+    #    #
+    #    #fig.colorbar(cf, ax=ax1)
+    #    #ax1.set_title('contourf with levels')
+    #    #
+    #    #fig.tight_layout()
+    #    #
+    #    #plt.show()
+    #    '''
+    #
+    #
 if __name__ == "__main__":
     PlotGTKWindow = PlotGTKWindow()
     #editor.load_file('/home/fernando/pDynamoWorkSpace/glucose_Dec_13_2014/2_step_GeometryOptimization/2_step_GeometryOptimization.log')

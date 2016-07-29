@@ -573,23 +573,9 @@ class MainMenu (object):
             FileName = FileChooser.GetLogFileName(self.builder)
 
             parameters = ParseProcessLogFile(FileName)
-            PlotGTKWindow(parameters)
+            self.PlotGTKWindow.plot(parameters)
 
 
-            #if FileName == None:
-            #        pass
-            #
-            #else:
-            #        _FileType = GetFileType(FileName)
-            #        self.PyMOL_initialize()
-            #        if _FileType in ['dat','log' , '*']:
-            #                self.project.load_coordinate_file_as_new_system(FileName)
-            #                self.project.From_PDYNAMO_to_EasyHybrid(type_='new')
-            #
-            #        if _FileType in ['gtkdyn']:
-            #                self.project.load_EasyHybrid_project(FileName)
-            #
-            #self.PyMOL_change_selection_mode()
 
         def on_Amber12ToAmber11_activate (self, button):
             """ Function doc """
@@ -1121,7 +1107,7 @@ class TreeviewHistory(object):
         #             'ylabel': ylabel,
         #             }
 
-        PlotGTKWindow(parameters)
+        self.PlotGTKWindow.plot(parameters)
 
     def on_show_items_activate (self, item, event):
         """ Function doc """
@@ -1851,9 +1837,19 @@ class EasyHybrid_main(threading.Thread,
         self.NEBDialog               = NEBDialog(self)
         self.EnergyRefineDialog      = TrajectoryEnergyRefineDialog(self)
 
+
+
+
+        #from numpy import arange, sin, pi
+        self.PlotGTKWindow           = PlotGTKWindow()
+        
+
+
+
+
+
         self.WHAMEquationSolver      = WHAMEquationSolverDialog(self)
-
-
+        
         self.DialogMOPACSEnergy      = MOPACSEnergyDialog(self)
 
         #---------------------------------------------------------------------------------------#
@@ -1878,10 +1874,6 @@ class EasyHybrid_main(threading.Thread,
         self.builder.get_object('menuitem18').hide()
         self.builder.get_object('menuitem15').hide()
 
-
-        
-        #cmd.button("double_left","None","None")                 #
-        #cmd.button("single_right","None","None")                #
 
 
 
