@@ -113,47 +113,58 @@ class PreferencesDialog():
         self.window_control = WindowControl(self.builder)
 
         #colors = [ ]
+        #colors = [
+        #'actinium','darksalmon','iodine','palecyan','sodium',
+        #'aluminum','dash','iridium','palegreen','splitpea',
+        #'americium','deepblue','iron','paleyellow','strontium',
+        #'antimony','deepolive','krypton','palladium','sulfur',
+        #'aquamarine','deeppurple','lanthanum','phosphorus','tantalum',
+        #'argon','deepsalmon','lawrencium','pink','teal',
+        #'arsenic','deepsalmon','lead','platinum','technetium',
+        #'astatine','deepteal','lightblue','plutonium','tellurium',
+        #'atomic','default','lightmagenta','polonium','terbium',
+        #'auto','density','lightorange','potassium','thallium',
+        #'barium','deuterium','lightpink','praseodymium','thorium',
+        #'berkelium','dirtyviolet','lightteal','promethium','thulium',
+        #'beryllium','dubnium','lime','protactinium','tin',
+        #'bismuth','dysprosium','limegreen','pseudoatom','titanium',
+        #'black','einsteinium','limon','purple','tungsten',
+        #'blue','erbium','lithium','purpleblue','tv_blue',
+        #'bluewhite','europium','lonepair','radium','tv_green',
+        #'bohrium','fermium','lutetium','radon','tv_orange',
+        #'boron','firebrick','magenta','raspberry','tv_red',
+        #'brightorange','fluorine','magnesium','red','tv_yellow',
+        #'bromine','forest','manganese','rhenium','uranium',
+        #'brown','francium','marine','rhodium','vanadium',
+        #'cadmium','gadolinium','meitnerium','rubidium','violet',
+        #'calcium','gallium','mendelevium','ruby','violetpurple',
+        #'californium','germanium','mercury','ruthenium','warmpink',
+        #'carbon','gold','molybdenum','rutherfordium','wheat',
+        #'cerium','gray','neodymium','salmon','white',
+        #'cesium','green','neon','samarium','xenon',
+        #'chartreuse','greencyan','neptunium','sand','yellow',
+        #'chlorine','grey','nickel','scandium','yelloworange',
+        #'chocolate','hafnium','niobium','seaborgium','ytterbium',
+        #'chromium','hassium','nitrogen','selenium','yttrium',
+        #'cobalt','helium','nobelium','silicon','zinc',
+        #'copper','holmium','olive','silver','zirconium',
+        #'curium','hotpink','orange','skyblue'
+        #'current','hydrogen','osmium','slate'
+        #'cyan','indium','oxygen','smudg'
+        #]
+        
         colors = [
-        'actinium','darksalmon','iodine','palecyan','sodium',
-        'aluminum','dash','iridium','palegreen','splitpea',
-        'americium','deepblue','iron','paleyellow','strontium',
-        'antimony','deepolive','krypton','palladium','sulfur',
-        'aquamarine','deeppurple','lanthanum','phosphorus','tantalum',
-        'argon','deepsalmon','lawrencium','pink','teal',
-        'arsenic','deepsalmon','lead','platinum','technetium',
-        'astatine','deepteal','lightblue','plutonium','tellurium',
-        'atomic','default','lightmagenta','polonium','terbium',
-        'auto','density','lightorange','potassium','thallium',
-        'barium','deuterium','lightpink','praseodymium','thorium',
-        'berkelium','dirtyviolet','lightteal','promethium','thulium',
-        'beryllium','dubnium','lime','protactinium','tin',
-        'bismuth','dysprosium','limegreen','pseudoatom','titanium',
-        'black','einsteinium','limon','purple','tungsten',
-        'blue','erbium','lithium','purpleblue','tv_blue',
-        'bluewhite','europium','lonepair','radium','tv_green',
-        'bohrium','fermium','lutetium','radon','tv_orange',
-        'boron','firebrick','magenta','raspberry','tv_red',
-        'brightorange','fluorine','magnesium','red','tv_yellow',
-        'bromine','forest','manganese','rhenium','uranium',
-        'brown','francium','marine','rhodium','vanadium',
-        'cadmium','gadolinium','meitnerium','rubidium','violet',
-        'calcium','gallium','mendelevium','ruby','violetpurple',
-        'californium','germanium','mercury','ruthenium','warmpink',
-        'carbon','gold','molybdenum','rutherfordium','wheat',
-        'cerium','gray','neodymium','salmon','white',
-        'cesium','green','neon','samarium','xenon',
-        'chartreuse','greencyan','neptunium','sand','yellow',
-        'chlorine','grey','nickel','scandium','yelloworange',
-        'chocolate','hafnium','niobium','seaborgium','ytterbium',
-        'chromium','hassium','nitrogen','selenium','yttrium',
-        'cobalt','helium','nobelium','silicon','zinc',
-        'copper','holmium','olive','silver','zirconium',
-        'curium','hotpink','orange','skyblue'
-        'current','hydrogen','osmium','slate'
-        'cyan','indium','oxygen','smudg'
+        'darksalmon','palecyan','palegreen','deepblue','deeppurple','deepsalmon',
+        'deepsalmon','lightblue','lightorange','lightpink','dirtyviolet','lime',
+        'tin','limegreen','black','limon','purple','blue',
+        'purpleblue','tv_blue','bluewhite','tv_green','radon','tv_orange','firebrick',
+        'magenta','raspberry','tv_red','brightorange','red','tv_yellow',
+        'forest','brown','marine','violet','ruby','violetpurple','warmpink',
+        'wheat','gray','salmon','white','green','greencyan','sand','yellow','yelloworange',
+        'chocolate','olive','hotpink','orange','skyblue','slate','cyan','smudg'
         ]
-    
-            
+
+
         fixed_colors = ['black','grey10','grey20','grey30', 'grey40','grey50','grey60','grey70','grey80','grey90','white']
 
         bg_color = ['white', 'grey', 'black']

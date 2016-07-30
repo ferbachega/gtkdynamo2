@@ -1617,6 +1617,7 @@ class EasyHybrid_main(threading.Thread,
 
 
         #cmd.do("set field_of_view, 70")                         #
+
         cmd.do("set ray_shadows,off")                           #
         cmd.do('set cartoon_highlight_color, 24')               #
         cmd.set('label_size', 20.00)                            #
@@ -1878,8 +1879,14 @@ class EasyHybrid_main(threading.Thread,
 
 
     def run(self):
+        # cleaning  background 
+        try:
+            os.system('clear')
+        except:
+            print 'ops!'
+        print text1
+        
         gtk.main()
-
 
 
 

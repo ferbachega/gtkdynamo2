@@ -624,7 +624,7 @@ class LoadAndSaveFiles(object):
         #print self.settings['job_history']
         pymol_id =  self.settings['PyMOL_Obj']
         self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'] , self.settings['PyMOL_Obj'])
-        self.SystemCheck()
+        self.SystemCheck(ORCA_backup = False)
  
     def ExportStateToFile(self, filename, type_):  # disabled
         #self.ActiveModeCheck()
@@ -1518,6 +1518,39 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         else:
             print "Using passive mode"
 
+    
+    def parse_orca_logfile (self, logfile = None):
+        """ Function doc """
+        try:
+            text = open(logfile, 'r')
+            fatal_error = False
+            
+            for line in text:
+                if 'FATAL ERROR ENCOUNTERED' in line:
+                    fatal_error = True
+                else:
+                    pass
+            if fatal_error:
+                print '''
+        -------------------------------------------------------
+
+                   ORCA FATAL ERROR ENCOUNTERED !!!
+
+        -------------------------------------------------------
+                '''
+                print '''
+        Some orca QM/MM calculations might produce wrong 
+        results due to where pDynamo SCRATCH folder is located. 
+        You can change pDynamo SCRATCH folder by editing the 
+        pDynamo installation files (environment_bash.com 
+        or environment_cshell.com)'''
+                print '\nPlease check logfile:' , logfile
+                print '\n'
+        except:
+            pass
+            print 'orca output (.out) not found'
+        
+    
     def back_orca_output(self):
         #try:
                              # ORCA OUTPUT FOLDER
@@ -1538,23 +1571,22 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         
         SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
         
-        try:
-            os.rename(SCRATCH + "/job.out", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".out" )
-            print   "Saving orca output: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".out"
-        except:
-            pass
         
+        #print SCRATCH
+
         try:
-            os.rename(SCRATCH + "/job.log", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".log" )
-            print   "Saving orca output: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".log"
-        except:
-            pass
-        
-        try:
-            os.rename(SCRATCH + "/job.gbw", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".gbw" )
+            filein = os.path.join (SCRATCH, "job.log")
+            fileout = os.path.join(ORCADIR,'orca_step' + str(self.settings['step']) + string + ".log")
+            os.rename(filein, fileout)
+            print   "Saving orca output: ", fileout
+            self.parse_orca_logfile (fileout)
+
+            filein = os.path.join (SCRATCH, "job.gbw")
+            fileout = os.path.join(ORCADIR,'orca_step' + str(self.settings['step']) + string + ".gbw")
+            os.rename(filein, fileout)
             print   "Saving orca GBW file: ", ORCADIR+'/orca_step' + str(self.settings['step']) + string + ".gbw"
         except:
-            pass 
+            pass
         
         
 
