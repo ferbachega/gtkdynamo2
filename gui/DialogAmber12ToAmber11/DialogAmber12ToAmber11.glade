@@ -3,7 +3,7 @@
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkDialog" id="amber12toamber11">
-    <property name="width_request">350</property>
+    <property name="width_request">500</property>
     <property name="height_request">0</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -25,7 +25,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -39,7 +38,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="on_amber12toamber11_button1_clicked" swapped="no"/>
               </object>
               <packing>
@@ -73,7 +71,7 @@
                   <object class="GtkHBox" id="amber12toamber11_hbox1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">10</property>
+                    <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="amber12toamber11_label3">
                         <property name="visible">True</property>
@@ -82,17 +80,17 @@
                         <property name="label" translatable="yes">Amber12 file:</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkFileChooserButton" id="amber12toamber11_filechooserbutton3">
-                        <property name="width_request">180</property>
                         <property name="height_request">35</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <signal name="file-set" handler="on_amber12toamber11_filechooserbutton3_file_set" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -138,7 +136,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="n_columns">2</property>
-                    <property name="column_spacing">10</property>
+                    <property name="column_spacing">5</property>
                     <property name="row_spacing">10</property>
                     <child>
                       <object class="GtkLabel" id="amber12toamber11_label5">
@@ -147,6 +145,10 @@
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes">Amber11 file:</property>
                       </object>
+                      <packing>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options">GTK_FILL</property>
+                      </packing>
                     </child>
                     <child>
                       <object class="GtkEntry" id="amber12toamber11_entry1">
@@ -154,7 +156,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">•</property>
-                        <property name="text" translatable="yes">fileout_amber11.top</property>
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>

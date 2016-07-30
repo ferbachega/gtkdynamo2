@@ -30,11 +30,22 @@ from extras.Amber12ToAmber11 import amber12_to_amber11_topology_converter
 
 class DialogAmber12ToAmber11():
     
+
+    def on_amber12toamber11_filechooserbutton3_file_set (self, widget):
+        """ Function doc """
+        filein        = self.builder.get_object("amber12toamber11_filechooserbutton3").get_filename()
+        fileout = filein+'.amber11'
+        self.builder.get_object("amber12toamber11_entry1").set_text(fileout)
+        #fileout       = self.builder.get_object("amber12toamber11_entry1").get_text()
+    
+    
+    
+    
     def  on_amber12toamber11_button1_clicked(self, button):
         """ Function doc """
         filein        = self.builder.get_object("amber12toamber11_filechooserbutton3").get_filename()
         fileout       = self.builder.get_object("amber12toamber11_entry1").get_text()
-        fileout       = os.path.join(self.EasyHybridSession.project.settings['data_path'],fileout)
+        #fileout       = os.path.join(self.EasyHybridSession.project.settings['data_path'],fileout)
         amber12_to_amber11_topology_converter(filein, fileout)
         print "generating :", fileout
         

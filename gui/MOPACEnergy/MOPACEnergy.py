@@ -471,10 +471,34 @@ class MOPACSEnergyDialog():
             #-------------------------------------------------------#                                            
             #                   LOG FILE SUMMARY                    #                                            
             #-------------------------------------------------------#                                            
-            trajetoryFile = parameters['trajectory']
-            string = ''                                                                                          
-            string += 'trajectoy:    ' + trajetoryFile + '\n'                                                    
-            string += 'keywords:     ' + keywords      + '\n'                                                    
+            
+            header  = '----------------------------- EasyHybrid - MOPAC Energy Refine ---------------------------------'
+            #header += "\nMETHOD                 =%20s  "     % (parameters['actual_method'] ) 
+            header += "\nTOTAL CHARGE           =%20s  "     % (str(parameters['charge']) ) 
+            header += "\nMULTIPLICITYE          =%20s  "     % (str(parameters['multiplicity']) ) 
+        
+            if parameters['mopac_MOZYME']:
+                header += "\nMOZYME                 =%20s  "     % ("True")
+            else:
+                header += "\nMOZYME                 =%20s  "     % ("False")
+                
+            if  parameters['mopac_SOLV'  ]:
+                header += "\nSOLV                   =%20s  "     % ('True')        #
+                header += "\nmopac_ESP              =%20s  "     % (str(parameters['mopac_ESP'  ]))
+                header += "\nmopac_RSOLV            =%20s  "     % (str(parameters['mopac_RSOLV']))            
+            else:
+                header += "\nSOLV                   =%20s  "     % ('False')        #
+
+            header += "\n------------------------------------------------------------------------------------------------"          
+            header += "\nTRAJECTORY             =%20s  "     % (parameters['trajectory'])        
+            #header += "\nORIGINAL LOG           =%20s  "     % ("True")
+            header += "\n------------------------------------------------------------------------------------------------"          
+        
+
+            #trajetoryFile = parameters['trajectory']
+            string =  header                                                                                         
+            #string += 'trajectoy:    ' + trajetoryFile + '\n'                                                    
+            #string += 'keywords:     ' + keywords      + '\n'                                                    
             string += '\n'                                                                                       
                                                                                                                  
             for method in logs:                                                                                  

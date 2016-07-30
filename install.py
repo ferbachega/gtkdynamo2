@@ -624,9 +624,9 @@ class InstallEasyHybrid (InstallPDynamo, InstallPyMOL, InstallGTK, InstallMatPlo
 
         try:
             if self.OpSystem == 'macos':
-                os.system("source ~/.profile")
+                os.system('bash')#("source ~/.profile")
             else:
-                os.system("source ~/.bashrc")        
+                os.system('bash')#("source ~/.bashrc")        
         except:
             print ""
             
@@ -770,13 +770,14 @@ class InstallEasyHybrid (InstallPDynamo, InstallPyMOL, InstallGTK, InstallMatPlo
 
 
         """  - - - ORCA - - - """
-        try:
-            self.orca_folder  = os.environ.get('ORCA')
-            #print "\nORCA path found "
-            self.ORCA    = True
-        except:          
+        self.orca_folder  = os.environ.get('ORCA')
+        if self.orca_folder is None:
             self.ORCA    = False
-
+        else:
+            self.ORCA    = True
+        '''--------------------'''
+        
+        
         
         if self.log :
             self._print_parameters()
@@ -828,7 +829,7 @@ class InstallEasyHybrid (InstallPDynamo, InstallPyMOL, InstallGTK, InstallMatPlo
             text  += "\nPATH=$ORCA:$PATH\n"
 
             
-            arq  = open(os.path.join(HOME +"/.bashrc"), "a")                                   
+            arq  = open(os.path.join(self.HOME +"/.bashrc"), "a")                                   
             arq.writelines(text)                                                               
             arq.close()                                                                        
             print "The .bashrc file has been modified"                                         
