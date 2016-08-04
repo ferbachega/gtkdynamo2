@@ -107,6 +107,7 @@ class WindowControl():
                            ' '                       
                            ] #job_history[i][2]]
 
+            
             if job_history[i]['object'] == pymol_id:
                 
                 #print '\n\n'
@@ -121,7 +122,7 @@ class WindowControl():
                               job_history[i]['object']   , 
                               job_history[i]['type']     ,
                               job_history[i]['potencial'],
-                              '*'
+                              ' A! '
                               ]
 
             model.append(data)

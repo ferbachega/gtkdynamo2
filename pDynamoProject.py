@@ -1239,7 +1239,7 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
             StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
             StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
             StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
-            StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
+            #StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "
             StatusText = StatusText + '  Crystal Class: ' + self.parameters['Crystal Class']+ "   "
             StatusText = StatusText + '  Project Folder: ' + self.settings['data_path']+ "   "
         self.window_control.STATUSBAR_SET_TEXT(StatusText) 

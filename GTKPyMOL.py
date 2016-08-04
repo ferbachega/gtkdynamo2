@@ -1176,11 +1176,40 @@ class TreeviewHistory(object):
             filename = PyMOL_export_XYZ_to_file(PyMOL_Obj, label, data_path, file_out, state)
             self.project.load_coordinate_file_to_system(filename)
             self.project.settings['PyMOL_Obj'] = PyMOL_Obj
+            cmd.disable('all')
+            liststore = self.builder.get_object('liststore2')
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'], self.project.settings['PyMOL_Obj'] )
             self.project.SystemCheck(status = True, PyMOL = True, _color = False, _cell = True, treeview_selections = True)
-
+            cmd.enable(self.project.settings['PyMOL_Obj'])
             #liststore = self.builder.get_object('liststore2')
             #self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'] , PyMOL_Obj)
             #print filename
+            
+            #pprint (self.project.settings['job_history'][str(ID)])
+            #self.project.settings['job_history'].pop(str(ID))
+            #cmd.disable('all')
+            #cmd.delete(PyMOL_Obj)
+            #liststore = self.builder.get_object('liststore2')
+            #self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'], self.project.settings['PyMOL_Obj'] )
+            #cmd.enable(self.project.settings['PyMOL_Obj'])
+            #self.project.SystemCheck()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         else:
             return 0
 
@@ -1261,18 +1290,52 @@ class TreeviewHistory(object):
         ID        = self.selectedID
         
         if self.project.settings['PyMOL_Obj'] == PyMOL_Obj:
-            print 'Selected object is actived - aborting delection'
+            message =  'Selected object is active - aborted deletion'
+            print message
+            self.builder.get_object('MessageDialogError').format_secondary_text(message)
+            dialog = self.builder.get_object('MessageDialogError')
+            a = dialog.run()  # possible "a" valors
+            # 4 step          # -8  -  yes
+            dialog.hide()     # -9  -  no
             pass
             
         else:
-            pprint (self.project.settings['job_history'][str(ID)])
-            self.project.settings['job_history'].pop(str(ID))
-            cmd.disable('all')
-            cmd.delete(PyMOL_Obj)
-            liststore = self.builder.get_object('liststore2')
-            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'], self.project.settings['PyMOL_Obj'] )
-            cmd.enable(self.project.settings['PyMOL_Obj'])
-            self.project.SystemCheck()
+            #pprint (self.project.settings['job_history'][str(ID)])
+            '''
+                                                      d i a l o g
+                                             #  -  I M P O R T A N T  -  #
+                                #---------------------------------------------------------#
+                                #                                                         #
+                                #        Message Dialog  -  when 2 buttons will be showed #
+                                #  1 -create the warning message                          #
+                                #  2 -hide the actual dialog - optional                   #
+                                #  3 -show the message dialog                             #
+                                #  4 -hide the message dialog                             #
+                                #  5 -check the returned valor by the message dialog      #
+                                #  6 -do something                                        #
+                                #  7 -restore the actual dialog - optional                #
+                                #---------------------------------------------------------#
+            '''
+
+            self.builder.get_object('MessageDialogQuestion').format_secondary_text("Delete object: " +PyMOL_Obj +"?")
+            dialog = self.builder.get_object('MessageDialogQuestion')
+
+            a = dialog.run()  # possible "a" valors
+            # 4 step          # -8  -  yes
+            dialog.hide()     # -9  -  no
+                              # -4  -  close
+                              # -5  -  OK
+                              # -6  -  Cancel
+
+            # 5 step
+            if a == -8:
+                self.project.settings['job_history'].pop(str(ID))
+                cmd.disable('all')
+                cmd.delete(PyMOL_Obj)
+                liststore = self.builder.get_object('liststore2')
+                self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'], self.project.settings['PyMOL_Obj'] )
+                cmd.enable(self.project.settings['PyMOL_Obj'])
+                self.project.SystemCheck()
             
         
         #print PyMOL_Obj
