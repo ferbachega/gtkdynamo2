@@ -106,7 +106,11 @@ class WindowControl():
                            job_history[i]['potencial']] #job_history[i][2]]
 
             if job_history[i]['object'] == pymol_id:
-               
+                
+                #print '\n\n'
+                #print job_history[i]['object']
+                #print '\n\n'
+                
                 cell = self.builder.get_object('cellrenderertext2')
                 #cell.props.weight_set = True
                 cell.props.weight = pango.WEIGHT_BOLD

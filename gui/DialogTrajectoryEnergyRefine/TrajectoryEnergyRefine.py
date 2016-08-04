@@ -55,12 +55,6 @@ class TrajectoryEnergyRefineDialog():
                                     trajectory = trajectory, 
                                          _type = '1D')
         
-        
-    
-
-
-
-
 
     def on_combobox1_changed(self, button):
         _type        = self.builder.get_object('combobox1').get_active_text()

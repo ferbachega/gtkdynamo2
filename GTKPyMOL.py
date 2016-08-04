@@ -1254,6 +1254,48 @@ class TreeviewHistory(object):
             #PymolPutTable(self.project.settings['fix_table'], "FIX_atoms")
             cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
 
+    def on_deleteItem_activate (self, item):
+        """ Function doc """
+        print item
+        PyMOL_Obj = self.selectedObj
+        ID        = self.selectedID
+        
+        if self.project.settings['PyMOL_Obj'] == PyMOL_Obj:
+            print 'Selected object is actived - aborting delection'
+            pass
+            
+        else:
+            pprint (self.project.settings['job_history'][str(ID)])
+            self.project.settings['job_history'].pop(str(ID))
+            cmd.disable('all')
+            cmd.delete(PyMOL_Obj)
+            liststore = self.builder.get_object('liststore2')
+            self.window_control.TREEVIEW_ADD_DATA2(liststore, self.project.settings['job_history'], self.project.settings['PyMOL_Obj'] )
+            cmd.enable(self.project.settings['PyMOL_Obj'])
+            self.project.SystemCheck()
+            
+        
+        #print PyMOL_Obj
+        #if item == self.builder.get_object('menuitem_black'):
+        #    cmd.color('grey10',PyMOL_Obj)
+        #    cmd.util.cnc(PyMOL_Obj)
+        #
+        #if item == self.builder.get_object('menuitem_pink'):
+        #    cmd.util.cbak(PyMOL_Obj)
+        #
+        #if self.project.settings['fix_table'] != []:
+        #    #PymolPutTable(self.project.settings['fix_table'], "FIX_atoms")
+        #    cmd.color(self.EasyHybridConfig['fixed'],'FIX_atoms')
+
+
+
+
+
+
+
+
+
+
 
 
 

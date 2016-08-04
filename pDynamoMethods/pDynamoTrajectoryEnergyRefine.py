@@ -79,7 +79,43 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
             n  += 1
 
         pprint (energy_table)
+
     
+    if _type == '2D':
+
+        #--------------------------------------------------------------#
+        trajectory_files   = os.listdir(parameters['trajectory'])      #
+        trajectory_files2  = []                                        #
+        #--------------------------------------------------------------#
+        for File in trajectory_files:                                  #
+            File2 = File.split('.')                                    #
+                                                                       #
+            if File2[-1] == 'pkl':                                     #
+                trajectory_files2.append(File)                         #
+        #--------------------------------------------------------------#
+
+
+        for File in  trajectory_files2:
+            print File
+
+
+        #system.Summary(log=log)
+        #energy_table  = []
+        #
+        #trajectory = SystemGeometryTrajectory (trajectory, system, mode = "r" )
+        #
+        #n = 0 
+        #while trajectory.RestoreOwnerData ( ):
+        #    energy = system.Energy(log=log)
+        #    dipolo = system.DipoleMoment ()
+        #    energy_table.append(energy)
+        #    n  += 1
+        #
+        #pprint (energy_table)
+
+
+
+
     else: 
         print '_type =  UNK'
     
