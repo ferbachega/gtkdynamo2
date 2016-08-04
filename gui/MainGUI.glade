@@ -1147,6 +1147,8 @@
       <column type="gchararray"/>
       <!-- column-name gchararray4_potencial -->
       <column type="gchararray"/>
+      <!-- column-name gchararray5_active -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="win">
@@ -2331,6 +2333,9 @@
                                     <property name="title" translatable="yes">Active</property>
                                     <child>
                                       <object class="GtkCellRendererText" id="cellrenderertext6"/>
+                                      <attributes>
+                                        <attribute name="text">5</attribute>
+                                      </attributes>
                                     </child>
                                   </object>
                                 </child>
