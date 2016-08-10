@@ -121,7 +121,7 @@ class PlotGTKWindow:
             gtk.main()
 
         try:
-            import matplotlib.backends.backend_gtkagg_X # arrumar isso depois! :D
+            import matplotlib.backends.backend_gtkagg # arrumar isso depois! :D
             gtk_plot()
         except:
             simulate=multiprocessing.Process(None, tk_plot)
