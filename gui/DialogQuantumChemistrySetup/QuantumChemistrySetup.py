@@ -155,10 +155,14 @@ SCF_ORCA = ["NORMALSCF",
 class QuantumChemistrySetupDialog():
 
     """ Class doc """
+
+    def Print_AQUI (self, button):
+        """ Function doc """
+        print 'AQUI!!!!'
+
     def SetQCParameters (self, button):
         """Function doc """
-        self.project          = self.EasyHybridSession.project
-
+        self.project  = self.EasyHybridSession.project
         qc_table      = self.project.settings['qc_table']                                                     
 
         if self.project.system == None:
@@ -200,7 +204,9 @@ class QuantumChemistrySetupDialog():
             # 7 step                                                                                          #
             #self.load_trj_windows.run()                                                                      #
         else:                                                                                                 #
-            print qc_table                                                                                    #
+            pass
+            #print 'QC list:'
+            #print qc_table                                                                                    #
         #-----------------------------------------------------------------------------------------------------#
 
 
@@ -211,6 +217,7 @@ class QuantumChemistrySetupDialog():
         qc_method       = self.builder.get_object('combobox1').get_active_text()
         charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()
         multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()        
+        #print 'AQUI!!!!'
 
         if qc_method in SMO_Methods:
             print SMO_Methods_Dic[qc_method]
@@ -255,7 +262,6 @@ class QuantumChemistrySetupDialog():
         self.project.settings['charge']        = charge
         self.project.settings['multiplicity']  = multiplicity	
 
-
     def QCcomboxChange(self, combobox):
         """ Function doc """
         mode = self.builder.get_object('combobox1').get_active_text()
@@ -283,7 +289,8 @@ class QuantumChemistrySetupDialog():
             self.builder.get_object('DFT_Maximum_SCF_entry2').set_sensitive(False) 
             self.builder.get_object('06_window_label78_ORCA1').set_sensitive(False)
             self.builder.get_object('06_window_label75_ORCA1').set_sensitive(False)
-    
+            #print 'AQUI!!!'
+
 	
     def save_ORCAPATH(self, widget):
         """ Function doc """
