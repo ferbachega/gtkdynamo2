@@ -120,13 +120,15 @@ class PlotGTKWindow:
             win.show_all()
             gtk.main()
 
-        try:
-            import matplotlib.backends.backend_gtkagg # arrumar isso depois! :D
-            gtk_plot()
-        except:
-            simulate=multiprocessing.Process(None, tk_plot)
-            simulate.start()
-        
+        #try:
+        import matplotlib.backends.backend_gtkagg # arrumar isso depois! :D
+        gtk_plot()
+        print 'Using GTK plot'
+        #except:
+        #    simulate=multiprocessing.Process(None, tk_plot)
+        #    simulate.start()
+        #    print 'Using TK plot'
+
     
     def  figure_plot(self, parameters, fig):
         """ Function doc """
@@ -147,7 +149,115 @@ class PlotGTKWindow:
                 ax.plot(x, y, 'ko',x, y,'k', picker=5)
                 
             if parameters[i]['type'] == 'matrix':
-                cmap = matplotlib.cm.get_cmap(name='terrain', lut=None)
+                import gtk
+                from matplotlib.figure import Figure
+                from numpy import arange, sin, pi
+
+                # uncomment to select /GTK/GTKAgg/GTKCairo
+                #from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
+                from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+                #from matplotlib.backends.backend_gtkcairo import FigureCanvasGTKCairo as FigureCanvas
+
+                # or NavigationToolbar for classic
+                #from matplotlib.backends.backend_gtk import NavigationToolbar2GTK as NavigationToolbar
+                from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+
+                # implement the default mpl key bindings
+                from matplotlib.backend_bases import key_press_handler
+
+                win = gtk.Window()
+                win.connect("destroy", lambda x: gtk.main_quit())
+                win.set_default_size(400, 300)
+                win.set_title("Embedding in GTK")
+
+                vbox = gtk.VBox()
+                win.add(vbox)
+
+                
+                cmap = matplotlib.cm.get_cmap(name='jet', lut=None)
+                matrix = parameters[i]['matrix']
+                fig = Figure(figsize=(5, 4), dpi=100)
+                ax  = fig.add_subplot(111)
+                
+                
+                im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
+                c = plt.contour(matrix, colors = 'k', linewidths = (1,),origin='image')#, extent=extent)
+                #c = contour(matrix, colors = 'k', linewidths = (1,))
+                fig.colorbar(im, ax=ax)
+                #fig.contour(c, ax=ax)
+                #fig.colorbar(c, ax=ax)
+                
+                #from matplotlib.mlab import griddata
+                #from numpy.random import uniform, seed
+                #seed(0)
+                #npts = 200
+                #x = uniform(-2, 2, npts)
+                #y = uniform(-2, 2, npts)
+                #z = x*np.exp(-x**2 - y**2)
+                ## define grid.
+                #xi = np.linspace(-2.1, 2.1, 100)
+                #yi = np.linspace(-2.1, 2.1, 200)
+                ## grid the data.
+                #zi = griddata(x, y, z, xi, yi, interp='linear')
+                ## contour the gridded data, plotting dots at the nonuniform data points.
+                #
+                #CS = plt.contour(xi, yi, zi, 15, linewidths=0.5, colors='k')
+                #CS = plt.contourf(xi, yi, zi, 15, cmap=plt.cm.rainbow,
+                #                  vmax=abs(zi).max(), vmin=-abs(zi).max())
+                
+                #c = plt.contour(matrix, colors = 'k', linewidths = (1,))
+                #t = arange(0.0, 3.0, 0.01)
+                #s = sin(2*pi*t)
+
+                #ax.plot(t, s)
+
+                canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+                vbox.pack_start(canvas)
+                toolbar = NavigationToolbar(canvas, win)
+                vbox.pack_start(toolbar, False, False)
+
+                def on_key_event(event):
+                    print('you pressed %s' % event.key)
+                    key_press_handler(event, canvas, toolbar)
+
+                canvas.mpl_connect('key_press_event', on_key_event)
+
+                win.show_all()
+                gtk.main()
+                
+                
+                '''
+                from numpy.random import uniform, seed
+                from matplotlib.mlab import griddata
+                import matplotlib.pyplot as plt
+                import numpy as np
+                # make up data.
+                #npts = int(raw_input('enter # of random points to plot:'))
+                seed(0)
+                npts = 200
+                x = uniform(-2, 2, npts)
+                y = uniform(-2, 2, npts)
+                z = x*np.exp(-x**2 - y**2)
+                # define grid.
+                xi = np.linspace(-2.1, 2.1, 100)
+                yi = np.linspace(-2.1, 2.1, 200)
+                # grid the data.
+                zi = griddata(x, y, z, xi, yi, interp='linear')
+                # contour the gridded data, plotting dots at the nonuniform data points.
+                CS = plt.contour(xi, yi, zi, 15, linewidths=0.5, colors='k')
+                CS = plt.contourf(xi, yi, zi, 15, cmap=plt.cm.rainbow,
+                                  vmax=abs(zi).max(), vmin=-abs(zi).max())
+                plt.colorbar()  # draw colorbar
+                # plot data points.
+                plt.scatter(x, y, marker='o', c='b', s=5, zorder=10)
+                plt.xlim(-2, 2)
+                plt.ylim(-2, 2)
+                plt.title('griddata test (%d points)' % npts)
+                plt.show()
+                '''
+                
+                '''
+                cmap = matplotlib.cm.get_cmap(name='jet', lut=None)
                 matrix = parameters[i]['matrix']                  
                 ax  = fig.add_subplot(111)
                 
@@ -155,7 +265,12 @@ class PlotGTKWindow:
                 #im  = ax.imshow(matrix, cmap=cmap.jet, interpolation='nearest')
                 im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
                
-                c = contour(matrix, colors = 'k', linewidths = (1,))
+                import matplotlib.pyplot as plt
+                
+                #c = contour(matrix, colors = 'k', linewidths = (1,))
+                c = plt.contour(matrix, colors = 'k', linewidths = (1,))
+                plt.colorbar()
+                
                 clabel(c, fmt = '%2.1f', colors = 'k', fontsize=14)
                 colorbar(im)
                 grid(True)
@@ -164,7 +279,7 @@ class PlotGTKWindow:
                 ylabel = parameters[i]['ylabel']
                 ax.set_xlabel(xlabel)
                 ax.set_ylabel(ylabel)
-    
+                '''
     #def plot_matrix (self, parameters):
     #    """ Function doc """
     #
