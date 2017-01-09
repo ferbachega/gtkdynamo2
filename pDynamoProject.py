@@ -766,10 +766,10 @@ class QuantumChemistrySetup(object):
         """ Class initialiser """
         pass
 
-    def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity):
+    def set_qc_parameters_MNDO(self, qc_method, charge, multiplicity, isSpinRestricted = True):
         qc_table = self.settings['qc_table']                                                     
         nbModel  = self.nbModel
-        qcModel  = QCModelMNDO (qc_method )
+        qcModel  = QCModelMNDO (qc_method, isSpinRestricted = isSpinRestricted)
         self.system.electronicState = ElectronicState  ( charge = charge, multiplicity = multiplicity )
 
         if len(qc_table) != 0:

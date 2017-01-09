@@ -217,12 +217,24 @@ class QuantumChemistrySetupDialog():
         qc_method       = self.builder.get_object('combobox1').get_active_text()
         charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()
         multiplicity    = self.builder.get_object('spinbutton_multiplicity').get_value_as_int()        
-        #print 'AQUI!!!!'
-
-        if qc_method in SMO_Methods:
-            print SMO_Methods_Dic[qc_method]
-            self.project.set_qc_parameters_MNDO(SMO_Methods_Dic[qc_method], charge, multiplicity)
         
+        # restricted or unrestrited
+        
+        if self.builder.get_object('pDynamo_radiobutton_restrict').get_active():
+            isSpinRestricted = True
+        else:
+            isSpinRestricted = False
+        
+        #isSpinRestricted = False
+
+        
+        
+        if qc_method in SMO_Methods:
+            #print '\n\n\n\n  aqui OH!!!!'
+            #print SMO_Methods_Dic[qc_method], isSpinRestricted
+            self.project.set_qc_parameters_MNDO(SMO_Methods_Dic[qc_method], charge, multiplicity, isSpinRestricted)
+            #print '\n\n\n\n'
+
         if qc_method in DFT_Methods:
             print DFT_Methods_Dic[qc_method]
             density_tol     = self.builder.get_object('DFT_density_tolerance_entry').get_text()
