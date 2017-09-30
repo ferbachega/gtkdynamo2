@@ -393,7 +393,10 @@ class MainMenu (object):
 
 
 
-
+        def on_MainMenu_Edit_Add_Distance_Soft_Constraint_Activate (self, menuitem):
+            """ Function doc """
+            print 'on_MainMenu_Edit_Add_Distance_Soft_Constraint_Activate'
+            
 
         def on_MainMenu_Edit_Charge_Verify_activate (self, menuitem):
             """ Function doc """

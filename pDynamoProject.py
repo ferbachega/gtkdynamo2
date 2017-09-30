@@ -974,7 +974,29 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                        'step'            : 0,
                        'last_step'       : None,
                                         
-                                        
+                       
+                       
+                       # surfaces and volumes - cube files 
+                       'surf_list'       : {
+                                           
+                                           },
+                       
+                       
+                       # distance restrants 
+                       # a list where each element is a dict 
+                       'DistanceSoftConstraintlist' :  [ 
+                                                        
+                                                        #{
+                                                        #'ATOM1'        : 1     ,
+                                                        #'ATOM2'        : 2     ,
+                                                        #'DISTANCE'     : 1.80  ,
+                                                        #'FORCECONSTANT': 100.
+                                                        # },
+                                                        
+                                                        ],
+                       
+                       
+                       
                                         
                        'job_history'     :{
                                           # actual style
