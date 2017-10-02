@@ -36,25 +36,408 @@ from pMoleculeScripts import *
 
 from pDynamoMethods.pDynamoScan   import *
 from pDynamoMethods.pDynamoTrajectoryEnergyRefine import *
+from PyMOLScripts.PyMOLScripts import *
 
 from pprint import pprint
 from DualTextLogFileWriter3 import *
-
+from pprint import pprint
 
       
 class TrajectoryEnergyRefineDialog():
 
     def runTrajectoryEnergyRefine (self, button):
         """ Function doc """
+        
         trajectory = self.builder.get_object('filechooserbutton1').get_filename()
-        system    = self.project.system
-        data_path = self.project.settings['data_path']
+        system     = self.project.system
+        data_path  = self.project.settings['data_path']
+        logfile    = self.builder.get_object('filechooserbutton4').get_filename()
         
-        pDynamoTrajectoryEnergyRefine ( system = system, 
-                                     data_path = data_path, 
-                                    trajectory = trajectory, 
-                                         _type = '1D')
+        _type = None
         
+        if self.builder.get_object('checkbutton_minimization').get_active()  :
+            _type = 'opt'
+                                 #---------------------------------------------------#
+                                 #                  Reaction COORD-1                 #
+                                 #---------------------------------------------------#
+            #---------------------------------- importing parameters COORD-1 ---------------------------#
+            FORCECONSTANT = float(self.builder.get_object('entry_FORCE1'         ).get_text())          #
+            #-------------------------------------------------------------------------------------------#
+
+            mode  = self.builder.get_object('combobox_reaction_coordiante_type').get_active_text()
+            print "\n\n"
+            print mode 
+            
+            self.EasyHybridSession.project.ActiveModeCheck()
+            
+            #-------------------------------------------------------------------------------------------------#
+            #                                       simple-distance                                           #
+            #-------------------------------------------------------------------------------------------------#
+            if mode == "simple-distance":                                                                     #
+                ATOM1      = int(self.builder.get_object("entry_coord1_ATOM1"     ).get_text())               #
+                ATOM1_name = self.builder.get_object    ("entry_coord1_ATOM1_name").get_text()                #
+                ATOM2      = int(self.builder.get_object("entry_coord1_ATOM2"     ).get_text())               #
+                ATOM2_name = self.builder.get_object    ("entry_coord1_ATOM2_name").get_text()                #
+                                                                                                              #
+                REACTION_COORD1 = {'MODE'         : mode,                                                     #
+                                   'ATOM1'        : ATOM1,                                                    #
+                                   'ATOM1_name'   : ATOM1_name,                                               #
+                                   'ATOM2'        : ATOM2,                                                    #
+                                   'ATOM2_name'   : ATOM2_name,		                                          #
+                                   #'DINCREMENT'   : DINCREMENT,                                              #
+                                   #'NWINDOWS'     : NWINDOWS,                                                #
+                                   'FORCECONSTANT': FORCECONSTANT,                                            #
+                                   #'DMINIMUM'     : DMINIMUM                                                 #
+                                   }                                                                          #
+            #-------------------------------------------------------------------------------------------------#
+
+
+            #-------------------------------------------------------------------------------------------------#
+            #                                      multiple-distance                                          #
+            #-------------------------------------------------------------------------------------------------#
+            if mode == "multiple-distance":                                                                   #
+                ATOM1      = int(self.builder.get_object("entry_coord1_ATOM1"     ).get_text())               #
+                ATOM1_name = self.builder.get_object    ("entry_coord1_ATOM1_name").get_text()                #
+                ATOM2      = int(self.builder.get_object("entry_coord1_ATOM2"     ).get_text())               #
+                ATOM2_name = self.builder.get_object    ("entry_coord1_ATOM2_name").get_text()                #
+                ATOM3      = int(self.builder.get_object("entry_coord1_ATOM3"     ).get_text())               #
+                ATOM3_name = self.builder.get_object    ("entry_coord1_ATOM3_name").get_text()                #
+                                                                                                              #
+                mass_weight = self.builder.get_object    ("checkbutton_mass_weight").get_active()             #
+                                                                                                              #
+                print "  "+ATOM1_name+"   ->-  "+ATOM2_name+"  -->-- "+ATOM3_name+"  "                        #
+                print " pk1 --- pk2 ---- pk3 \n"                                                              #
+                #print "DMINIMUM  : ",DMINIMUM                                                                 #
+                print "\n\n"						                                                          #
+                print                                                                                         #
+                sigma_pk1_pk3 = self.sigma_pk1_pk3                                                            #
+                sigma_pk3_pk1 = self.sigma_pk3_pk1                                                            #
+                print sigma_pk3_pk1                                                                           #
+                print sigma_pk1_pk3                                                                           #
+                                                                                                              #
+                REACTION_COORD1 = {'MODE'         : mode,                                                     #
+                                   'ATOM1'        : ATOM1,                                                    #
+                                   'ATOM1_name'   : ATOM1_name,                                               #
+                                   'ATOM2'        : ATOM2,                                                    #
+                                   'ATOM2_name'   : ATOM2_name,		                                          #
+                                   'ATOM3'        : ATOM3,                                                    #
+                                   'ATOM3_name'   : ATOM3_name,                                               #
+                                   #'DINCREMENT'   : DINCREMENT,                                               #
+                                   #'NWINDOWS'     : NWINDOWS,                                                 #
+                                   'FORCECONSTANT': FORCECONSTANT,                                            #
+                                   #'DMINIMUM'     : DMINIMUM,                                                 #
+                                   'mass_weight'  : mass_weight,                                              #
+                                   'sigma_pk1_pk3': sigma_pk1_pk3,                                            #
+                                   'sigma_pk3_pk1': sigma_pk3_pk1
+                                   }                                            #
+            #-------------------------------------------------------------------------------------------------#
+
+        
+            MINIMIZATION_PARAMETERS =  None
+            
+            if self.builder.get_object("checkbutton_minimization").get_active():
+                #---------------------------------------------------------------------------------------------------------#
+                mim_method	       = self.builder.get_object('combobox_optimization_method').get_active_text()            #                                                                                                                         #
+                max_int            = self.builder.get_object("entry_max_interactions")      .get_text()                   #
+                rms_grad           = self.builder.get_object("entry_rmsd_grad")             .get_text()                   #
+                log_freq           = 1
+                #---------------------------------------------------------------------------------------------------------#
+                
+                MINIMIZATION_PARAMETERS={
+                                        'do_minimizaton': True      ,
+                                        'max_int'       : max_int   ,
+                                        'log_freq'      : log_freq  ,
+                                        'rms_grad'      : rms_grad  ,
+                                        'mim_method'    : mim_method}
+
+            pprint(REACTION_COORD1)
+            pprint(MINIMIZATION_PARAMETERS)
+
+        else:
+            _type = 'energy'
+            pDynamoTrajectoryEnergyRefine (system     = system    , 
+                                           data_path  = data_path ,     
+                                           trajectory = trajectory,  
+                                           _type      = '1D')
+
+
+        
+
+
+
+
+
+
+
+
+        '''
+        trajectory = self.builder.get_object('filechooserbutton1').get_filename()
+        system     = self.project.system
+        data_path  = self.project.settings['data_path']
+        logfile    = self.builder.get_object('filechooserbutton4').get_filename()
+                                  #
+
+        
+        
+        print trajectory
+        print data_path
+        
+        if self.builder.get_object('checkbutton_minimization'):
+            print 'checkbutton_minimization'
+        
+            if self.builder.get_object('checkbutton_mass_weight'):
+                print 'checkbutton_mass_weight'
+        
+                #---------------------------------------------------------------------------------------------------------#
+                self.atom1_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1')     .get_text()           #
+                self.name1       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM1_name').get_text()           #
+                self.atom2_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2')     .get_text()           #
+                self.name2       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM2_name').get_text()           #
+                self.atom3_index = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3')     .get_text()           #
+                self.name3       = self.builder.get_object('ScanDialog_SCAN_entry_cood1_ATOM3_name').get_text()           #
+                #---------------------------------------------------------------------------------------------------------#
+
+
+                #---------------------------------------------------------------------------------------------------------#
+                self._mass_weight_check = self.builder.get_object("ScanDialog_scan_checkbutton_mass_weight").get_active() #
+                #---------------------------------------------------------------------------------------------------------#
+
+
+                #------------------------------------- importing parameters ----------------------------------------------#
+                self.FORCECONSTANT = self.builder.get_object('ScanDialog_SCAN_entry_FORCE4')        .get_text()           #
+                #---------------------------------------------------------------------------------------------------------#
+        
+        
+                #---------------------------------------------------------------------------------------------------------#
+                mim_method	       = self.builder.get_object('ScanDialog_combobox_optimization_method').get_active_text() #                                                                                                                         #
+                self.max_int       = self.builder.get_object("ScanDialog_SCAN_mim_param_entry_max_int1")  .get_text()     #
+                self.rms_grad      = self.builder.get_object("ScanDialog_SCAN_mim_param_entry_rmsd_grad1").get_text()     #
+                #---------------------------------------------------------------------------------------------------------#
+
+        
+
+
+        pprint(MDYNAMICS_PARAMETERS)
+
+        #logFile = umbrella_sampling (outpath                 , 
+        #                             REACTION_COORD1         ,
+        #                             MINIMIZATION_PARAMETERS ,
+        #                             MDYNAMICS_PARAMETERS    ,
+        #                             self.EasyHybridSession.project
+        #                             )
+        
+        pDynamoTrajectoryEnergyRefine (outpath                        ,
+                                       REACTION_COORD1                ,
+                                       MINIMIZATION_PARAMETERS        ,
+                                       self.EasyHybridSession.project )
+        
+                                   #     system = system, 
+                                   #  data_path = data_path, 
+                                   # trajectory = trajectory, 
+                                   #      _type = '1D')
+        
+        
+        
+        
+        
+        
+        
+        #pDynamoTrajectoryEnergyRefine ( system = system, 
+        #                             data_path = data_path, 
+        #                            trajectory = trajectory, 
+        #                                 _type = '1D')
+        '''
+
+
+    def Mass_weight_check(self, checkbutton):
+        
+        '''
+        ----------------------------------------------------
+                        REACTION COORDINATE 1 
+        ----------------------------------------------------
+        '''
+        if checkbutton == self.builder.get_object('checkbutton_mass_weight'):
+            try:
+                name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
+                name2, atom2_index, name3, atom3_index, distance_a2_a3 = import_ATOM1_ATOM2("pk2", "pk3")
+            except:
+                print texto_d2d1
+                return
+                
+            if self.builder.get_object("checkbutton_mass_weight").get_active():
+                self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                
+                """
+                   R                    R
+                    \                  /
+                     A1--A2  . . . . A3
+                    /                  \ 
+                   R                    R
+                     ^   ^            ^
+                     |   |            |
+                    pk1-pk2  . . . . pk3
+                       d1       d2	
+                
+                q1 =  1 / (mpk1 + mpk3)  =  [ mpk1 * r (pk3_pk2)  -   mpk3 * r (pk1_pk2) ]
+                
+                """			
+                #DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                #self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
+                print "\n\nUsing mass weighted restraints"
+                print "Sigma pk1_pk3", self.sigma_pk1_pk3
+                print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                #print "Estimated minimum distance",  DMINIMUM
+                
+            else:
+                self.sigma_pk1_pk3 =  1.0
+                self.sigma_pk3_pk1 = -1.0
+                #DMINIMUM = distance_a1_a2 - distance_a2_a3
+                #self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
+                print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
+                print "Sigma pk3_pk1",      self.sigma_pk3_pk1
+                #print "Estimated minimum distance",  DMINIMUM	
+        
+    def Button_import_PyMOL_index(self, button):
+        '''
+        ----------------------------------------------------
+                        REACTION COORDINATE 1 
+        ----------------------------------------------------
+        '''
+        if button == self.builder.get_object('import_indexes_from_PyMOL'):
+            mode  =  self.builder.get_object('combobox_reaction_coordiante_type').get_active_text()
+            if mode == "simple-distance":
+                try:
+                    name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
+                    distance_a1_a2 = str(distance_a1_a2)
+                    
+                    #self.builder.get_object('entry_param_DMINIMUM1'  ).set_text(distance_a1_a2)
+                    self.builder.get_object("entry_coord1_ATOM1"     ).set_text(str(atom1_index))
+                    self.builder.get_object("entry_coord1_ATOM1_name").set_text(name1)
+                    self.builder.get_object("entry_coord1_ATOM2"     ).set_text(str(atom2_index))
+                    self.builder.get_object("entry_coord1_ATOM2_name").set_text(name2)
+                except:
+                    cmd.edit_mode()
+                    print "pk1, pk2 selection not found"					
+                    print texto_d1
+                    return	
+        
+            if mode == "multiple-distance":			
+                try:
+                    name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
+                    name2, atom2_index, name3, atom3_index, distance_a2_a3 = import_ATOM1_ATOM2("pk2", "pk3")
+
+                    print "distance between atom 1 and atom 2: ",distance_a1_a2
+                    print "distance between atom 2 and atom 3: ",distance_a2_a3
+                    
+                    if self.builder.get_object("checkbutton_mass_weight").get_active():
+                        self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                        
+                        """
+                           R                    R
+                            \                  /
+                             A1--A2  . . . . A3
+                            /                  \ 
+                           R                    R
+                             ^   ^            ^
+                             |   |            |
+                            pk1-pk2  . . . . pk3
+                               d1       d2	
+                        
+                        q1 =  1 / (mpk1 + mpk3)  =  [ mpk1 * r (pk3_pk2)  -   mpk3 * r (pk1_pk2) ]
+                        
+                        """			
+                        
+                        #DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                        #self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
+                        print "\n\nUsing mass weighted restraints"
+                        print "Sigma pk1_pk3", self.sigma_pk1_pk3
+                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        #print "Estimated minimum distance",  DMINIMUM
+                        
+                    else:
+                        self.sigma_pk1_pk3 =  1.0
+                        self.sigma_pk3_pk1 = -1.0
+                        #DMINIMUM = distance_a1_a2 - distance_a2_a3
+                        #self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
+                        
+                        print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
+                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        #print "Estimated minimum distance",  DMINIMUM			
+                except:
+                    cmd.edit_mode()
+                    print "pk1, pk2 and pk3 selections not found"	
+                    #print texto_d2d1	
+                    return			
+                print name3, name2, name1
+                self.builder.get_object("entry_coord1_ATOM1"     ).set_text(str(atom1_index))
+                self.builder.get_object("entry_coord1_ATOM1_name").set_text(name1)
+                self.builder.get_object("entry_coord1_ATOM2"     ).set_text(str(atom2_index))
+                self.builder.get_object("entry_coord1_ATOM2_name").set_text(name2)
+                self.builder.get_object("entry_coord1_ATOM3"     ).set_text(str(atom3_index))
+                self.builder.get_object("entry_coord1_ATOM3_name").set_text(name3)
+
+        
+    def ComboxChange(self, combobox):
+        """ Function doc """
+        if combobox == self.builder.get_object('combobox_reaction_coordiante_type'):
+            mode = self.builder.get_object('combobox_reaction_coordiante_type').get_active_text()
+            if mode == 'simple-distance':
+                self.builder.get_object('label_coord1_atom3'      ).set_sensitive(False)
+                self.builder.get_object('entry_coord1_ATOM3'      ).set_sensitive(False)
+                self.builder.get_object('label_coord1_ATOM3_name' ).set_sensitive(False)
+                self.builder.get_object('entry_coord1_ATOM3_name' ).set_sensitive(False)
+                self.builder.get_object('checkbutton_mass_weight' ).set_sensitive(False)
+            if mode == 'multiple-distance':
+                self.builder.get_object('label_coord1_atom3'      ).set_sensitive(True)
+                self.builder.get_object('entry_coord1_ATOM3'      ).set_sensitive(True)
+                self.builder.get_object('label_coord1_ATOM3_name' ).set_sensitive(True)
+                self.builder.get_object('entry_coord1_ATOM3_name' ).set_sensitive(True)
+                self.builder.get_object('checkbutton_mass_weight' ).set_sensitive(True)
+        
+        #if combobox == self.builder.get_object('combobox_SCAN_reaction_coordiante2_type'):
+        #    mode = self.builder.get_object('combobox_SCAN_reaction_coordiante2_type').get_active_text()
+        #    if mode == 'simple-distance':
+        #        self.builder.get_object('label_coord2_atom3'      ).set_sensitive(False)
+        #        self.builder.get_object('entry_coord2_ATOM3'       ).set_sensitive(False)
+        #        self.builder.get_object('label_coord2_ATOM3_name' ).set_sensitive(False)
+        #        self.builder.get_object('entry_coord2_ATOM3_name' ).set_sensitive(False)
+        #        self.builder.get_object('checkbutton_mass_weight2').set_sensitive(False)
+        #    if mode == 'multiple-distance':
+        #        self.builder.get_object('label_coord2_atom3'      ).set_sensitive(True)
+        #        self.builder.get_object('entry_coord2_ATOM3'       ).set_sensitive(True)
+        #        self.builder.get_object('label_coord2_ATOM3_name' ).set_sensitive(True)
+        #        self.builder.get_object('entry_coord2_ATOM3_name' ).set_sensitive(True)
+        #        self.builder.get_object('checkbutton_mass_weight2').set_sensitive(True)
+        #
+        #if combobox == self.builder.get_object('combobox1'):
+        #    mode = self.builder.get_object('combobox1').get_active_text()
+        #    
+        #    if mode == 'sequential':
+        #        self.builder.get_object('scan2d_label_step_size1'                      ).show()
+        #        self.builder.get_object('entry_STEP_size1'                             ).show()
+        #        self.builder.get_object('13_window_scan2d_scam_label_step_Nwindows2'   ).show()
+        #        self.builder.get_object('entry_NWINDOWS1'                              ).show()
+        #        self.builder.get_object('13_window_scan2d_scam_label_step_trajectory3' ).show()
+        #        self.builder.get_object('entry_param_DMINIMUM1'                        ).show()
+        #        
+        #        #self.builder.get_object('table3').show()
+        #        self.builder.get_object('table1').hide()
+        #
+        #    if mode == 'from trajectory':
+        #        #self.builder.get_object('table3').hide()
+        #        self.builder.get_object('scan2d_label_step_size1'                      ).hide()
+        #        self.builder.get_object('entry_STEP_size1'                             ).hide()
+        #        self.builder.get_object('13_window_scan2d_scam_label_step_Nwindows2'   ).hide()
+        #        self.builder.get_object('entry_NWINDOWS1'                              ).hide()
+        #        self.builder.get_object('13_window_scan2d_scam_label_step_trajectory3' ).hide()
+        #        self.builder.get_object('entry_param_DMINIMUM1'                        ).hide()
+        #        
+        #        self.builder.get_object('table1').show()
+
+
+
+
+
 
     def on_combobox1_changed(self, button):
         _type        = self.builder.get_object('combobox1').get_active_text()
@@ -66,6 +449,12 @@ class TrajectoryEnergyRefineDialog():
             self.builder.get_object('filechooserbutton2').show()
             self.builder.get_object('filechooserbutton1').hide()
 
+    def geo_opt_change(self, widget):
+        if self.builder.get_object('checkbutton_minimization').get_active():
+            self.builder.get_object('vbox3').set_sensitive(True)
+        
+        else:
+            self.builder.get_object('vbox3').set_sensitive(False)
 
     def __init__(self, EasyHybridSession = None):
 
@@ -82,7 +471,7 @@ class TrajectoryEnergyRefineDialog():
             #      - - - importing ORCA PATH from EasyHybridConfig file. - - -        
             #-----------------------------------------------------------------------#
             try:                                                                    #
-                ORCA                  = EasyHybridSession.EasyHybridConfig['ORCAPATH']#
+                ORCA                = EasyHybridSession.EasyHybridConfig['ORCAPATH']#
             except:                                                                 #
                 ORCA = ''                                                           #
             #-----------------------------------------------------------------------#
@@ -100,6 +489,27 @@ class TrajectoryEnergyRefineDialog():
         combobox = 'combobox1'         #
         combolist = ["folder - pDynamo"]#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
         self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
+
+        combobox = 'combobox_optimization_method'         #
+        combolist = ['Conjugate Gradient', 'Steepest Descent','LBFGS']
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist,0)  
+        
+        combobox  = 'combobox_reaction_coordiante_type'                     
+        combolist = ['simple-distance', 'multiple-distance']
+        self.window_control.SETUP_COMBOBOXES(combobox, combolist,0)  
+        
+        
+        
+        # QC SPIN MULTIPLICITY
+        spinbutton = 'spinbutton2'
+        config     = [0.0, 1.0,    500.0, 1.0, 0.0, 0.0]
+        self.window_control.SETUP_SPINBUTTON(spinbutton, config)
+
+        #if self.builder.get_object('check_opt_geometry'):
+        self.builder.get_object('vbox3').set_sensitive(False)
+
+        self.sigma_pk1_pk3 = None
+        self.sigma_pk3_pk1 = None
 
 
 

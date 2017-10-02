@@ -513,7 +513,7 @@ def parallel_umbrella_sampling (input_system):
         Run_ConjugateGradientMinimize (system = project.system, 
                       MINIMIZATION_PARAMETERS = MINIMIZATION_PARAMETERS)
         energy = project.system.Energy (log                 = None )
-        print dist, energy
+        #print dist, energy
         
 
 

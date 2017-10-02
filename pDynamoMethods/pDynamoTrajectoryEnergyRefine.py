@@ -130,6 +130,300 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
     return energy
 
 
+def pDynamoTrajectoryOptimizeEnergyRefine(outpath                 , 
+					                      REACTION_COORD1         ,
+					                      MINIMIZATION_PARAMETERS ,
+					                      MDYNAMICS_PARAMETERS    ,
+					                      project
+					                      ):
+
+    log     = DualTextLog  (outpath, "TrajectoryOptimizeEnergyRefine.log")  #
+    project.system.Summary (log = log)  
+    arq = open(os.path.join(outpath, "TrajectoryOptimizeEnergyRefine.log"), "a")
+
+    text = "\n\n"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n--                                                                            --"
+    text = text + "\n--                           Umbrella-Samplig                                 --"
+    text = text + "\n--                                                                            --"
+    text = text + "\n--------------------------------------------------------------------------------"
+    text = text + "\n"
+                                                            #-----------------#
+                                                            #   REAC COORD 1  #
+                                                            #-----------------#
+    #-----------------------------------------------------------------------------------------------------------------------------------#
+    mode1 = REACTION_COORD1['MODE']                                                                                                     #
+
+    if mode1 == 'simple-distance':                                                                                                      #
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]                                                                         #
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']                                                                         #
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]                                                                         #
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']                                                                         #
+                                                                                                                                        #
+                                                                                                                                        #
+        #coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']                                                                         #
+        #coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']                                                                           #
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
+        #coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
+                                                                                                                                        #
+        text = text + "\n----------------------- Coordinate1  - Simple-Distance -------------------------"								#				
+        text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
+        text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
+        #text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
+        #text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
+        text = text + "\n--------------------------------------------------------------------------------"                              #
+                                                                                                                                        #
+    if mode1 == "multiple-distance":                                                                                                    #
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]                                                                         #
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']                                                                         #
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]                                                                         #
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']	                                                                        #
+        coord1_ATOM3            = REACTION_COORD1['ATOM3'     ]                                                                         #
+        coord1_ATOM3_name       = REACTION_COORD1['ATOM3_name']	                                                                        #
+                                                                                                                                        #
+        #coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']                                                                         #
+        #coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']                                                                           #
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']                                                                      #
+        #coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']                                                                           #
+        coord1_MASS_WEIGHT      = REACTION_COORD1['mass_weight']                                                                        #
+        coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']                                                                      #
+        coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']                                                                      #
+                                                                                                                                        #
+        text = text + "\n--------------------- Coordinate1  - Multiple-Distance -------------------------"								#				
+        text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (coord1_ATOM1,     coord1_ATOM1_name)        #
+        text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (coord1_ATOM2,     coord1_ATOM2_name)        #
+        text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (coord1_ATOM3,     coord1_ATOM3_name)        #
+        text = text + "\nSIGMA ATOM1/ATOM3      =%15.5f  SIGMA ATOM3/ATOM1      =%15.5f" % (coord1_sigma_pk1_pk3, coord1_sigma_pk3_pk1) #
+        #text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
+        #text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
+        text = text + "\n--------------------------------------------------------------------------------"                              #
+        
+        #if coord1_MASS_WEIGHT:
+        #    text = text + '\n'
+        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                            \                  /                                '
+        #    text = text + '\n                             A1--A2  . . . . A3                                 '
+        #    text = text + '\n                            /                  \                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                             ^   ^            ^                                 '
+        #    text = text + '\n                             |   |            |                                 '
+        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
+        #    text = text + '\n                               d1       d2	                                     '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
+        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
+        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n--------------------------------------------------------------------------------'
+        #
+        #
+        #else:
+        #    text = text + '\n'
+        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                            \                  /                                '
+        #    text = text + '\n                             A1--A2  . . . . A3                                 '
+        #    text = text + '\n                            /                  \                                '
+        #    text = text + '\n                           R                    R                               '
+        #    text = text + '\n                             ^   ^            ^                                 '
+        #    text = text + '\n                             |   |            |                                 '
+        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
+        #    text = text + '\n                               d1       d2	                                     '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
+        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
+        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
+        #    text = text + '\n                                                                                '
+        #    text = text + '\n--------------------------------------------------------------------------------'
+    #-----------------------------------------------------------------------------------------------------------------------------------#
+
+    reaction_path_type  = REACTION_COORD1['REACTION_PATH_TYPE'] 
+    trajectory          = REACTION_COORD1['FROM_TRAJECTORY'   ]    
+    n_process           = REACTION_COORD1['N_PROCESS'         ]          
+
+            #------------------------------------------------------------#
+            #                    GEOMETRY OPTIMIZATION                   #
+            #------------------------------------------------------------#
+    #------------------------------------------------------------------------------#
+    if reaction_path_type == 'from trajectory':                                    #
+        
+        text = text + "\n----------------------------------------------------------"
+        text = text + "\n-        GEOMETRY OPTIMIZATION FROM TRAJECTORY           -"
+        text = text + "\n----------------------------------------------------------"
+
+        Files    = os.listdir(trajectory)                                          #
+        pklFiles = []                                                              #
+        for File in Files:                                                         #
+                                                                                   #
+            File2 = File.split('.')                                                #
+            #print File2                                                           #
+            if File2[-1] ==  'pkl':                                                #
+                pklFiles.append(File)                                              #
+        print pklFiles                                                             #
+        #--------------------------------------------------------------------------#
+        inputs = []                                                                #
+                                                                                   #
+        for coordinate_file in pklFiles:                                           #
+            input_system = [coordinate_file         ,                              #
+                            outpath                 ,                              #
+                            REACTION_COORD1         ,                              #
+                            MINIMIZATION_PARAMETERS ,                              #
+                            MDYNAMICS_PARAMETERS    ,                              #
+                            project                 ]                              #
+                                                                                   #
+            inputs.append(input_system)                                            #
+        #--------------------------------------------------------------------------#
+        from multiprocessing import Pool                                           #
+        p = Pool(n_process)                                                        #
+        print(p.map(parallel_umbrella_sampling, inputs ))                          #
+    #------------------------------------------------------------------------------#
+    arq.writelines(text)
+    arq.close()	     
+    
+    project.system.DefineSoftConstraints ( None )
+
+
+
+
+
+def parallel_umbrella_sampling (input_system):
+    """ Function doc """
+    coordinate_file         = input_system[0]
+    outpath                 = input_system[1]
+    REACTION_COORD1         = input_system[2]
+    MINIMIZATION_PARAMETERS = input_system[3]
+    MDYNAMICS_PARAMETERS    = input_system[4]
+    project                 = input_system[5]
+    
+    
+    
+    #----------------------------------------------#
+    trajname   = coordinate_file.split('.')        #
+    trajname   = trajname[0]                       #
+    trajname   = os.path.join (outpath, trajname)  #
+    #----------------------------------------------#
+    
+    
+    #----------------------------------------------------------------------------------#
+    trajectory = REACTION_COORD1['FROM_TRAJECTORY'   ]                                 #
+    project.system.coordinates3 = Unpickle( os.path.join (trajectory, coordinate_file))#
+    #----------------------------------------------------------------------------------#
+
+    
+    '''                Define a constraint container                  '''
+    # . Define a constraint container and assign it to the system-------#
+    constraints = SoftConstraintContainer ( )                           #
+    project.system.DefineSoftConstraints ( constraints )                #
+    #-------------------------------------------------------------------#
+
+    
+    
+    mode1 = REACTION_COORD1['MODE']
+
+    #--------------------------------------------------------------------------------
+    if mode1 == 'simple-distance':                                        
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]           
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']           
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]           
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']           
+                                                                          
+                                                                          
+        coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']           
+        coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']             
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']        
+        coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']             
+                                                                          
+        dist = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+    
+        #--------------------------------------------------------------------------------------#
+        rxncoord     = float(dist)                                                             #
+        #print rxncoord                                                                         #
+        scModel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )   #
+        constraint   = SoftConstraintDistance         ( coord1_ATOM1, coord1_ATOM2, scModel )  #
+        constraints["ReactionCoord"] = constraint                                              #
+        #--------------------------------------------------------------------------------------#
+                                                                                  
+    if mode1 == "multiple-distance":                                      
+        coord1_ATOM1            = REACTION_COORD1['ATOM1'     ]           
+        coord1_ATOM1_name       = REACTION_COORD1['ATOM1_name']           
+        coord1_ATOM2            = REACTION_COORD1['ATOM2'     ]           
+        coord1_ATOM2_name       = REACTION_COORD1['ATOM2_name']	          
+        coord1_ATOM3            = REACTION_COORD1['ATOM3'     ]           
+        coord1_ATOM3_name       = REACTION_COORD1['ATOM3_name']	          
+                                                                          
+        coord1_DINCREMENT1      = REACTION_COORD1['DINCREMENT']           
+        coord1_NWINDOWS1        = REACTION_COORD1['NWINDOWS']             
+        coord1_FORCECONSTANT1   = REACTION_COORD1['FORCECONSTANT']        
+        coord1_DMINIMUM1        = REACTION_COORD1['DMINIMUM']             
+        coord1_MASS_WEIGHT      = REACTION_COORD1['mass_weight']                                                                  
+        coord1_sigma_pk1_pk3    = REACTION_COORD1['sigma_pk1_pk3']        
+        coord1_sigma_pk3_pk1    = REACTION_COORD1['sigma_pk3_pk1']        
+                                                                          
+        distance_a1_a2  = project.system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+        distance_a2_a3  = project.system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+        
+        
+        #-------------------------------#
+        #           MASS_WEIGHT         #
+        #-------------------------------#
+        if coord1_MASS_WEIGHT:
+            DMINIMUM =  (coord1_sigma_pk1_pk3 * distance_a1_a2) - (coord1_sigma_pk3_pk1 * distance_a2_a3*-1)
+        
+      
+        #-------------------------------#
+        #             NORMAL            #
+        #-------------------------------#
+        else:
+            #self.sigma_pk1_pk3 =  1.0
+            #self.sigma_pk3_pk1 = -1.0
+            DMINIMUM = distance_a1_a2 - distance_a2_a3        
+        #dist    = dist12 - dist23
+
+        #------------------------------------------------------------------------------------------------------#                  
+        rxncoord     = DMINIMUM #float(dist) #coord1_DMINIMUM1 + coord1_DINCREMENT1 * float ( i )                        #
+        scmodel      = SoftConstraintEnergyModelHarmonic ( rxncoord, coord1_FORCECONSTANT1 )                   #
+        constraint   = SoftConstraintMultipleDistance ( [[coord1_ATOM2, coord1_ATOM1,                          #
+                                                          coord1_sigma_pk1_pk3],                               #
+                                                          [coord1_ATOM2, coord1_ATOM3, coord1_sigma_pk3_pk1]], #
+                                                          scmodel )                                            #
+        constraints["ReactionCoord"] = constraint			                                                   #
+        #------------------------------------------------------------------------------------------------------#
+
+    if MINIMIZATION_PARAMETERS['do_minimizaton']:
+        Run_ConjugateGradientMinimize (system = project.system, 
+                      MINIMIZATION_PARAMETERS = MINIMIZATION_PARAMETERS)
+        energy = project.system.Energy (log                 = None )
+        print dist, energy
+        
+    return energy
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def main():
     system = Unpickle(EasyHybrid_ROOT + '/test/test.pkl')
     _min_ = pDynamoEnergy(system)
