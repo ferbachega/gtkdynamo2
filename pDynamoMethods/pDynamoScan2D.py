@@ -34,6 +34,10 @@ from pMoleculeScripts       import *
 from DualTextLogFileWriter3 import *
 from MatplotGTK.LogParse    import *
 
+#---------------------------------------
+from multiprocessing        import Pool
+#---------------------------------------
+
 EasyHybrid_ROOT  = os.environ.get('EasyHybrid_ROOT')
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
@@ -239,7 +243,7 @@ def Scan2D(outpath            ,
                                                                                                                         #
             constraints["ReactionCoord"] = constraint			                                                        #
                                                                                                                         #
-        text    = text    + "\nMATRIX1 "                                                                                      #
+        text    = text    + "\nMATRIX1 "                                                                                #
         RCOORD1 = RCOORD1 + '\nRCOORD1'
         RCOORD2 = RCOORD2 + '\nRCOORD2' 
         
