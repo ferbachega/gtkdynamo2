@@ -24,7 +24,7 @@
 import os
 import time
 #import sys
-
+import numpy as np
 # pDynamo
 from pBabel import *
 from pCore import *
@@ -33,7 +33,7 @@ from pMoleculeScripts import *
 
 from DualTextLogFileWriter3 import *
 from pprint import pprint
-
+import multiprocessing
 EasyHybrid_ROOT = os.getcwd()
 PDYNAMO_SCRATCH = os.environ.get('PDYNAMO_SCRATCH')
 
@@ -44,7 +44,43 @@ if not os.path.isdir(EasyHybrid_TMP):
     print "Temporary files directory:  %s" % EasyHybrid_TMP
 
 
-def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = None, _type = '1D'):
+
+def parallel_energy_refine_1D (job):
+    """ Function doc """
+    
+   
+    i          =  job[0] 
+    #None       =  job[1]
+    trajectory =  job[2]
+    system     =  job[3]
+    pklFile    =  job[4]
+    
+
+
+    system.coordinates3 = Unpickle(os.path.join(trajectory,pklFile))
+    energy              = system.Energy()
+    dipole              = system.DipoleMoment ()    
+    
+    output_parameters = {
+			 i : {
+			      'energy': energy,
+			      'dipole': dipole,
+			      'coord1': [],
+			      'coord2': []
+			     } 
+			}     
+    return output_parameters
+    
+    
+
+def pDynamoTrajectoryEnergyRefine ((system          = None     , 
+				   data_path        = None     ,     
+				   trajectory       = None     ,  
+				   reaction_coord1  = None     ,
+				   reaction_coord2  = None     ,
+				   input_type       = 'pkl'    , 
+				   _type            = 'Scan 1D',
+				   nCPUs            = 1        )
 
                                # Local time  -  LogFileName 
     #----------------------------------------------------------------------------------------
@@ -54,8 +90,10 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
     #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
     LogFile = 'Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
     #----------------------------------------------------------------------------------------
+    
     log = DualTextLog(data_path, LogFile)  # LOG
-
+    system.Summary(log=log)
+    
     #--------------------#
     #    Initial time    #
     #--------------------#
@@ -65,6 +103,71 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
     #             SUMMARY             #
     #---------------------------------#
     
+    if _type == 'Scan 1D':
+	
+	Files    = os.listdir(trajectory)             
+	multjobs = []                                 
+    
+	for File in Files:                            
+	    name  = File.replace('frame', '')
+	    name  = name.split('.')               
+	    
+	    if name[-1] ==  input_type:               
+		
+		name = name[0].split('_')
+		i     = int(name[-1])
+		multjobs.append([i, None, trajectory, system, File])
+	
+	#--------------------------------------------------------------------------#
+	p = multiprocessing.Pool(nCPUs)                                            #
+	muiltdata = (p.map(parallel_energy_refine_1D, multjobs ))                  #
+	#--------------------------------------------------------------------------#
+	total = len(muiltdata)
+
+	X = np.zeros( (total,1) )
+	
+	#keys  = []
+	jobs  = [None]*total
+	
+	for data in muiltdata:
+	    _key       = data.keys()
+	    _key       = _key[0]
+	    
+	    X[_key][0] = data[_key]['energy']
+	    jobs[_key] = str(_key) +' '+ str(data[_key]['energy'])
+	
+	
+	#for line in jobs:
+	#    print line
+	#print X
+    
+    #print muiltdata
+    
+    
+    
+    
+    
+    
+    if _type == 'Scan 2D':
+	
+	Files    = os.listdir(trajectory)             
+	multjobs = []                                 
+    
+	for File in Files:                            
+	    File2 = File.split('.')               
+	    
+	    if File2[-1] ==  'pkl':               
+		
+		File3 = File2[0].split('_')
+		i     = int(File3[-1])
+		j     = int(File3[-2])
+		multjobs.append([i, j, trajectory, system, File])
+    
+    
+    
+    
+    '''	system.coordinates3 = Unpickle(coordinatefile)
+
     if _type == '1D':
         system.Summary(log=log)
         energy_table  = []
@@ -79,8 +182,8 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
             n  += 1
 
         pprint (energy_table)
-
-    
+    '''
+    '''
     if _type == '2D':
 
         #--------------------------------------------------------------#
@@ -97,7 +200,7 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
 
         for File in  trajectory_files2:
             print File
-
+    '''
 
         #system.Summary(log=log)
         #energy_table  = []
@@ -116,8 +219,8 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
 
 
 
-    else: 
-        print '_type =  UNK'
+    #else: 
+    #    print '_type =  UNK'
     
     #back_orca_output(output_path, step)
 
@@ -126,8 +229,8 @@ def pDynamoTrajectoryEnergyRefine (system=None, data_path=None, trajectory = Non
     #--------------------#      
     t_final = time.time()
     total_time  = t_final - t_initial
-    print "Total time = : ", t_final - t_initial
-    return energy
+    #print "Total time = : ", t_final - t_initial
+    #return energy
 
 
 def pDynamoTrajectoryOptimizeEnergyRefine(outpath                 , 
@@ -409,7 +512,11 @@ def parallel_umbrella_sampling (input_system):
     return energy
     
   
-  
+
+def ParseLogFile (filein):
+	""" Function doc """
+	pass
+
 
 
 
