@@ -103,10 +103,10 @@ class ScanWindow2D():
             print "DMINIMUM  : ",DMINIMUM                                                                 #
             print "\n\n"						                                                          #
             print                                                                                         #
-            sigma_pk1_pk3 = self.sigma_pk1_pk3                                                            #
-            sigma_pk3_pk1 = self.sigma_pk3_pk1                                                            #
-            print sigma_pk3_pk1                                                                           #
-            print sigma_pk1_pk3                                                                           #
+            #sigma_pk1_pk3 = self.coord1_sigma_pk1_pk3                                                            #
+            #sigma_pk3_pk1 = self.coord1_sigma_pk3_pk1                                                            #
+            #print sigma_pk3_pk1                                                                           #
+            #print sigma_pk1_pk3                                                                           #
                                                                                                           #
             REACTION_COORD1 = {'MODE'         : mode,                                                     #
                                'ATOM1'        : ATOM1,                                                    #
@@ -119,8 +119,8 @@ class ScanWindow2D():
                                'NWINDOWS'     : NWINDOWS,                                                 #
                                'FORCECONSTANT': FORCECONSTANT,                                            #
                                'DMINIMUM'     : DMINIMUM,                                                 #
-                               'sigma_pk1_pk3': sigma_pk1_pk3,                                            #
-                               'sigma_pk3_pk1': sigma_pk3_pk1}                                            #
+                               'sigma_pk1_pk3': self.coord1_sigma_pk1_pk3,                                            #
+                               'sigma_pk3_pk1': self.coord1_sigma_pk3_pk1}                                            #
         #-------------------------------------------------------------------------------------------------#
         
         
@@ -184,10 +184,10 @@ class ScanWindow2D():
             print "DMINIMUM  : ",DMINIMUM                                                                 #
             print "\n\n"						                                                          #
             print                                                                                         #
-            sigma_pk1_pk3 = self.sigma_pk1_pk3                                                            #
-            sigma_pk3_pk1 = self.sigma_pk3_pk1                                                            #
-            print sigma_pk3_pk1                                                                           #
-            print sigma_pk1_pk3                                                                           #
+            #sigma_pk1_pk3 = self.sigma_pk1_pk3                                                            #
+            #sigma_pk3_pk1 = self.sigma_pk3_pk1                                                            #
+            #print sigma_pk3_pk1                                                                           #
+            #print sigma_pk1_pk3                                                                           #
                                                                                                           #
             REACTION_COORD2 = {'MODE'         : mode,                                                     #
                                'ATOM1'        : ATOM1,                                                    #
@@ -202,8 +202,8 @@ class ScanWindow2D():
                                'FORCECONSTANT': FORCECONSTANT,                                            #
                                'DMINIMUM'     : DMINIMUM,                                                 #
                                
-                               'sigma_pk1_pk3': sigma_pk1_pk3,                                            #
-                               'sigma_pk3_pk1': sigma_pk3_pk1,}                                           #
+                               'sigma_pk1_pk3': self.coord2_sigma_pk1_pk3,                                            #
+                               'sigma_pk3_pk1': self.coord2_sigma_pk3_pk1,}                                           #
         #-------------------------------------------------------------------------------------------------#
 
         
@@ -251,8 +251,8 @@ class ScanWindow2D():
 
     def Button_import_PyMOL_index(self, button):
         '''
-        ----------------------------------------------------
-                        REACTION COORDINATE 1 
+        ----------------------------------------------------self.coord1_sigma_pk1_pk3
+                        REACTION COORDINATE 1               self.coord1_sigma_pk3_pk1
         ----------------------------------------------------
         '''
         if button == self.builder.get_object('Button_import_PyMOL_index1'):
@@ -282,7 +282,7 @@ class ScanWindow2D():
                     print "distance between atom 2 and atom 3: ",distance_a2_a3
                     
                     if self.builder.get_object("checkbutton_mass_weight1").get_active():
-                        self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                        self.coord1_sigma_pk1_pk3, self.coord1_sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
                         
                         """
                            R                    R
@@ -299,21 +299,21 @@ class ScanWindow2D():
                         
                         """			
                         
-                        DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                        DMINIMUM =  (self.coord1_sigma_pk1_pk3 * distance_a1_a2) -(self.coord1_sigma_pk3_pk1 * distance_a2_a3*-1)
                         self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
                         print "\n\nUsing mass weighted restraints"
-                        print "Sigma pk1_pk3", self.sigma_pk1_pk3
-                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        print "Sigma pk1_pk3", self.coord1_sigma_pk1_pk3
+                        print "Sigma pk3_pk1", self.coord1_sigma_pk3_pk1
                         print "Estimated minimum distance",  DMINIMUM
                         
                     else:
-                        self.sigma_pk1_pk3 =  1.0
-                        self.sigma_pk3_pk1 = -1.0
+                        self.coord1_sigma_pk1_pk3 =  1.0
+                        self.coord1_sigma_pk3_pk1 = -1.0
                         DMINIMUM = distance_a1_a2 - distance_a2_a3
                         self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
                         
-                        print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
-                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        print "\n\nSigma pk1_pk3 ", self.coord1_sigma_pk1_pk3
+                        print "Sigma pk3_pk1", self.coord1_sigma_pk3_pk1
                         print "Estimated minimum distance",  DMINIMUM			
                 except:
                     cmd.edit_mode()
@@ -363,7 +363,7 @@ class ScanWindow2D():
                     print "distance between atom 2 and atom 3: ",distance_a2_a3
                     
                     if self.builder.get_object("checkbutton_mass_weight2").get_active():
-                        self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                        self.coord2_sigma_pk1_pk3, self.coord2_sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
                         
                         """
                            R                    R
@@ -380,21 +380,21 @@ class ScanWindow2D():
                         
                         """			
                         
-                        DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                        DMINIMUM =  (self.coord2_sigma_pk1_pk3 * distance_a1_a2) -(self.coord2_sigma_pk3_pk1 * distance_a2_a3*-1)
                         self.builder.get_object('entry_param_DMINIMUM2').set_text(str(DMINIMUM))
                         print "\n\nUsing mass weighted restraints"
-                        print "Sigma pk1_pk3", self.sigma_pk1_pk3
-                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        print "Sigma pk1_pk3", self.coord2_sigma_pk1_pk3
+                        print "Sigma pk3_pk1", self.coord2_sigma_pk3_pk1
                         print "Estimated minimum distance",  DMINIMUM
                         
                     else:
-                        self.sigma_pk1_pk3 =  1.0
-                        self.sigma_pk3_pk1 = -1.0
+                        self.coord2_sigma_pk1_pk3 =  1.0
+                        self.coord2_sigma_pk3_pk1 = -1.0
                         DMINIMUM = distance_a1_a2 - distance_a2_a3
                         self.builder.get_object('entry_param_DMINIMUM2').set_text(str(DMINIMUM))
                         
-                        print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
-                        print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                        print "\n\nSigma pk1_pk3 ", self.coord2_sigma_pk1_pk3
+                        print "Sigma pk3_pk1"     , self.coord2_sigma_pk3_pk1
                         print "Estimated minimum distance",  DMINIMUM			
                 except:
                     cmd.edit_mode()
@@ -425,7 +425,7 @@ class ScanWindow2D():
                 return
                 
             if self.builder.get_object("checkbutton_mass_weight1").get_active():
-                self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                self.coord1_sigma_pk1_pk3, self.coord1_sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
                 
                 """
                    R                    R
@@ -441,20 +441,20 @@ class ScanWindow2D():
                 q1 =  1 / (mpk1 + mpk3)  =  [ mpk1 * r (pk3_pk2)  -   mpk3 * r (pk1_pk2) ]
                 
                 """			
-                DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                DMINIMUM =  (self.coord1_sigma_pk1_pk3 * distance_a1_a2) -(self.coord1_sigma_pk3_pk1 * distance_a2_a3*-1)
                 self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
                 print "\n\nUsing mass weighted restraints"
-                print "Sigma pk1_pk3", self.sigma_pk1_pk3
-                print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                print "Sigma pk1_pk3", self.coord1_sigma_pk1_pk3
+                print "Sigma pk3_pk1", self.coord1_sigma_pk3_pk1
                 print "Estimated minimum distance",  DMINIMUM
                 
             else:
-                self.sigma_pk1_pk3 =  1.0
-                self.sigma_pk3_pk1 = -1.0
+                self.coord1_sigma_pk1_pk3 =  1.0
+                self.coord1_sigma_pk3_pk1 = -1.0
                 DMINIMUM = distance_a1_a2 - distance_a2_a3
                 self.builder.get_object('entry_param_DMINIMUM1').set_text(str(DMINIMUM))
-                print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
-                print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                print "\n\nSigma pk1_pk3 ", self.coord1_sigma_pk1_pk3
+                print "Sigma pk3_pk1", selfcoord1_sigma_pk3_pk1
                 print "Estimated minimum distance",  DMINIMUM	
         
         
@@ -474,7 +474,7 @@ class ScanWindow2D():
                 return
                 
             if self.builder.get_object("checkbutton_mass_weight2").get_active():
-                self.sigma_pk1_pk3, self.sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
+                self.coord2_sigma_pk1_pk3, self.coord2_sigma_pk3_pk1 = compute_sigma_a1_a3 (name1, name3)
                 
                 """
                    R                    R
@@ -490,20 +490,20 @@ class ScanWindow2D():
                 q1 =  1 / (mpk1 + mpk3)  =  [ mpk1 * r (pk3_pk2)  -   mpk3 * r (pk1_pk2) ]
                 
                 """			
-                DMINIMUM =  (self.sigma_pk1_pk3 * distance_a1_a2) -(self.sigma_pk3_pk1 * distance_a2_a3*-1)
+                DMINIMUM =  (self.coord2_sigma_pk1_pk3 * distance_a1_a2) -(self.coord2_sigma_pk3_pk1 * distance_a2_a3*-1)
                 self.builder.get_object('entry_param_DMINIMUM2').set_text(str(DMINIMUM))
                 print "\n\nUsing mass weighted restraints"
-                print "Sigma pk1_pk3", self.sigma_pk1_pk3
-                print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                print "Sigma pk1_pk3", self.coord2_sigma_pk1_pk3
+                print "Sigma pk3_pk1", self.coord2_sigma_pk3_pk1
                 print "Estimated minimum distance",  DMINIMUM
                 
             else:
-                self.sigma_pk1_pk3 =  1.0
-                self.sigma_pk3_pk1 = -1.0
+                self.coord2_sigma_pk1_pk3 =  1.0
+                self.coord2_sigma_pk3_pk1 = -1.0
                 DMINIMUM = distance_a1_a2 - distance_a2_a3
                 self.builder.get_object('entry_param_DMINIMUM2').set_text(str(DMINIMUM))
-                print "\n\nSigma pk1_pk3 ", self.sigma_pk1_pk3
-                print "Sigma pk3_pk1", self.sigma_pk3_pk1
+                print "\n\nSigma pk1_pk3 ", self.coord2_sigma_pk1_pk3
+                print "Sigma pk3_pk1", self.coord2_sigma_pk3_pk1
                 print "Estimated minimum distance",  DMINIMUM
     
     def checkbutton_MassWeight (self, checkbutton):
@@ -552,8 +552,10 @@ class ScanWindow2D():
             
             self.builder.connect_signals(self)
             self.window = self.builder.get_object('ScanWindow')
-            self.sigma_pk1_pk3 = None
-            self.sigma_pk3_pk1 = None
+            self.coord2_sigma_pk1_pk3 = None
+            self.coord2_sigma_pk3_pk1 = None
+            self.coord1_sigma_pk1_pk3 = None
+            self.coord1_sigma_pk3_pk1 = None
             self.builder.get_object("SCAN_entry_trajectory_name").set_text(text)
             
             
