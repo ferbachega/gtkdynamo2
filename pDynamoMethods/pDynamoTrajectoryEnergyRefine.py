@@ -73,14 +73,14 @@ def parallel_energy_refine_1D (job):
     
     
 
-def pDynamoTrajectoryEnergyRefine ((system          = None     , 
+def pDynamoTrajectoryEnergyRefine (system           = None     , 
 				   data_path        = None     ,     
 				   trajectory       = None     ,  
 				   reaction_coord1  = None     ,
 				   reaction_coord2  = None     ,
 				   input_type       = 'pkl'    , 
 				   _type            = 'Scan 1D',
-				   nCPUs            = 1        )
+				   nCPUs            = 1        ):
 
                                # Local time  -  LogFileName 
     #----------------------------------------------------------------------------------------
