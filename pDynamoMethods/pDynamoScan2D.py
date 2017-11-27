@@ -78,6 +78,7 @@ def Scan2D(outpath            ,
     log     = DualTextLog(outpath,  "Scan2D.log")  #
     project.system.Summary(log=log)                #
     LogFileName  = 'ScScan2D.log'                  #
+    nCPUs = multiprocessing.cpu_count()
     #----------------------------------------------#
 
     
@@ -226,7 +227,6 @@ def Scan2D(outpath            ,
     project.system.DefineSoftConstraints (constraints)
     RCOORD1 = ''
     RCOORD2 = ''
-    nCPUs = multiprocessing.cpu_count()
 
 
     #-------------------------------------------------------------------------------------------------------------
@@ -373,7 +373,7 @@ def Scan2D(outpath            ,
     
     
     #--------------------------------------------------------------------------#
-    p = multiprocessing.Pool(8)                                                #
+    p = multiprocessing.Pool(nCPUs)                                                #
     muiltdata = (p.map(run_Scan2D_in_parallel, multjobs ))                            #
     #--------------------------------------------------------------------------#
 
@@ -402,7 +402,9 @@ def Scan2D(outpath            ,
         for coord1  in data[i]['coord1']:
             RCOORD1 = RCOORD1 + "%18.8f  " %(coord1)
             j += 1
-
+	
+	RCOORD1 += '\nRCOORD1'
+	
     for data in muiltdata:
         key = data.keys()
         i = key[0]
@@ -410,6 +412,7 @@ def Scan2D(outpath            ,
         for coord2  in data[i]['coord2']:
             RCOORD2 = RCOORD2 + "%18.8f  " %(coord2)
             j += 1
+	RCOORD2 += '\nRCOORD2'
 
 
 
@@ -425,6 +428,8 @@ def Scan2D(outpath            ,
         for j in range(n2):
             text = text + "%18.8f  " % (X[i][j])
     
+    text = text + "\n\n"
+
     for i in range(n1):
         text = text + "\nMATRIX2 "
         for j in range(n2):
