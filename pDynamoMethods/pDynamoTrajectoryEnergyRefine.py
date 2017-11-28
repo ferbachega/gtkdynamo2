@@ -102,6 +102,83 @@ def parallel_energy_refine_1D (job):
 			}     
     return output_parameters
     
+def parallel_energy_refine_2D (job):
+    """ 
+    job = [i, None, REACTION_COORD1, None, trajectory, system, File]
+    """
+    i                =  job[0]
+    j                =  job[1]
+    REACTION_COORD1  =  job[2] 
+    REACTION_COORD2  =  job[3]
+    trajectory       =  job[4]
+    system           =  job[5]
+    coordinate_file  =  job[6]
+
+
+    system.coordinates3  = Unpickle(os.path.join(trajectory, coordinate_file))
+    
+    #--------------------------------------------------------------------------------------
+    mode       = REACTION_COORD1['MODE'] 
+    if mode == "simple-distance":    	    									
+	coord1_ATOM1         = REACTION_COORD1['ATOM1'     ]           
+	coord1_ATOM1_name    = REACTION_COORD1['ATOM1_name']           
+	coord1_ATOM2         = REACTION_COORD1['ATOM2'     ]           
+	coord1_ATOM2_name    = REACTION_COORD1['ATOM2_name']                
+	dist                 = system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+	rcoord1 = [dist]
+
+    if mode == "multiple-distance":
+	coord1_ATOM1         = REACTION_COORD1['ATOM1'     ]           
+	coord1_ATOM1_name    = REACTION_COORD1['ATOM1_name']           
+	coord1_ATOM2         = REACTION_COORD1['ATOM2'     ]           
+	coord1_ATOM2_name    = REACTION_COORD1['ATOM2_name']	          
+	coord1_ATOM3         = REACTION_COORD1['ATOM3'     ]           
+	coord1_ATOM3_name    = REACTION_COORD1['ATOM3_name']	          
+	distance_a1_a2       =  system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+	distance_a2_a3       =  system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+	dist = distance_a1_a2 - distance_a2_a3  
+	rcoord1 = [distance_a1_a2, distance_a2_a3, dist]
+    #--------------------------------------------------------------------------------------
+
+
+
+    #--------------------------------------------------------------------------------------
+    mode       = REACTION_COORD2['MODE'] 
+    if mode == "simple-distance":    	    									
+	coord2_ATOM1         = REACTION_COORD2['ATOM1'     ]           
+	coord2_ATOM1_name    = REACTION_COORD2['ATOM1_name']           
+	coord2_ATOM2         = REACTION_COORD2['ATOM2'     ]           
+	coord2_ATOM2_name    = REACTION_COORD2['ATOM2_name']                
+	dist                 = system.coordinates3.Distance ( coord2_ATOM1, coord2_ATOM2)
+	rcoord2 = [dist]
+
+    if mode == "multiple-distance":
+	coord2_ATOM1         = REACTION_COORD2['ATOM1'     ]           
+	coord2_ATOM1_name    = REACTION_COORD2['ATOM1_name']           
+	coord2_ATOM2         = REACTION_COORD2['ATOM2'     ]           
+	coord2_ATOM2_name    = REACTION_COORD2['ATOM2_name']	          
+	coord2_ATOM3         = REACTION_COORD2['ATOM3'     ]           
+	coord2_ATOM3_name    = REACTION_COORD2['ATOM3_name']	          
+	distance_a1_a2       =  system.coordinates3.Distance ( coord2_ATOM1, coord2_ATOM2)
+	distance_a2_a3       =  system.coordinates3.Distance ( coord2_ATOM2, coord2_ATOM3)
+	dist = distance_a1_a2 - distance_a2_a3  
+	rcoord2 = [distance_a1_a2, distance_a2_a3, dist]
+    #--------------------------------------------------------------------------------------
+
+
+    energy              = system.Energy()
+    dipole              = system.DipoleMoment ()    
+
+    output_parameters = {
+			 (i,j) : {
+			          'energy': energy,
+			          'dipole': dipole,
+			          'coord1': rcoord1,
+			          'coord2': rcoord2
+			          } 
+			}     
+    return output_parameters
+    
     
 
 def pDynamoTrajectoryEnergyRefine (system           = None     , 
@@ -119,7 +196,7 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     localtime = localtime.split()                                                            
     #  0     1    2       3         4                                                        
     #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
-    LogFile = 'Energy_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
+    LogFile = 'Energy_Refine_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
     #----------------------------------------------------------------------------------------
     
     log = DualTextLog(data_path, LogFile)  # LOG
@@ -134,6 +211,12 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     #             SUMMARY             #
     #---------------------------------#
     
+    
+    '''                                
+    #---------------------------------#
+    #           S C A N 1 D           #
+    #---------------------------------#
+    '''
     if _type == '1D':
 	
 	Files    = os.listdir(trajectory)             
@@ -235,26 +318,120 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     
     
     
-    
-    
+
+    '''                                
+    #---------------------------------#
+    #           S C A N 2 D           #
+    #---------------------------------#
+    '''
     if _type == '2D':
 	
 	Files    = os.listdir(trajectory)             
 	multjobs = []                                 
+	i_table  = []
+	j_table  = []
     
 	for File in Files:                            
-	    File2 = File.split('.')               
+	    name  = File.replace('frame', '')
+	    name  = name.split('.')  	    
 	    
-	    if File2[-1] ==  'pkl':               
+	    if name[-1] ==  input_type:              
+		name = name[0].split('_')
+		#File3 = File2[0].split('_')
+		j     = int(name[-1])
+		i     = int(name[-2])
+		#multjobs.append([i, j, trajectory, system, File])
 		
-		File3 = File2[0].split('_')
-		i     = int(File3[-1])
-		j     = int(File3[-2])
-		multjobs.append([i, j, trajectory, system, File])
-    
-    
-    
-    
+		multjobs.append([i, j, REACTION_COORD1, REACTION_COORD2, trajectory, system, File])
+		i_table.append(i)                                                                  
+		j_table.append(j)  
+
+
+	#--------------------------------------------------------------------------#
+	p = multiprocessing.Pool(nCPUs)                                            #
+	muiltdata = (p.map(parallel_energy_refine_2D, multjobs ))                  #
+	#--------------------------------------------------------------------------#
+                                                                                                   
+	#---------------------------------------------------------#
+	i_table  = np.array(i_table)
+	j_table  = np.array(j_table)
+	
+	i_max = i_table.max()
+	j_max = j_table.max()
+	X = np.zeros( (i_max+1, j_max+1) )
+	#---------------------------------------------------------#	
+	
+	
+	for data in muiltdata:
+	    _key              = data.keys()
+	    _key              = _key[0]
+	    
+	    X[_key[0]][_key[1]]        = data[_key]['energy']
+	    #job_results[_key] = str(_key) +' '+str(data[_key]['coord1']) + str(data[_key]['energy'])
+	    #                      0             1                 2                3      4
+	    #job_results[_key] = [ _key, data[_key]['coord1'], data[_key]['coord2'], data[_key]['energy'] ]
+
+	X_norm = X - np.min(X)
+        text_matrix1 = '\n\n'
+        for i in range(0,i_max+1):
+            text_matrix1  += "\nMATRIX1 "
+            for j in range(0,j_max+1):
+                text_matrix1 += "%18.8f  " % (X [i][j])
+        
+        text_matrix1 += '\n\n'
+        for i in range(0,i_max+1):
+            text_matrix1  += "\nMATRIX2 "
+            for j in range(0,j_max+1):
+                text_matrix1 += "%18.8f  " % (X_norm[i][j])
+
+        #---------------------------------------------------------------------------------------------------------------
+        #                                              Time and log file                                                
+        #---------------------------------------------------------------------------------------------------------------
+	text = ""
+	text = text + "\n--------------------------------------------------------------------------------"
+	text = text + "\n                              EasyHybrid SCAN2D"
+	text = text + "\n--------------------------------------------------------------------------------"
+	text = text + "\n"
+	mode1 = REACTION_COORD1['MODE']                                                                                                     #
+	if mode1 == 'simple-distance':                                                                                              							
+	    text = text + "\n----------------------- Coordinate 1 - Simple-Distance -------------------------"								
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD1['ATOM1'],REACTION_COORD1['ATOM1_name']) 
+	    text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD1['ATOM2'],REACTION_COORD1['ATOM2_name']) 
+	    text = text + "\n--------------------------------------------------------------------------------"                           
+																	 
+	if mode1 == "multiple-distance":                                                                                                 
+	    text = text + "\n--------------------- Coordinate 1 - Multiple-Distance -------------------------"							
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD1['ATOM1'], REACTION_COORD1['ATOM1_name'])
+	    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD1['ATOM2'], REACTION_COORD1['ATOM2_name'])
+	    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (REACTION_COORD1['ATOM3'], REACTION_COORD1['ATOM3_name'])
+	#-----------------------------------------------------------------------------------------------------------------------------------#
+
+	mode2 = REACTION_COORD2['MODE']                                                                                                     #
+	if mode2 == 'simple-distance':                                                                                              							
+	    text = text + "\n----------------------- Coordinate 2 - Simple-Distance -------------------------"								
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD2['ATOM1'],REACTION_COORD2['ATOM1_name']) 
+	    text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD2['ATOM2'],REACTION_COORD2['ATOM2_name']) 
+	    text = text + "\n--------------------------------------------------------------------------------"                           
+																	 
+	if mode2 == "multiple-distance":                                                                                                 
+	    text = text + "\n--------------------- Coordinate 1 - Multiple-Distance -------------------------"							
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD2['ATOM1'], REACTION_COORD2['ATOM1_name'])
+	    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD2['ATOM2'], REACTION_COORD2['ATOM2_name'])
+	    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (REACTION_COORD2['ATOM3'], REACTION_COORD2['ATOM3_name'])
+	#-----------------------------------------------------------------------------------------------------------------------------------#
+	    
+	print '\n\nSaving results:'
+	print os.path.join(data_path, LogFile)
+	#--------------------------------------------------------------------------------------------------------------
+	arq = open(os.path.join(data_path, LogFile), 'a')
+        #arq.writelines(header)
+        arq.writelines(text)
+	arq.writelines(text_matrix1)
+        arq.close()
+        #---------------------------------------------------------------------------------------------------------------
+
+
+
     '''	system.coordinates3 = Unpickle(coordinatefile)
 
     if _type == '1D':

@@ -93,7 +93,7 @@ class TrajectoryEnergyRefineDialog():
 	#-------------------------------------------------------------------------------------------------#
 	# 				Coordinate 2
 	#-------------------------------------------------------------------------------------------------#
-	if self.refine_type == 'Scan 2D':
+	if self.refine_type == '2D':
 	    mode       = self.builder.get_object('combobox_reaction_coordiante_type2').get_active_text() 
 	    if mode == "simple-distance":    	    									
 		REACTION_COORD2 = {'MODE'         : mode,                                        
@@ -240,7 +240,7 @@ class TrajectoryEnergyRefineDialog():
                 self.builder.get_object("entry_coord1_ATOM3_name").set_text(name3)
 
         if button == self.builder.get_object('import_indexes_from_PyMOL2'):
-            mode  =  self.builder.get_object('combobox_reaction_coordiante_type').get_active_text()
+            mode  =  self.builder.get_object('combobox_reaction_coordiante_type2').get_active_text()
             if mode == "simple-distance":
                 try:
                     name1, atom1_index, name2, atom2_index, distance_a1_a2 = import_ATOM1_ATOM2("pk1", "pk2")
