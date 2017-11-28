@@ -763,12 +763,13 @@ def ParseProcessLogFile(log_file):
                     Energy.append(float(linex[-1]))
                 except:
                     a = None
-        parameters[1]['type'  ] = 'line'
-        parameters[1]['title' ] = 'SCAN Multiple-Distance'
-        parameters[1]['X'     ] = Frame
-        parameters[1]['Y'     ] = Energy
-        parameters[1]['xlabel'] = 'Frames'
-        parameters[1]['ylabel'] = 'Energy (KJ)'
+        parameters[1]['type'   ] = 'line'
+        parameters[1]['title'  ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'      ] = Frame
+        parameters[1]['Y'      ] = Energy
+        parameters[1]['rcoord1'] = ReactionCoord
+        parameters[1]['xlabel' ] = 'Frames'
+        parameters[1]['ylabel' ] = 'Energy (KJ)'
         
         #parameters[2] = {}
         #parameters[2]['type'  ] = 'line'
@@ -808,12 +809,25 @@ def ParseProcessLogFile(log_file):
                     Energy.append(float(linex[-1]))
                 except:
                     a = None
-        parameters[1]['type'  ] = 'line'
-        parameters[1]['title' ] = 'SCAN Multiple-Distance'
-        parameters[1]['X'     ] = Frame
-        parameters[1]['Y'     ] = Energy
-        parameters[1]['xlabel'] = 'Frames'
-        parameters[1]['ylabel'] = 'Energy (KJ)'
+        
+            if len(linex) == 7:
+                try:
+                    Frame.append(float(linex[0]))
+                    
+                    ReactionCoord.append(float(linex[1])-float(linex[2]))
+                
+                    Energy.append(float(linex[-2]))
+                except:
+                    a = None
+        
+        
+        parameters[1]['type'   ] = 'line'
+        parameters[1]['title'  ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'      ] = Frame
+        parameters[1]['Y'      ] = Energy
+        parameters[1]['rcoord1'] = ReactionCoord
+        parameters[1]['xlabel' ] = 'Frames'
+        parameters[1]['ylabel' ] = 'Energy (KJ)'
         
         #parameters[2] = {}
         #parameters[2]['type'  ] = 'line'
@@ -850,14 +864,27 @@ def ParseProcessLogFile(log_file):
                     ReactionCoord.append(float(linex[1] ))
                     Energy       .append(float(linex[-1]))
                 except:
-                    a = None
-        
-        parameters[1]['type'  ] = 'line'
-        parameters[1]['title' ] = 'SCAN Multiple-Distance'
-        parameters[1]['X'     ] = Frame
-        parameters[1]['Y'     ] = Energy
-        parameters[1]['xlabel'] = 'Frames'
-        parameters[1]['ylabel'] = 'Energy (KJ)'
+                    pass
+            
+            
+            if len(linex) == 5:
+                #print linex
+                
+                try:
+                    Frame        .append(float(linex[0] ))
+                    ReactionCoord.append(float(linex[1] ))
+                    Energy       .append(float(linex[-2]))
+                except:
+                    pass
+
+
+        parameters[1]['type'   ] = 'line'
+        parameters[1]['title'  ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'      ] = Frame
+        parameters[1]['Y'      ] = Energy
+        parameters[1]['rcoord1'] = ReactionCoord
+        parameters[1]['xlabel' ] = 'Frames'
+        parameters[1]['ylabel' ] = 'Energy (KJ)'
         
         #parameters[2] = {}
         #parameters[2]['type'  ] = 'line'
@@ -895,13 +922,23 @@ def ParseProcessLogFile(log_file):
                     Energy       .append(float(linex[-1]))
                 except:
                     a = None
-        
-        parameters[1]['type'  ] = 'line'
-        parameters[1]['title' ] = 'SCAN Multiple-Distance'
-        parameters[1]['X'     ] = Frame
-        parameters[1]['Y'     ] = Energy
-        parameters[1]['xlabel'] = 'Frames'
-        parameters[1]['ylabel'] = 'Energy (KJ)'
+            
+            if len(linex) == 5:
+                #print linex
+                
+                try:
+                    Frame        .append(float(linex[0] ))
+                    ReactionCoord.append(float(linex[1] ))
+                    Energy       .append(float(linex[-2]))
+                except:
+                    pass
+        parameters[1]['type'   ] = 'line'
+        parameters[1]['title'  ] = 'SCAN Multiple-Distance'
+        parameters[1]['X'      ] = Frame
+        parameters[1]['Y'      ] = Energy
+        parameters[1]['rcoord1'] = ReactionCoord
+        parameters[1]['xlabel' ] = 'Frames'
+        parameters[1]['ylabel' ] = 'Energy (KJ)'
         
         #parameters[2] = {}
         #parameters[2]['type'  ] = 'line'

@@ -46,27 +46,58 @@ if not os.path.isdir(EasyHybrid_TMP):
 
 
 def parallel_energy_refine_1D (job):
-    """ Function doc """
-    
-   
-    i          =  job[0] 
-    #None       =  job[1]
-    trajectory =  job[2]
-    system     =  job[3]
-    pklFile    =  job[4]
-    
+    """ 
+    job = [i, None, REACTION_COORD1, None, trajectory, system, File]
+    """
+    i                =  job[0]
+    j                =  job[1]
+    REACTION_COORD1  =  job[2] 
+    REACTION_COORD2  =  job[3]
+    trajectory       =  job[4]
+    system           =  job[5]
+    coordinate_file  =  job[6]
 
 
-    system.coordinates3 = Unpickle(os.path.join(trajectory,pklFile))
+    system.coordinates3  = Unpickle(os.path.join(trajectory, coordinate_file))
+    
+    
+    mode       = REACTION_COORD1['MODE'] 
+
+    if mode == "simple-distance":    	    									
+	coord1_ATOM1         = REACTION_COORD1['ATOM1'     ]           
+	coord1_ATOM1_name    = REACTION_COORD1['ATOM1_name']           
+	coord1_ATOM2         = REACTION_COORD1['ATOM2'     ]           
+	coord1_ATOM2_name    = REACTION_COORD1['ATOM2_name']                
+	dist                 = system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+	rcoord = [dist]
+
+    if mode == "multiple-distance":
+	coord1_ATOM1         = REACTION_COORD1['ATOM1'     ]           
+	coord1_ATOM1_name    = REACTION_COORD1['ATOM1_name']           
+	coord1_ATOM2         = REACTION_COORD1['ATOM2'     ]           
+	coord1_ATOM2_name    = REACTION_COORD1['ATOM2_name']	          
+	coord1_ATOM3         = REACTION_COORD1['ATOM3'     ]           
+	coord1_ATOM3_name    = REACTION_COORD1['ATOM3_name']	          
+									    
+	distance_a1_a2       =  system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
+	distance_a2_a3       =  system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
+	dist = distance_a1_a2 - distance_a2_a3  
+	rcoord = [distance_a1_a2, distance_a2_a3, dist]
+
+
     energy              = system.Energy()
     dipole              = system.DipoleMoment ()    
+    
+    
+    
+    
     
     output_parameters = {
 			 i : {
 			      'energy': energy,
 			      'dipole': dipole,
-			      'coord1': [],
-			      'coord2': []
+			      'coord1': rcoord,
+			      'coord2': None
 			     } 
 			}     
     return output_parameters
@@ -76,8 +107,8 @@ def parallel_energy_refine_1D (job):
 def pDynamoTrajectoryEnergyRefine (system           = None     , 
 				   data_path        = None     ,     
 				   trajectory       = None     ,  
-				   reaction_coord1  = None     ,
-				   reaction_coord2  = None     ,
+				   REACTION_COORD1  = None     ,
+				   REACTION_COORD2  = None     ,
 				   input_type       = 'pkl'    , 
 				   _type            = 'Scan 1D',
 				   nCPUs            = 1        ):
@@ -103,7 +134,7 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     #             SUMMARY             #
     #---------------------------------#
     
-    if _type == 'Scan 1D':
+    if _type == '1D':
 	
 	Files    = os.listdir(trajectory)             
 	multjobs = []                                 
@@ -115,40 +146,98 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    if name[-1] ==  input_type:               
 		
 		name = name[0].split('_')
-		i     = int(name[-1])
-		multjobs.append([i, None, trajectory, system, File])
+		i    = int(name[-1])
+		multjobs.append([i, None, REACTION_COORD1, None, trajectory, system, File])
 	
 	#--------------------------------------------------------------------------#
 	p = multiprocessing.Pool(nCPUs)                                            #
 	muiltdata = (p.map(parallel_energy_refine_1D, multjobs ))                  #
 	#--------------------------------------------------------------------------#
 	total = len(muiltdata)
-
 	X = np.zeros( (total,1) )
-	
-	#keys  = []
-	jobs  = [None]*total
-	
+
+	job_results  = [None]*total
 	for data in muiltdata:
-	    _key       = data.keys()
-	    _key       = _key[0]
+	    _key              = data.keys()
+	    _key              = _key[0]
+	    X[_key][0]        = data[_key]['energy']
+	    #job_results[_key] = str(_key) +' '+str(data[_key]['coord1']) + str(data[_key]['energy'])
+	    #                      0             1                 2                3      4
+	    job_results[_key] = [ _key, data[_key]['coord1'], data[_key]['energy'] ]
+
+	min_value = np.min(X)	
+	
+	
+	text = ''
+	if REACTION_COORD1['MODE'] == "simple-distance":
+	    text = text + "\n"
+	    text = text + "\n--------------------------------------------------------------------------------"
+	    text = text + "\n                              EasyHybrid SCAN"
+	    text = text + "\n--------------------------------------------------------------------------------"
+	    text = text + "\n"
+	    text = text + "\n------------------------- EasyHybrid SCAN Simple-Distance -----------------------"
+	                                                                                         
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( REACTION_COORD1['ATOM1'], REACTION_COORD1['ATOM1_name'])
+	    text = text + "\nATOM2                  =%15i  ATOM NAME2             =%15s"     % ( REACTION_COORD1['ATOM2'], REACTION_COORD1['ATOM2_name'])
+	    text = text + "\nTYPE                   = ENERGY REFINAMENT"
+	    text = text + "\n--------------------------------------------------------------------------------"
 	    
-	    X[_key][0] = data[_key]['energy']
-	    jobs[_key] = str(_key) +' '+ str(data[_key]['energy'])
+	    text = text + "\n\n-------------------------------------------------------------------------------------------------------------------------"
+	    text = text + "\n       Frame     distance-pK1-pK2         Energy(kJ/mol)       Energy_Norm(kJ/mol)         Energy(kCal/mol)"
+	    text = text + "\n---------------------------------------------------------------------------------------------------------------------------"
 	
+	    for line in job_results:
+		                #0             1            2                3         4            
+		text = text + "\n%9i       %13.12f       %13.12f       %13.12f       %13.12f"% (int(line[0])                 , 
+		                                                                              float(line[1][0])              , 
+											            line[2]                  , 
+												    line[2] - min_value      , 
+												   (line[2] - min_value)/4.18)
 	
-	#for line in jobs:
-	#    print line
-	#print X
+	if REACTION_COORD1['MODE'] == "multiple-distance":
+	    text = text + "\n"
+	    text = text + "\n--------------------------------------------------------------------------------"
+	    text = text + "\n                              EasyHybrid SCAN"
+	    text = text + "\n--------------------------------------------------------------------------------"
+	    text = text + "\n"
+	    text = text + "\n------------------------ EasyHybrid SCAN Multiple-Distance ----------------------"	
+	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % ( REACTION_COORD1['ATOM1'], REACTION_COORD1['ATOM1_name'])
+	    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % ( REACTION_COORD1['ATOM2'], REACTION_COORD1['ATOM2_name'])
+	    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % ( REACTION_COORD1['ATOM3'], REACTION_COORD1['ATOM3_name'])		
+	    text = text + "\nTYPE                   = ENERGY REFINAMENT"
+	    text = text + "\n--------------------------------------------------------------------------------"
+	    text = text + "\n\n--------------------------------------------------------------------------------------------------------------------------------------------------------"
+	    text = text + "\n      Frame     distance1-pK1-pK2      distance2-pK2-pK3      dis1-dis2         Energy(kJ/mol)       Energy_Norm(kJ/mol)         Energy(kCal/mol)"
+	    text = text + "\n----------------------------------------------------------------------------------------------------------------------------------------------------------"
+
+	    for line in job_results:                                                             # index           Dist           energy   energy norm           energy kcal
+				#0             1            2                3         4             5              6
+		text = text + "\n%9i       %13.12f       %13.12f       %13.12f       %13.12f       %13.12f       %13.12f"% (int(line[0])                      , # 0
+															   float(line[1][0])                    , # 1
+															   float(line[1][1])                    , # 2
+															   float(line[1][0]) - float(line[1][1]), # 3
+															         line[2]                        , # 4
+															         line[2] - min_value            , # 5
+															        (line[2] - min_value)/4.18)       # 6
+
+	text = str(text)
+	
+	arq = open(os.path.join(data_path, LogFile), 'a')
+	arq.writelines(text)
+	arq.close()
+
+	for line in job_results:
+	    print line[0], line[1], line[2], line[2] - min_value, (line[2] - min_value)/4.18
+	
+	print '\n\nSaving results:'
+	print os.path.join(data_path, LogFile)
+  
     
-    #print muiltdata
     
     
     
     
-    
-    
-    if _type == 'Scan 2D':
+    if _type == '2D':
 	
 	Files    = os.listdir(trajectory)             
 	multjobs = []                                 
