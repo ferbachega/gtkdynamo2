@@ -181,7 +181,8 @@ class PlotGTKWindow:
                 ax.grid(c='k', ls='-')#, alpha=0.3)
                 #ax.contourf(matrix,colors = 'k', linewidths = (1,),origin='image')
                 
-                im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
+                #im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
+                im  = ax.imshow(matrix, cmap=cmap, interpolation ='bicubic')
                 #c = plt.contour(matrix, colors = 'k', linewidths = (1,),origin='image')#, extent=extent)
                 #c = contour(matrix, colors = 'k', linewidths = (1,))
                 fig.colorbar(im, ax=ax)
