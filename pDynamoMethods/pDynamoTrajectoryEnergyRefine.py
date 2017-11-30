@@ -137,7 +137,8 @@ def parallel_energy_refine_2D (job):
 	distance_a1_a2       =  system.coordinates3.Distance ( coord1_ATOM1, coord1_ATOM2)
 	distance_a2_a3       =  system.coordinates3.Distance ( coord1_ATOM2, coord1_ATOM3)
 	dist = distance_a1_a2 - distance_a2_a3  
-	rcoord1 = [distance_a1_a2, distance_a2_a3, dist]
+	#rcoord1 = [distance_a1_a2, distance_a2_a3, dist]
+	rcoord1 = dist
     #--------------------------------------------------------------------------------------
 
 
@@ -162,7 +163,8 @@ def parallel_energy_refine_2D (job):
 	distance_a1_a2       =  system.coordinates3.Distance ( coord2_ATOM1, coord2_ATOM2)
 	distance_a2_a3       =  system.coordinates3.Distance ( coord2_ATOM2, coord2_ATOM3)
 	dist = distance_a1_a2 - distance_a2_a3  
-	rcoord2 = [distance_a1_a2, distance_a2_a3, dist]
+	#rcoord2 = [distance_a1_a2, distance_a2_a3, dist]
+	rcoord2 = dist
     #--------------------------------------------------------------------------------------
 
 
@@ -359,14 +361,18 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	i_max = i_table.max()
 	j_max = j_table.max()
 	X = np.zeros( (i_max+1, j_max+1) )
+	X_rcoord1 = np.zeros( (i_max+1, j_max+1) )
+	X_rcoord2 = np.zeros( (i_max+1, j_max+1) )
 	#---------------------------------------------------------#	
-	
 	
 	for data in muiltdata:
 	    _key              = data.keys()
 	    _key              = _key[0]
 	    
-	    X[_key[0]][_key[1]]        = data[_key]['energy']
+	    X        [_key[0]][_key[1]] = data[_key]['energy']
+	    X_rcoord1[_key[0]][_key[1]] = float(data[_key]['coord1'])
+	    X_rcoord2[_key[0]][_key[1]] = float(data[_key]['coord2'])
+	    
 	    #job_results[_key] = str(_key) +' '+str(data[_key]['coord1']) + str(data[_key]['energy'])
 	    #                      0             1                 2                3      4
 	    #job_results[_key] = [ _key, data[_key]['coord1'], data[_key]['coord2'], data[_key]['energy'] ]
@@ -383,6 +389,19 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
             text_matrix1  += "\nMATRIX2 "
             for j in range(0,j_max+1):
                 text_matrix1 += "%18.8f  " % (X_norm[i][j])
+
+
+        text_coord = '\n\n'
+        for i in range(0,i_max+1):
+            text_coord  += "\nRCOORD1 "
+            for j in range(0,j_max+1):
+                text_coord += "%18.8f  " % (X_rcoord1[i][j])
+
+        text_coord += '\n\n'
+        for i in range(0,i_max+1):
+            text_coord  += "\nRCOORD2 "
+            for j in range(0,j_max+1):
+                text_coord += "%18.8f  " % (X_rcoord2[i][j])
 
         #---------------------------------------------------------------------------------------------------------------
         #                                              Time and log file                                                
@@ -427,6 +446,7 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
         #arq.writelines(header)
         arq.writelines(text)
 	arq.writelines(text_matrix1)
+	arq.writelines(text_coord)
         arq.close()
         #---------------------------------------------------------------------------------------------------------------
 

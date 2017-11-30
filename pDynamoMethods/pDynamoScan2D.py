@@ -230,9 +230,9 @@ def Scan2D(outpath            ,
 
 
     #-------------------------------------------------------------------------------------------------------------
-    text    = text    + "\nMATRIX1 "                                                                              
-    RCOORD1 = RCOORD1 + '\nRCOORD1'
-    RCOORD2 = RCOORD2 + '\nRCOORD2' 
+    text    = text    + "\n"                                                                              
+    RCOORD1 = RCOORD1 + '\n'
+    RCOORD2 = RCOORD2 + '\n' 
     
     multjobs = []
 	
@@ -383,20 +383,23 @@ def Scan2D(outpath            ,
         key = data.keys()
         i = key[0]
         j = 0
+        RCOORD1 += '\nRCOORD1'
         for coord1  in data[i]['coord1']:
             RCOORD1 = RCOORD1 + "%18.8f  " %(coord1)
             j += 1
 	
-	RCOORD1 += '\nRCOORD1'
+	
 	
     for data in muiltdata:
         key = data.keys()
         i = key[0]
         j = 0
+        RCOORD2 += '\nRCOORD2'
         for coord2  in data[i]['coord2']:
             RCOORD2 = RCOORD2 + "%18.8f  " %(coord2)
             j += 1
-	RCOORD2 += '\nRCOORD2'
+        
+	
 
 
 

@@ -178,10 +178,11 @@ class PlotGTKWindow:
                 matrix = parameters[i]['matrix']
                 fig = Figure(figsize=(5, 4), dpi=100)
                 ax  = fig.add_subplot(111)
-                
+                ax.grid(c='k', ls='-')#, alpha=0.3)
+                #ax.contourf(matrix,colors = 'k', linewidths = (1,),origin='image')
                 
                 im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
-                c = plt.contour(matrix, colors = 'k', linewidths = (1,),origin='image')#, extent=extent)
+                #c = plt.contour(matrix, colors = 'k', linewidths = (1,),origin='image')#, extent=extent)
                 #c = contour(matrix, colors = 'k', linewidths = (1,))
                 fig.colorbar(im, ax=ax)
                 #fig.contour(c, ax=ax)
