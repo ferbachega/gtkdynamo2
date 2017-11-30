@@ -62,7 +62,7 @@ class PlotGTKWindow:
             y = sin(2*pi*x)
         
         
-        print (parameters)
+        #print (parameters)
         
         
         def tk_plot ():
@@ -121,9 +121,9 @@ class PlotGTKWindow:
             gtk.main()
 
         #try:
-        import matplotlib.backends.backend_gtkagg # arrumar isso depois! :D
+        #import matplotlib.backends.backend_gtkagg # arrumar isso depois! :D
         gtk_plot()
-        print 'Using GTK plot'
+        #print 'Using GTK plot'
         #except:
         #    simulate=multiprocessing.Process(None, tk_plot)
         #    simulate.start()
@@ -143,28 +143,62 @@ class PlotGTKWindow:
                 
                 ax  = fig.add_subplot(plots, 1, i,)
                 ax.grid(True)
-        
+                
+                # Setting plot type
+                ax.plot(x, y, 'ko',x, y,'k', picker=5)
+
+                # Hide right and top spines
+                ax.spines['right'].set_visible(False)
+                ax.spines['top'].set_visible(False)
+                ax.yaxis.set_ticks_position('left')
+                ax.xaxis.set_ticks_position('bottom')
+                
+                # Set x and y labels
                 ax.set_xlabel(parameters[i]['xlabel'])
                 ax.set_ylabel(parameters[i]['ylabel'])
-                ax.plot(x, y, 'ko',x, y,'k', picker=5)
+                
+                def onpick(event):
+					ydata = y
+					ind = event.ind
+					frame = ind[0] + 1
+					iy = str(ydata[ind])
+					print 'Structure_%s = %s' % (str(frame), iy)
+
+                fig.canvas.mpl_connect('pick_event', onpick)
+            
                 
             if parameters[i]['type'] == 'matrix':
+				
                 import gtk
-                from matplotlib.figure import Figure
-                from numpy import arange, sin, pi
-
-                # uncomment to select /GTK/GTKAgg/GTKCairo
-                #from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
                 from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
-                #from matplotlib.backends.backend_gtkcairo import FigureCanvasGTKCairo as FigureCanvas
-
-                # or NavigationToolbar for classic
-                #from matplotlib.backends.backend_gtk import NavigationToolbar2GTK as NavigationToolbar
                 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 
-                # implement the default mpl key bindings
-                from matplotlib.backend_bases import key_press_handler
+                win = gtk.Window()
+                win.connect("destroy", lambda x: gtk.main_quit())
+                win.set_default_size(400, 300)
+                win.set_title("Embedding in GTK")
 
+                vbox = gtk.VBox()
+                win.add(vbox)
+                           
+                matrix = parameters[i]['matrix']
+                fig, (ax) = plt.subplots(nrows=1)
+                
+                # Setting plot type
+                im = ax.contour(matrix)                           #ax.imshow(matrix, interpolation = 'bicubic')       
+                ax.clabel(im, inline=1, fontsize=10, fmt='%1.1f') # if using imshow, comment this line
+                #fig.colorbar(im, ax=ax)                          # and remove comment here             
+       
+                # a gtk.DrawingArea
+                canvas = FigureCanvas(fig)  
+                vbox.pack_start(canvas)
+                toolbar = NavigationToolbar(canvas, win)
+                vbox.pack_start(toolbar, False, False)
+                
+                win.show_all()
+                gtk.main()
+                
+                '''
                 win = gtk.Window()
                 win.connect("destroy", lambda x: gtk.main_quit())
                 win.set_default_size(400, 300)
@@ -179,45 +213,21 @@ class PlotGTKWindow:
                 fig = Figure(figsize=(5, 4), dpi=100)
                 ax  = fig.add_subplot(111)
                 ax.grid(c='k', ls='-')#, alpha=0.3)
-                #ax.contourf(matrix,colors = 'k', linewidths = (1,),origin='image')
-                
-                #im  = ax.imshow(matrix, cmap=cmap, interpolation='nearest')
-                im  = ax.imshow(matrix, cmap=cmap, interpolation ='bicubic')
-                #c = plt.contour(matrix, colors = 'k', linewidths = (1,),origin='image')#, extent=extent)
-                #c = contour(matrix, colors = 'k', linewidths = (1,))
-                fig.colorbar(im, ax=ax)
-                #fig.contour(c, ax=ax)
-                #fig.colorbar(c, ax=ax)
-                
-                #from matplotlib.mlab import griddata
-                #from numpy.random import uniform, seed
-                #seed(0)
-                #npts = 200
-                #x = uniform(-2, 2, npts)
-                #y = uniform(-2, 2, npts)
-                #z = x*np.exp(-x**2 - y**2)
-                ## define grid.
-                #xi = np.linspace(-2.1, 2.1, 100)
-                #yi = np.linspace(-2.1, 2.1, 200)
-                ## grid the data.
-                #zi = griddata(x, y, z, xi, yi, interp='linear')
-                ## contour the gridded data, plotting dots at the nonuniform data points.
-                #
-                #CS = plt.contour(xi, yi, zi, 15, linewidths=0.5, colors='k')
-                #CS = plt.contourf(xi, yi, zi, 15, cmap=plt.cm.rainbow,
-                #                  vmax=abs(zi).max(), vmin=-abs(zi).max())
-                
-                #c = plt.contour(matrix, colors = 'k', linewidths = (1,))
-                #t = arange(0.0, 3.0, 0.01)
-                #s = sin(2*pi*t)
 
-                #ax.plot(t, s)
+                im  = ax.imshow(matrix, cmap=cmap, interpolation ='bicubic')
+
+                fig.colorbar(im, ax=ax)
 
                 canvas = FigureCanvas(fig)  # a gtk.DrawingArea
                 vbox.pack_start(canvas)
                 toolbar = NavigationToolbar(canvas, win)
                 vbox.pack_start(toolbar, False, False)
-
+                            
+                win.show_all()
+						
+                     
+                
+                
                 def on_key_event(event):
                     print('you pressed %s' % event.key)
                     key_press_handler(event, canvas, toolbar)
@@ -228,7 +238,6 @@ class PlotGTKWindow:
                 gtk.main()
                 
                 
-                '''
                 from numpy.random import uniform, seed
                 from matplotlib.mlab import griddata
                 import matplotlib.pyplot as plt
