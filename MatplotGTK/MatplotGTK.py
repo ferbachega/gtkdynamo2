@@ -132,7 +132,9 @@ class PlotGTKWindow:
     
     def  figure_plot(self, parameters, fig):
         """ Function doc """
-        
+        import mpl_toolkits.axisartist as AA
+	from mpl_toolkits.axes_grid1 import host_subplot
+
         plots = len(parameters)
         
         for i in parameters:
@@ -141,22 +143,52 @@ class PlotGTKWindow:
                 x = parameters[i]['X']
                 y = parameters[i]['Y']
                 
+                #if parameters[1]['title'  ] == 'SCAN Multiple-Distance':
+					
+		#z = parameters[1]['rcoord1']
+		#
+		#ax  = fig.add_subplot(plots, 1, i,)
+		##ax = host_subplot(111, axes_class=AA.Axes)
+		#xx = np.arange(0, 2*np.pi, 0.01)
+		#ax.plot(xx, np.sin(xx))
+                #
+		#ax2 = ax.twin()  # ax2 is responsible for "top" axis and "right" axis
+		#ax2.set_xticks([0., .5*np.pi, np.pi, 1.5*np.pi, 2*np.pi])
+		#ax2.set_xticklabels(["$0$", r"$\frac{1}{2}\pi$",r"$\pi$", r"$\frac{3}{2}\pi$", r"$2\pi$"])
+                #
+		#ax2.axis["right"].major_ticklabels.set_visible(False)
+		#ax2.axis["top"].major_ticklabels.set_visible(True)
+		#
+		#
+		#plt.draw()
+		#plt.show()
+		
+                #else:
+				#	z = None
+		##ax = host_subplot(111, axes_class=AA.Axes)			 
                 ax  = fig.add_subplot(plots, 1, i,)
                 ax.grid(True)
                 
                 # Setting plot type
                 ax.plot(x, y, 'ko',x, y,'k', picker=5)
-
+		#ax.plot(z, y, 'ko', z, y,'k', picker=5)
+                
                 # Hide right and top spines
                 ax.spines['right'].set_visible(False)
-                ax.spines['top'].set_visible(False)
+                ax.spines['top'].set_visible(True)
                 ax.yaxis.set_ticks_position('left')
                 ax.xaxis.set_ticks_position('bottom')
+                
+                #if z
                 
                 # Set x and y labels
                 ax.set_xlabel(parameters[i]['xlabel'])
                 ax.set_ylabel(parameters[i]['ylabel'])
-                
+		#ax.set_zlabel(parameters[1]['rcoord1'])
+		#
+		##ax2 = ax.twin()  # ax2 is responsible for "top" axis and "right" axis
+		##ax2.set_xticks(x)
+		
                 def onpick(event):
 					ydata = y
 					ind = event.ind
@@ -183,18 +215,28 @@ class PlotGTKWindow:
                            
                 matrix = parameters[i]['matrix']
                 fig, (ax) = plt.subplots(nrows=1)
-                
-                # Setting plot type
-                im = ax.contour(matrix)                           #ax.imshow(matrix, interpolation = 'bicubic')       
-                ax.clabel(im, inline=1, fontsize=10, fmt='%1.1f') # if using imshow, comment this line
-                #fig.colorbar(im, ax=ax)                          # and remove comment here             
-       
+		
+                coord1 = parameters[1]['xlabel']
+                coord2 = parameters[1]['ylabel']
+		
+		# Setting plot type
+                im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
+                am = ax.contour(matrix, colors='k')
+                ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
+                fig.colorbar(im, ax=ax)                          # and remove comment here             
+		
+		# Set x and y labels
+		#ax.set_xlabel(coord1)
+		ax.set_ylabel(coord2)
+		
                 # a gtk.DrawingArea
                 canvas = FigureCanvas(fig)  
                 vbox.pack_start(canvas)
                 toolbar = NavigationToolbar(canvas, win)
                 vbox.pack_start(toolbar, False, False)
                 
+		print parameters[1]
+		
                 win.show_all()
                 gtk.main()
                 
