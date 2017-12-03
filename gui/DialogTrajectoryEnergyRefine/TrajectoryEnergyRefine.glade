@@ -22,7 +22,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -36,7 +35,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
                 <signal name="clicked" handler="runTrajectoryEnergyRefine" swapped="no"/>
               </object>
               <packing>
@@ -239,6 +237,34 @@
                             <property name="position">0</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkCheckButton" id="checkbutton_set_MM_charges_to_zero">
+                            <property name="label" translatable="yes">Set MM charges to Zero</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkCheckButton" id="checkbutton_exclude_MM_atoms">
+                            <property name="label" translatable="yes">Exclude MM atoms</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">False</property>
+                            <property name="draw_indicator">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -330,6 +356,15 @@
                                 <property name="n_columns">5</property>
                                 <property name="column_spacing">10</property>
                                 <property name="row_spacing">5</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
                                 <child>
                                   <object class="GtkLabel" id="label_coord1_atom1">
                                     <property name="visible">True</property>
@@ -518,15 +553,6 @@
                                     <property name="bottom_attach">3</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -541,7 +567,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="Button_import_PyMOL_index" swapped="no"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox4">
@@ -651,6 +676,15 @@
                                 <property name="n_columns">5</property>
                                 <property name="column_spacing">10</property>
                                 <property name="row_spacing">5</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
                                 <child>
                                   <object class="GtkLabel" id="label_coord2_atom1">
                                     <property name="visible">True</property>
@@ -839,15 +873,6 @@
                                     <property name="bottom_attach">3</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -862,7 +887,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
                                 <signal name="clicked" handler="Button_import_PyMOL_index" swapped="no"/>
                                 <child>
                                   <object class="GtkHBox" id="hbox6">
@@ -1104,7 +1128,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="geo_opt_change" swapped="no"/>
                     <child>

@@ -25,6 +25,7 @@ import os
 import time
 #import sys
 import numpy as np
+#import copy
 # pDynamo
 from pBabel import *
 from pCore import *
@@ -106,13 +107,14 @@ def parallel_energy_refine_2D (job):
     """ 
     job = [i, None, REACTION_COORD1, None, trajectory, system, File]
     """
-    i                =  job[0]
-    j                =  job[1]
-    REACTION_COORD1  =  job[2] 
-    REACTION_COORD2  =  job[3]
-    trajectory       =  job[4]
-    system           =  job[5]
-    coordinate_file  =  job[6]
+    i                     =  job[0]
+    j                     =  job[1]
+    REACTION_COORD1       =  job[2] 
+    REACTION_COORD2       =  job[3]
+    trajectory            =  job[4]
+    system                =  job[5]
+    coordinate_file       =  job[6]
+
 
 
     system.coordinates3  = Unpickle(os.path.join(trajectory, coordinate_file))
@@ -167,10 +169,12 @@ def parallel_energy_refine_2D (job):
 	rcoord2 = dist
     #--------------------------------------------------------------------------------------
 
-
-    energy              = system.Energy()
-    dipole              = system.DipoleMoment ()    
-
+    try:
+	energy              = system.Energy()
+	dipole              = system.DipoleMoment ()    
+    except:
+	energy              =  None
+	dipole              =  None
     output_parameters = {
 			 (i,j) : {
 			          'energy': energy,
@@ -184,13 +188,16 @@ def parallel_energy_refine_2D (job):
     
 
 def pDynamoTrajectoryEnergyRefine (system           = None     , 
-				   data_path        = None     ,     
-				   trajectory       = None     ,  
-				   REACTION_COORD1  = None     ,
-				   REACTION_COORD2  = None     ,
-				   input_type       = 'pkl'    , 
-				   _type            = 'Scan 1D',
-				   nCPUs            = 1        ):
+                                   data_path        = None     ,     
+                                   trajectory       = None     ,  
+                                   REACTION_COORD1  = None     ,
+                                   REACTION_COORD2  = None     ,
+                                   input_type       = 'pkl'    , 
+                                   _type            = 'Scan 1D',
+                                   nCPUs            = 1        ,
+                                   
+                                   set_MM_chrgs_to_zero = False,
+                                   exclude_MM_atoms     = False,):
 
                                # Local time  -  LogFileName 
     #----------------------------------------------------------------------------------------
@@ -212,8 +219,7 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     #---------------------------------#
     #             SUMMARY             #
     #---------------------------------#
-    
-    
+
     '''                                
     #---------------------------------#
     #           S C A N 1 D           #
@@ -232,8 +238,16 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 		
 		name = name[0].split('_')
 		i    = int(name[-1])
-		multjobs.append([i, None, REACTION_COORD1, None, trajectory, system, File])
+		multjobs.append([i, None, REACTION_COORD1, None, trajectory, system, File, exclude_MM_atoms, set_MM_chrgs_to_zero])
 	
+    #coordinate_file 
+    #exclude_MM_atoms
+    #exclude_MM_atoms      =  job[7]
+    #
+    #set_MM_chrgs_to_zero  =  job[8]
+    
+    
+    
 	#--------------------------------------------------------------------------#
 	p = multiprocessing.Pool(nCPUs)                                            #
 	muiltdata = (p.map(parallel_energy_refine_1D, multjobs ))                  #
@@ -249,6 +263,7 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    #job_results[_key] = str(_key) +' '+str(data[_key]['coord1']) + str(data[_key]['energy'])
 	    #                      0             1                 2                3      4
 	    job_results[_key] = [ _key, data[_key]['coord1'], data[_key]['energy'] ]
+
 
 	min_value = np.min(X)	
 	
@@ -344,16 +359,34 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 		i     = int(name[-2])
 		#multjobs.append([i, j, trajectory, system, File])
 		
-		multjobs.append([i, j, REACTION_COORD1, REACTION_COORD2, trajectory, system, File])
+		multjobs.append([i, j, REACTION_COORD1, REACTION_COORD2, trajectory, system, File, exclude_MM_atoms, set_MM_chrgs_to_zero])
 		i_table.append(i)                                                                  
 		j_table.append(j)  
 
-
-	#--------------------------------------------------------------------------#
-	p = multiprocessing.Pool(nCPUs)                                            #
-	muiltdata = (p.map(parallel_energy_refine_2D, multjobs ))                  #
-	#--------------------------------------------------------------------------#
-                                                                                                   
+	#if set_MM_chrgs_to_zero:
+	
+	
+	
+	
+	
+	#-----------------------------------------------------------------------------------------------#
+	if nCPUs == 1:
+	    muiltdata = []
+	    for jobin in multjobs:
+		job = parallel_energy_refine_2D(jobin)
+		muiltdata.append(job)
+		before_energy = job[(jobin[0],jobin[1])]['energy']
+	else:
+	    #--------------------------------------------------------------------------#
+	    p = multiprocessing.Pool(nCPUs)                                            #
+	    muiltdata = (p.map(parallel_energy_refine_2D, multjobs ))                  #
+	    #--------------------------------------------------------------------------#
+	#-----------------------------------------------------------------------------------------------#
+	
+	
+	
+	
+    
 	#---------------------------------------------------------#
 	i_table  = np.array(i_table)
 	j_table  = np.array(j_table)
@@ -365,17 +398,30 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	X_rcoord2 = np.zeros( (i_max+1, j_max+1) )
 	#---------------------------------------------------------#	
 	
+	
+	energy_max = None
+	
 	for data in muiltdata:
 	    _key              = data.keys()
 	    _key              = _key[0]
 	    
-	    X        [_key[0]][_key[1]] = data[_key]['energy']
+	    if data[_key]['energy'] == None:
+		X        [_key[0]][_key[1]] = energy_max
+	    
+	    else:
+		X        [_key[0]][_key[1]] = data[_key]['energy']
+		#before_energy               =  data[_key]['energy']
+	    
+	    if X[_key[0]][_key[1]] > energy_max:
+		energy_max = X[_key[0]][_key[1]]
+	    
+	    
 	    X_rcoord1[_key[0]][_key[1]] = float(data[_key]['coord1'])
 	    X_rcoord2[_key[0]][_key[1]] = float(data[_key]['coord2'])
 	    
-	    #job_results[_key] = str(_key) +' '+str(data[_key]['coord1']) + str(data[_key]['energy'])
-	    #                      0             1                 2                3      4
-	    #job_results[_key] = [ _key, data[_key]['coord1'], data[_key]['coord2'], data[_key]['energy'] ]
+
+
+
 
 	X_norm = X - np.min(X)
         text_matrix1 = '\n\n'
@@ -423,7 +469,9 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD1['ATOM1'], REACTION_COORD1['ATOM1_name'])
 	    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD1['ATOM2'], REACTION_COORD1['ATOM2_name'])
 	    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (REACTION_COORD1['ATOM3'], REACTION_COORD1['ATOM3_name'])
-	#-----------------------------------------------------------------------------------------------------------------------------------#
+	    text = text + "\n--------------------------------------------------------------------------------"                           
+
+    #-----------------------------------------------------------------------------------------------------------------------------------#
 
 	mode2 = REACTION_COORD2['MODE']                                                                                                     #
 	if mode2 == 'simple-distance':                                                                                              							
@@ -433,11 +481,13 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    text = text + "\n--------------------------------------------------------------------------------"                           
 																	 
 	if mode2 == "multiple-distance":                                                                                                 
-	    text = text + "\n--------------------- Coordinate 1 - Multiple-Distance -------------------------"							
+	    text = text + "\n--------------------- Coordinate 2 - Multiple-Distance -------------------------"							
 	    text = text + "\nATOM1                  =%15i  ATOM NAME1             =%15s"     % (REACTION_COORD2['ATOM1'], REACTION_COORD2['ATOM1_name'])
 	    text = text + "\nATOM2*                 =%15i  ATOM NAME2             =%15s"     % (REACTION_COORD2['ATOM2'], REACTION_COORD2['ATOM2_name'])
 	    text = text + "\nATOM3                  =%15i  ATOM NAME3             =%15s"     % (REACTION_COORD2['ATOM3'], REACTION_COORD2['ATOM3_name'])
-	#-----------------------------------------------------------------------------------------------------------------------------------#
+	    text = text + "\n--------------------------------------------------------------------------------"                           
+
+    #-----------------------------------------------------------------------------------------------------------------------------------#
 	    
 	print '\n\nSaving results:'
 	print os.path.join(data_path, LogFile)

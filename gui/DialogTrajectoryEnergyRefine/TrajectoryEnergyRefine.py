@@ -27,7 +27,7 @@ import gtk
 import time
 import gobject
 from WindowControl import *
-
+import copy
 # pDynamo
 from pBabel           import *
 from pCore            import *
@@ -49,7 +49,6 @@ class TrajectoryEnergyRefineDialog():
         """ Function doc """
         
         trajectory = self.builder.get_object('filechooserbutton1').get_filename()
-        system     = self.project.system
         data_path  = self.project.settings['data_path']
         logfile    = self.builder.get_object('filechooserbutton4').get_filename()
         input_type = self.builder.get_object('combobox4').get_active_text()
@@ -58,6 +57,20 @@ class TrajectoryEnergyRefineDialog():
         REACTION_COORD1 = None
 	REACTION_COORD2 = None
 	
+	set_MM_chrgs_to_zero = False
+	exclude_MM_atoms     = False
+	system     = Clone(self.project.system)
+	
+	if self.builder.get_object("checkbutton_set_MM_charges_to_zero").get_active():
+	    charges =  system.energyModel.mmAtoms.AtomicCharges()
+	    natoms  = len(charges)
+	    ZeroCharges = [0.0] * natoms
+	    system.energyModel.mmAtoms.SetAtomicCharges(ZeroCharges)
+        
+	
+
+	#if self.builder.get_object("checkbutton_exclude_MM_atoms").get_active():
+	#    exclude_MM_atoms = True
 	
 	#_type = None
         
@@ -84,7 +97,6 @@ class TrajectoryEnergyRefineDialog():
 			       }                                        
 	#-------------------------------------------------------------------------------------------------#
 	
-
 
 
 	
@@ -147,15 +159,23 @@ class TrajectoryEnergyRefineDialog():
 	'''
 	
 	_type = 'energy'
-	pDynamoTrajectoryEnergyRefine (system           = system          , 
-				       data_path        = data_path       ,     
-				       trajectory       = trajectory      ,  
-				       REACTION_COORD1  = REACTION_COORD1 ,
-				       REACTION_COORD2  = REACTION_COORD2 ,
-				       input_type       = input_type      , 
-				       _type            = self.refine_type,
-				       nCPUs            = nCPUs           )
+	
+	
+	
+	pDynamoTrajectoryEnergyRefine (system               = system              , 
+				       data_path            = data_path           ,     
+				       trajectory           = trajectory          ,  
+				       REACTION_COORD1      = REACTION_COORD1     ,
+				       REACTION_COORD2      = REACTION_COORD2     ,
+				       input_type           = input_type          , 
+				       _type                = self.refine_type    ,
+				       nCPUs                = nCPUs               ,
+				       set_MM_chrgs_to_zero = set_MM_chrgs_to_zero,
+				       exclude_MM_atoms     = exclude_MM_atoms    )   
 
+	#if self.builder.get_object("checkbutton_set_MM_charges_to_zero").get_active():
+	#    self.project.system.energyModel.mmAtoms.SetAtomicCharges(charges)
+        #
 
     def Button_import_PyMOL_index(self, button):
         '''

@@ -23,13 +23,14 @@
 #  
 import os
 from pprint import pprint
+
 logList = [
         #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/2_step_MolecularDynamics.log'   , 
         #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/6_step_GeometryOptimization.log' , 
         #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/9_step_GeometryOptimization.log' , 
         #'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/10_step_GeometryOptimization.log', 
-        '/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D.log'                     , 
-		'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D_m.log',
+        '/home/fernando/pDynamoWorkSpace/MtDS_29_Nov_2017/19_step_Scan2D/Scan2D.log'                     , 
+		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/Scan2D_m.log',
 		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/ScanLog-MultipleDistance.log',
 		#'/home/fernando/programs/EasyHybrid2/MatplotGTK/logs/ScanLog-SimpleDistance.log',
         
@@ -352,15 +353,19 @@ def ParseProcessLogFile(log_file):
     """ Function doc """
     parameters = {
                   1: {
-                     'type'  : 'line'    ,   # line / matrix
-                     'title' : ''        ,   #
-                     'X'     : []        ,   # X 
-                     'Y'     : []        ,   # Y 
-                     'xlabel': 'x label' ,   # xlabel,
-                     'ylabel': 'y label' ,   # ylabel,
+                     'type'        : 'line'    ,   # line / matrix
+                     'title'       : ''        ,   #
+                     'X'           : []        ,   # X 
+                     'Y'           : []        ,   # Y 
+                     'xlabel'      : 'x label' ,   # xlabel,
+                     'ylabel'      : 'y label' ,   # ylabel,
+                     'energy_model': 'UNK'     ,
                      }
                  }
     parameters[1]['log_file'] = log_file
+    
+    summary_arameters = ParseSummaryLogFile(log_file)
+    parameters[1]['energy_model'] = summary_arameters['Energy Model']
     
     log = open( log_file , "r")
     #print log
@@ -617,8 +622,8 @@ def ParseProcessLogFile(log_file):
                 pass
 
 
-
         import numpy as np
+
         X  = np.array(matrix_lines)
         R1 = np.array(rcoord1_lines)
         R2 = np.array(rcoord2_lines)
@@ -1359,13 +1364,13 @@ def ParseProcessLogFile(log_file):
 
 
 
-
+'''
 def main():  
     for log_file in logList:
         parameters = ParseProcessLogFile (log_file)
-    #pprint (parameters)
+    pprint (parameters)
     return 0
 
 if __name__ == '__main__':
 	main()
-
+'''
