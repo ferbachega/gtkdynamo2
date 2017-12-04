@@ -54,7 +54,7 @@ class PlotGTKWindow:
 
 	win = gtk.Window()
 	win.connect("destroy", lambda x: gtk.main_quit())
-	win.set_default_size(400, 300)
+	win.set_default_size(500, 500)
 	
 	title = parameters[1]['energy_model']
 	title = parameters[1]['log_file']

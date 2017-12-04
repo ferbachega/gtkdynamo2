@@ -128,61 +128,6 @@ def umbrella_sampling(outpath                 ,
         text = text + "\nNWINDOWS               =%15i  FORCE CONSTANT         =%15.3f"  % (coord1_NWINDOWS1, coord1_FORCECONSTANT1)    	#		
         text = text + "\nDMINIMUM               =%15.5f  DINCREMENT             =%15.5f" % (coord1_DMINIMUM1, coord1_DINCREMENT1)    	#		
         text = text + "\n--------------------------------------------------------------------------------"                              #
-        
-        #if coord1_MASS_WEIGHT:
-        #    text = text + '\n'
-        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n                           R                    R                               '
-        #    text = text + '\n                            \                  /                                '
-        #    text = text + '\n                             A1--A2  . . . . A3                                 '
-        #    text = text + '\n                            /                  \                                '
-        #    text = text + '\n                           R                    R                               '
-        #    text = text + '\n                             ^   ^            ^                                 '
-        #    text = text + '\n                             |   |            |                                 '
-        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
-        #    text = text + '\n                               d1       d2	                                     '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
-        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
-        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n--------------------------------------------------------------------------------'
-        #
-        #
-        #else:
-        #    text = text + '\n'
-        #    text = text + '\n---------------------  Using mass weighted restraints  -------------------------'
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n                           R                    R                               '
-        #    text = text + '\n                            \                  /                                '
-        #    text = text + '\n                             A1--A2  . . . . A3                                 '
-        #    text = text + '\n                            /                  \                                '
-        #    text = text + '\n                           R                    R                               '
-        #    text = text + '\n                             ^   ^            ^                                 '
-        #    text = text + '\n                             |   |            |                                 '
-        #    text = text + '\n                            pk1-pk2  . . . . pk3                                '
-        #    text = text + '\n                               d1       d2	                                     '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n d1 = distance ATOM1/ATOM2                                                      '
-        #    text = text + '\n d2 = distance ATOM2/ATOM3                                                      '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n sigma_a1_a3 =  mass1/(mass1+mass3)                                             '
-        #    text = text + '\n sigma_a3_a1 =  mass3/(mass1+mass3)*-1                                          '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n Reaction coordinate =  (sigma_a1_a3 * d1) -(sigma_a3_a1 * d2)                  '
-        #    text = text + '\n                                                                                '
-        #    text = text + '\n--------------------------------------------------------------------------------'
-        
-        
-        
-        
-        
-        
     #-----------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -193,6 +138,15 @@ def umbrella_sampling(outpath                 ,
     reaction_path_type  = REACTION_COORD1['REACTION_PATH_TYPE'] 
     trajectory          = REACTION_COORD1['FROM_TRAJECTORY'   ]    
     n_process           = REACTION_COORD1['N_PROCESS'         ]          
+
+
+
+    
+
+
+
+
+
 
             #------------------------------------------------------------#
             #                    PARALLEL U.SAMPLING                     #
@@ -358,8 +312,9 @@ def sequential_umbrella_sampling(outpath                 ,
             
         #------------------------------------------------------------------------#                                         
         if MINIMIZATION_PARAMETERS['do_minimizaton']:                            #
-            Run_ConjugateGradientMinimize (system = project.system,              #
-                          MINIMIZATION_PARAMETERS = MINIMIZATION_PARAMETERS)     #
+	    Run_ConjugateGradientMinimize (system = project.system,              #
+					   frame  = "frame" +  str(i),           #
+			  MINIMIZATION_PARAMETERS = MINIMIZATION_PARAMETERS)     #
             energy = project.system.Energy (log                 = None )         #
         #------------------------------------------------------------------------#                                         
                                       
@@ -383,7 +338,7 @@ def sequential_umbrella_sampling(outpath                 ,
                                               trajname = trajname           ,    #
                                   MDYNAMICS_PARAMETERS = MDYNAMICS_PARAMETERS)   #
                                                                                  #
-        if MD_mode == "Leap Frog Dynamics":	                                     #
+        if MD_mode == "Leap Frog Dynamics":	                                 #
             energy = Run_LeapFrogDynamics(system = project.system     ,          #
                                         trajname = trajname           ,          #
                             MDYNAMICS_PARAMETERS = MDYNAMICS_PARAMETERS)         #
@@ -394,12 +349,12 @@ def sequential_umbrella_sampling(outpath                 ,
                             MDYNAMICS_PARAMETERS = MDYNAMICS_PARAMETERS)         #
         #------------------------------------------------------------------------#   
                                               
-        #------------------------------------------------------------------------------------------------------#
-        try:                                                                                                   #
-            XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )     #
-        except:                                                                                                #
-            Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )	   #
-        #------------------------------------------------------------------------------------------------------#
+        ##------------------------------------------------------------------------------------------------------#
+        #try:                                                                                                   #
+        #    XMLPickle ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )     #
+        #except:                                                                                                #
+        #    Pickle    ( os.path.join ( outpath,"frame" +  str(i) +  ".pkl"), project.system.coordinates3 )	   #
+        ##------------------------------------------------------------------------------------------------------#
 
 
 
@@ -420,8 +375,27 @@ def parallel_umbrella_sampling (input_system):
     #----------------------------------------------#
     trajname   = coordinate_file.split('.')        #
     trajname   = trajname[0]                       #
-    trajname   = os.path.join (outpath, trajname)  #
+    #trajname   = os.path.join (outpath, trajname)  #
+    
+    outpath_opt     = os.path.join (outpath, 'GeometryOptimization')
+    if not os.path.isdir(outpath_opt):
+        os.mkdir(outpath_opt)
+    trajname_opt   = os.path.join (outpath_opt, trajname)
+    
+    
+    outpath_eq      = os.path.join (outpath, 'Equilibration')
+    if not os.path.isdir(outpath_eq):
+        os.mkdir(outpath_eq)
+    trajname_eq    = os.path.join (outpath_eq, trajname)
+
+    outpath_collect = os.path.join (outpath, 'DataCollection')    
+    if not os.path.isdir(outpath_collect):
+        os.mkdir(outpath_collect)
+    trajname_collect  = os.path.join (outpath_collect, trajname)
+
     #----------------------------------------------#
+    
+    
     
     
     #----------------------------------------------------------------------------------#
@@ -509,8 +483,9 @@ def parallel_umbrella_sampling (input_system):
         constraints["ReactionCoord"] = constraint			                                                   #
         #------------------------------------------------------------------------------------------------------#
 
-    if MINIMIZATION_PARAMETERS['do_minimizaton']:
-        Run_ConjugateGradientMinimize (system = project.system, 
+    if MINIMIZATION_PARAMETERS['do_minimizaton']:       
+        Run_ConjugateGradientMinimize (system = project.system,
+                                       frame  = trajname      ,
                       MINIMIZATION_PARAMETERS = MINIMIZATION_PARAMETERS)
         energy = project.system.Energy (log                 = None )
         #print dist, energy
@@ -543,60 +518,82 @@ def parallel_umbrella_sampling (input_system):
 
 
 
-def Run_ConjugateGradientMinimize (system = None, MINIMIZATION_PARAMETERS =  {} ):
+def Run_ConjugateGradientMinimize (system = None, frame = None, MINIMIZATION_PARAMETERS =  {} ):
     """ Function doc """
     max_int      = MINIMIZATION_PARAMETERS['max_int'   ]       
     log_freq     = MINIMIZATION_PARAMETERS['log_freq'  ]       
     rms_grad     = MINIMIZATION_PARAMETERS['rms_grad'  ]       
     mim_method   = MINIMIZATION_PARAMETERS['mim_method']       
-
+    outpath      = MINIMIZATION_PARAMETERS['outpath'   ]
+    #index        = MINIMIZATION_PARAMETERS['index'     ]
+    
     ConjugateGradientMinimize_SystemGeometry (system                          , 
                                               log                  =      None, 
                                               logFrequency         = 1        , 
                                               maximumIterations    = max_int  , 
                                               rmsGradientTolerance = rms_grad ) 
+    
+    try:
+        XMLPickle ( os.path.join ( outpath ,frame+'.pkl'),system.coordinates3 )
+    except:                                                              
+        Pickle    ( os.path.join ( outpath ,frame+'.pkl'),system.coordinates3 )
+    
     #---------------------------------------------------------------------------
 
 def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS = {}):
-    #----------------------------------------------------------------
-    logFrequency        = MDYNAMICS_PARAMETERS['log_freq'   ]           
-    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ'  ]          
-    temperature         = MDYNAMICS_PARAMETERS['temperature']        
-    timeStep            = MDYNAMICS_PARAMETERS['timestep'   ]           
-    coll_freq           = MDYNAMICS_PARAMETERS['coll_freq'  ]          
-    seed                = MDYNAMICS_PARAMETERS['seed'       ]
-
-    normalDeviateGenerator = get_normal_deviate_generator(seed)
-
-    # . Equilibration.                                               
-    LangevinDynamics_SystemGeometry (system,                 
-                    normalDeviateGenerator   =   normalDeviateGenerator,
-                    logFrequency             =   logFrequency,      
-                    #log                     =   dualLog,          
-                    steps                    =   steps,             
-                    timeStep                 =  timeStep,             
-                    collisionFrequency       = coll_freq,           
-                    temperature              = temperature)         
-    #----------------------------------------------------------------
+    
+    outpath_collect = MDYNAMICS_PARAMETERS['outpath_collect']
+    outpath_eq      = MDYNAMICS_PARAMETERS['outpath_eq']     
+                                  
+                                  #--------------------------#
+                                  #       EQUILIBRATION      #
+                                  #--------------------------#
+    
+    #------------------------------------------------------------------------------------------------------#
+    #trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )                          #
+    outpath_eq = os.path.join(outpath_eq, trajname)                                                        #
+    trajectory = SystemGeometryTrajectory(outpath_eq, system, mode="w")                                    #    
+                                                                                                           #
+    #----------------------------------------------------------------                                      #
+    trajectory_freq     = MDYNAMICS_PARAMETERS['trajectory_freq']                                          #
+    logFrequency        = MDYNAMICS_PARAMETERS['log_freq'   ]                                              #
+    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ'  ]                                              #
+    temperature         = MDYNAMICS_PARAMETERS['temperature']                                              #
+    timeStep            = MDYNAMICS_PARAMETERS['timestep'   ]                                              #
+    coll_freq           = MDYNAMICS_PARAMETERS['coll_freq'  ]                                              #
+    seed                = MDYNAMICS_PARAMETERS['seed'       ]                                              #
+                                                                                                           #
+    normalDeviateGenerator = get_normal_deviate_generator(seed)                                            #
+                                                                                                           #
+    # . Equilibration.                                                                                     #
+    LangevinDynamics_SystemGeometry (system,                                                               #
+                    normalDeviateGenerator   =   normalDeviateGenerator,                                   #
+		    trajectories             =[ ( trajectory, trajectory_freq) ],                          #
+                    logFrequency             =   logFrequency,                                             #
+                    #log                     =   dualLog,                                                  #
+                    steps                    =   steps,                                                    #
+                    timeStep                 =  timeStep,                                                  #
+                    collisionFrequency       = coll_freq,                                                  #
+                    temperature              = temperature)                                                #
+    #------------------------------------------------------------------------------------------------------#
 
 
                               #--------------------------#
                               #      DATA COLLECTION     #
                               #--------------------------#
-    #-----------------------------------------------------------------------
-    steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                 
-    trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )  
-                                                                            
-    LangevinDynamics_SystemGeometry (system,                        
-                    normalDeviateGenerator = normalDeviateGenerator,
-                    trajectories        =[ ( trajectory, 1) ],        
-                    logFrequency        =   logFrequency,             
-                    #log                 =   dualLog,                 
-                    steps               =   steps,                    
-                    timeStep            =  timeStep,                    
-                    collisionFrequency  = coll_freq,                  
-                    temperature         = temperature)                
-    #-----------------------------------------------------------------------
+    #------------------------------------------------------------------------------------------------------#
+    steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                                #
+    outpath_collect     = os.path.join(outpath_collect, trajname)                                          #
+    LangevinDynamics_SystemGeometry (system,                                                               #
+                    normalDeviateGenerator = normalDeviateGenerator,                                       #
+                    trajectories        =[ ( trajectory, 1) ],                                             #
+                    logFrequency        =   logFrequency,                                                  #
+                    #log                 =   dualLog,                                                      #
+                    steps               =   steps,                                                         #
+                    timeStep            =  timeStep,                                                       #
+                    collisionFrequency  = coll_freq,                                                       #
+                    temperature         = temperature)                                                     #
+    #------------------------------------------------------------------------------------------------------#
     energy = system.Energy (log                 = None )
     ##print energy
     return energy
@@ -604,32 +601,39 @@ def Run_LangevinDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS 
 
 def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS = {}):
     """ Function doc """
-
+    outpath_collect = MDYNAMICS_PARAMETERS['outpath_collect']
+    outpath_eq      = MDYNAMICS_PARAMETERS['outpath_eq']     
+                                  
                                   #--------------------------#
                                   #       EQUILIBRATION      #
                                   #--------------------------#
-    #----------------------------------------------------------------------------------------#
-                                                                                             #
-    logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                   #
-    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                  #
-    temperature         = MDYNAMICS_PARAMETERS['temperature']                                #
-    timeStep            = MDYNAMICS_PARAMETERS['timestep']                                   #
-    temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']
-    seed                = MDYNAMICS_PARAMETERS['seed'       ]
-
-    normalDeviateGenerator = get_normal_deviate_generator(seed)
-                                                                                             #
-    # . Equilibration.                                                                       #
-    VelocityVerletDynamics_SystemGeometry(system,                                            #
-                                        normalDeviateGenerator    =   normalDeviateGenerator,#
-                                        log                       =   None,                  #
-                                        logFrequency              =   logFrequency,          #
-                                        steps                     =   steps,                 #
-                                        timeStep                  =   timeStep,              #
-                                        temperatureScaleFrequency =   temp_scale_freq,       #
-                                        temperatureScaleOption    =   "constant",            #
-                                        temperatureStart          =   temperature )          #
-    #----------------------------------------------------------------------------------------#                    
+    
+    #------------------------------------------------------------------------------------------------------#
+    #trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )                          #
+    outpath_eq = os.path.join(outpath_eq, trajname)                                                        #
+    trajectory = SystemGeometryTrajectory(outpath_eq, system, mode="w")                                    #
+    trajectory_freq     = MDYNAMICS_PARAMETERS['trajectory_freq']                                          #
+    logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                                                 #
+    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                                                #
+    temperature         = MDYNAMICS_PARAMETERS['temperature']                                              #
+    timeStep            = MDYNAMICS_PARAMETERS['timestep']                                                 #
+    temp_scale_freq     = MDYNAMICS_PARAMETERS['temp_scale_freq']                                          #
+    seed                = MDYNAMICS_PARAMETERS['seed'       ]                                              #
+                                                                                                           #
+    normalDeviateGenerator = get_normal_deviate_generator(seed)                                            #
+                                                                                                           #
+    # . Equilibration.                                                                                     #
+    VelocityVerletDynamics_SystemGeometry(system,                                                          #
+                                        normalDeviateGenerator    =   normalDeviateGenerator,              #
+                                        trajectories              =[ ( trajectory, trajectory_freq) ],     #
+                                        log                       =   None,                                #
+                                        logFrequency              =   logFrequency,                        #
+                                        steps                     =   steps,                               #
+                                        timeStep                  =   timeStep,                            #
+                                        temperatureScaleFrequency =   temp_scale_freq,                     #
+                                        temperatureScaleOption    =   "constant",                          #
+                                        temperatureStart          =   temperature )                        #
+    #------------------------------------------------------------------------------------------------------#                    
 
 
                               #--------------------------#
@@ -637,7 +641,9 @@ def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAM
                               #--------------------------#
     #----------------------------------------------------------------------------------------#
     steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                                  #
-    trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )             #
+    outpath_collect     = os.path.join(outpath_collect, trajname)
+    
+    trajectory = SystemSoftConstraintTrajectory ( outpath_collect, system, mode = "w" )      #
     VelocityVerletDynamics_SystemGeometry(system,                                            #
                                         normalDeviateGenerator    =   normalDeviateGenerator,#
                                         trajectories              =   [ ( trajectory, 1) ],  #
@@ -658,51 +664,63 @@ def Run_VelocityVerletDynamics (system = None, trajname = None,  MDYNAMICS_PARAM
 def Run_LeapFrogDynamics (system = None, trajname = None,  MDYNAMICS_PARAMETERS = {}):
     """ Function doc """
     
-                              #---------------------------#
-                              #       EQUILIBRATION       #
-                              #---------------------------#
-    #-------------------------------------------------------------------------------#
-    logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                          #
-    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                         #
-    temperature         = MDYNAMICS_PARAMETERS['temperature']                       #
-    temperatureCoupling = MDYNAMICS_PARAMETERS['temperatureCoupling']               #
-    timeStep            = MDYNAMICS_PARAMETERS['timestep']                          #
+    outpath_collect = MDYNAMICS_PARAMETERS['outpath_collect']
+    outpath_eq      = MDYNAMICS_PARAMETERS['outpath_eq']     
+                                  
+                                  #--------------------------#
+                                  #       EQUILIBRATION      #
+                                  #--------------------------#
+    
+    #------------------------------------------------------------------------------------------------------#
+    #trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" ) 
+    outpath_eq = os.path.join(outpath_eq, trajname)                               
+    trajectory = SystemGeometryTrajectory(outpath_eq, system, mode="w")           
+
+    trajectory_freq     = MDYNAMICS_PARAMETERS['trajectory_freq']                 
+    logFrequency        = MDYNAMICS_PARAMETERS['log_freq']                        
+    steps               = MDYNAMICS_PARAMETERS['nsteps_EQ']                       
+    temperature         = MDYNAMICS_PARAMETERS['temperature']                     
+    temperatureCoupling = MDYNAMICS_PARAMETERS['temperatureCoupling']             
+    timeStep            = MDYNAMICS_PARAMETERS['timestep']                        
     seed                = MDYNAMICS_PARAMETERS['seed'       ]
 
     normalDeviateGenerator = get_normal_deviate_generator(seed)
-                                                                                    #
-    # . Equilibration.                                                              #
-    LeapFrogDynamics_SystemGeometry ( system                  ,                     #
-                                      normalDeviateGenerator = normalDeviateGenerator,
-                                      log                 = None,                   #
-                                      logFrequency        = logFrequency,           #
-                                      #rng                 = rng,                   #
-                                      steps               = steps,                  #
-                                      temperature         = temperature,            #
-                                      temperatureCoupling = temperatureCoupling,    #
-                                      timeStep            = timeStep  )             #
-    #-------------------------------------------------------------------------------#
+                                                                                  
+    # . Equilibration.                                                            
+    LeapFrogDynamics_SystemGeometry ( system                  ,                   
+                                      normalDeviateGenerator     = normalDeviateGenerator,
+				      trajectories               =[ ( trajectory, trajectory_freq) ],    
+                                      log                        = None,                   
+                                      logFrequency               = logFrequency,           
+                                      #rng                        = rng,                   
+                                      steps                      = steps,                  
+                                      temperature                = temperature,            
+                                      temperatureCoupling        = temperatureCoupling,    
+                                      timeStep                   = timeStep  )             
+    #------------------------------------------------------------------------------------------------------#
 
                               #--------------------------#
                               #      DATA COLLECTION     #
                               #--------------------------#
-    #--------------------------------------------------------------------------------#                  
-                                                                                     #
-    # . Data-collection.                                                             #
-    trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )     #
-                                                                                     #
-                                                                                     #
-    steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                          #
-    LeapFrogDynamics_SystemGeometry ( system,                                        #
+    #-------------------------------------------------------------------------------------------------#                  
+                                                                                    
+    # . Data-collection.                                                            
+    #trajectory = SystemSoftConstraintTrajectory ( trajname, system, mode = "w" )   
+                                                                                    
+                                                                                    
+    steps               = MDYNAMICS_PARAMETERS['nsteps_DC']                         
+    outpath_collect     = os.path.join(outpath_collect, trajname)
+    trajectory = SystemSoftConstraintTrajectory ( outpath_collect, system, mode = "w" )     
+    LeapFrogDynamics_SystemGeometry ( system,                                       
                                       normalDeviateGenerator = normalDeviateGenerator,
-                                      logFrequency        = logFrequency,            #
-                                      log                 = None,                    #
-                                      steps               = steps,                   #
-                                      temperature         = temperature,             #
-                                      temperatureCoupling = temperatureCoupling,     #
-                                      timeStep            = timeStep,                #
-                                      trajectories        = [ ( trajectory, 1 ) ] )  #
-    #--------------------------------------------------------------------------------#
+                                      logFrequency        = logFrequency,            
+                                      log                 = None,                    
+                                      steps               = steps,                   
+                                      temperature         = temperature,             
+                                      temperatureCoupling = temperatureCoupling,     
+                                      timeStep            = timeStep,                
+                                      trajectories        = [ ( trajectory, 1 ) ] )  
+    #--------------------------------------------------------------------------------------------------#
 
 
 

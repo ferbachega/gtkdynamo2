@@ -161,19 +161,31 @@ class UmbrellaSamplingWindow():
         #-----------------------------------------------------------------------------------------------#
         
         if self.builder.get_object("checkbutton_minimization").get_active():
+            outpath_opt     = os.path.join (outpath, 'GeometryOptimization')
+            if not os.path.isdir(outpath_opt):
+                os.mkdir(outpath_opt)
+            #----------------------------------------------#
             MINIMIZATION_PARAMETERS={
                                     'do_minimizaton': True      ,
                                     'max_int'       : max_int   ,
                                     'log_freq'      : log_freq  ,
                                     'rms_grad'      : rms_grad  ,
                                     'mim_method'    : mim_method,
-                                    'outpath'       : outpath
+                                    'outpath'       : outpath_opt
                                     }
         else:
             MINIMIZATION_PARAMETERS = {'do_minimizaton': False }	
         
+        
+        
+        
+        
+        
+        
         MDYNAMICS_PARAMETERS  = {}
         MD_mode               =  self.builder.get_object('combobox_molecular_dynamics_method').get_active_text()
+        
+
         
         if MD_mode == "Velocity Verlet Dynamics":
             nsteps_EQ         = int(self.builder.get_object  ('steps_eq').get_text())
@@ -240,9 +252,16 @@ class UmbrellaSamplingWindow():
                                         'seed'                : seed,
                                         'coll_freq'           : coll_freq}
 
-
-
+        outpath_eq      = os.path.join (outpath, 'Equilibration')
+        if not os.path.isdir(outpath_eq):
+            os.mkdir(outpath_eq)
+        outpath_collect = os.path.join (outpath, 'DataCollection')    
+        if not os.path.isdir(outpath_collect):
+            os.mkdir(outpath_collect)
         
+        MDYNAMICS_PARAMETERS['outpath_collect'] = outpath_collect
+        MDYNAMICS_PARAMETERS['outpath_eq']      = outpath_eq
+
         pprint(REACTION_COORD1)
         pprint(MINIMIZATION_PARAMETERS)
         pprint(MDYNAMICS_PARAMETERS)
@@ -629,11 +648,11 @@ class UmbrellaSamplingWindow():
             
             
             combobox  = 'combobox_optimization_method'                     
-            combolist = ['Conjugate Gradient', 'Steepest Descent','LBFGS']
+            combolist = ['Conjugate Gradient']#, 'Steepest Descent','LBFGS']
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)     
                                                                                                      
             combobox = 'combobox_molecular_dynamics_method'         #
-            combolist = ["Velocity Verlet Dynamics", "Leap Frog Dynamics","Langevin Dynamics"]
+            combolist = ["Velocity Verlet Dynamics", "Leap Frog Dynamics"]#,"Langevin Dynamics"]
             self.window_control.SETUP_COMBOBOXES(combobox, combolist, 0)
             #------------------------------------------------------------#
 
