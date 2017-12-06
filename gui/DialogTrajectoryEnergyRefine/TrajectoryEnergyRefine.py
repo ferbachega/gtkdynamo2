@@ -422,8 +422,8 @@ class TrajectoryEnergyRefineDialog():
         
         self.builder.get_object('vseparator1').hide()
         self.builder.get_object('vbox4').hide()
-
-        
+	self.builder.get_object('Optimize_Geometry_frame').hide()
+        self.builder.get_object('checkbutton_exclude_MM_atoms').hide()
         
         #----------------- Setup ComboBoxes -------------------------#
         combobox  = 'combobox1'         #

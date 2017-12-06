@@ -850,9 +850,9 @@ class QuantumChemistrySetup(object):
         
         nbModel     = NBModelABFS( )
         qc_table  = self.settings['qc_table']
-        pal         = " PAL"+str(PAL)
-       
-        print "number of processor = ", PAL
+        #pal         = " PAL"+str(PAL)
+	pal         = "\n%pal\nnprocs "+str(PAL) +'\nend'
+        print "number of CPUs = ", PAL
         
         if int(PAL) == 1:
             qcModel = QCModelORCA (ORCA_String,command =  ORCA_command) #scratch = pDynamo_scratch, command =  ORCA_command)
