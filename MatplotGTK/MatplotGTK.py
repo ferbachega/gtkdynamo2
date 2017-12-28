@@ -51,7 +51,7 @@ class PlotGTKWindow:
 	from matplotlib.figure import Figure                                                         #
 
 	plots = len(parameters)
-
+	print parameters[1]
 	win = gtk.Window()
 	win.connect("destroy", lambda x: gtk.main_quit())
 	win.set_default_size(500, 500)
