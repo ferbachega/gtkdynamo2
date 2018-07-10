@@ -41,6 +41,7 @@ from PyMOLScripts.PyMOLScripts import *
 from pprint import pprint
 from DualTextLogFileWriter3 import *
 from pprint import pprint
+from MatplotGTK.LogParse    import *
 
       
 class TrajectoryEnergyRefineDialog():
@@ -176,6 +177,12 @@ class TrajectoryEnergyRefineDialog():
 	#if self.builder.get_object("checkbutton_set_MM_charges_to_zero").get_active():
 	#    self.project.system.energyModel.mmAtoms.SetAtomicCharges(charges)
         #
+
+
+	def fileChooser_logFile (self, widget):
+		""" Function doc """
+		parameters = ParseProcessLogFile(FileName)
+
 
     def Button_import_PyMOL_index(self, button):
         '''

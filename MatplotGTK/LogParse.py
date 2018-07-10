@@ -353,13 +353,32 @@ def ParseProcessLogFile(log_file):
     """ Function doc """
     parameters = {
                   1: {
-                     'type'        : 'line'    ,   # line / matrix
-                     'title'       : ''        ,   #
-                     'X'           : []        ,   # X 
-                     'Y'           : []        ,   # Y 
-                     'xlabel'      : 'x label' ,   # xlabel,
-                     'ylabel'      : 'y label' ,   # ylabel,
-                     'energy_model': 'UNK'     ,
+                     'type'          : 'line'    ,   # line / matrix
+                     'title'         : ''        ,   #
+                     'X'             : []        ,   # X 
+                     'Y'             : []        ,   # Y 
+                     'xlabel'        : 'x label' ,   # xlabel,
+                     'ylabel'        : 'y label' ,   # ylabel,
+                     'energy_model'  : 'UNK'     ,
+                     
+                     
+                     'c1_ATOM1_id'   : None      ,
+                     'c1_ATOM2_id'   : None      ,
+                     'c1_ATOM3_id'   : None      ,
+                                     
+                     'c1_ATOM1_name' : None      ,
+                     'c1_ATOM2_name' : None      ,
+                     'c1_ATOM3_name' : None      ,
+                                     
+                     'c2_ATOM1_id'   : None      ,
+                     'c2_ATOM2_id'   : None      ,
+                     'c2_ATOM3_id'   : None      ,
+                                     
+                     'c2_ATOM1_name' : None      ,
+                     'c2_ATOM2_name' : None      ,
+                     'c2_ATOM3_name' : None      ,
+                     
+                     
                      }
                  }
     parameters[1]['log_file'] = log_file
@@ -513,11 +532,16 @@ def ParseProcessLogFile(log_file):
                     atom = atomLine.split()
                     if atom[0][0:4] == 'ATOM':
                         
-                        if atom[0][-1] == '2':
+                        if atom[0][-1] == '1':
+			    parameters[1]['c1_ATOM1_id'  ] = atom[2]   
+			    parameters[1]['c1_ATOM1_name'] = atom[6]     
                             r1 = r1 +atom[2] + '(' +atom[6] + ')'
-                        else:
-                            r1 = r1 +atom[2] + '(' +atom[6] + ')' + " - "
-                        #print r1
+
+                        
+                        if atom[0][-1] == '2':
+			    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
+			    parameters[1]['c1_ATOM2_name'] = atom[6]     
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
 
 
             if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
@@ -525,13 +549,28 @@ def ParseProcessLogFile(log_file):
                 for atomLine in lines[index2+1 :index2+4]:
                     atom = atomLine.split()
                     if atom[0][0:4] == 'ATOM':
-                        if atom[0][-1] == '*':
-                            r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
-                        else:
-                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+                        #if atom[0][-1] == '*':
+                        #    r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        #else:
+                        #    r1 = r1 +atom[2] + '(' +atom[6] + ')'
                         #print r1
 
-            
+                        if atom[0][-1] == '1':
+			    parameters[1]['c1_ATOM1_id'  ] = atom[2]   
+			    parameters[1]['c1_ATOM1_name'] = atom[6]     
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+
+                        
+                        if atom[0][-1] == '2' or atom[0][-1] == '*':
+			    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
+			    parameters[1]['c1_ATOM2_name'] = atom[6]     
+                            r1 = r1 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+
+                        if atom[0][-1] == '3':
+			    parameters[1]['c1_ATOM3_id'  ] = atom[2]   
+			    parameters[1]['c1_ATOM3_name'] = atom[6]     
+                            r1 = r1 +atom[2] + '(' +atom[6] + ')'
+
             
             
             
@@ -541,23 +580,49 @@ def ParseProcessLogFile(log_file):
                 for atomLine in lines[index2+1 :index2+4]:
                     atom = atomLine.split()
                     if atom[0][0:4] == 'ATOM':
-                        if atom[0][-1] == '2':
-                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
-                        else:
-                            r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
+                        #if atom[0][-1] == '2':
+                        #    r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        #else:
+                        #    r2 = r2 +atom[2] + '(' +atom[6] + ')' + " - "
                         #print r2
-            
+                        if atom[0][-1] == '1':
+			    parameters[1]['c2_ATOM1_id'  ] = atom[2]   
+			    parameters[1]['c2_ATOM1_name'] = atom[6]     
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+
+                        
+                        if atom[0][-1] == '2':
+			    parameters[1]['c2_ATOM2_id'  ] = atom[2]   
+			    parameters[1]['c2_ATOM2_name'] = atom[6]     
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+			
+			
+			
             if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
                 index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
                 for atomLine in lines[index2+1 :index2+4]:
                     atom = atomLine.split()
                     if atom[0][0:4] == 'ATOM':
-                        if atom[0][-1] == '*':
-                            r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
-                        else:
-                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
+                        #if atom[0][-1] == '*':
+                        #    r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+                        #else:
+                        #    r2 = r2 +atom[2] + '(' +atom[6] + ')'
                         #print r2
+                        if atom[0][-1] == '1':
+			    parameters[1]['c2_ATOM1_id'  ] = atom[2]   
+			    parameters[1]['c2_ATOM1_name'] = atom[6]     
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
 
+                        
+                        if atom[0][-1] == '2' or atom[0][-1] == '*':
+			    parameters[1]['c2_ATOM2_id'  ] = atom[2]   
+			    parameters[1]['c2_ATOM2_name'] = atom[6]     
+                            r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+
+                        if atom[0][-1] == '3':
+			    parameters[1]['c2_ATOM3_id'  ] = atom[2]   
+			    parameters[1]['c2_ATOM3_name'] = atom[6]     
+                            r2 = r2 +atom[2] + '(' +atom[6] + ')'
             
             
             
@@ -774,7 +839,7 @@ def ParseProcessLogFile(log_file):
         parameters[1]['Y'      ] = Energy
         parameters[1]['rcoord1'] = ReactionCoord
         parameters[1]['xlabel' ] = 'Frames'
-        parameters[1]['ylabel' ] = 'Energy (KJ)'
+        parameters[1]['ylabel' ] = 'Energy (kJ)'
         
         #parameters[2] = {}
         #parameters[2]['type'  ] = 'line'
