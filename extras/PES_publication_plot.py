@@ -96,7 +96,7 @@ cmaps = [('Perceptually Uniform Sequential', [
 
 cmap     = 'jet'#'nipy_spectral'#'copper'#'PuBuGn'#'inferno'#'jet'
 vmin     = None
-vmax     = 200#None
+vmax     = 150#None
 shading  = 'gouraud'
 lspacing = 20
 lcolor   = 'k'
@@ -533,14 +533,24 @@ ax0.clabel(am, inline=1, fontsize=fontsize, fmt='%1.1f',colors=lcolor)
 
 #ax.imshow(matrix, interpolation = 'bicubic') 
 
+FontSize = 20
 
+# Set the tick labels font
+axis_font = {'fontname':'Arial', 'size':'14'}
+for tick in (ax0.xaxis.get_major_ticks()):
+	tick.label.set_fontname('Arial')
+	tick.label.set_fontsize(FontSize)
 
-
+for tick in (ax0.yaxis.get_major_ticks()):
+	tick.label.set_fontname('Arial')
+	tick.label.set_fontsize(FontSize) 
 
 coord1 = data['xlabel']
 coord2 = data['ylabel']
-ax0.set_xlabel(coord2)
-ax0.set_ylabel(coord1)
+ax0.set_xlabel(coord2, **axis_font)
+ax0.set_ylabel(coord1, **axis_font)
+
+
 
 #ax0.set_ylabel(r'$\sum_{i=0}^\infty x_i$')
 
@@ -556,8 +566,9 @@ fontsize = 14
 
 
 
-fig.colorbar(im, ax=ax0)
-ax0.set_title('pcolormesh with levels')
+cbar = fig.colorbar(im, ax=ax0)
+cbar.ax.tick_params(labelsize=FontSize)
+#ax0.set_title('pcolormesh with levels')
 
 '''
 # contours are *point* based plots, so convert our bound into point

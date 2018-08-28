@@ -172,7 +172,7 @@ traj.save_edited_trajectory(
 
 #'''
 traj  = Trajectory()
-traj.import_frames_from_folder(InputTrajectory = '/home/fernando/pDynamoWorkSpace/AKmm_Oct_01_2017/32_step_Scan2D',
+traj.import_frames_from_folder(InputTrajectory = '/home/farminfo/pDynamoWorkSpace/MtSK_QMMM_Artigo/18_step_Scan2D_edited',
 				trajectoryType = '2D', 
 				     fileType = 'pkl')
 
@@ -180,9 +180,9 @@ traj.import_frames_from_folder(InputTrajectory = '/home/fernando/pDynamoWorkSpac
 
 traj.Summary()
 traj.save_edited_trajectory(
-			    outputfolder = '/home/fernando/pDynamoWorkSpace/AKmm_Oct_01_2017/32_step_Scan2D_edited', 
-			    i_offset     = 3     , 
-			    j_offset     = 3     , 
+			    outputfolder = '/home/farminfo/pDynamoWorkSpace/MtSK_QMMM_Artigo/18_step_Scan2D_edited_02', 
+			    i_offset     = 2     , 
+			    j_offset     = 2     , 
 			    fileType    = 'pkl')
 
 #'''

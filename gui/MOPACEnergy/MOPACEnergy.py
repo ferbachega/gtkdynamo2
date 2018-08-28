@@ -77,6 +77,7 @@ class pDynamoToMOPAC:
         if MOZYME:
             text += 'MOZYME' + ' '
             text += 'GEO-OK' + ' '
+            text += 'LET'    + ' '
         if BONDS:
             text += 'BONDS' + ' '
         if PDBOUT:

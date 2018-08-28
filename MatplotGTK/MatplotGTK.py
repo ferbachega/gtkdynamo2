@@ -51,7 +51,7 @@ class PlotGTKWindow:
 	from matplotlib.figure import Figure                                                         #
 
 	plots = len(parameters)
-	print parameters[1]
+	#print parameters[1]
 	win = gtk.Window()
 	win.connect("destroy", lambda x: gtk.main_quit())
 	win.set_default_size(500, 500)
@@ -69,6 +69,8 @@ class PlotGTKWindow:
 	if parameters[1]['type'] == 'line':
 	    x = parameters[1]['X']
 	    y = parameters[1]['Y']
+	    
+	    print x
 	     
 	    ax  = fig.add_subplot(plots, 1, 1,)
 	    ax.grid(True)
@@ -86,15 +88,20 @@ class PlotGTKWindow:
 	    ax.set_ylabel(parameters[1]['ylabel'])
 			  
 	if parameters[1]['type'] == 'matrix':
+		
+   
 	    matrix = parameters[1]['matrix']
 	    fig, (ax) = plt.subplots(nrows=1)
 	    
+   
 	    coord1 = parameters[1]['xlabel']
 	    coord2 = parameters[1]['ylabel']
-	    
+	       
 	    # Setting plot type
 	    im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
+	    v = plt.axis()
 	    am = ax.contour(matrix, colors='k')
+	    plt.axis(v)
 	    ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
 	    fig.colorbar(im, ax=ax)                          # and remove comment here             
 	    
@@ -267,12 +274,12 @@ class PlotGTKWindow_old_not_used:
                 gtk.main()  
 		              
             if parameters[i]['type'] == 'matrix':
-                matrix = parameters[i]['matrix']
+                matrix = (parameters[i]['matrix'])
                 fig, (ax) = plt.subplots(nrows=1)
 		
                 coord1 = parameters[1]['xlabel']
                 coord2 = parameters[1]['ylabel']
-		
+                		
 		# Setting plot type
                 im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
                 am = ax.contour(matrix, colors='k')

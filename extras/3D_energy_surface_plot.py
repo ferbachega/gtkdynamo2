@@ -9,7 +9,7 @@ for drawing quadrilateral grids.
 
 #filein = '/home/fernando/pDynamoWorkSpace/Ramon_AM1/11_step_Scan2D/Scan2D.log'
 
-filein = '/home/fernando/pDynamoWorkSpace/SN2_CL_CH3Br/15_step_Scan2D/Scan2D_PM7_Nov_21_11:26:10_2015.log'
+filein = '/home/farminfo/pDynamoWorkSpace/MtSDH_Artigo/Foward_Reaction_Nov_28_2017/QM2/QM2_Logs_Scan1D_2D_e_Refinamentos/Scan2D_Refinamento_AM1dPhoT.log'
 
 
 
@@ -338,7 +338,7 @@ def ParseProcessLogFile(log_file):
 
         #rcoord1_lines  = []
         #rcoord2_lines  = []
-            
+            reaction1 = []
             try:
                 linex = line.split()
                 if linex[0] == "RCOORD1":
@@ -351,13 +351,14 @@ def ParseProcessLogFile(log_file):
                             mline.append(float(item))
                         except:
                             pass
-                    rcoord1_lines.append(mline)
+                    reaction1.append(mline)
                     n_r1 += 1
             except:
                 pass	
             
             print n_r1
             
+            reaction2 = []
             try:
                 linex = line.split()
                 if linex[0] == "RCOORD2":
@@ -370,7 +371,7 @@ def ParseProcessLogFile(log_file):
                             mline.append(float(item))
                         except:
                             pass
-                    rcoord2_lines.append(mline)
+                    reaction2.append(mline)
             except:
                 pass
 
@@ -378,8 +379,8 @@ def ParseProcessLogFile(log_file):
 
         import numpy as np
         X  = np.array(matrix_lines)
-        R1 = np.array(rcoord1_lines)
-        R2 = np.array(rcoord2_lines)
+        R1 = np.array(reaction1)
+        R2 = np.array(reaction2)
 
                 
         parameters[1]['type'  ] = 'matrix'
@@ -394,6 +395,7 @@ def ParseProcessLogFile(log_file):
         #print parameters
         return parameters
 
+        print R1
 
 parameters = ParseProcessLogFile(filein)
 
@@ -407,50 +409,50 @@ y = R2
 g = Z
 
 
-print len(x), len(y), len(g) 
+print len(x), len(y), len(g),parameters[1]['R1'    ]
 
 
 
-levels = MaxNLocator(nbins=600).tick_values(g.min(), g.max())
-cmap = cmap=cm.jet
-norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
-fig, (ax1) = plt.subplots(nrows=1)
-
-
-cf = ax1.pcolormesh(x, y, g, cmap=cmap, norm=norm)
-CS = ax1.contour (x, y, g, 6, colors='k',)
-
-
-
-fig.colorbar(cf, ax=ax1)
-ax1.set_title('contourf with levels')
-
-# adjust spacing between subplots so `ax1` title and `ax0` tick labels 
-# don't overlap
-fig.tight_layout()
-
-plt.show()
-
-
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib
-import numpy as np
-from matplotlib import cm
-from matplotlib import pyplot as plt
-
-fig = plt.figure()
-
-ax = fig.add_subplot(111, projection='3d')
-
-# create supporting points in polar coordinates
-ax.plot_surface(x, y, g, rstride=1, cstride=1, cmap=cm.jet)
-
-
-
-#ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
-#ax.set_zlim3d(0, 1)
-
-plt.show()
+#levels = MaxNLocator(nbins=600).tick_values(g.min(), g.max())
+#cmap = cmap=cm.jet
+#norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+#fig, (ax1) = plt.subplots(nrows=1)
+#
+#
+#cf = ax1.pcolormesh(x, y, g, cmap=cmap, norm=norm)
+#CS = ax1.contour (x, y, g, 6, colors='k',)
+#
+#
+#
+#fig.colorbar(cf, ax=ax1)
+#ax1.set_title('contourf with levels')
+#
+## adjust spacing between subplots so `ax1` title and `ax0` tick labels 
+## don't overlap
+#fig.tight_layout()
+#
+#plt.show()
+#
+#
+#from mpl_toolkits.mplot3d import Axes3D
+#import matplotlib
+#import numpy as np
+#from matplotlib import cm
+#from matplotlib import pyplot as plt
+#
+#fig = plt.figure()
+#
+#ax = fig.add_subplot(111, projection='3d')
+#
+## create supporting points in polar coordinates
+#ax.plot_surface(x, y, g, rstride=1, cstride=1, cmap=cm.jet)
+#
+#
+#
+##ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
+##ax.set_zlim3d(0, 1)
+#
+#plt.show()
 
 '''
 --------------------- Coordinate 1 - Multiple-Distance -------------------------

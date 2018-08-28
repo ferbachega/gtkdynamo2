@@ -51,8 +51,8 @@ mndo_list = ["am1",
 			 "pm3",
 			 "pm6",
 			 "rm1",
-			 #"chops",
-			 #"recal"
+			 "chops",
+			 "recal"
              ]
 
 SMO_Methods=['AM1'     ,
@@ -60,8 +60,8 @@ SMO_Methods=['AM1'     ,
              'PM3'     ,
              'PM6'     ,
              'RM1'     ,
-             #'CHOPS'   ,
-             #'RECAL'   
+             'CHOPS'   ,
+             'RECAL'   
              ]
                 
 SMO_Methods_Dic = {'AM1'     : "am1",
@@ -69,8 +69,8 @@ SMO_Methods_Dic = {'AM1'     : "am1",
                    'PM3'     : "pm3",
                    'PM6'     : "pm6",
                    'RM1'     : "rm1",
-                   #'CHOPS'   : "chops",
-                   #'RECAL'   : "recal"
+                   'CHOPS'   : "chops",
+                   'RECAL'   : "recal"
                    }
 
 # DFT list - pDynamo DFT methods
