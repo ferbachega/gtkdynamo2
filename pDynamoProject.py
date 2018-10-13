@@ -533,8 +533,21 @@ class LoadAndSaveFiles(object):
         while trajectory.RestoreOwnerData ( ):
             if export_type == 'pdb':
                 if a == i:
-                    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
-                    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+                    
+		    if _type == "folder - pDynamo":
+			PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
+			cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+		    
+		    if _type == "trj - AMBER":
+			
+			EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')
+			if not os.path.isdir(EasyHybrid_TMP):
+			    os.mkdir(EasyHybrid_TMP)
+			    print "Temporary files directory:  %s" % EasyHybrid_TMP			
+			
+			PDBFile_FromSystem ( os.path.join ( EasyHybrid_TMP, new_pymol_object +".pdb" ), self.system)
+			cmd.load( os.path.join ( EasyHybrid_TMP, new_pymol_object +".pdb"))
+
                     #self.compute_dynamic_bonds(PyMOL_Obj = new_pymol_object , frame = i+1,  qc_table = self.settings['qc_table'] )
                     i = i + stride
                     print "loading file: ",i

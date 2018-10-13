@@ -45,12 +45,15 @@ class PlotGTKWindow:
     
     def plot (self, parameters):
         """ Function doc """
+	plots = len(parameters)
+	
+	#try:
 	import gtk
 	from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 	from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
 	from matplotlib.figure import Figure                                                         #
 
-	plots = len(parameters)
+	
 	#print parameters[1]
 	win = gtk.Window()
 	win.connect("destroy", lambda x: gtk.main_quit())
@@ -67,47 +70,47 @@ class PlotGTKWindow:
 	#vbox.pack_start(toolbar, False, False)
 
 	if parameters[1]['type'] == 'line':
-	    x = parameters[1]['X']
-	    y = parameters[1]['Y']
-	    
-	    print x
-	     
-	    ax  = fig.add_subplot(plots, 1, 1,)
-	    ax.grid(True)
-	    
-	    # Setting plot type
-	    ax.plot(x, y, 'ko',x, y,'k', picker=5)
-	    #ax.plot(z, y, 'ko', z, y,'k', picker=5)
-	    
-	    ax.spines['right'].set_visible(False)
-	    ax.spines['top'].set_visible(True)
-	    ax.yaxis.set_ticks_position('left')
-	    ax.xaxis.set_ticks_position('bottom')
-	    
-	    ax.set_xlabel(parameters[1]['xlabel'])
-	    ax.set_ylabel(parameters[1]['ylabel'])
+		x = parameters[1]['X']
+		y = parameters[1]['Y']
+		
+		print x
+		 
+		ax  = fig.add_subplot(plots, 1, 1,)
+		ax.grid(True)
+		
+		# Setting plot type
+		ax.plot(x, y, 'ko',x, y,'k', picker=5)
+		#ax.plot(z, y, 'ko', z, y,'k', picker=5)
+		
+		ax.spines['right'].set_visible(False)
+		ax.spines['top'].set_visible(True)
+		ax.yaxis.set_ticks_position('left')
+		ax.xaxis.set_ticks_position('bottom')
+		
+		ax.set_xlabel(parameters[1]['xlabel'])
+		ax.set_ylabel(parameters[1]['ylabel'])
 			  
 	if parameters[1]['type'] == 'matrix':
 		
    
-	    matrix = parameters[1]['matrix']
-	    fig, (ax) = plt.subplots(nrows=1)
-	    
+		matrix = parameters[1]['matrix']
+		fig, (ax) = plt.subplots(nrows=1)
+		
    
-	    coord1 = parameters[1]['xlabel']
-	    coord2 = parameters[1]['ylabel']
-	       
-	    # Setting plot type
-	    im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
-	    v = plt.axis()
-	    am = ax.contour(matrix, colors='k')
-	    plt.axis(v)
-	    ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
-	    fig.colorbar(im, ax=ax)                          # and remove comment here             
-	    
-	    # Set x and y labels
-	    ax.set_xlabel(coord2)
-	    ax.set_ylabel(coord1)
+		coord1 = parameters[1]['xlabel']
+		coord2 = parameters[1]['ylabel']
+		   
+		# Setting plot type
+		im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
+		v = plt.axis()
+		am = ax.contour(matrix, colors='k')
+		plt.axis(v)
+		ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
+		fig.colorbar(im, ax=ax)                          # and remove comment here             
+		
+		# Set x and y labels
+		ax.set_xlabel(coord2)
+		ax.set_ylabel(coord1)
 	
 	#self.figure_plot(parameters, fig)
 	vbox = gtk.VBox()
@@ -123,13 +126,85 @@ class PlotGTKWindow:
 	#'''
 	win.show_all()
 	gtk.main()
-
-
-
-
-
-
-
+	
+	#except:
+	#	
+	#	
+	#	
+	#	
+	#	from six.moves import tkinter as Tk
+	#	from matplotlib.backends.backend_tkagg import (
+	#		FigureCanvasTkAgg, NavigationToolbar2TkAgg)
+	#	# Implement the default Matplotlib key bindings.
+	#	
+	#	from matplotlib.backend_bases import key_press_handler
+	#	from matplotlib.figure import Figure
+	#	from six.moves import tkinter as Tk
+	#	import numpy as np
+	#
+	#
+	#	root = Tk.Tk()
+	#	
+	#	title = parameters[1]['energy_model']
+	#	title = parameters[1]['log_file']
+	#	root.wm_title(title)
+	#	
+	#	fig = Figure(figsize=(1,1), dpi=80)
+	#	canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
+	#	canvas.draw()
+	#	canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+	#	toolbar = NavigationToolbar2TkAgg(canvas, root)
+	#	toolbar.update()
+	#	canvas._tkcanvas.pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+	#	
+	#	
+	#	if parameters[1]['type'] == 'line':
+	#		x = parameters[1]['X']
+	#		y = parameters[1]['Y']
+	#		
+	#		print x
+	#		 
+	#		ax  = fig.add_subplot(plots, 1, 1,)
+	#		ax.grid(True)
+	#		
+	#		# Setting plot type
+	#		ax.plot(x, y, 'ko',x, y,'k', picker=5)
+	#		#ax.plot(z, y, 'ko', z, y,'k', picker=5)
+	#		
+	#		ax.spines['right'].set_visible(False)
+	#		ax.spines['top'].set_visible(True)
+	#		ax.yaxis.set_ticks_position('left')
+	#		ax.xaxis.set_ticks_position('bottom')
+	#		
+	#		ax.set_xlabel(parameters[1]['xlabel'])
+	#		ax.set_ylabel(parameters[1]['ylabel'])
+	#			  
+	#	if parameters[1]['type'] == 'matrix':
+	#		
+	#   
+	#		matrix = parameters[1]['matrix']
+	#		fig, (ax) = plt.subplots(nrows=1)
+	#		
+	#   
+	#		coord1 = parameters[1]['xlabel']
+	#		coord2 = parameters[1]['ylabel']
+	#		   
+	#		# Setting plot type
+	#		im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
+	#		v = plt.axis()
+	#		am = ax.contour(matrix, colors='k')
+	#		plt.axis(v)
+	#		ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
+	#		fig.colorbar(im, ax=ax)                          # and remove comment here             
+	#		
+	#		# Set x and y labels
+	#		ax.set_xlabel(coord2)
+	#		ax.set_ylabel(coord1)
+	#	#fig.tight_layout()
+	#	Tk.mainloop()	
+	#
+	#
+	#
 
 
 

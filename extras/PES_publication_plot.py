@@ -96,7 +96,7 @@ cmaps = [('Perceptually Uniform Sequential', [
 
 cmap     = 'jet'#'nipy_spectral'#'copper'#'PuBuGn'#'inferno'#'jet'
 vmin     = None
-vmax     = 150#None
+vmax     = 50#None
 shading  = 'gouraud'
 lspacing = 20
 lcolor   = 'k'
