@@ -57,8 +57,11 @@ class pDynamoToMOPAC:
                          AUX          = True ,
                          single_point = True ,
                          MOZYME       = False , 
+                         LARGE        = True ,
+                         VECTORS      = True ,
+                         ALLVECS      = True ,
                          BONDS        = False,
-                         PDBOUT       = False,
+                         PDBOUT       = True,
                          QMMM         = False,
                          SOLV         = False,
                          ESP          = None ,
@@ -74,6 +77,14 @@ class pDynamoToMOPAC:
             text += 'AUX' + ' '
         if single_point:
             text += '1SCF' + ' '
+        
+        if LARGE:                       #new lines 07/04/2019
+            text += 'LARGE' + ' '       #new lines 07/04/2019
+        if VECTORS:                       #new lines 07/04/2019
+            text += 'VECTORS' + ' '     #new lines 07/04/2019
+        if ALLVECS:                       #new lines 07/04/2019
+            text += 'ALLVECS' + ' '     #new lines 07/04/2019
+        
         if MOZYME:
             text += 'MOZYME' + ' '
             text += 'GEO-OK' + ' '
@@ -270,7 +281,8 @@ class MOPACSEnergyDialog():
         parameters['mopac_1SCF'  ]      = True         #single_point = True        ,  
         parameters['mopac_MOZYME']      = True         #MOZYME       = MOZYME      ,  
         parameters['mopac_BONDS' ]      = False        #BONDS        = False       ,  
-        parameters['mopac_PDBOUT']      = False        #PDBOUT       = False       ,  
+        parameters['mopac_LARGE' ]      = True        #PDBOUT       = False       ,  
+        parameters['mopac_PDBOUT']      = True        #PDBOUT       = False       ,  
         parameters['mopac_SOLV'  ]      = False        #SOLV         = SOLV        ,  
         parameters['mopac_ESP'   ]      = None         #ESP          = ESP         ,  
         parameters['mopac_RSOLV' ]      = None         #RSOLV        = RSOLV       ,  
@@ -482,7 +494,7 @@ class MOPACSEnergyDialog():
                 header += "\nMOZYME                 =%20s  "     % ("True")
             else:
                 header += "\nMOZYME                 =%20s  "     % ("False")
-                
+            
             if  parameters['mopac_SOLV'  ]:
                 header += "\nSOLV                   =%20s  "     % ('True')        #
                 header += "\nmopac_ESP              =%20s  "     % (str(parameters['mopac_ESP'  ]))
