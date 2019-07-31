@@ -119,8 +119,8 @@ def parser_tags (args):
 	
 	
 	
-	if '-f' in args:
-		index = args.index('-f')
+	if '-i' in args:
+		index = args.index('-i')
 		log_file  = args[index+1]
 	else:
 		log_file  = None
@@ -485,28 +485,30 @@ def log_parser (log_file):
 
 
 
-if '-h' in args or '-H' in args:
+
+input_parm = parser_tags(args)
+
+print input_parm
+
+vmax     =input_parm['vmax'    ]
+vmin     =input_parm['vmin'    ]
+cmap     =input_parm['cmap'    ]
+shading  =input_parm['shading' ]
+lspacing =input_parm['lspacing']
+lcolor   =input_parm['lcolor'  ]
+fontsize =input_parm['fontsize']
+log_file =input_parm['log_file']
+
+
+
+
+
+if '-h' in args or '-H' in args or log_file == None:
     print text
 
 
 
 else:
-    input_parm = parser_tags(args)
-
-    print input_parm
-
-    vmax     =input_parm['vmax'    ]
-    vmin     =input_parm['vmin'    ]
-    cmap     =input_parm['cmap'    ]
-    shading  =input_parm['shading' ]
-    lspacing =input_parm['lspacing']
-    lcolor   =input_parm['lcolor'  ]
-    fontsize =input_parm['fontsize']
-    log_file =input_parm['log_file']
-
-
-
-
     '''
     cmaps = [('Perceptually Uniform Sequential', [
 			    'viridis', 'plasma', 'inferno', 'magma']),
