@@ -2,6 +2,39 @@ import os
 import numpy as np
 import shutil
 
+
+text = '''
+#-----------------------------------------------------------------------------#
+#                                                                             #
+#                                EasyHybrid                                   #
+#                   - A pDynamo graphical user interface -                    #
+#                                                                             #
+#-----------------------------------------------------------------------------#
+#     Developed by Jose Fernando R Bachega and Luis Fernando S M Timmers      #
+#                            <ferbachega@gmail.com>                           #
+#             visit: https://sites.google.com/site/EasyHybrid/                #
+#-----------------------------------------------------------------------------#
+
+Welcome to EasyHybrid PES logfile file processor.
+
+Usage: python trajectoryEditor.py  -i inputfolder <options>  -o outfolder
+
+
+
+Options:
+	-i          =  input (folder)  
+	-type       = 1D / 2D  
+	-i_offset   =  <int>  eg:2      
+	-j_offset   =  <int>  eg:2     
+	-invert     =  false
+	-o          =  output (folder)
+	
+	-h          =  help
+'''
+
+
+
+
 class Trajectory:
     """ Class doc """
     
@@ -18,7 +51,7 @@ class Trajectory:
 	#self.REACTION_COORD1 = None
 	#self.REACTION_COORD2 = None
 
-    def import_frames_from_folder(self, InputTrajectory = '', trajectoryType = '1D', fileType = 'pkl'):
+    def import_frames_from_folder(self, InputTrajectory = '', trajectoryType = '1D', fileType = 'pkl', invert = False):
         
 	self.InputTrajectory = InputTrajectory
 
@@ -120,13 +153,91 @@ class Trajectory:
 	print 'basename'       ,  self.basename
 	
 	
+import sys
+print sys.argv
+args = sys.argv
 	
-	
-	
-	
-	
-	
-	
+def parser_tags (args):
+    """ Function doc """
+    if '-i' in args:
+	index = args.index('-i')
+	log_file  = args[index+1]
+    else:
+	log_file  = None
+
+   
+    if '-o' in args:
+	index = args.index('-o')
+	out_file  = args[index+1]
+    else:
+	out_file  = None
+
+    
+    if '-type' in args:
+	index = args.index('-type')
+	_type = args[index+1]
+    else:
+	_type = '2D'
+
+    
+    
+    if '-i_offset' in args:
+	index    = args.index('-i_offset')
+	i_offset = int(args[index+1])
+    else:
+	i_offset = 2
+
+
+
+    if '-j_offset' in args:
+	index = args.index('-j_offset')
+	j_offset  = int(args[index+1])
+    else:
+	j_offset  = 2
+
+
+    
+    if '-invert' in args:
+	index = args.index('-invert')
+	invert  = args[index+1]
+    else:
+	invert  = False
+
+
+
+    input_parm = {'type'     :_type     , 
+		  'i_offset' :i_offset  , 
+		  'j_offset' :j_offset  , 
+		  'invert'   :invert    , 
+		  'log_file' :log_file  ,
+		  'out_file' :out_file
+		  } 
+   
+    return input_parm
+
+
+inputs = parser_tags (args)
+
+if '-h' in args or '-H' in args or inputs['log_file'] == None or inputs['out_file'] == None:
+    print text
+
+else:
+    traj  = Trajectory()
+
+    traj.import_frames_from_folder(InputTrajectory = inputs['log_file'],
+				    trajectoryType = inputs['type'], 
+				    fileType       = 'pkl')
+
+
+    traj.Summary()
+    traj.save_edited_trajectory(
+				outputfolder =  inputs['out_file'], 
+				i_offset     =  inputs['i_offset'], 
+				j_offset     =  inputs['j_offset'], 
+				fileType     = 'pkl')
+
+
+
 	
 '''
 traj  = Trajectory()
@@ -190,18 +301,18 @@ traj.save_edited_trajectory(
 
 #'''
 
-#'''
-traj  = Trajectory()
-traj.import_frames_from_folder(InputTrajectory = '/home/rafa/pDynamoWorkSpace/AK/6_step_Scan2D',
-				trajectoryType = '2D', 
-				     fileType = 'pkl')
-
-
-traj.Summary()
-traj.save_edited_trajectory(
-			    outputfolder = '/home/rafa/pDynamoWorkSpace/AK/6_step_Scan2D_edited', 
-			    i_offset     = 3     , 
-			    j_offset     = 2     , 
-			    fileType    = 'pkl')
-
+##'''
+#traj  = Trajectory()
+#traj.import_frames_from_folder(InputTrajectory = '/home/rafa/pDynamoWorkSpace/AK/6_step_Scan2D',
+#				trajectoryType = '2D', 
+#				     fileType = 'pkl')
+#
+#
+#traj.Summary()
+#traj.save_edited_trajectory(
+#			    outputfolder = '/home/rafa/pDynamoWorkSpace/AK/6_step_Scan2D_edited', 
+#			    i_offset     = 3     , 
+#			    j_offset     = 2     , 
+#			    fileType    = 'pkl')
+#
 #'''
