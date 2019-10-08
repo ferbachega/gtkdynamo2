@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import shutil
+import sys
 
 
 text = '''
@@ -153,7 +154,6 @@ class Trajectory:
 	print 'basename'       ,  self.basename
 	
 	
-import sys
 print sys.argv
 args = sys.argv
 	
