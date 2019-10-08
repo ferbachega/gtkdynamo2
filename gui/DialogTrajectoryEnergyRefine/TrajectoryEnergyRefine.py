@@ -161,10 +161,10 @@ class TrajectoryEnergyRefineDialog():
 	
 	_type = 'energy'
 	
-	
+	outputLogFile = self.builder.get_object("output_entry").get_text()
 	
 	pDynamoTrajectoryEnergyRefine (system               = system              , 
-				       data_path            = data_path           ,     
+				       data_path            = outputLogFile       ,     
 				       trajectory           = trajectory          ,  
 				       REACTION_COORD1      = REACTION_COORD1     ,
 				       REACTION_COORD2      = REACTION_COORD2     ,
@@ -179,10 +179,89 @@ class TrajectoryEnergyRefineDialog():
         #
 
 
-	def fileChooser_logFile (self, widget):
-		""" Function doc """
-		parameters = ParseProcessLogFile(FileName)
+    def fileChooser_logFile (self, widget):
+	""" Function doc 
+	parameters = {
+		      1: {
+			 'type'          : 'line'    ,   # line / matrix
+			 'title'         : ''        ,   #
+			 'X'             : []        ,   # X 
+			 'Y'             : []        ,   # Y 
+			 'xlabel'        : 'x label' ,   # xlabel,
+			 'ylabel'        : 'y label' ,   # ylabel,
+			 'energy_model'  : 'UNK'     ,
+			 
+			 
+			 'c1_ATOM1_id'   : None      ,
+			 'c1_ATOM2_id'   : None      ,
+			 'c1_ATOM3_id'   : None      ,
+					 
+			 'c1_ATOM1_name' : None      ,
+			 'c1_ATOM2_name' : None      ,
+			 'c1_ATOM3_name' : None      ,
+					 
+			 'c2_ATOM1_id'   : None      ,
+			 'c2_ATOM2_id'   : None      ,
+			 'c2_ATOM3_id'   : None      ,
+					 
+			 'c2_ATOM1_name' : None      ,
+			 'c2_ATOM2_name' : None      ,
+			 'c2_ATOM3_name' : None      ,
+			 
+			 }
 
+	
+	REACTION_COORD1 = {'MODE'         : mode,                                                    
+			   'ATOM1'        : int(self.builder.get_object("entry_coord1_ATOM1"     ).get_text()),                                                  
+			   'ATOM1_name'   : self.builder.get_object    ("entry_coord1_ATOM1_name").get_text() ,                                           
+			   'ATOM2'        : int(self.builder.get_object("entry_coord1_ATOM2"     ).get_text()),
+			   'ATOM2_name'   : self.builder.get_object    ("entry_coord1_ATOM2_name").get_text() ,
+			   'ATOM3'        : int(self.builder.get_object("entry_coord1_ATOM3"     ).get_text()),
+			   'ATOM3_name'   : self.builder.get_object    ("entry_coord1_ATOM3_name").get_text() ,
+
+
+	"""
+	FileName = self.builder.get_object("filechooserbutton4").get_filename()
+	parameters = ParseProcessLogFile(FileName)
+	#print parameters
+
+	if parameters[1]['c1_ATOM1_id']:
+	    self.builder.get_object("entry_coord1_ATOM1").set_text(parameters[1]['c1_ATOM1_id'])
+	    self.builder.get_object ("entry_coord1_ATOM1_name").set_text(parameters[1]['c1_ATOM1_name'])
+
+
+
+	if parameters[1]['c1_ATOM2_id']:
+	    self.builder.get_object("entry_coord1_ATOM2").set_text(parameters[1]['c1_ATOM2_id'])
+	    self.builder.get_object ("entry_coord1_ATOM2_name").set_text(parameters[1]['c1_ATOM2_name'])
+
+
+	if parameters[1]['c1_ATOM3_id']:
+	    self.builder.get_object("entry_coord1_ATOM3").set_text(parameters[1]['c1_ATOM3_id'])
+	    self.builder.get_object ("entry_coord1_ATOM3_name").set_text(parameters[1]['c1_ATOM3_name'])
+	    self.builder.get_object('combobox_reaction_coordiante_type1').set_active(1)
+	else:
+	    self.builder.get_object('combobox_reaction_coordiante_type1').set_active(0)
+
+
+	if parameters[1]['c2_ATOM1_id']:
+	    self.builder.get_object("entry_coord2_ATOM1").set_text(parameters[1]['c2_ATOM1_id'])
+	    self.builder.get_object ("entry_coord2_ATOM1_name").set_text(parameters[1]['c2_ATOM1_name'])
+
+	
+	
+	if parameters[1]['c2_ATOM2_id']:
+	    self.builder.get_object("entry_coord2_ATOM2").set_text(parameters[1]['c2_ATOM2_id'])
+	    self.builder.get_object ("entry_coord2_ATOM2_name").set_text(parameters[1]['c2_ATOM2_name'])
+
+	
+	
+	if parameters[1]['c2_ATOM3_id']:
+	    self.builder.get_object("entry_coord2_ATOM3").set_text(parameters[1]['c2_ATOM3_id'])
+	    self.builder.get_object ("entry_coord2_ATOM3_name").set_text(parameters[1]['c2_ATOM3_name'])
+	    self.builder.get_object('combobox_reaction_coordiante_type2').set_active(1)
+	else:
+	    self.builder.get_object('combobox_reaction_coordiante_type2').set_active(0)
 
     def Button_import_PyMOL_index(self, button):
         '''
@@ -467,7 +546,12 @@ class TrajectoryEnergyRefineDialog():
 
         self.sigma_pk1_pk3 = None
         self.sigma_pk3_pk1 = None
-
+	
+	
+	
+	
+	
+	
     def Mass_weight_check(self, checkbutton):
         
         '''

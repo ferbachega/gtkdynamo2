@@ -198,24 +198,27 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
                                    
                                    set_MM_chrgs_to_zero = False,
                                    exclude_MM_atoms     = False,):
-
+    
+    #'''
                                # Local time  -  LogFileName 
     #----------------------------------------------------------------------------------------
     localtime = time.asctime(time.localtime(time.time()))                                    
     localtime = localtime.split()                                                            
     #  0     1    2       3         4                                                        
     #[Sun] [Sep] [28] [02:32:04] [2014]                                                      
-    LogFile = 'Energy_Refine_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
+    #LogFile = 'Energy_Refine_' + localtime[1] +'_' + localtime[2] + '_'+localtime[3]+'_' + localtime[4]+'.log'       #
     #----------------------------------------------------------------------------------------
     
-    log = DualTextLog(data_path, LogFile)  # LOG
+    log = DualTextLog('', data_path)
+    #log = DualTextLog(data_path, LogFile)  # LOG
     system.Summary(log=log)
     
     #--------------------#
     #    Initial time    #
     #--------------------#
     t_initial = time.time()
-
+    #'''
+    LogFile = data_path
     #---------------------------------#
     #             SUMMARY             #
     #---------------------------------#
@@ -321,8 +324,8 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 															        (line[2] - min_value)/4.18)       # 6
 
 	text = str(text)
-	
-	arq = open(os.path.join(data_path, LogFile), 'a')
+	arq = open(data_path, 'a')
+	#arq = open(os.path.join(data_path, LogFile), 'a')
 	arq.writelines(text)
 	arq.close()
 
@@ -330,8 +333,8 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    print line[0], line[1], line[2], line[2] - min_value, (line[2] - min_value)/4.18
 	
 	print '\n\nSaving results:'
-	print os.path.join(data_path, LogFile)
-  
+	#print os.path.join(data_path, LogFile)
+	print data_path
     
     
     
@@ -490,11 +493,12 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
     #-----------------------------------------------------------------------------------------------------------------------------------#
 	    
 	print '\n\nSaving results:'
-	print os.path.join(data_path, LogFile)
+	print os.path.join('', LogFile)
 	#--------------------------------------------------------------------------------------------------------------
-	arq = open(os.path.join(data_path, LogFile), 'a')
+	#arq = open(os.path.join(data_path, LogFile), 'a')
         #arq.writelines(header)
-        arq.writelines(text)
+        arq = open(LogFile, 'a')
+	arq.writelines(text)
 	arq.writelines(text_matrix1)
 	arq.writelines(text_coord)
         arq.close()

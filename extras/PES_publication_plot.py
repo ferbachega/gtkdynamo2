@@ -19,6 +19,8 @@ Usage: python PES_publication_plot.py  -i inputfile <options>
 Options:
                    -h , -H   help 
                    
+                   -idx   Shows the reaction coordinate as a fuctions of frame indexes
+                   
                    -cmap color map (string), default is 'jet'
                         see the options:
                         https://matplotlib.org/examples/color/colormaps_reference.html
@@ -66,7 +68,10 @@ args = sys.argv
 def parser_tags (args):
 	""" Function doc """
 	
-
+	if '-idx' in args:
+		idx  = True
+	else: 
+		idx = False
 	
 	if '-vmax' in args:
 		index = args.index('-vmax')
@@ -133,7 +138,8 @@ def parser_tags (args):
 				  'lspacing' :lspacing, 
 				  'lcolor'   :lcolor  , 
 				  'fontsize' :fontsize,
-				  'log_file' :log_file
+				  'log_file' :log_file,
+				  'idx'      :idx
 				  } 
 	
 	
@@ -490,15 +496,15 @@ input_parm = parser_tags(args)
 
 print input_parm
 
-vmax     =input_parm['vmax'    ]
-vmin     =input_parm['vmin'    ]
-cmap     =input_parm['cmap'    ]
-shading  =input_parm['shading' ]
-lspacing =input_parm['lspacing']
-lcolor   =input_parm['lcolor'  ]
-fontsize =input_parm['fontsize']
-log_file =input_parm['log_file']
-
+vmax     = input_parm['vmax'    ]
+vmin     = input_parm['vmin'    ]
+cmap     = input_parm['cmap'    ]
+shading  = input_parm['shading' ]
+lspacing = input_parm['lspacing']
+lcolor   = input_parm['lcolor'  ]
+fontsize = input_parm['fontsize']
+log_file = input_parm['log_file']
+idx      = input_parm['idx']
 
 
 
@@ -509,176 +515,269 @@ if '-h' in args or '-H' in args or log_file == None:
 
 
 else:
-    '''
-    cmaps = [('Perceptually Uniform Sequential', [
-			    'viridis', 'plasma', 'inferno', 'magma']),
-		     ('Sequential', [
-			    'Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
-			    'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
-			    'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']),
-		     ('Sequential (2)', [
-			    'binary', 'gist_yarg', 'gist_gray', 'gray', 'bone', 'pink',
-			    'spring', 'summer', 'autumn', 'winter', 'cool', 'Wistia',
-			    'hot', 'afmhot', 'gist_heat', 'copper']),
-		     ('Diverging', [
-			    'PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu',
-			    'RdYlBu', 'RdYlGn', 'Spectral', 'coolwarm', 'bwr', 'seismic']),
-		     ('Qualitative', [
-			    'Pastel1', 'Pastel2', 'Paired', 'Accent',
-			    'Dark2', 'Set1', 'Set2', 'Set3',
-			    'tab10', 'tab20', 'tab20b', 'tab20c']),
-		     ('Miscellaneous', [
-			    'flag', 'prism', 'ocean', 'gist_earth', 'terrain', 'gist_stern',
-			    'gnuplot', 'gnuplot2', 'CMRmap', 'cubehelix', 'brg', 'hsv',
-			    'gist_rainbow', 'rainbow', 'jet', 'nipy_spectral', 'gist_ncar'])]
+	'''
+	cmaps = [('Perceptually Uniform Sequential', [
+				'viridis', 'plasma', 'inferno', 'magma']),
+			 ('Sequential', [
+				'Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
+				'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
+				'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn']),
+			 ('Sequential (2)', [
+				'binary', 'gist_yarg', 'gist_gray', 'gray', 'bone', 'pink',
+				'spring', 'summer', 'autumn', 'winter', 'cool', 'Wistia',
+				'hot', 'afmhot', 'gist_heat', 'copper']),
+			 ('Diverging', [
+				'PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu',
+				'RdYlBu', 'RdYlGn', 'Spectral', 'coolwarm', 'bwr', 'seismic']),
+			 ('Qualitative', [
+				'Pastel1', 'Pastel2', 'Paired', 'Accent',
+				'Dark2', 'Set1', 'Set2', 'Set3',
+				'tab10', 'tab20', 'tab20b', 'tab20c']),
+			 ('Miscellaneous', [
+				'flag', 'prism', 'ocean', 'gist_earth', 'terrain', 'gist_stern',
+				'gnuplot', 'gnuplot2', 'CMRmap', 'cubehelix', 'brg', 'hsv',
+				'gist_rainbow', 'rainbow', 'jet', 'nipy_spectral', 'gist_ncar'])]
 
 
-    '''
-
-
-
-
-
-
-
-    #cmap     = 'jet'#'nipy_spectral'#'copper'#'PuBuGn'#'inferno'#'jet'
-    #vmin     = None
-    #vmax     = 250#None
-    #lspacing = 20
-    #lcolor   = 'k'
-    #fontsize = 14
-
-
-
-    data  = log_parser (log_file)
-    data =  data[1]
+	'''
 
 
 
 
 
-    z = data['matrix']
-    r1 = []
-    for line in data['R1']:
-	    if line == []:
-		    pass
-	    else:
-		    #print line[0]
-		    if line[0]:
-			    r1.append(line[0])
+
+
+	#cmap     = 'jet'#'nipy_spectral'#'copper'#'PuBuGn'#'inferno'#'jet'
+	#vmin     = None
+	#vmax     = 250#None
+	#lspacing = 20
+	#lcolor   = 'k'
+	#fontsize = 14
 
 
 
-    z = data['matrix']
-    x = data['R2'][0]
-    y = np.array(r1)
-
-
-    if vmin == None:
-	    vmin=z.min()
-    if vmax == None:
-	    vmax=z.max()
-
-    print 'z', len(z) , type(z)
-    print 'y', len(y) , type(y)
-    print 'x', len(x) , type(x)#
-
-
-    print z
-    print y
-    print x
-
-    print 'c1_ATOM1_id'  , data['c1_ATOM1_id'  ]
-    print 'c1_ATOM1_name', data['c1_ATOM1_name']
+	data  = log_parser (log_file)
+	data =  data[1]
 
 
 
-    levels = MaxNLocator(nbins=100).tick_values(z.min(), z.max())
-    # pick the desired colormap, sensible levels, and define a normalization
-    # instance which takes data values and translates those into levels.
 
 
-    cmap = plt.get_cmap(cmap)
-
-
-    norm = BoundaryNorm(levels, 
-					    ncolors=cmap.N, 
-					    clip=True)
-
-
-    #norm= colors.LogNorm(vmin=z.min(), vmax=z.max())
-    norm= colors.PowerNorm(gamma=1./2.)
-    #fig, (ax0, ax1) = plt.subplots(nrows=2)
-    norm =  colors.Normalize(vmin=z.min(), vmax=z.max())
-    norm =  colors.Normalize(vmin=vmin, vmax=vmax)
+	z = data['matrix']
+	r1 = []
+	for line in data['R1']:
+		if line == []:
+			pass
+		else:
+			#print line[0]
+			if line[0]:
+				r1.append(line[0])
 
 
 
-    fig, (ax0) = plt.subplots(nrows=1)
+	z = data['matrix']
+	x = data['R2'][0]
+	y = np.array(r1)
 
 
-    im = ax0.pcolormesh(x, y, z, cmap=cmap, norm=norm, shading = shading)
+	if vmin == None:
+		vmin=z.min()
+	if vmax == None:
+		vmax=z.max()
 
-    #im = ax0.imshow(x,y,z, interpolation = 'bicubic')
-
-    #c = ax0.contour(  colors='black', alpha=0.3, linewidths=2)
-
-    am = ax0.contour(x,y,z,lspacing, colors=lcolor)
-    ax0.clabel(am, inline=1, fontsize=fontsize, fmt='%1.1f',colors=lcolor)
-
-    #x,y,z, levels=numpy.linspace(-5.0, 0.0, 50), cmap='Blues_r'
-    #im = ax0.contourf(x,y,z, cmap='rainbow')
-
-    #ax.imshow(matrix, interpolation = 'bicubic') 
-
-    FontSize = 20
-
-    # Set the tick labels font
-    axis_font = {'fontname':'Arial', 'size':'14'}
-    for tick in (ax0.xaxis.get_major_ticks()):
-	    tick.label.set_fontname('Arial')
-	    tick.label.set_fontsize(FontSize)
-
-    for tick in (ax0.yaxis.get_major_ticks()):
-	    tick.label.set_fontname('Arial')
-	    tick.label.set_fontsize(FontSize) 
-
-    coord1 = data['xlabel']
-    coord2 = data['ylabel']
-    ax0.set_xlabel(coord2, **axis_font)
-    ax0.set_ylabel(coord1, **axis_font)
+	print 'z', len(z) , type(z)
+	print 'y', len(y) , type(y)
+	print 'x', len(x) , type(x)#
 
 
+	print z
+	print y
+	print x
 
-    #ax0.set_ylabel(r'$\sum_{i=0}^\infty x_i$')
-
-    '''
-    cmap     = 'jet'
-    vmin     = None
-    vmax     = None
-    shading  = 'gouraud'
-    lspacing = 10
-    lcolor   = 'k'
-    fontsize = 14
-    '''
+	print 'c1_ATOM1_id'  , data['c1_ATOM1_id'  ]
+	print 'c1_ATOM1_name', data['c1_ATOM1_name']
 
 
+	#if idx:
+	#	#matrix = data['matrix']
+	#	#fig, (ax) = plt.subplots(nrows=1)
+	#	#
+	#	#coord1 = parameters[1]['xlabel']
+	#	#coord2 = parameters[1]['ylabel']
+	#	#
+	#	## Setting plot type
+	#	#im = ax.imshow(matrix, interpolation = 'bicubic')                           #ax.imshow(matrix, interpolation = 'bicubic')       
+	#	#am = ax.contour(matrix, colors='k')
+	#	#ax.clabel(am, inline=1, fontsize=10, fmt='%1.1f',colors='k') # if using imshow, comment this line
+	#	#fig.colorbar(im, ax=ax)                          # and remove comment here             
+	#	#
+	#	## Set x and y labels
+	#	#ax.set_xlabel(coord2)
+	#	#ax.set_ylabel(coord1)
+	#	#import numpy as np
+	#	z = data['matrix']
+	#	'''
+	#	# make these smaller to increase the resolution
+	#	dx, dy = 0.15, 0.05
+	#
+	#	# generate 2 2d grids for the x & y bounds
+	#	y, x = np.mgrid[slice(-3, 3 + dy, dy),
+	#				slice(-3, 3 + dx, dx)]
+	#	z = (1 - x / 2. + x ** 5 + y ** 3) * np.exp(-x ** 2 - y ** 2)
+	#	# x and y are bounds, so z should be the value *inside* those bounds.
+	#	# Therefore, remove the last value from the z array.
+	#	z = z[:-1, :-1]
+	#	z_min, z_max = -np.abs(z).max(), np.abs(z).max()
+	#	'''
+	#	
+	#	
+	#	#'''
+	#	z_min, z_max = -np.abs(z).max(), np.abs(z).max()
+	#	
+	#	x = range(len(x))
+	#	y = range(len(y))
+	#	X, Y = np.meshgrid(x, y)
+	#	
+	#	
+	#	fig, ax = plt.subplots()
+	#	CS = ax.contour(X, Y, z)
+	#	ax.clabel(CS, inline=1, fontsize=10)
+	#	ax.set_title('Simplest default with labels')
+	#	
+	#	
+	#	
+	#	#fig, ax = plt.subplots(nrows=1)
+	#
+	#	#c = ax.pcolor( z, cmap='jet', vmin = vmin, vmax = vmax)#, vmin=z_min, vmax=z_max)
+	#	
+	#	#ax.set_title('pcolor')
+	#	#fig.colorbar(c, ax=ax)
+	#
+	#	fig.tight_layout()
+	#	plt.show()
+	#	#'''
 
-    cbar = fig.colorbar(im, ax=ax0)
-    cbar.ax.tick_params(labelsize=FontSize)
-    #ax0.set_title('pcolormesh with levels')
 
-    '''
-    # contours are *point* based plots, so convert our bound into point
-    # centers
-    cf = ax1.contourf(x[:-1, :-1] + dx/2.,
-				      y[:-1, :-1] + dy/2., z, levels=levels,
-				      cmap=cmap)
-    fig.colorbar(cf, ax=ax1)
-    ax1.set_title('contourf with levels')
-    '''
-    # adjust spacing between subplots so `ax1` title and `ax0` tick labels
-    # don't overlap
-    fig.tight_layout()
 
-    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	#else:
+	levels = MaxNLocator(nbins=100).tick_values(z.min(), z.max())
+	# pick the desired colormap, sensible levels, and define a normalization
+	# instance which takes data values and translates those into levels.
+
+
+	cmap = plt.get_cmap(cmap)
+
+
+	norm = BoundaryNorm(levels, 
+						ncolors=cmap.N, 
+						clip=True)
+
+
+	#norm= colors.LogNorm(vmin=z.min(), vmax=z.max())
+	norm= colors.PowerNorm(gamma=1./2.)
+	#fig, (ax0, ax1) = plt.subplots(nrows=2)
+	norm =  colors.Normalize(vmin=z.min(), vmax=z.max())
+	norm =  colors.Normalize(vmin=vmin, vmax=vmax)
+
+
+
+	fig, (ax0) = plt.subplots(nrows=1)
+
+	if idx:
+		x = range(len(x))
+		y = range(len(y))
+		X, Y = np.meshgrid(x, y)
+
+	im = ax0.pcolormesh(x, y, z, cmap=cmap, norm=norm, shading = shading)
+
+	#im = ax0.imshow(x,y,z, interpolation = 'bicubic')
+
+	#c = ax0.contour(  colors='black', alpha=0.3, linewidths=2)
+
+	am = ax0.contour(x,y,z,lspacing, colors=lcolor)
+	ax0.clabel(am, inline=1, fontsize=fontsize, fmt='%1.1f',colors=lcolor)
+
+	#x,y,z, levels=numpy.linspace(-5.0, 0.0, 50), cmap='Blues_r'
+	#im = ax0.contourf(x,y,z, cmap='rainbow')
+
+	#ax.imshow(matrix, interpolation = 'bicubic') 
+
+	FontSize = 20
+
+	# Set the tick labels font
+	axis_font = {'fontname':'Arial', 'size':'14'}
+	for tick in (ax0.xaxis.get_major_ticks()):
+		tick.label.set_fontname('Arial')
+		tick.label.set_fontsize(FontSize)
+
+	for tick in (ax0.yaxis.get_major_ticks()):
+		tick.label.set_fontname('Arial')
+		tick.label.set_fontsize(FontSize) 
+
+	coord1 = data['xlabel']
+	coord2 = data['ylabel']
+	ax0.set_xlabel(coord2, **axis_font)
+	ax0.set_ylabel(coord1, **axis_font)
+
+
+
+	#ax0.set_ylabel(r'$\sum_{i=0}^\infty x_i$')
+
+	'''
+	cmap     = 'jet'
+	vmin     = None
+	vmax     = None
+	shading  = 'gouraud'
+	lspacing = 10
+	lcolor   = 'k'
+	fontsize = 14
+	'''
+
+
+
+	cbar = fig.colorbar(im, ax=ax0)
+	cbar.ax.tick_params(labelsize=FontSize)
+	#ax0.set_title('pcolormesh with levels')
+
+	'''
+	# contours are *point* based plots, so convert our bound into point
+	# centers
+	cf = ax1.contourf(x[:-1, :-1] + dx/2.,
+					  y[:-1, :-1] + dy/2., z, levels=levels,
+					  cmap=cmap)
+	fig.colorbar(cf, ax=ax1)
+	ax1.set_title('contourf with levels')
+	'''
+	# adjust spacing between subplots so `ax1` title and `ax0` tick labels
+	# don't overlap
+	fig.tight_layout()
+
+	plt.show()

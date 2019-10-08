@@ -168,6 +168,7 @@
                               <object class="GtkFileChooserButton" id="filechooserbutton4">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <signal name="file-set" handler="fileChooser_logFile" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1172,7 +1173,7 @@
                             <property name="height_request">30</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Reaction coordiante:</property>
+                            <property name="label" translatable="yes">Output:</property>
                             <property name="wrap">True</property>
                           </object>
                           <packing>
@@ -1182,7 +1183,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="ScanDialog_SCAN_entry_trajectory_name">
+                          <object class="GtkEntry" id="output_entry">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="invisible_char">●</property>
@@ -1207,7 +1208,7 @@
                   <object class="GtkLabel" id="label2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">&lt;b&gt;frame3&lt;/b&gt;</property>
+                    <property name="label" translatable="yes">&lt;b&gt;File&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>

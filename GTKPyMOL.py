@@ -540,6 +540,35 @@ class MainMenu (object):
 
         def  on_MainMenu_Calculate_EnergyRefine_activate(self, menuItem):
             """ Function doc """
+	    path       = self.project.settings['data_path']
+            QC_method  = ''
+	    numberOfQC = ''
+	    
+	    try:
+		QC_method  = self.project.parameters['QCMODEL']
+		if QC_method == "UNK":
+		    pass
+		    numberOfQC = ''
+		    QC_method = ''
+		else:
+		    QC_method.replace(' ', "_")
+		    QC_method.replace(':', "_")
+		    numberOfQC = '_QC' + str(len(self.project.settings['qc_table'])) + '_'
+		    
+		#----------------------------------------------------------------------------------------
+		localtime = time.asctime(time.localtime(time.time()))                                    
+		localtime = localtime.split()                                                            
+		#  0     1    2       3         4                                                        
+		#[Sun] [Sep] [28] [02:32:04] [2014]                                                      
+	    
+	    except:
+		pass
+		
+	    LogFile = 'Energy_Refine' + numberOfQC + QC_method + '.log'       #
+		#----------------------------------------------------------------------------------------
+	    LogFile = os.path.join(path, LogFile)
+		
+	    self.EnergyRefineDialog.builder.get_object('output_entry').set_text(LogFile)
             self.EnergyRefineDialog.dialog.run()
             self.EnergyRefineDialog.dialog.hide()
 

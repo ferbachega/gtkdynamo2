@@ -982,7 +982,6 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
                        'QC'              : False,
                        'potencial'       : None,
                        'qc_method'       : None,
-                                        
                        'data_path'       : data_path,   # estah sendo usado 
                        'step'            : 0,
                        'last_step'       : None,
@@ -1271,7 +1270,8 @@ class pDynamoProject(NewProject, LoadAndSaveFiles, pDynamoSimulations, QuantumCh
         StatusText = ''
         if self.parameters is not None:
             StatusText = StatusText + '  Atoms: ' + self.parameters['Number of Atoms'] + "   "
-            StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   "
+            StatusText = StatusText + '  Potencial: ' + self.parameters['Energy Model']+ "   " #+ self.parameters['QCMODEL']+ "   "
+            
             StatusText = StatusText + '  QC Atoms: ' + str(len(self.settings['qc_table']))  #self.parameters['Number of QC Atoms']+ "   "
             StatusText = StatusText + '  Fixed Atoms: ' + str(len(self.settings['fix_table']))+ "   "
             #StatusText = StatusText + '  Actual Step: ' + str(self.settings['step'])+ "   "

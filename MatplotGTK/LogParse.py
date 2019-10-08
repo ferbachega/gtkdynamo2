@@ -68,13 +68,22 @@ def ParseSummaryLogFile (log_file):
     parameters['Exclusions']                 = "UNK"
     parameters['Energy Base Line']           = "UNK"
     parameters['Crystal Class']              = "-"
-    
+    parameters['QCMODEL']                    = 'UNK'
     log = open( log_file , "r")
     for line in log:
         #print line
         linex = line.split()
         
-        try:  # Number of Atoms
+	if 'Summary for QC Model' in line:
+	    data = line.split('"')
+	    parameters['QCMODEL'] = data[1]
+	else:
+	    pass
+	
+	
+	
+	
+	try:  # Number of Atoms
             if linex[0] == 'Number':
                 if linex[1] == 'of':
                     if linex[2] == 'Atoms':
@@ -855,7 +864,33 @@ def ParseProcessLogFile(log_file):
     
     if '------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n' in lines:
         index = lines.index('------------------------ EasyHybrid SCAN Multiple-Distance ----------------------\n')
-        #print lines[index]
+	for atomLine in lines[index+1 :index+4]:
+	    atom = atomLine.split()
+	    if atom[0][0:4] == 'ATOM':
+		#if atom[0][-1] == '*':
+		#    r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+		#else:
+		#    r2 = r2 +atom[2] + '(' +atom[6] + ')'
+		#print r2
+		if atom[0][-1] == '1':
+		    parameters[1]['c1_ATOM1_id'  ] = atom[2]   
+		    parameters[1]['c1_ATOM1_name'] = atom[6]     
+		    #r2 = r2 +atom[2] + '(' +atom[6] + ')'
+
+		
+		if atom[0][-1] == '2' or atom[0][-1] == '*':
+		    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
+		    parameters[1]['c1_ATOM2_name'] = atom[6]     
+		    #r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+
+		if atom[0][-1] == '3':
+		    parameters[1]['c1_ATOM3_id'  ] = atom[2]   
+		    parameters[1]['c1_ATOM3_name'] = atom[6]     
+		    #r2 = r2 +atom[2] + '(' +atom[6] + ')'
+	
+	
+	
+	#print lines[index]
         #print index
         Frame      = []
         PK1_PK2    = []
@@ -971,7 +1006,32 @@ def ParseProcessLogFile(log_file):
     
     if '------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n' in lines:
         index = lines.index('------------------------- EasyHybrid SCAN Simple-Distance -----------------------\n')
-        #print lines[index]
+	for atomLine in lines[index+1 :index+4]:
+	    atom = atomLine.split()
+	    if atom[0][0:4] == 'ATOM':
+		#if atom[0][-1] == '*':
+		#    r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+		#else:
+		#    r2 = r2 +atom[2] + '(' +atom[6] + ')'
+		#print r2
+		if atom[0][-1] == '1':
+		    parameters[1]['c1_ATOM1_id'  ] = atom[2]   
+		    parameters[1]['c1_ATOM1_name'] = atom[6]     
+		    #r2 = r2 +atom[2] + '(' +atom[6] + ')'
+
+		
+		if atom[0][-1] == '2' or atom[0][-1] == '*':
+		    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
+		    parameters[1]['c1_ATOM2_name'] = atom[6]     
+		    #r2 = r2 + " - " + atom[2] + '(' +atom[6] + ')*' + " - "
+
+		#if atom[0][-1] == '3':
+		#    parameters[1]['c1_ATOM3_id'  ] = atom[2]   
+		#    parameters[1]['c1_ATOM3_name'] = atom[6]     
+		#    #r2 = r2 +atom[2] + '(' +atom[6] + ')'
+	
+	
+	#print lines[index]
         #print index
         Frame      = []
         PK1_PK2    = []
