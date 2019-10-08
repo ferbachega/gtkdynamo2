@@ -65,6 +65,85 @@ args = sys.argv
 
 
 
+
+
+
+def minimum_path(X):
+	lista = []
+	px = 0
+	py = 0
+
+	# rminimum path energy frames
+	frame_list = []
+	frame = str(px)+ "_" +str(py)
+	frame_list.append(frame)
+
+
+	print X[px][py]
+	lista.append(X[px][py])
+	while 1 != 0:
+		try:
+			p1 = X[px+1][py+0]
+		except:
+			p1 = 1000000000000000
+		try:
+			p2 = X[px+0][py+1]
+		except:
+			p2 = 1000000000000000
+		try:	
+			p3 = X[px+1][py+1]
+		except:
+			p3 = 1000000000000000		
+		
+		
+		if p3 < p2 and p3 < p1:
+			print p3
+			px = px + 1
+			py = py + 1
+			lista.append(p3)
+
+			frame = str(px)+ "_" +str(py)
+			frame_list.append(frame)
+			
+		if p2 < p1 and p2 < p3:
+			print p2
+			px = px + 0
+			py = py + 1
+			lista.append(p2)
+
+			frame = str(px)+ "_" +str(py)
+			frame_list.append(frame)
+			
+		if p1 < p2 and p1 < p3:
+			print p1
+			px = px + 1
+			py = py + 0
+			lista.append(p1)
+
+			frame = str(px)+ "_" +str(py)
+			frame_list.append(frame)
+			
+			
+		if p1 == 1000000000000000 and p2 == 1000000000000000 and p3 == 1000000000000000:
+			break
+	return lista , frame_list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def parser_tags (args):
 	""" Function doc """
 	
@@ -598,6 +677,9 @@ else:
 	print 'c1_ATOM1_name', data['c1_ATOM1_name']
 
 
+	lista , frame_list = minimum_path(z)
+	print lista
+	print frame_list
 	#if idx:
 	#	#matrix = data['matrix']
 	#	#fig, (ax) = plt.subplots(nrows=1)
@@ -656,33 +738,6 @@ else:
 	#	fig.tight_layout()
 	#	plt.show()
 	#	#'''
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
