@@ -64,7 +64,7 @@ def log_parser (log_file):
 
     for line in lines:
 	if 'Summary for Energy Model' in line:
-	    print line
+	    #print line
 	    line2 = line.split('"')
 	    parameters['energy_model'] = line2[1]
 

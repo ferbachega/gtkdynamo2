@@ -134,7 +134,7 @@ def minimum_path(X):
 		
 		
 		if p3 < p2 and p3 < p1:
-			print p3
+			#print p3
 			px = px + 1
 			py = py + 1
 			lista.append(p3)
@@ -143,7 +143,7 @@ def minimum_path(X):
 			frame_list.append(frame)
 			
 		if p2 < p1 and p2 < p3:
-			print p2
+			#print p2
 			px = px + 0
 			py = py + 1
 			lista.append(p2)
@@ -152,7 +152,7 @@ def minimum_path(X):
 			frame_list.append(frame)
 			
 		if p1 < p2 and p1 < p3:
-			print p1
+			#print p1
 			px = px + 1
 			py = py + 0
 			lista.append(p1)
@@ -183,7 +183,7 @@ def outputLogBuilder (log_file     = None,
     
     
 
-print sys.argv
+
 args = sys.argv
 inputs = parser_tags (args)
 
@@ -194,26 +194,28 @@ if '-h' in args or '-H' in args or inputs['folder'] == None or inputs['log_file'
 
 else:
     data  = log_parser (inputs['log_file'])
-    #pprint(data)
     data =  data[1]
-    
-    print 'energy model ', data['energy_model']
+
+    #print 'energy model ', data['energy_model']
     z = data['matrix']
     lista , frame_list = minimum_path(z)
-    print lista
-    print frame_list
-
+    #print lista
+    #print frame_list
+    #print '\n\n'
+    #print 'arguments: ' ,sys.argv
     Files    = os.listdir(inputs['folder']) 
-    
-    
+
+
     if not os.path.isdir(inputs['output']):
 	os.mkdir(inputs['output'])
 	#print "Temporary files directory:  %s" % EasyHybrid_TMP
-    
+
     print  output_header
     print 'input logFile: ', inputs['log_file']
-    print 'input folder: ', inputs['folder']
+    print 'input folder:  ', inputs['folder']
     print 'output folder: ', inputs['output']
+    #print '\n{:15s} {:<15s}  {:<15s}  {:15s}\n'.format('Frame num.', 'New Frame',  'Original Frame',   "Energy" )
+    
     n = 0
     for i in frame_list:
 	if 'frame_' + i + '.pkl' in Files:
@@ -224,32 +226,14 @@ else:
 	    
 	    
 	    text = "%15i    %15s    %15s       %15.9f"   % (n, 'frame'+str(n)+'.pkl',  frame,   lista[n]     )
+	    #text = "%15i    %15s    %15s       %15.9f"   % (n, 'frame'+str(n)+'.pkl',  frame,   lista[n]     )
+	    text = "{:5d}     {:<15s}    {:<15s}    {:15.9f}".format(n, 'frame'+str(n)+'.pkl',  frame,   lista[n] )
+	    
+	    #"{:<6s}{:5d} {:<4s}{:1s}{:3s} {:1s}{:4s}{:1s}   {:8.3f}{:8.3f}{:8.3f}{:6.2f}{:6.2f}      {:<4s}{:2s}{:2s}\n"
 	    
 	    print text
 	    #'frame'+str(n)+'.pkl', frame , lista[n]
 	    n += 1
 	    #print 'frame_' + i + '.pkl'
-    
-    
-    '''
-    traj  = Trajectory()
-    traj.import_frames_from_folder(InputTrajectory = inputs['log_file'],
-				    trajectoryType = inputs['type'], 
-				    fileType       = 'pkl')
-
-
-    traj.Summary()
-    traj.save_edited_trajectory(
-				outputfolder =  inputs['out_file'], 
-				i_offset     =  inputs['i_offset'], 
-				j_offset     =  inputs['j_offset'], 
-				fileType     = 'pkl')    
-
-
-    EasyHybrid_TMP = os.path.join(PDYNAMO_SCRATCH, '.EasyHybrid')
-    if not os.path.isdir(EasyHybrid_TMP):
-	os.mkdir(EasyHybrid_TMP)
-	print "Temporary files directory:  %s" % EasyHybrid_TMP
-    '''
 
 
