@@ -503,14 +503,14 @@ class LoadAndSaveFiles(object):
         
     def load_trajectory_to_system(self, first, last, stride, traj_name, new_pymol_object, _type):
         cmd.disable('all')
-
+	t_initial = time.time()
         
 
         i = 0 
         i = i + first
         outPath = ( traj_name )
-        self.system.Energy()
-        
+        #self.system.Energy()
+        '''
         if _type == "folder - pDynamo": #, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS'
             print "folder - pDynamo"
             trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
@@ -518,10 +518,10 @@ class LoadAndSaveFiles(object):
         if _type == "trj - AMBER":
             print "trj - AMBER"
             trajectory = AmberTrajectoryFileReader (traj_name, self.system)
-
+	'''
 
         #print 'Energy after'
-        self.system.Energy()
+        #self.system.Energy()
 
         
         i = 0
@@ -529,7 +529,35 @@ class LoadAndSaveFiles(object):
         i = i + first
         frames = 0 
         export_type = 'pdb'
-        
+
+
+        if _type == "folder - pDynamo": 
+            #print "folder - pDynamo"
+            #trajectory = SystemGeometryTrajectory (traj_name, self.system, mode = "r" )
+	    #print "\n\nAqui DCD file"
+	    
+	    
+	    #/home/fernando/pDynamoWorkSpace/AKmm_Oct_01_2017/29_NEB/frame0.pkl
+            initial_filename = traj_name + '/frame'+ str(first) +".pkl"
+	    #try:
+	    self.system.coordinates3 = Unpickle(initial_filename)
+            #except:
+            #    self.system.coordinates3 = XMLUnpickle(initial_filename)
+	    
+	    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
+	    
+	    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+	    
+	    DCDTrajectory_FromSystemGeometryTrajectory(traj_name + '/'+new_pymol_object +".dcd", traj_name,  self.system)
+	    
+	    cmd.load_traj (traj_name + '/'+new_pymol_object +".dcd", new_pymol_object, state=0, start=first+2,stop=-1)
+	    
+	    #print new_pymol_object +".dcd"
+	    #print traj_name
+	
+	#cmd.load_traj ('NewTraj.dcd', object='test',state=0,format='',interval=1, average=1,start=2,stop=-1,max=-1,selection='all',image=1, shift="[0.0,0.0,0.0]")
+	
+	'''
         while trajectory.RestoreOwnerData ( ):
             if export_type == 'pdb':
                 if a == i:
@@ -565,7 +593,8 @@ class LoadAndSaveFiles(object):
                 if a == last:
                     break
                 a=a+1	
-        type_ = 'trj'
+        #'''
+	type_ = 'trj'
         
         #----------------------------#
         #  dynamics bond using mset  #
@@ -606,6 +635,10 @@ class LoadAndSaveFiles(object):
             self.window_control.TREEVIEW_ADD_DATA2(liststore, self.settings['job_history'], self.settings['PyMOL_Obj'])
             self.SystemCheck()
         
+	t_final = time.time()
+	#total_time  = t_final - t_initial
+	print "Total time = : ", t_final - t_initial
+	
         return a
         
     def load_EasyHybrid_project(self, filename):
