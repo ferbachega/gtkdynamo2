@@ -538,15 +538,14 @@ class LoadAndSaveFiles(object):
 	    
 	    
 	    #/home/fernando/pDynamoWorkSpace/AKmm_Oct_01_2017/29_NEB/frame0.pkl
-            initial_filename = traj_name + '/frame'+ str(first) +".pkl"
+            initial_filename = traj_name + '/frame'+ str(first) +".pkl"  # loading the first frame
 	    #try:
-	    self.system.coordinates3 = Unpickle(initial_filename)
+	    self.system.coordinates3 = Unpickle(initial_filename)        # loading the first frame
             #except:
             #    self.system.coordinates3 = XMLUnpickle(initial_filename)
 	    
-	    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system)
-	    
-	    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))
+	    PDBFile_FromSystem ( os.path.join ( outPath, new_pymol_object +".pdb" ), self.system) # exporting the first frame to pymol
+	    cmd.load( os.path.join ( outPath, new_pymol_object +".pdb"))                          # exporting the first frame to pymol
 	    
 	    DCDTrajectory_FromSystemGeometryTrajectory(traj_name + '/'+new_pymol_object +".dcd", traj_name,  self.system)
 	    
