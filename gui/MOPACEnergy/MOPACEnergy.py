@@ -232,7 +232,7 @@ class pDynamoToMOPAC:
         arq.close()
         return fileout
 
-    def Energy (self, fileout = 'system.mop', mopac_path = '/opt/mopac/MOPAC2016.exe'):
+    def Energy (self, fileout = 'system.mop', mopac_path = '/opt/mopac/MOPAC2016.exe', overwrite_files = True):
         """ Function doc """
         #print fileout
         mopfile = self.generate_MOPAC_file(fileout= fileout)
@@ -241,10 +241,27 @@ class pDynamoToMOPAC:
         print command
         null_file = open(os.devnull, 'w' )
         
-        subprocess.call(command.split(), stdout = null_file, stderr = null_file )
-        
-        energy    = self.ParseLogFile(mopfile[:-3]+'arc')
-        
+        	
+	if overwrite_files == True:
+	    subprocess.call(command.split(), stdout = null_file, stderr = null_file )
+
+	else:
+	    existis = os.path.exists(mopfile[:-3]+'arc')
+	    if existis == True:
+		print 'File: ', mopfile[:-3]+'arc', 'already existis!'
+		print 'Obtaing energy value from file: ', mopfile[:-3]+'arc'
+		pass
+	    else:
+		subprocess.call(command.split(), stdout = null_file, stderr = null_file )
+
+	try:
+	    energy    = self.ParseLogFile(mopfile[:-3]+'arc')
+	except:
+	    print '\nERROR!'
+	    print mopfile[:-3]+'arc', 'not found\n'
+	    energy    = 0.00
+
+
         return  energy
                 
     def ParseLogFile(self, mopfile):
@@ -274,11 +291,12 @@ class MOPACSEnergyDialog():
         
         parameters = {}
         parameters['methods']           = None           
-        parameters['trajectory']        = None           
+        parameters['overwrite_files']    = True        #AUX          = True        ,  
+	parameters['trajectory']        = None           
         parameters['charge'      ]      = 0            #charge       = charge      ,  
         parameters['multiplicity']      = 1            #multiplicity = multiplicity,  
         parameters['mopac_AUX'   ]      = True         #AUX          = True        ,  
-        parameters['mopac_1SCF'  ]      = True         #single_point = True        ,  
+	parameters['mopac_1SCF'  ]      = True         #single_point = True        ,  
         parameters['mopac_MOZYME']      = True         #MOZYME       = MOZYME      ,  
         parameters['mopac_BONDS' ]      = False        #BONDS        = False       ,  
         parameters['mopac_LARGE' ]      = True        #PDBOUT       = False       ,  
@@ -339,7 +357,13 @@ class MOPACSEnergyDialog():
             parameters['original_system_summary'] = ParseSummaryLogFile(scanLogFile)                    #
         #-----------------------------------------------------------------------------------------------#
     
-        
+        #-----------------------------------------------------------------------------------------------#
+        if self.builder.get_object('checkbutton4').get_active() == True:
+            parameters['overwrite_files']       =  False                                                  #
+        else:                                                                                           #
+            parameters['overwrite_files']       =  True                                                 #
+        #-----------------------------------------------------------------------------------------------#
+
         
         #-----------------------------------------------------------------------------------------------#
         charge          = self.builder.get_object('spinbutton_charge').get_value_as_int()               #
@@ -475,7 +499,7 @@ class MOPACSEnergyDialog():
                                                          QMMM         = parameters['mopac_QMMM'  ])                            
                                                                                                                  
                 energy = MOPAC_system.Energy(fileout =  os.path.join(parameters['tmpfile_outpath'], 
-                                                                     'system'+str(n)+'.mop'),  mopac_path = parameters['mopac_path'])   
+                                                                     'system'+str(n)+'.mop'),  mopac_path = parameters['mopac_path'], overwrite_files= parameters['overwrite_files'])   
                 
                 logs[method]['energy'].append(float(energy))                                                     
                 logs[method]['energyNorm'].append(float(energy) - logs[method]['energy'][0])                                                                                                            
@@ -577,8 +601,9 @@ class MOPACSEnergyDialog():
                                                          QMMM         = parameters['mopac_QMMM'  ])                                          #
                                                                                                                                              #
                                                                                                                                              #
-                energy = MOPAC_system.Energy(fileout = os.path.join(parameters['tmpfile_outpath'], 'system_'+method+'_'+str(i)+'_'+str(j)+'.mop'),
-                                             mopac_path = parameters['mopac_path'])     #                
+                
+		energy = MOPAC_system.Energy(fileout = os.path.join(parameters['tmpfile_outpath'], 'system_'+method+'_'+str(i)+'_'+str(j)+'.mop', ),
+                                             mopac_path = parameters['mopac_path'], overwrite_files = parameters['overwrite_files'])     #                
                 energy_table[(i,j)] = float(energy)                                                                                          #
                 i_table.append(i)                                                                                                            #
                 j_table.append(j)                                                                                                            #
@@ -710,7 +735,17 @@ class MOPACSEnergyDialog():
         arq.close()
         #---------------------------------------------------------------------------------------------------------------
 
-
+    def on_checkbutton_continue_an_incomplete_scan_toggled(self, button):
+        """ Function doc """
+        if self.builder.get_object('checkbutton4').get_active():
+            pass
+	    #print 'and here'
+	    #self.builder.get_object('entry2').set_sensitive(True)
+            #self.builder.get_object('entry3').set_sensitive(True)
+        else:
+	    pass
+	    #self.builder.get_object('entry2').set_sensitive(False)
+            #self.builder.get_object('entry3').set_sensitive(False)
                 
     def on_checkbutton1_toggled(self, button):
         """ Function doc """
