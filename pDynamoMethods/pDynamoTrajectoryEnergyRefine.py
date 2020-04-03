@@ -418,13 +418,15 @@ def pDynamoTrajectoryEnergyRefine (system           = None     ,
 	    if X[_key[0]][_key[1]] > energy_max:
 		energy_max = X[_key[0]][_key[1]]
 	    
+	    try:
+		X_rcoord1[_key[0]][_key[1]] = float(data[_key]['coord1'])
+		X_rcoord2[_key[0]][_key[1]] = float(data[_key]['coord2'])
 	    
-	    X_rcoord1[_key[0]][_key[1]] = float(data[_key]['coord1'])
-	    X_rcoord2[_key[0]][_key[1]] = float(data[_key]['coord2'])
-	    
-
-
-
+	    except:
+		print data[_key]['coord1']
+		print data[_key]['coord2']
+		X_rcoord1[_key[0]][_key[1]] = float(data[_key]['coord1'][0])
+                X_rcoord2[_key[0]][_key[1]] = float(data[_key]['coord2'])
 
 	X_norm = X - np.min(X)
         text_matrix1 = '\n\n'
