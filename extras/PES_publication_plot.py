@@ -31,13 +31,14 @@ Options:
                    
                    -shading (string or False), default is = 'gouraud'
                    
+                   -axisfontsize (int), default is 14
                    
                    -----------  contour  ------------
                    
                    -lspacing   (int), default is 10
                    -lcolor     (char), default is 'k'
                    -fontsize   (int), default is 14
-                   
+                   -fmt        (str), default is '%1.1f'
                    
                    ----------------------------------
                    
@@ -155,13 +156,13 @@ def parser_tags (args):
 	
 	if '-vmax' in args:
 		index = args.index('-vmax')
-		vmax  = int(args[index+1])
+		vmax  = float(args[index+1])
 	else:
 		vmax  = 200
 
 	if '-vmin' in args:
 		index = args.index('-vmin')
-		vmin  = int(args[index+1])
+		vmin  = float(args[index+1])
 	else:
 		vmin  = 0
 
@@ -202,7 +203,18 @@ def parser_tags (args):
 		fontsize  =  14
 	
 	
+	if '-fmt' in args:
+		index = args.index('-fmt')
+		fmt   = args[index+1]
+	else:
+		fmt   = '%1.1f'
 	
+	if '-axisfontsize' in args:
+		index         = args.index('-axisfontsize')
+		axisfontsize  = args[index+1]
+	else:
+		axisfontsize  =  14
+		
 	
 	if '-i' in args:
 		index = args.index('-i')
@@ -211,15 +223,17 @@ def parser_tags (args):
 		log_file  = None
 	
 	
-	input_parm = {'vmax'     :vmax    , 
-				  'vmin'     :vmin    , 
-				  'cmap'     :cmap    , 
-				  'shading'  :shading , 
-				  'lspacing' :lspacing, 
-				  'lcolor'   :lcolor  , 
-				  'fontsize' :fontsize,
-				  'log_file' :log_file,
-				  'idx'      :idx
+	input_parm = {'vmax'         :vmax         , 
+				  'vmin'         :vmin         , 
+				  'cmap'         :cmap         , 
+				  'shading'      :shading      , 
+				  'lspacing'     :lspacing     , 
+				  'lcolor'       :lcolor       , 
+				  'fontsize'     :fontsize     ,
+				  'log_file'     :log_file     ,
+				  'idx'          :idx          ,
+				  'axisfontsize' :axisfontsize ,
+				  'fmt'          :fmt
 				  } 
 	
 	
@@ -241,7 +255,7 @@ lcolor   = input_parm['lcolor'  ]
 fontsize = input_parm['fontsize']
 log_file = input_parm['log_file']
 idx      = input_parm['idx']
-
+fmt      = input_parm['fmt']
 
 
 
@@ -330,13 +344,37 @@ else:
 	print y
 	print x
 
-	print 'c1_ATOM1_id'  , data['c1_ATOM1_id'  ]
-	print 'c1_ATOM1_name', data['c1_ATOM1_name']
-
-
-	lista , frame_list = minimum_path(z)
-	print lista
-	print frame_list
+	c2_ATOM1_id    =  data['c2_ATOM1_id'  ]
+	c2_ATOM1_name  =  data['c2_ATOM1_name']
+	c2_ATOM1_name  =  c2_ATOM1_name+'_{'+c2_ATOM1_id+'}'
+	c2_ATOM2_id    =  data['c2_ATOM2_id'  ]
+	c2_ATOM2_name  =  data['c2_ATOM2_name']	
+	c2_ATOM2_name  =  c2_ATOM2_name+'_{'+c2_ATOM2_id+'}'
+	c2_ATOM3_id    =  data['c2_ATOM3_id'  ]
+	c2_ATOM3_name  =  data['c2_ATOM3_name']	
+	c2_ATOM3_name  =  c2_ATOM3_name+'_{'+c2_ATOM3_id+'}'
+	rcoord2 =   r'$d(' + c2_ATOM1_name + '-' + c2_ATOM2_name+')' +'-'+ 'd('+c2_ATOM2_name+ '-' + c2_ATOM3_name+')$'
+	
+	c1_ATOM1_id    =  data['c1_ATOM1_id'  ]
+	c1_ATOM1_name  =  data['c1_ATOM1_name']
+	c1_ATOM1_name  =  c1_ATOM1_name+'_{'+c1_ATOM1_id+'}'
+	c1_ATOM2_id    =  data['c1_ATOM2_id'  ]
+	c1_ATOM2_name  =  data['c1_ATOM2_name']	
+	c1_ATOM2_name  =  c1_ATOM2_name+'_{'+c1_ATOM2_id+'}'
+	c1_ATOM3_id    =  data['c1_ATOM3_id'  ]
+	c1_ATOM3_name  =  data['c1_ATOM3_name']	
+	c1_ATOM3_name  =  c1_ATOM3_name+'_{'+c1_ATOM3_id+'}'
+	rcoord1 =   r'$d(' + c1_ATOM1_name + '-' + c1_ATOM2_name+')' +'-'+ 'd('+c1_ATOM2_name+ '-' + c1_ATOM3_name+')$'
+	
+	
+	#label_test =  r'$\sum_{i=0}^\infty x_i$'
+	
+	#label_test =  r'$\ x_i$'
+	
+	#lista , frame_list = minimum_path(z)
+	#print lista
+	#print frame_list
+	
 	#if idx:
 	#	#matrix = data['matrix']
 	#	#fig, (ax) = plt.subplots(nrows=1)
@@ -434,8 +472,13 @@ else:
 
 	#c = ax0.contour(  colors='black', alpha=0.3, linewidths=2)
 
-	am = ax0.contour(x,y,z,lspacing, colors=lcolor)
-	ax0.clabel(am, inline=1, fontsize=fontsize, fmt='%1.1f',colors=lcolor)
+	if lspacing == 0:
+		am = None
+		#ax0.clabel(inline=1, fontsize=fontsize, fmt=fmt,colors=lcolor)
+
+	else:
+		am = ax0.contour(x,y,z,lspacing, colors=lcolor)
+		ax0.clabel(am, inline=1, fontsize=fontsize, fmt=fmt,colors=lcolor)
 
 	#x,y,z, levels=numpy.linspace(-5.0, 0.0, 50), cmap='Blues_r'
 	#im = ax0.contourf(x,y,z, cmap='rainbow')
@@ -445,19 +488,21 @@ else:
 	FontSize = 20
 
 	# Set the tick labels font
-	axis_font = {'fontname':'Arial', 'size':'14'}
+	axis_font = {'fontname':'Michroma', 'size':input_parm['axisfontsize']}
 	for tick in (ax0.xaxis.get_major_ticks()):
 		tick.label.set_fontname('Arial')
 		tick.label.set_fontsize(FontSize)
 
 	for tick in (ax0.yaxis.get_major_ticks()):
-		tick.label.set_fontname('Arial')
+		tick.label.set_fontname('Dejavu')
 		tick.label.set_fontsize(FontSize) 
 
 	coord1 = data['xlabel']
 	coord2 = data['ylabel']
 	ax0.set_xlabel(coord2, **axis_font)
+	#ax0.set_xlabel(rcoord2, **axis_font)
 	ax0.set_ylabel(coord1, **axis_font)
+	#ax0.set_ylabel(rcoord1, **axis_font)
 
 
 

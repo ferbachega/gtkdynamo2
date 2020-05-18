@@ -193,7 +193,9 @@ def log_parser (log_file):
 			if atom[0][-1] == '1':
 			    parameters[1]['c1_ATOM1_id'  ] = atom[2]   
 			    parameters[1]['c1_ATOM1_name'] = atom[6]     
-                            
+                            c1_ATOM1_id   = atom[2]
+			    c1_ATOM1_name = atom[6]
+			    
 			    r1 = r1 + 'd ' +atom[6] + '(' +atom[2] + ') - '
 			    #r1 = r1 +atom[2] + '(' +atom[6] + ')'
 
@@ -202,7 +204,19 @@ def log_parser (log_file):
 			    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
 			    parameters[1]['c1_ATOM2_name'] = atom[6]     
                             r1 = r1 +atom[6] + '(' +atom[2] + ')'
+			    
+			    c1_ATOM2_id   = atom[2]
+			    c1_ATOM2_name = atom[6]
 
+
+		#c1_ATOM1_id    =  data['c1_ATOM1_id'  ]
+		#c1_ATOM1_name  =  data['c1_ATOM1_name']
+		c1_ATOM1_name  =  c1_ATOM1_name+'_{'+c1_ATOM1_id+'}'
+		#c1_ATOM2_id    =  data['c1_ATOM2_id'  ]
+		#c1_ATOM2_name  =  data['c1_ATOM2_name']	
+		c1_ATOM2_name  =  c1_ATOM2_name+'_{'+c1_ATOM2_id+'}'
+		rcoord1 =   r'$d(' + c1_ATOM1_name + '-' + c1_ATOM2_name+')$' 	    
+		    
 
             if line == '--------------------- Coordinate 1 - Multiple-Distance -------------------------\n':
                 index2 = lines.index('--------------------- Coordinate 1 - Multiple-Distance -------------------------\n')
@@ -221,20 +235,46 @@ def log_parser (log_file):
                             r1 = r1 +atom[6] + '(' +atom[2] + ')'
 			    #r'$\alpha_i > \beta_i$', fontsize=20
 			    #r1 = r1 + 'd '+ atom[6] + '_' +atom[2]+ ' '
-			    
+			    c1_ATOM1_id   = atom[2]
+			    c1_ATOM1_name = atom[6]
                         
                         if atom[0][-1] == '2' or atom[0][-1] == '*':
 			    parameters[1]['c1_ATOM2_id'  ] = atom[2]   
 			    parameters[1]['c1_ATOM2_name'] = atom[6]     
                             r1 = r1 + " - " + atom[6] + '(' +atom[2] + ')*' + " - "
 			    #r1 = r1 +atom[6] + '_' +atom[2]+ ' ' +  'd ' +atom[6] + '_' +atom[2]+ ' '
+			    c1_ATOM2_id    = atom[2]
+                            c1_ATOM2_name  = atom[6]
+
+
 
                         if atom[0][-1] == '3':
 			    parameters[1]['c1_ATOM3_id'  ] = atom[2]   
 			    parameters[1]['c1_ATOM3_name'] = atom[6]     
                             r1 = r1 +atom[6] + '(' +atom[2] + ')'
 			    #r1 = r1 +atom[6] + '_' +atom[2]+ ' '
-            
+			    c1_ATOM3_id    =  atom[2]  
+			    c1_ATOM3_name  =  atom[6]  
+			    
+
+		#c1_ATOM1_id    =  data['c1_ATOM1_id'  ]
+		#c1_ATOM1_name  =  data['c1_ATOM1_name']
+		c1_ATOM1_name  =  c1_ATOM1_name+'_{'+c1_ATOM1_id+'}'
+		#c1_ATOM2_id    =  data['c1_ATOM2_id'  ]
+		#c1_ATOM2_name  =  data['c1_ATOM2_name']	
+		c1_ATOM2_name  =  c1_ATOM2_name+'_{'+c1_ATOM2_id+'}'
+		#c1_ATOM3_id    =  data['c1_ATOM3_id'  ]
+		#c1_ATOM3_name  =  data['c1_ATOM3_name']	
+		c1_ATOM3_name  =  c1_ATOM3_name+'_{'+c1_ATOM3_id+'}'
+		rcoord1 =   r'$d(' + c1_ATOM1_name + '-' + c1_ATOM2_name+')' +'-'+ 'd('+c1_ATOM2_name+ '-' + c1_ATOM3_name+')$'
+
+
+
+
+
+
+
+
             
             
             
@@ -252,14 +292,27 @@ def log_parser (log_file):
 			    parameters[1]['c2_ATOM1_id'  ] = atom[2]   
 			    parameters[1]['c2_ATOM1_name'] = atom[6]     
                             r2 = r2 + 'd '+ atom[6] + '(' +atom[2] + ') - '
+			    c2_ATOM1_id    = atom[2]
+			    c2_ATOM1_name  = atom[6]
+
+
 
                         
                         if atom[0][-1] == '2':
 			    parameters[1]['c2_ATOM2_id'  ] = atom[2]   
 			    parameters[1]['c2_ATOM2_name'] = atom[6]     
                             r2 = r2 +atom[6] + '(' +atom[2] + ')'
+			    c2_ATOM2_id    = atom[2]
+			    c2_ATOM2_name  = atom[6]
 			
-			
+		#c2_ATOM1_id    =  data['c2_ATOM1_id'  ]
+		#c2_ATOM1_name  =  data['c2_ATOM1_name']
+		c2_ATOM1_name  =  c2_ATOM1_name+'_{'+c2_ATOM1_id+'}'
+		#c2_ATOM2_id    =  data['c2_ATOM2_id'  ]
+		#c2_ATOM2_name  =  data['c2_ATOM2_name']	
+		c2_ATOM2_name  =  c2_ATOM2_name+'_{'+c2_ATOM2_id+'}'
+		rcoord2 =   r'$d(' + c2_ATOM1_name + '-' + c2_ATOM2_name+')$'
+
 			
             if line == '--------------------- Coordinate 2 - Multiple-Distance -------------------------\n':
                 index2 = lines.index('--------------------- Coordinate 2 - Multiple-Distance -------------------------\n')
@@ -275,18 +328,39 @@ def log_parser (log_file):
 			    parameters[1]['c2_ATOM1_id'  ] = atom[2]   
 			    parameters[1]['c2_ATOM1_name'] = atom[6]     
                             r2 = r2 +atom[6] + '(' +atom[2] + ')'
-
+			    c2_ATOM1_id    = atom[2] 
+                            c2_ATOM1_name  = atom[6] 
                         
                         if atom[0][-1] == '2' or atom[0][-1] == '*':
 			    parameters[1]['c2_ATOM2_id'  ] = atom[2]   
 			    parameters[1]['c2_ATOM2_name'] = atom[6]     
                             r2 = r2 + " - " + atom[6] + '(' +atom[2] + ')*' + " - "
+			    c2_ATOM2_id    = atom[2]
+			    c2_ATOM2_name  = atom[6]
 
                         if atom[0][-1] == '3':
 			    parameters[1]['c2_ATOM3_id'  ] = atom[2]   
 			    parameters[1]['c2_ATOM3_name'] = atom[6]     
                             r2 = r2 +atom[6] + '(' +atom[2] + ')'
-            
+			    c2_ATOM3_id    = atom[2] 
+                            c2_ATOM3_name  = atom[6] 
+
+
+		#c2_ATOM1_id    =  data['c2_ATOM1_id'  ]
+		#c2_ATOM1_name  =  data['c2_ATOM1_name']
+		c2_ATOM1_name  =  c2_ATOM1_name+'_{'+c2_ATOM1_id+'}'
+		#c2_ATOM2_id    =  data['c2_ATOM2_id'  ]
+		#c2_ATOM2_name  =  data['c2_ATOM2_name']	
+		c2_ATOM2_name  =  c2_ATOM2_name+'_{'+c2_ATOM2_id+'}'
+		#c2_ATOM3_id    =  data['c2_ATOM3_id'  ]
+		#c2_ATOM3_name  =  data['c2_ATOM3_name']	
+		c2_ATOM3_name  =  c2_ATOM3_name+'_{'+c2_ATOM3_id+'}'
+		rcoord2 =   r'$d(' + c2_ATOM1_name + '-' + c2_ATOM2_name+')' +'-'+ 'd('+c2_ATOM2_name+ '-' + c2_ATOM3_name+')$'
+
+
+
+
+
             
             
             #print line
@@ -363,9 +437,11 @@ def log_parser (log_file):
         
         parameters[1]['R1'    ] = R1
         parameters[1]['R2'    ] = R2
-        parameters[1]['xlabel'] = r1
-        parameters[1]['ylabel'] = r2
-        
+        #parameters[1]['xlabel'] = r1
+        #parameters[1]['ylabel'] = r2
+        parameters[1]['xlabel'] = rcoord1
+	parameters[1]['ylabel'] = rcoord2
+	
         #print parameters
         return parameters
 
