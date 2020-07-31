@@ -344,27 +344,27 @@ else:
 	print y
 	print x
 
-	c2_ATOM1_id    =  data['c2_ATOM1_id'  ]
-	c2_ATOM1_name  =  data['c2_ATOM1_name']
-	c2_ATOM1_name  =  c2_ATOM1_name+'_{'+c2_ATOM1_id+'}'
-	c2_ATOM2_id    =  data['c2_ATOM2_id'  ]
-	c2_ATOM2_name  =  data['c2_ATOM2_name']	
-	c2_ATOM2_name  =  c2_ATOM2_name+'_{'+c2_ATOM2_id+'}'
-	c2_ATOM3_id    =  data['c2_ATOM3_id'  ]
-	c2_ATOM3_name  =  data['c2_ATOM3_name']	
-	c2_ATOM3_name  =  c2_ATOM3_name+'_{'+c2_ATOM3_id+'}'
-	rcoord2 =   r'$d(' + c2_ATOM1_name + '-' + c2_ATOM2_name+')' +'-'+ 'd('+c2_ATOM2_name+ '-' + c2_ATOM3_name+')$'
-	
-	c1_ATOM1_id    =  data['c1_ATOM1_id'  ]
-	c1_ATOM1_name  =  data['c1_ATOM1_name']
-	c1_ATOM1_name  =  c1_ATOM1_name+'_{'+c1_ATOM1_id+'}'
-	c1_ATOM2_id    =  data['c1_ATOM2_id'  ]
-	c1_ATOM2_name  =  data['c1_ATOM2_name']	
-	c1_ATOM2_name  =  c1_ATOM2_name+'_{'+c1_ATOM2_id+'}'
-	c1_ATOM3_id    =  data['c1_ATOM3_id'  ]
-	c1_ATOM3_name  =  data['c1_ATOM3_name']	
-	c1_ATOM3_name  =  c1_ATOM3_name+'_{'+c1_ATOM3_id+'}'
-	rcoord1 =   r'$d(' + c1_ATOM1_name + '-' + c1_ATOM2_name+')' +'-'+ 'd('+c1_ATOM2_name+ '-' + c1_ATOM3_name+')$'
+	#c2_ATOM1_id    =  data['c2_ATOM1_id'  ]
+	#c2_ATOM1_name  =  data['c2_ATOM1_name']
+	#c2_ATOM1_name  =  c2_ATOM1_name+'_{'+c2_ATOM1_id+'}'
+	#c2_ATOM2_id    =  data['c2_ATOM2_id'  ]
+	#c2_ATOM2_name  =  data['c2_ATOM2_name']	
+	#c2_ATOM2_name  =  c2_ATOM2_name+'_{'+c2_ATOM2_id+'}'
+	#c2_ATOM3_id    =  data['c2_ATOM3_id'  ]
+	#c2_ATOM3_name  =  data['c2_ATOM3_name']	
+	#c2_ATOM3_name  =  c2_ATOM3_name+'_{'+c2_ATOM3_id+'}'
+	#rcoord2 =   r'$d(' + c2_ATOM1_name + '-' + c2_ATOM2_name+')' +'-'+ 'd('+c2_ATOM2_name+ '-' + c2_ATOM3_name+')$'
+	#
+	#c1_ATOM1_id    =  data['c1_ATOM1_id'  ]
+	#c1_ATOM1_name  =  data['c1_ATOM1_name']
+	#c1_ATOM1_name  =  c1_ATOM1_name+'_{'+c1_ATOM1_id+'}'
+	#c1_ATOM2_id    =  data['c1_ATOM2_id'  ]
+	#c1_ATOM2_name  =  data['c1_ATOM2_name']	
+	#c1_ATOM2_name  =  c1_ATOM2_name+'_{'+c1_ATOM2_id+'}'
+	#c1_ATOM3_id    =  data['c1_ATOM3_id'  ]
+	#c1_ATOM3_name  =  data['c1_ATOM3_name']	
+	#c1_ATOM3_name  =  c1_ATOM3_name+'_{'+c1_ATOM3_id+'}'
+	#rcoord1 =   r'$d(' + c1_ATOM1_name + '-' + c1_ATOM2_name+')' +'-'+ 'd('+c1_ATOM2_name+ '-' + c1_ATOM3_name+')$'
 	
 	
 	#label_test =  r'$\sum_{i=0}^\infty x_i$'
@@ -478,7 +478,10 @@ else:
 
 	else:
 		am = ax0.contour(x,y,z,lspacing, colors=lcolor)
-		ax0.clabel(am, inline=1, fontsize=fontsize, fmt=fmt,colors=lcolor)
+		if fontsize == 0:
+			pass
+		else:
+			ax0.clabel(am, inline=1, fontsize=fontsize, fmt=fmt,colors=lcolor)
 
 	#x,y,z, levels=numpy.linspace(-5.0, 0.0, 50), cmap='Blues_r'
 	#im = ax0.contourf(x,y,z, cmap='rainbow')
