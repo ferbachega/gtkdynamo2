@@ -145,7 +145,7 @@ from gui.MOPACEnergy.MOPACEnergy                             import MOPACSEnergy
                                                                                                 #
 from gui.DialogWorkSpaceDialog.WorkSpace                     import WorkSpaceDialog             #
 from gui.DialogChargeRescale.ChargeRescale                   import ChargeRescaleDialog         #
-from gui.WindowUmbrellaSampling.UmbrellaSampling             import UmbrellaSamplingWindow      #
+from gui.WindowUmbrellaSampling.UmbrellaSampling             import UmbrellaSamplingWindow , Umbrella2DSamplingWindow      #
 
 from gui.DialogWHAM.WHAM                                     import WHAMEquationSolverDialog
 
@@ -518,7 +518,11 @@ class MainMenu (object):
                 if self.UmbrellaSamplingWindow.Visible == False:
                         text = str(self.project.settings['step'] + 1) + '_step_UmbrellaSampling'
                         self.UmbrellaSamplingWindow.OpenWindow(text)
-
+        
+        def on_MainMenu_Calculate_UmbrellaSampling2D_activate(self, menuItem):
+                if self.Umbrella2DSamplingWindow.Visible == False:
+                        text = str(self.project.settings['step'] + 1) + '_step_UmbrellaSampling'
+                        self.Umbrella2DSamplingWindow.OpenWindow(text)
 
         def on_MainMenu_Calculate_SAW_activate(self, menuItem):
                 self.SAWDialog.dialog.run()
@@ -1964,8 +1968,9 @@ class EasyHybrid_main(threading.Thread,
 
         self.PreferencesDialog   = PreferencesDialog(self)
                                                                                                 #
-        self.UmbrellaSamplingWindow = UmbrellaSamplingWindow(self)                              #
-                                                                                                #
+        self.UmbrellaSamplingWindow   = UmbrellaSamplingWindow(self)                            #
+        self.Umbrella2DSamplingWindow = Umbrella2DSamplingWindow(self)                          #
+
         self.DialogImportCoordinates = ImportCoordinatesDialog(self)                            #
                                                                                                 #
         self.DialogExportCoordinates = ExportCoordinatesDialog(self)                            #

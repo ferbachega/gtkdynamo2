@@ -60,8 +60,17 @@ class WHAMEquationSolverDialog():
 
     def run_WHAM_Equation_Solver (self, button):
         """ Function doc """
-        Bins                 = self.builder.get_object('Bins'                ).get_text()
-        LogFrequency         = self.builder.get_object('LogFrequency'        ).get_text()
+	mode            = self.builder.get_object('combobox1').get_active_text()
+	if mode == "PMF 2D":
+	    Bins = self.builder.get_object('Bins'                ).get_text()
+	    Bins = [int(Bins), int(Bins)]
+	
+	if mode == "PMF 1D":
+	    Bins = self.builder.get_object('Bins'                ).get_text()
+	    Bins = [int(Bins)]
+
+        
+	LogFrequency         = self.builder.get_object('LogFrequency'        ).get_text()
         MaximumIterations    = self.builder.get_object('MaximumIterations'   ).get_text()
         RMSGradientTolerance = self.builder.get_object('RMSGradientTolerance').get_text()
         Temperature          = self.builder.get_object('Temperature'         ).get_text()
@@ -69,6 +78,7 @@ class WHAMEquationSolverDialog():
         model                = self.builder.get_object("liststore1") 
         data_path            = self.EasyHybridSession.project.settings['data_path']
         trajectory_blocks = []
+    
         
         for i in model:
             if i[0] == True:
@@ -217,11 +227,37 @@ class WHAMEquationSolverDialog():
             self.EasyHybridSession = EasyHybridSession        
             self.window_control   = EasyHybridSession.window_control
             
+		
 
+        
         self.builder.add_from_file(
             os.path.join(EasyHybrid_GUI,'DialogWHAM', 'WHAM.glade'))
         self.builder.connect_signals(self)
         self.dialog = self.builder.get_object('dialog1')
+
+
+	combobox  = 'combobox1' 
+        combolist = ["PMF 1D", "PMF 2D"]#, "trj - AMBER", "dcd - CHARMM", 'xtc - GROMACS']
+
+        cbox = self.builder.get_object(combobox)  # ----> combobox_MM_model
+        store = gtk.ListStore(gobject.TYPE_STRING)
+        cbox.set_model(store)
+
+        for i in combolist:
+            cbox.append_text(i)
+
+        cell = gtk.CellRendererText()
+        cbox.pack_start(cell, True)
+        cbox.add_attribute(cell, 'text', 0)
+        cbox.set_active(0)
+
+
+
+
+
+
+
+
 
         self.FileNames = {
                          # '/home/farminf/Programas/EasyHybrid2/gui/DialogWHAM' : True,
