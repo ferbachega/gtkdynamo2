@@ -301,13 +301,14 @@ else:
     k    = inputs['kf']
     z    = data['matrix']
 
-    reac = [1,0]
-    ts   = [1,17]
-    prod = [10,18]
+    reac = [0,0]
+    #ts   = [15,30]
+    prod = [20,20]
     
     
-    Initial_positions = [reac, prod]
-    Initial_positions = [reac, [0,17],  prod]
+    #
+    Initial_positions = [reac, [4,10], prod]
+    #Initial_positions = [reac, ts,  prod]
     
     
     

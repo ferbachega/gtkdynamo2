@@ -201,7 +201,8 @@ class InstallPDynamo:
             #-----------------------------------------------------------------------------------
             # WGET - DOWNLOAD
             #-----------------------------------------------------------------------------------
-            os.system("wget https://sites.google.com/site/pdynamomodeling/" + verison + ".tgz") 
+            #os.system("wget https://sites.google.com/site/pdynamomodeling/" + verison + ".tgz") 
+            os.system("wget https://sites.google.com/site/gtkdynamo/download/pDynamo-1.9.0.tgz") 
             #-----------------------------------------------------------------------------------
 
         
